@@ -1,1 +1,1 @@
-Atlantic POS System
+POS System
