@@ -531,7 +531,7 @@ Public Class endingbalance
                     For Each row As DataGridViewRow In dgvSelectedItem.Rows
                         dt.Rows.Add(row.Cells("itemcode").Value, row.Cells("itemname").Value, row.Cells("category").Value, row.Cells("quantity").Value, row.Cells("charge").Value, row.Cells("employee").Value, "", "")
                     Next
-                    Using connection As New SqlConnection(login.ss)
+                    Using connection As New SqlConnection(cc.conString)
                         Dim cmdd As New SqlCommand()
                         cmdd.Connection = connection
 

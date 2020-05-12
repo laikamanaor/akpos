@@ -164,7 +164,15 @@ Public Class main
 
 
     Private Sub btnsalessum_Click(sender As Object, e As EventArgs) Handles btnsalessum.Click
-        MessageBox.Show("Under Development", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        hideShow(panelsubreports)
+        Dim f As New dashboard2()
+        panelchildform.Controls.Clear()
+        f.TopLevel = False
+        f.Dock = DockStyle.Fill
+        panelchildform.Controls.Add(f)
+        f.BringToFront()
+        f.Show()
+        'MessageBox.Show("Under Development", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
     End Sub
 
     Private Sub btnrequestletter_Click(sender As Object, e As EventArgs) Handles btnrequestletter.Click
@@ -367,9 +375,9 @@ Public Class main
             Dim status As String = "", date_from As New DateTime(), query As String = ""
 
             If login2.wrkgrp = "LC Accounting" Or login2.wrkgrp = "Manager" Then
-                query = "Select tblcutoff.status,tblcutoff.date FROM tblcutoff JOIN tblusers ON tblcutoff.userid = tblusers.systemid AND tblusers.workgroup='Sales' ORDER BY cid DESC;"
+                query = "Select tblcutoff.status,tblcutoff.date FROM tblcutoff JOIN tblusers ON tblcutoff.userid = tblusers.systemid ORDER BY cid DESC;"
             Else
-                query = "SELECT status,date FROM tblcutoff WHERE userid=(SELECT TOP 1 systemid FROM tblusers WHERE username='" & login2.username & "') ORDER BY cid DESC;"
+                query = "SELECT status,date FROM tblcutoff ORDER BY cid DESC;"
             End If
             con.Open()
             cmd = New SqlCommand(query, con)
@@ -1011,11 +1019,11 @@ Public Class main
 
     Private Sub btnpos_Click(sender As Object, e As EventArgs) Handles btnpos.Click
 
-        If login2.wrkgrp = "Sales" Or login2.wrkgrp = "Manager" Then
-            'If checkCutOff("") Then
-            '    MessageBox.Show("Your account is already cut off", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
-            '    Exit Sub
-            'End If
+        If login2.wrkgrp = "Sales" Or login2.wrkgrp = "Manager" Or login2.wrkgrp = "LC Accounting" Then
+            If checkCutOff("") Then
+                MessageBox.Show("Your account is already cut off", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                Exit Sub
+            End If
             con.Open()
             cmd = New SqlCommand("Select TOP 1 * from tblinvsum WHERE area='" & "Sales" & "' order by invsumid DESC", con)
             Dim dt As New DataTable()
@@ -1030,13 +1038,12 @@ Public Class main
                         Exit Sub
                     Else
                         Dim f As New mainmenu()
-                        f.cas = "Sales"
+                        'f.cas = "Sales"
                         f.Show()
                     End If
                 Else
                     Dim f As New mainmenu()
-
-                    f.cas = "Sales"
+                    'f.cas = "Sales"
                     f.Show()
                 End If
             Next
@@ -1612,5 +1619,9 @@ Public Class main
         Else
             MessageBox.Show("Access Denied", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End If
+    End Sub
+
+    Private Sub btnlock_Click(sender As Object, e As EventArgs) Handles btnlock.Click
+        panelchildform.Enabled = IIf(panelchildform.Enabled = True, False, True)
     End Sub
 End Class

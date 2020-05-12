@@ -57,7 +57,6 @@ Public Class login2
         End If
     End Sub
 
-
     Private Sub checkseepass_CheckedChanged(sender As Object, e As EventArgs) Handles checkseepass.CheckedChanged
         txtpass.PasswordChar = IIf(checkseepass.Checked, "", "*")
         txtpass.Font = IIf(checkseepass.Checked, New Font("Arial", 12, FontStyle.Bold), New Font("Arial", 18, FontStyle.Bold))
@@ -79,11 +78,13 @@ Public Class login2
             txtpass.Text = ""
             txtpass.Focus()
         Else
+            username = txtusername.Text
+            Dim sa As New pos_dialog()
+            sa.ShowDialog()
             loginc.setUsername(txtusername.Text)
             loginc.insertCutOff()
             loginc.insertLogs()
             wrkgrp = loginc.getWorkgroup()
-            username = txtusername.Text
             Me.Hide()
             Dim frm As New main()
             frm.ShowDialog()

@@ -37,6 +37,7 @@ Partial Class sap_uploading
         Me.Panel3 = New System.Windows.Forms.Panel()
         Me.Panel4 = New System.Windows.Forms.Panel()
         Me.Panel5 = New System.Windows.Forms.Panel()
+        Me.btnactualendingbalance = New System.Windows.Forms.Button()
         Me.Panel1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -211,12 +212,28 @@ Partial Class sap_uploading
         Me.Panel5.Size = New System.Drawing.Size(1, 253)
         Me.Panel5.TabIndex = 11
         '
+        'btnactualendingbalance
+        '
+        Me.btnactualendingbalance.BackColor = System.Drawing.Color.Crimson
+        Me.btnactualendingbalance.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btnactualendingbalance.FlatAppearance.BorderSize = 0
+        Me.btnactualendingbalance.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnactualendingbalance.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnactualendingbalance.ForeColor = System.Drawing.Color.White
+        Me.btnactualendingbalance.Location = New System.Drawing.Point(141, 113)
+        Me.btnactualendingbalance.Name = "btnactualendingbalance"
+        Me.btnactualendingbalance.Size = New System.Drawing.Size(189, 30)
+        Me.btnactualendingbalance.TabIndex = 12
+        Me.btnactualendingbalance.Text = "Actual Ending Balance"
+        Me.btnactualendingbalance.UseVisualStyleBackColor = False
+        '
         'sap_uploading
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.White
         Me.ClientSize = New System.Drawing.Size(541, 287)
+        Me.Controls.Add(Me.btnactualendingbalance)
         Me.Controls.Add(Me.Panel5)
         Me.Controls.Add(Me.Panel4)
         Me.Controls.Add(Me.Panel3)
@@ -260,4 +277,5 @@ Partial Class sap_uploading
     Friend WithEvents Panel3 As Panel
     Friend WithEvents Panel4 As Panel
     Friend WithEvents Panel5 As Panel
+    Friend WithEvents btnactualendingbalance As Button
 End Class

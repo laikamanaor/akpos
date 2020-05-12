@@ -152,11 +152,10 @@ Public Class cancel_rectrans
                     con.Close()
                     For Each r0w In dt.Rows
 
-                        Dim variance As Double = CDbl(r0w("variance"))
-                        variance = variance + CDbl(r0w("quantity"))
+                        'Dim variance As Double = CDbl(r0w("variance"))
+                        'variance = variance + CDbl(r0w("quantity"))
                         con.Open()
-                        cmd = New SqlCommand("UPDATE tblinvitems SET " & iin & "-=@quantity,charge-=@charge,archarge-=@charge,totalav-=@quantity,endbal-=@quantity,variance=@variance WHERE invnum=@invnum AND itemname=@itemname;", con)
-                        cmd.Parameters.AddWithValue("@variance", variance)
+                        cmd = New SqlCommand("UPDATE tblinvitems SET " & iin & "-=@quantity,charge-=@charge,archarge-=@charge" & IIf(iin = "transfer", "", ",totalav-=@quantity") & ",endbal" & IIf(iin = "transfer", "+", "-") & "=@quantity,variance" & IIf(iin = "transfer", "-", "+") & "=@quantity WHERE invnum=@invnum AND itemname=@itemname;", con)
                         cmd.Parameters.AddWithValue("@charge", CDbl(r0w("charge")))
                         cmd.Parameters.AddWithValue("@quantity", CDbl(r0w("quantity")))
                         cmd.Parameters.AddWithValue("@invnum", invnum)

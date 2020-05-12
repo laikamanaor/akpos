@@ -709,6 +709,12 @@
     <Compile Include="main.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="mainmenu2.Designer.vb">
+      <DependentUpon>mainmenu2.vb</DependentUpon>
+    </Compile>
+    <Compile Include="mainmenu2.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="message.Designer.vb">
       <DependentUpon>message.vb</DependentUpon>
     </Compile>
@@ -722,6 +728,7 @@
     <Compile Include="my_class\connection_class.vb" />
     <Compile Include="my_class\items\items_class.vb" />
     <Compile Include="my_class\pos\mini_pos.vb" />
+    <Compile Include="my_class\pos\pos2_class.vb" />
     <Compile Include="my_class\pos\pos_class.vb" />
     <Compile Include="my_class\received\received_class.vb" />
     <Compile Include="my_class\ui_class.vb" />
@@ -1247,6 +1254,12 @@
     <Compile Include="salessum2.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="sales_reports.Designer.vb">
+      <DependentUpon>sales_reports.vb</DependentUpon>
+    </Compile>
+    <Compile Include="sales_reports.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="samplee.Designer.vb">
       <DependentUpon>samplee.vb</DependentUpon>
     </Compile>
@@ -1727,6 +1740,9 @@
     <EmbeddedResource Include="main.resx">
       <DependentUpon>main.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="mainmenu2.resx">
+      <DependentUpon>mainmenu2.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="message.resx">
       <DependentUpon>message.vb</DependentUpon>
       <SubType>Designer</SubType>
@@ -2052,6 +2068,9 @@
     <EmbeddedResource Include="salessum2.resx">
       <DependentUpon>salessum2.vb</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="sales_reports.resx">
+      <DependentUpon>sales_reports.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="samplee.resx">
       <DependentUpon>samplee.vb</DependentUpon>

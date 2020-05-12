@@ -6,10 +6,11 @@ Imports System.Text
 Imports System.Globalization
 Imports AK_POS.pos_class
 Imports AK_POS.user_class
+Imports AK_POS.connection_class
 Public Class mainmenu
-    Dim strconn As String = login.ss
+    Dim cc As New connection_class
     Dim sql As String
-    Dim conn As New SqlConnection(strconn)
+    Dim conn As New SqlConnection(cc.conString)
     Dim dr As SqlDataReader
     Dim cmd As SqlCommand
     Dim transaction As SqlTransaction
@@ -46,7 +47,6 @@ Public Class mainmenu
     Dim mousex As Integer
     Dim mousey As Integer
     Dim toggle_max As Boolean = True
-
     Dim posc As New pos_class(), userc As New user_class()
     Public Function decryptConString() As String
         Dim base64encoded As String = File.ReadAllText("connectionstring.txt")
@@ -56,9 +56,9 @@ Public Class mainmenu
 
     Private Sub mainmenu_Activated(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Activated
         loadItems()
-        If login.wrkgrp = "Cashier" Then
+        If login2.wrkgrp = "Cashier" Then
             btncutoff.Enabled = True
-        ElseIf login.wrkgrp = "Sales" Then
+        ElseIf login2.wrkgrp = "Sales" Then
             btncutoff.Enabled = False
         End If
         getReturnNum()
@@ -70,7 +70,7 @@ Public Class mainmenu
     Private Sub mainmenu_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles Me.KeyDown
         If e.KeyCode = Keys.F1 Then
             btnok.PerformClick()
-        ElseIf e.KeyCode = Keys.F2 And login.wrkgrp <> "Cashier" Then
+        ElseIf e.KeyCode = Keys.F2 And login2.wrkgrp <> "Cashier" Then
             btnlast10.PerformClick()
         ElseIf e.KeyCode = Keys.F3 Then
             btncancel.PerformClick()
@@ -123,12 +123,19 @@ Public Class mainmenu
             If conn.State = ConnectionState.Open Then
                 conn.Close()
             End If
+
+            Dim date1 As DateTime = dtdate.Text
+            Dim date2 As DateTime = DateTime.Now
+
             conn.Open()
             cmd = New SqlCommand("SELECT GETDATE()", conn)
-            dr = cmd.ExecuteReader()
-            While dr.Read
-                dt = CDate(dr(0).ToString)
-            End While
+            date2 = cmd.ExecuteScalar
+            conn.Close()
+
+            Dim ts As TimeSpan = date2.Subtract(date1)
+            conn.Open()
+            cmd = New SqlCommand("SELECT GETDATE() " & IIf(login2.wrkgrp = "LC Accounting", "- " & ts.Days, ""), conn)
+            dt = cmd.ExecuteScalar
             conn.Close()
             Return dt
         Catch ex As Exception
@@ -140,12 +147,17 @@ Public Class mainmenu
         Try
             Dim id As String = ""
             Dim date_ As New DateTime()
-            conn.Open()
-            cmd = New SqlCommand("Select TOP 1 invnum from tblinvsum WHERE area='Sales' order by invsumid DESC", conn)
-            dr = cmd.ExecuteReader()
-            If dr.Read() Then
-                id = dr("invnum")
+            Dim query As String = ""
+            If login2.wrkgrp = "LC Accounting" Then
+                query = "Select TOP 1 invnum from tblinvsum WHERE area='Sales' AND CAST(datecreated AS date)='" & dtdate.Text & "' order by invsumid DESC"
+            ElseIf login2.wrkgrp = "Cashier" Then
+                query = "Select TOP 1 invnum from tblinvsum WHERE area='Sales' AND CAST(datecreated AS date)=(SELECT transdate FROM tbltransaction2 WHERE orderid=" & order_id & ") order by invsumid DESC"
+            Else
+                query = "Select TOP 1 invnum from tblinvsum WHERE area='Sales' order by invsumid DESC"
             End If
+            conn.Open()
+            cmd = New SqlCommand(query, conn)
+            id = cmd.ExecuteScalar
             conn.Close()
             inv_id = id
         Catch ex As Exception
@@ -156,19 +168,19 @@ Public Class mainmenu
     Private Sub mainmenu_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
             Me.KeyPreview = True
-            If login.wrkgrp = "Sales" Or login.wrkgrp = "Manager" Then
+            If login2.wrkgrp = "Sales" Or login2.wrkgrp = "Manager" Then
                 btnlast10.Visible = True
             Else
                 btnlast10.Visible = False
             End If
 
             getID()
-            If login.wrkgrp = "Cashier" Then
+            If login2.wrkgrp = "Cashier" Then
                 identify_area = "Sales"
                 btncutoff.Enabled = True
             Else
                 btncutoff.Enabled = False
-                identify_area = login.wrkgrp
+                identify_area = login2.wrkgrp
             End If
             If cas = "Sales" Or cas = "Wholesale" Then
                 lbltrnum.Visible = False
@@ -177,7 +189,7 @@ Public Class mainmenu
                 loadordernum()
                 loadtransnum()
                 load_customers()
-                'MessageBox.Show("cas sales wholesale")
+                'MessageBox.Show("cAs sales wholesale")
             ElseIf cas = "Cashier" Then
                 loadtransnum()
                 lbltrnum.Visible = True
@@ -187,7 +199,7 @@ Public Class mainmenu
                 computetotal()
                 load_customers()
             End If
-            If login.neym <> "Cashier" Then
+            If login2.wrkgrp <> "Cashier" Then
                 rbtake.Checked = True
                 rbcash.Checked = True
                 txtname.Text = "CASH"
@@ -261,13 +273,15 @@ Public Class mainmenu
             '    'End If
             '    'conn.Close()
             'End If
+
+
             If pos_dialog.ans = "Coffee Shop" Or pos_dialog.ans = "Wholesale" Then
                 grd.Columns("discountpercent").ReadOnly = False
             Else
                 grd.Columns("discountpercent").ReadOnly = True
             End If
 
-            If login.wrkgrp = "Cashier" Then
+            If login2.wrkgrp = "Cashier" Then
                 Label12.Visible = True
                 txtgc.Visible = True
                 btngc.Visible = True
@@ -279,6 +293,9 @@ Public Class mainmenu
 
             ' defaultload()
             Me.Cursor = Cursors.Default
+            dtdate.Text = getSystemDate.ToString("MM/dd/yyyy")
+            dtdate.MaxDate = getSystemDate()
+            paneldate.Visible = IIf(login2.wrkgrp = "LC Accounting", True, False)
         Catch ex As System.InvalidOperationException
             Me.Cursor = Cursors.Default
             MsgBox(ex.ToString, MsgBoxStyle.Critical, "")
@@ -303,7 +320,7 @@ Public Class mainmenu
             Dim btncat(100) As Button
             Dim ctr As Integer = 0
 
-            if pos_dialog.ans = "Coffee Shop" Then
+            If pos_dialog.ans = "Coffee Shop" Then
                 sql = "Select * from tblcat where status='1' AND category='Coffee Shop' OR category='Beverages' or category='Breads' order by category"
             Else
                 sql = "Select * from tblcat where status='1' AND Not category='Coffee Shop' order by category"
@@ -1833,10 +1850,10 @@ Public Class mainmenu
         Try
             Dim status As String = "", date_from As New DateTime(), query As String = ""
 
-            If login.wrkgrp = "LC Accounting" Or login.wrkgrp = "Manager" Then
+            If login2.wrkgrp = "LC Accounting" Or login2.wrkgrp = "Manager" Then
                 query = "Select tblcutoff.status,tblcutoff.date FROM tblcutoff JOIN tblusers ON tblcutoff.userid = tblusers.systemid AND tblusers.workgroup='Sales' ORDER BY cid DESC;"
             Else
-                query = "SELECT status,date FROM tblcutoff WHERE userid=(SELECT TOP 1 systemid FROM tblusers WHERE username='" & login.username & "') ORDER BY cid DESC;"
+                query = "SELECT status,date FROM tblcutoff WHERE userid=(SELECT TOP 1 systemid FROM tblusers WHERE username='" & login2.username & "') ORDER BY cid DESC;"
             End If
             conn.Open()
             cmd = New SqlCommand(query, conn)
@@ -1860,7 +1877,7 @@ Public Class mainmenu
         End Try
     End Function
     Public Function getTransID() As String
-        Dim selectcount_result As Integer = 0
+        Dim selectcount_result As Long = 0
         Dim temp As String = "0", area_format As String = ""
 
         conn.Open()
@@ -1903,11 +1920,11 @@ Public Class mainmenu
             MessageBox.Show("The item(s) below have free bread(s). Please enter valid input" & Environment.NewLine & posc.checkCSFree(grd), "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
         ElseIf posc.checkItemAmount(grd) <> "" Then
             MessageBox.Show("Please input amount In item. Please enter valid input" & Environment.NewLine & posc.checkCSFree(grd), "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
-        ElseIf posc.checkOrderNumber(ordernum) = True And login.wrkgrp = "Cashier" Then
+        ElseIf posc.checkOrderNumber(ordernum) = True And login2.wrkgrp = "Cashier" Then
             MessageBox.Show("Order # " & lblordernumber.Text & " is already transact", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
         ElseIf grd.RowCount = 0 Then
             MessageBox.Show("No orders entered", "", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-        ElseIf CDbl(txttendered.Text) < (CDbl(txtboxamountpayable.Text)) And rbtransfer.Checked = False And rbcash.Checked And login.wrkgrp = "Cashier" Then
+        ElseIf CDbl(txttendered.Text) < (CDbl(txtboxamountpayable.Text)) And rbtransfer.Checked = False And rbcash.Checked And login2.wrkgrp = "Cashier" Then
             amount()
             MsgBox("Amount tendered Is Not enough To pay the bill. Enter amount.", MsgBoxStyle.Exclamation, "")
             txttendered.Focus()
@@ -1921,7 +1938,7 @@ Public Class mainmenu
             MessageBox.Show(checkCoffeeShopItem(pos_dialog.ans), "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
         ElseIf posc.checkStocks(grd, inv_id) <> "" Then
             MessageBox.Show("Insufficient supply of item below. Please enter valid input" & Environment.NewLine & posc.checkStocks(grd, inv_id), "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
-        ElseIf Trim(txttendered.Text) = "" Or Val(txttendered.Text) = 0 And login.wrkgrp = "Cashier" And rbcash.Checked Then
+        ElseIf Trim(txttendered.Text) = "" Or Val(txttendered.Text) = 0 And login2.wrkgrp = "Cashier" And rbcash.Checked Then
             If String.IsNullOrEmpty(txtchange.Text) And rbcash.Checked Then
                 amount()
                 MsgBox("Amount tendered is empty. Enter amount first.", MsgBoxStyle.Exclamation, "")
@@ -2025,6 +2042,25 @@ Public Class mainmenu
         Return result
     End Function
 
+    Public Function getTimeSpan() As Integer
+
+        Dim date1 As DateTime = dtdate.Text
+        Dim date2 As DateTime = DateTime.Now
+
+        conn.Open()
+        cmd = New SqlCommand("SELECT datecreated FROM tbltransaction2 WHERE orderid=" & order_id & ";", conn)
+        date1 = cmd.ExecuteScalar
+        conn.Close()
+
+        conn.Open()
+        cmd = New SqlCommand("SELECT GETDATE()", conn)
+        date2 = cmd.ExecuteScalar
+        conn.Close()
+
+        Dim ts As TimeSpan = date2.Subtract(date1)
+        Return ts.Days
+    End Function
+
     ''' <summary>
     ''' all the motherfucking transaction comes here
     ''' </summary>
@@ -2034,10 +2070,10 @@ Public Class mainmenu
             getID()
             loadtransnum()
             loadordernum()
-            Using connection As New SqlConnection(login.ss)
+            Using connection As New SqlConnection(cc.conString)
                 Dim cmdd As New SqlCommand(),
                 currentStock As Double = 0.00, addStock As Double = 0.00, seniorResult As Boolean = False, tayp As String = "", resultNo As Double = 0.00
-
+                Dim getServerDate As String = getSystemDate.ToString("MM/dd/yyyy")
                 cmdd.Connection = connection
 
                 connection.Open()
@@ -2045,7 +2081,7 @@ Public Class mainmenu
 
                 cmdd.Transaction = transaction
 
-                If sales_ans = "Coffee Shop" And login.wrkgrp = "Cashier" Then
+                If sales_ans = "Coffee Shop" And login2.wrkgrp = "Cashier" Then
                     For index As Integer = 0 To grd.RowCount - 1
                         If grd.Rows(index).Cells("cat").Value = "Coffee Shop" Then
                             conn.Open()
@@ -2070,20 +2106,21 @@ Public Class mainmenu
                                 cmdd.Parameters.Add(New SqlParameter("@quantity", grd.Rows(index).Cells("quantity").Value))
                                 cmdd.Parameters.Add(New SqlParameter("@invnum", inv_id))
                                 cmdd.Parameters.Add(New SqlParameter("@transnum", getTransID()))
-                                cmdd.Parameters.Add(New SqlParameter("@username", login.username))
+                                cmdd.Parameters.Add(New SqlParameter("@username", login2.username))
                                 cmdd.ExecuteNonQuery()
                             End If
                         End If
                     Next
                 End If
 
-                If login.wrkgrp = "Cashier" Then
+                If login2.wrkgrp = "Cashier" Then
 
                     Dim arRemarks As String = ""
                     If rbAR.Checked Then
                         ar_remarks.ShowDialog()
                         arRemarks = ar_remarks.txtremarks.Text
                     End If
+                    MessageBox.Show(arRemarks)
                     cmdd.Parameters.Clear()
                     cmdd.CommandText = "insertTransaction"
                     cmdd.CommandType = CommandType.StoredProcedure
@@ -2091,7 +2128,7 @@ Public Class mainmenu
                     cmdd.Parameters.Add(New SqlParameter("@or", txtor.Text))
                     cmdd.Parameters.Add(New SqlParameter("@transnum", lbltrnum.Text))
                     cmdd.Parameters.Add(New SqlParameter("@invnum", inv_id))
-                    cmdd.Parameters.Add(New SqlParameter("@cashier", login.username))
+                    cmdd.Parameters.Add(New SqlParameter("@cashier", login2.username))
                     cmdd.Parameters.Add(New SqlParameter("@tendertype", tendertype))
                     cmdd.Parameters.Add(New SqlParameter("@servicetype", servicetype))
                     cmdd.Parameters.Add(New SqlParameter("@delcharge", CDbl(txtdeliver.Text)))
@@ -2121,7 +2158,7 @@ Public Class mainmenu
                     cmdd.Parameters.Add(New SqlParameter("@typez", sales_ans))
                     cmdd.Parameters.Add(New SqlParameter("@discamt", txtdiscamt.Text))
                     cmdd.Parameters.Add(New SqlParameter("@salesname", getSalesName()))
-                    cmdd.Parameters.Add(New SqlParameter("@username", login.username))
+                    cmdd.Parameters.Add(New SqlParameter("@username", login2.username))
                     cmdd.Parameters.Add(New SqlParameter("@ar_remarks", arRemarks))
                     Dim ar_type As String = ""
                     Select Case tendertype
@@ -2133,6 +2170,7 @@ Public Class mainmenu
                             ar_type = "AR Charge"
                     End Select
                     cmdd.Parameters.Add(New SqlParameter("@ar_type", ar_type))
+                    cmdd.Parameters.Add(New SqlParameter("@ts", getTimeSpan()))
                     cmdd.ExecuteNonQuery()
 
                     cmdd.Parameters.Clear()
@@ -2246,7 +2284,7 @@ Public Class mainmenu
                         cmdd.Parameters.Add(New SqlParameter("date", sdate))
                         cmdd.ExecuteNonQuery()
 
-                        cmdd.CommandText = "INSERT INTO tblars2 (transnum,description,quantity,price,amount,area,name) VALUES ('" & lbltrnum.Text & "', '" & grd.Rows(index).Cells("description").Value & "' ,'" & CDbl(grd.Rows(index).Cells("quantity").Value) & "','" & CDbl(grd.Rows(index).Cells("price").Value) & "','" & CDbl(grd.Rows(index).Cells("amtdue").Value) & "','" & login.wrkgrp & "','" & txtname.Text & "')"
+                        cmdd.CommandText = "INSERT INTO tblars2 (transnum,description,quantity,price,amount,area,name) VALUES ('" & lbltrnum.Text & "', '" & grd.Rows(index).Cells("description").Value & "' ,'" & CDbl(grd.Rows(index).Cells("quantity").Value) & "','" & CDbl(grd.Rows(index).Cells("price").Value) & "','" & CDbl(grd.Rows(index).Cells("amtdue").Value) & "','" & login2.wrkgrp & "','" & txtname.Text & "')"
                         cmdd.ExecuteNonQuery()
                         Dim arVal As String = ""
                         Select Case tendertype
@@ -2263,11 +2301,13 @@ Public Class mainmenu
                     Next
                 Else
                     Dim zz As String = getSystemDate.ToString("yyyy-MM-dd")
+                    Dim zzz As String = getSystemDate()
                     cmdd.Parameters.Clear()
-                    cmdd.CommandText = "INSERT INTO tbltransaction2 (ornum, ordernum, transdate, cashier, tendertype, servicetype, delcharge, subtotal, disctype, less, vatsales, vat, amtdue, tenderamt, change, refund, comment, remarks, customer, tinnum, tablenum, pax, createdby, datecreated, datemodified, status, status2, area, gctotal, typez, discamt) VALUES ('000',@ordernum,@transdate,@cashier,@tendertype,@servicetype,@delcharge,@subtotal,@disctype,@less,@vatsales,@vat,@amtdue,@tenderamt,@change,@refund,@comment,@remarks,@customer,@tinum,0,0,@createdby,(SELECT GETDATE()),(SELECT GETDATE()),1,'Unpaid','Sales',@gctotal,@type,@discamt);"
+                    cmdd.CommandText = "INSERT INTO tbltransaction2 (ornum, ordernum, transdate, cashier, tendertype, servicetype, delcharge, subtotal, disctype, less, vatsales, vat, amtdue, tenderamt, change, refund, comment, remarks, customer, tinnum, tablenum, pax, createdby, datecreated, datemodified, status, status2, area, gctotal, typez, discamt) VALUES ('000',@ordernum,@transdate,@cashier,@tendertype,@servicetype,@delcharge,@subtotal,@disctype,@less,@vatsales,@vat,@amtdue,@tenderamt,@change,@refund,@comment,@remarks,@customer,@tinum,0,0,@createdby,@zz,@zz,1,'Unpaid','Sales',@gctotal,@type,@discamt);"
                     cmdd.Parameters.AddWithValue("@ordernum", lblordernumber.Text)
                     cmdd.Parameters.AddWithValue("@transdate", zz)
-                    cmdd.Parameters.AddWithValue("@cashier", login.username)
+                    cmdd.Parameters.AddWithValue("@zz", zzz)
+                    cmdd.Parameters.AddWithValue("@cashier", login2.username)
                     cmdd.Parameters.AddWithValue("@tendertype", tendertype)
                     cmdd.Parameters.AddWithValue("@servicetype", servicetype)
                     cmdd.Parameters.AddWithValue("@delcharge", 0)
@@ -2284,14 +2324,14 @@ Public Class mainmenu
                     cmdd.Parameters.AddWithValue("@remarks", "")
                     cmdd.Parameters.AddWithValue("@customer", txtname.Text)
                     cmdd.Parameters.AddWithValue("@tinum", txttin.Text)
-                    cmdd.Parameters.AddWithValue("@createdby", login.username)
+                    cmdd.Parameters.AddWithValue("@createdby", login2.username)
                     cmdd.Parameters.AddWithValue("@gctotal", CDbl(txtgc.Text))
                     cmdd.Parameters.AddWithValue("@type", pos_dialog.ans)
                     cmdd.Parameters.AddWithValue("@discamt", CDbl(txtdiscamt.Text))
                     cmdd.ExecuteNonQuery()
                     If cmbdis.Text <> "" Then
                         cmdd.Parameters.Clear()
-                        cmdd.CommandText = "INSERT INTO tblsenior (transnum,idno,name,disctype,datedisc,status) VALUES (@transnum,@idno,@name,@disctype,(SELECT GETDATE()),3)"
+                        cmdd.CommandText = "INSERT INTO tblsenior (transnum,idno,name,disctype,datedisc,status) VALUES (@transnum,@idno,@name,@disctype,@zz,3)"
                         cmdd.Parameters.AddWithValue("@transnum", lblordernumber.Text)
                         cmdd.Parameters.AddWithValue("@idno", senior.txtidno.Text)
                         cmdd.Parameters.AddWithValue("@name", senior.txtname.Text)
@@ -2302,7 +2342,7 @@ Public Class mainmenu
                     For index As Integer = 0 To grd.Rows.Count - 1
                         Dim dscntprice As Double = CDbl(grd.Rows(index).Cells("price").Value - ((grd.Rows(index).Cells("discountpercent").Value / 100) * grd.Rows(index).Cells("price").Value))
                         Dim ifree As Double = If(CBool(grd.Rows(index).Cells("free").Value) = True, 1, 0)
-                        cmdd.CommandText = "Insert into tblorder2 (ordernum, category, itemname, qty, price, totalprice, dscnt, free, request, status, discprice, disctrans,area,gc,less,deliver,datecreated,pricebefore,discamt)values('" & lblordernumber.Text & "','" & grd.Rows(index).Cells("cat").Value & "','" & grd.Rows(index).Cells("description").Value & "','" & CDbl(grd.Rows(index).Cells("quantity").Value) & "','" & CDbl(grd.Rows(index).Cells("price").Value) & "','" & CDbl(grd.Rows(index).Cells("amtdue").Value) & "','" & CDbl(grd.Rows(index).Cells("discountpercent").Value) & "','" & ifree & "','" & grd.Rows(index).Cells("request").Value & "',1,'" & dscntprice & "','" & "0" & "','" & "Sales" & "','" & "0" & "','" & "0" & "','" & "0" & "',(SELECT GETDATE()), '" & CDbl(grd.Rows(index).Cells("pricebefore").Value) & "','" & CDbl(grd.Rows(index).Cells("discamt").Value) & "')"
+                        cmdd.CommandText = "Insert into tblorder2 (ordernum, category, itemname, qty, price, totalprice, dscnt, free, request, status, discprice, disctrans,area,gc,less,deliver,datecreated,pricebefore,discamt)values('" & lblordernumber.Text & "','" & grd.Rows(index).Cells("cat").Value & "','" & grd.Rows(index).Cells("description").Value & "','" & CDbl(grd.Rows(index).Cells("quantity").Value) & "','" & CDbl(grd.Rows(index).Cells("price").Value) & "','" & CDbl(grd.Rows(index).Cells("amtdue").Value) & "','" & CDbl(grd.Rows(index).Cells("discountpercent").Value) & "','" & ifree & "','" & grd.Rows(index).Cells("request").Value & "',1,'" & dscntprice & "','" & "0" & "','" & "Sales" & "','" & "0" & "','" & "0" & "','" & "0" & "','" & zzz & "', '" & CDbl(grd.Rows(index).Cells("pricebefore").Value) & "','" & CDbl(grd.Rows(index).Cells("discamt").Value) & "')"
                         cmdd.ExecuteNonQuery()
                     Next
 
@@ -2311,6 +2351,7 @@ Public Class mainmenu
                     Dim words() As String = txtadvancepayment.Text.Split(New Char() {","c})
                     Dim word As String
                     For Each word In words
+                        Dim zzz As String = getSystemDate()
                         If Not String.IsNullOrEmpty(word) Then
                             Dim amt As Double = 0.00, ap_id As Integer = 0
                             cmdd.CommandText = "SELECT ap_id,amount,type FROM tbladvancepayment WHERE apnum='" & word & "';"
@@ -2323,13 +2364,14 @@ Public Class mainmenu
                             dr.Close()
 
                             If tayp = "Deposit" Then
-                                cmdd.CommandText = "INSERT INTO tblreturns (ap_id,returnum,transnum,status,byy,date) VALUES (@id,@returnum,@transnum,@status,@byy,(SELECT GETDATE()));"
+                                cmdd.CommandText = "INSERT INTO tblreturns (ap_id,returnum,transnum,status,byy,date) VALUES (@id,@returnum,@transnum,@status,@byy,@zz);"
                                 cmdd.Parameters.Clear()
                                 cmdd.Parameters.AddWithValue("@id", ap_id)
                                 cmdd.Parameters.AddWithValue("@returnum", returnnum)
                                 cmdd.Parameters.AddWithValue("@transnum", lbltrnum.Text)
                                 cmdd.Parameters.AddWithValue("@status", "Active")
-                                cmdd.Parameters.AddWithValue("@byy", login.username)
+                                cmdd.Parameters.AddWithValue("@byy", login2.username)
+                                cmdd.Parameters.AddWithValue("@zz", zzz)
                                 cmdd.ExecuteNonQuery()
                                 'getReturnNum()
 
@@ -2339,15 +2381,16 @@ Public Class mainmenu
                                 cmdd.Parameters.AddWithValue("@trans", lbltrnum.Text)
                                 cmdd.ExecuteNonQuery()
                             ElseIf tayp = "Advance Payment" Then
+                                Dim zz As String = getSystemDate.ToString("MM/dd/yyyy")
                                 cmdd.Parameters.Clear()
-                                cmdd.CommandText = "Insert into tbltransaction (ornum, transnum, transdate, cashier, tendertype, servicetype, delcharge, subtotal, disctype, less, vatsales, vat, amtdue, gctotal, tenderamt, change, refund, comment, remarks, customer, tinnum, tablenum, pax, datecreated, datemodified, status,area,invnum,partialamt,typenum,sap_number,sap_remarks,typez,salesname) values ('" & txtor.Text & "', '" & lbltrnum.Text & "',(select cast(getdate() as date)),'" & login.username & "', '" & "Advance Payment" & "', '" & "Advance Payment" & "', '" & CDbl(txtdeliver.Text) & "', '" & CDbl(txtsub.Text) & "', '" & cmbdis.SelectedItem & "', '" & CDbl(txtless.Text) & "', '" & CDbl(txtvatsales.Text) & "', '" & CDbl(txtvatamt.Text) & "', '" & IIf(CDbl(txtsub.Text) < CDbl(amt), CDbl(txtsub.Text), amt) & "', '" & CDbl(txtgc.Text) & "', '" & CDbl(txttendered.Text) & "', '" & CDbl(txtchange.Text) & "', '0', '', '', '" & txtname.Text & "', '" & "N/A" & "', '" & "0" & "', '" & "0" & "',(SELECT GETDATE()),(SELECT GETDATE()), '1','" & "Sales" & "','" & inv_id & "','0','','','','" & sales_ans & "',(SELECT cashier FROM tbltransaction2 WHERE CAST(datecreated AS date)=(select cast(getdate() as date)) AND ordernum='" & ornum & "'))"
+                                cmdd.CommandText = "Insert into tbltransaction (ornum, transnum, transdate, cashier, tendertype, servicetype, delcharge, subtotal, disctype, less, vatsales, vat, amtdue, gctotal, tenderamt, change, refund, comment, remarks, customer, tinnum, tablenum, pax, datecreated, datemodified, status,area,invnum,partialamt,typenum,sap_number,sap_remarks,typez,salesname) values ('" & txtor.Text & "', '" & lbltrnum.Text & "',(select cast(getdate() as date)),'" & login2.username & "', '" & "Advance Payment" & "', '" & "Advance Payment" & "', '" & CDbl(txtdeliver.Text) & "', '" & CDbl(txtsub.Text) & "', '" & cmbdis.SelectedItem & "', '" & CDbl(txtless.Text) & "', '" & CDbl(txtvatsales.Text) & "', '" & CDbl(txtvatamt.Text) & "', '" & IIf(CDbl(txtsub.Text) < CDbl(amt), CDbl(txtsub.Text), amt) & "', '" & CDbl(txtgc.Text) & "', '" & CDbl(txttendered.Text) & "', '" & CDbl(txtchange.Text) & "', '0', '', '', '" & txtname.Text & "', '" & "N/A" & "', '" & "0" & "', '" & "0" & "','" & zzz & "','" & zzz & "', '1','" & "Sales" & "','" & inv_id & "','0','','','','" & sales_ans & "',(SELECT cashier FROM tbltransaction2 WHERE CAST(datecreated AS date)='" & zz & "' And ordernum='" & ornum & "'))"
                                 cmdd.ExecuteNonQuery()
                                 If CDbl(txtboxamountpayable.Text) < amt Then
                                     resultNo = amt - CDbl(txtsub.Text)
                                 End If
 
                                 If apdep_ans = "Yes" Then
-                                    cmdd.CommandText = "Insert into tbltransaction (ornum, transnum, transdate, cashier, tendertype, servicetype, delcharge, subtotal, disctype, less, vatsales, vat, amtdue, gctotal, tenderamt, change, refund, comment, remarks, customer, tinnum, tablenum, pax, datecreated, datemodified, status,area,invnum,partialamt,typez,salesname) values ('" & "0" & "', '" & lbltrnum.Text & "',(select cast(getdate() as date)),'" & login.cashier & "', '" & "Cash Out" & "', '" & "Cash Out" & "', '" & "0" & "', '" & "0" & "', '" & "N/A" & "', '" & "0" & "', '" & "0" & "', '" & "0" & "', '" & resultNo & "', '" & "0" & "', '" & "0" & "', '" & "0" & "', '0', '', '', '" & txtname.Text & "', '" & "0" & "', '" & "0" & "', '" & "0" & "',(SELECT GETDATE()),(SELECT GETDATE()), '1','" & "Sales" & "','" & inv_id & "','0','" & sales_ans & "',(SELECT cashier FROM tbltransaction2 WHERE CAST(datecreated AS date)=(select cast(getdate() as date)) AND ordernum='" & ornum & "'))"
+                                    cmdd.CommandText = "Insert into tbltransaction (ornum, transnum, transdate, cashier, tendertype, servicetype, delcharge, subtotal, disctype, less, vatsales, vat, amtdue, gctotal, tenderamt, change, refund, comment, remarks, customer, tinnum, tablenum, pax, datecreated, datemodified, status,area,invnum,partialamt,typez,salesname) values ('" & "0" & "', '" & lbltrnum.Text & "',(select cast(getdate() as date)),'" & login2.username & "', '" & "Cash Out" & "', '" & "Cash Out" & "', '" & "0" & "', '" & "0" & "', '" & "N/A" & "', '" & "0" & "', '" & "0" & "', '" & "0" & "', '" & resultNo & "', '" & "0" & "', '" & "0" & "', '" & "0" & "', '0', '', '', '" & txtname.Text & "', '" & "0" & "', '" & "0" & "', '" & "0" & "','" & zzz & "','" & zzz & "', '1','" & "Sales" & "','" & inv_id & "','0','" & sales_ans & "',(SELECT cashier FROM tbltransaction2 WHERE CAST(datecreated AS date)=(select cast(getdate() as date)) AND ordernum='" & ornum & "'))"
                                     cmdd.ExecuteNonQuery()
 
                                     cmdd.Parameters.Clear()
@@ -2384,7 +2427,7 @@ Public Class mainmenu
                 End If
                 transaction.Commit()
             End Using
-            If login.wrkgrp = "Sales" Or login.wrkgrp = "Manager" Then
+            If login2.wrkgrp = "Sales" Or login2.wrkgrp = "Manager" Or login2.wrkgrp = "LC Accounting" Then
 
                 Dim frm As New form_printorder()
                 frm.lblordernum.Text = ordernum
@@ -2400,7 +2443,7 @@ Public Class mainmenu
                 loadordernum()
             End If
 
-            If login.wrkgrp = "Cashier" Then
+            If login2.wrkgrp = "Cashier" Then
                 defaultload()
                 txtname.ReadOnly = True
                 txtname.BackColor = Color.WhiteSmoke
@@ -2468,7 +2511,7 @@ Public Class mainmenu
                 confirm.ShowDialog()
                 conn.Open()
                 cmd = New SqlCommand("SELECT systemid FROM tblusers WHERE username=@username;", conn)
-                cmd.Parameters.AddWithValue("@username", login.username)
+                cmd.Parameters.AddWithValue("@username", login2.username)
                 dr = cmd.ExecuteReader
                 If dr.Read Then
                     systemid = CInt(dr("systemid"))
@@ -2485,7 +2528,7 @@ Public Class mainmenu
                     conn.Close()
                     MessageBox.Show("Done", "", MessageBoxButtons.OK, MessageBoxIcon.Information)
                     Me.Dispose()
-                    login.Show()
+                    login2.Show()
                 End If
             End If
         Catch ex As Exception
@@ -2528,12 +2571,7 @@ Public Class mainmenu
 
     Public Sub loadtransnum()
         Try
-            Dim area As String = ""
-            If login.wrkgrp = "Cashier" Or login.wrkgrp = "Sales" Then
-                area = "Sales"
-            Else
-                area = login.wrkgrp
-            End If
+            Dim area As String = "Sales"
             Dim selectcount_result As Integer = 0
             Dim branchcode As String = "", temp As String = "0", area_format As String = ""
             conn.Open()
@@ -2574,13 +2612,7 @@ Public Class mainmenu
             Dim selectcount_result As Integer = 0
             Dim temp As String = "0", area_format As String = "", branchcode As String = ""
 
-            Dim area As String = ""
-            If login.wrkgrp = "Production" Or login.wrkgrp = "Sales" Or login.wrkgrp = "Manager" Then
-                area = "Sales"
-            Else
-                area = login.wrkgrp
-            End If
-
+            Dim area As String = "Sales"
             Dim getserverDate As String = getSystemDate.ToString("MM/dd/yyyy")
 
             conn.Open()
@@ -2628,7 +2660,7 @@ Public Class mainmenu
             txtdeliver.Text = "0.00"
             computetotal()
             lblbranch.Text = ""
-            If login.neym = "Sales" Then
+            If login2.wrkgrp = "Sales" Then
                 txtname.Text = "CASH"
                 txtname.BackColor = Color.WhiteSmoke
                 txtname.ReadOnly = True
@@ -2641,7 +2673,7 @@ Public Class mainmenu
         txtdeliver.Text = "0.00"
         computetotal()
         lblbranch.Text = ""
-        If login.neym = "Sales" Then
+        If login2.wrkgrp = "Sales" Then
             txtname.Text = "CASH"
             txtname.BackColor = Color.WhiteSmoke
             txtname.ReadOnly = True
@@ -2716,7 +2748,7 @@ Public Class mainmenu
         rbtake.Checked = True
         txtor.Text = "0000"
         txtboxamountpayable.Text = "0.00"
-        If login.neym = "Sales" Then
+        If login2.wrkgrp = "Sales" Then
             txtname.Text = "CASH"
         End If
         txttin.Text = "N/A"
@@ -2761,7 +2793,7 @@ Public Class mainmenu
         Try
             Dim logid As Integer = 0, zz As String = getSystemDate.ToString("MM/dd/yyyy"), aa As String = getSystemDate.ToString("HH:mm")
 
-            sql = "Select * from tbllogin where datelogin='" & zz & "' and username='" & login.cashier & "'"
+            sql = "Select * from tbllogin where datelogin='" & zz & "' and username='" & login2.wrkgrp & "'"
             conn.Open()
             cmd = New SqlCommand(sql, conn)
             dr = cmd.ExecuteReader
@@ -2889,7 +2921,7 @@ Public Class mainmenu
             Dim result As Boolean = False
             conn.Open()
             cmd = New SqlCommand("SELECT userid FROM tblusers WHERE username=@username AND postype=@postype;", conn)
-            cmd.Parameters.AddWithValue("@username", login.username)
+            cmd.Parameters.AddWithValue("@username", login2.username)
             cmd.Parameters.AddWithValue("@postype", "Coffee Shop")
             dr = cmd.ExecuteReader
             If dr.Read Then
@@ -2936,7 +2968,7 @@ Public Class mainmenu
 
             conn.Open()
             cmd = New SqlCommand("SELECT userid FROM tblusers WHERE username=@username AND postype=@postype;", conn)
-            cmd.Parameters.AddWithValue("@username", login.username)
+            cmd.Parameters.AddWithValue("@username", login2.username)
             cmd.Parameters.AddWithValue("@postype", "Retail")
             dr = cmd.ExecuteReader
             If dr.Read Then
@@ -2983,7 +3015,7 @@ Public Class mainmenu
             Dim result As Boolean = False
             conn.Open()
             cmd = New SqlCommand("SELECT userid FROM tblusers WHERE username=@username AND postype=@postype;", conn)
-            cmd.Parameters.AddWithValue("@username", login.username)
+            cmd.Parameters.AddWithValue("@username", login2.username)
             cmd.Parameters.AddWithValue("@postype", "Wholesale")
             dr = cmd.ExecuteReader
             If dr.Read Then
@@ -3059,6 +3091,10 @@ Public Class mainmenu
             toggle_max = True
             Me.WindowState = FormWindowState.Normal
         End If
+    End Sub
+
+    Private Sub dtdate_ValueChanged(sender As Object, e As EventArgs) Handles dtdate.ValueChanged
+        getID()
     End Sub
 
     Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
@@ -3232,7 +3268,7 @@ Public Class mainmenu
                 conn.Close()
 
                 'insert info there
-                If login.wrkgrp <> "Cashier" And cmbdis.SelectedItem <> "Ar Discount Pullout" Then
+                If login2.wrkgrp <> "Cashier" And cmbdis.SelectedItem <> "Ar Discount Pullout" Then
                     senior.ShowDialog()
                 End If
 

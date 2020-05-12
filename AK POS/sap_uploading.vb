@@ -116,7 +116,8 @@ Public Class sap_uploading
             dt1.Columns.Add("CardCode")
             dt1.Columns.Add("CardName")
             dt1.Columns.Add("Total Amount")
-            dt1.Rows.Add("DocNum", "LineNum", "ItemCode", "ItemDescription", "Quantity", "Price", "WhsCode", "AcctCode", "CardCode", "CardName", "")
+            dt1.Columns.Add("Remarks")
+            dt1.Rows.Add("DocNum", "LineNum", "ItemCode", "ItemDescription", "Quantity", "Price", "WhsCode", "AcctCode", "CardCode", "CardName", "", "")
 
             Dim dataCs As New DataTable()
             dataCs.Columns.Add("itemcode")
@@ -144,8 +145,7 @@ Public Class sap_uploading
                         dbtype = "cash_free"
                 End Select
 
-                cmd = New SqlCommand("select a.description, sum(quantity)-isnull(x." & dbtype & ",0)[sold],ISNULL(x.cash_free,0)[cash_free],ISNULL(x.ar_charged_free,0)[ar_charged_free],ISNULL(x.ar_sales_free,0)[ar_sales_free],i3.itemcode,i3.price,x.ar_sales_free2,x.ar_charged_free2 from tblars2 a left join tblars1 b on a.transnum=b.transnum LEFT JOIN tblitems i3 ON a.description = i3.itemname outer apply (SELECT a1.itemname,ISNULL(SUM(CASE WHEN a2.tendertype = 'CASH' THEN a1.qty END),0)[cash_free],ISNULL(SUM(CASE WHEN a2.tendertype = 'A.R Sales'  AND a2.customer='" & IIf(r0w("CardName") = "A1 Main Cash Sales", "CASH", r0w("CardName")) & "' THEN a1.qty END),0)[ar_sales_free],ISNULL(SUM(CASE WHEN a2.tendertype = 'A.R Charge' AND a2.customer='" & IIf(r0w("CardName") = "A1 Main Cash Sales", "CASH", r0w("CardName")) & "' THEN a1.qty END),0)[ar_charged_free],ISNULL(SUM(CASE WHEN a2.tendertype = 'A.R Charge'  THEN a1.qty END),0)[ar_charged_free2],ISNULL(SUM(CASE WHEN a2.tendertype = 'A.R Sales'  THEN a1.qty END),0)[ar_sales_free2]  FROM tblorder a1 LEFT JOIN tbltransaction a2 on a1.transnum=a2.transnum WHERE a.description = a1.itemname AND a1.free = 1 AND CAST(a2.datecreated AS date)='" & datee.Text & "' AND a2.status=1 GROUP BY a1.itemname)x where cast(b.date_created As Date) ='" & datee.Text & "' AND a.name='" & IIf(r0w("CardName") = "A1 Main Cash Sales", "CASH", r0w("CardName")) & "' GROUP BY a.description ,x.ar_charged_free, x.ar_sales_free,x.cash_free,i3.itemcode,i3.price,x.ar_sales_free2,x.ar_charged_free2", con)
-                'cmd.Parameters.AddWithValue("@name", "CASH")
+                cmd = New SqlCommand("select a.description, sum(quantity)-isnull(x." & dbtype & ",0)[sold],ISNULL(x.cash_free,0)[cash_free],ISNULL(x.ar_charged_free,0)[ar_charged_free],ISNULL(x.ar_sales_free,0)[ar_sales_free],i3.itemcode,i3.price,x.ar_sales_free2,x.ar_charged_free2,b.remarks from tblars2 a left join tblars1 b on a.transnum=b.transnum LEFT JOIN tblitems i3 ON a.description = i3.itemname outer apply (SELECT a1.itemname,ISNULL(SUM(CASE WHEN a2.tendertype = 'CASH' THEN a1.qty END),0)[cash_free],ISNULL(SUM(CASE WHEN a2.tendertype = 'A.R Sales'  AND a2.customer='" & IIf(r0w("CardName") = "A1 Main Cash Sales", "CASH", r0w("CardName")) & "' THEN a1.qty END),0)[ar_sales_free],ISNULL(SUM(CASE WHEN a2.tendertype = 'A.R Charge' AND a2.customer='" & IIf(r0w("CardName") = "A1 Main Cash Sales", "CASH", r0w("CardName")) & "' THEN a1.qty END),0)[ar_charged_free],ISNULL(SUM(CASE WHEN a2.tendertype = 'A.R Charge'  THEN a1.qty END),0)[ar_charged_free2],ISNULL(SUM(CASE WHEN a2.tendertype = 'A.R Sales'  THEN a1.qty END),0)[ar_sales_free2]  FROM tblorder a1 LEFT JOIN tbltransaction a2 on a1.transnum=a2.transnum WHERE a.description = a1.itemname AND a1.free = 1 AND CAST(a2.datecreated AS date)='" & datee.Text & "' AND a2.status=1 GROUP BY a1.itemname)x where cast(b.date_created As Date) ='" & datee.Text & "' AND a.name='" & IIf(r0w("CardName") = "A1 Main Cash Sales", "CASH", r0w("CardName")) & "' GROUP BY a.description ,x.ar_charged_free, x.ar_sales_free,x.cash_free,i3.itemcode,i3.price,x.ar_sales_free2,x.ar_charged_free2,b.remarks", con)
                 Dim zz As New DataTable()
                 adptr.SelectCommand = cmd
                 adptr.Fill(zz)
@@ -167,7 +167,7 @@ Public Class sap_uploading
                         dataCs.Rows.Add(row("itemcode"), row("description"), row("price"), cs_quantity)
                     End If
                     If CDbl(row("sold")) > 0 Then
-                        dt1.Rows.Add(r0w("DocNum"), "LineNum", row("itemcode"), row("description"), row("sold"), row("price"), gr, sales, r0w("CardCode"), r0w("CardName"), (CDbl(row("sold")) * CDbl(row("price"))))
+                        dt1.Rows.Add(r0w("DocNum"), "LineNum", row("itemcode"), row("description"), row("sold"), row("price"), gr, sales, r0w("CardCode"), r0w("CardName"), (CDbl(row("sold")) * CDbl(row("price"))), row("remarks"))
                     End If
                 Next
                 If CStr(r0w("CardName")).ToLower = "A1 Main Coffee Shop".ToLower Then
@@ -284,14 +284,14 @@ Public Class sap_uploading
 
                 With shWorkSheet1
                     .Range("A1", misValue).EntireRow.Font.Bold = True
-                    .Range("A1:K1").EntireRow.WrapText = True
+                    .Range("A1:L1").EntireRow.WrapText = True
 
-                    .Range("A1:K1").Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Orange)
-                    .Range("A1:K1").Font.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.White)
+                    .Range("A1:L1").Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Orange)
+                    .Range("A1:L1").Font.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.White)
 
-                    .Range("A1:K" & dt1.Rows.Count + 1).HorizontalAlignment = -4108
-                    .Range("A1:K" & dt1.Rows.Count + 1).VerticalAlignment = -4108
-                    .Range("A1:K1").Font.Size = 12
+                    .Range("A1:L" & dt1.Rows.Count + 1).HorizontalAlignment = -4108
+                    .Range("A1:L" & dt1.Rows.Count + 1).VerticalAlignment = -4108
+                    .Range("A1:L1").Font.Size = 12
 
 
                     .Range("A2:A" & dt1.Rows.Count + 1).RowHeight = 40
@@ -305,6 +305,7 @@ Public Class sap_uploading
                     .Range("A2:I" & dt1.Rows.Count + 1).RowHeight = 40
                     .Range("A2:J" & dt1.Rows.Count + 1).RowHeight = 40
                     .Range("A2:K" & dt1.Rows.Count + 1).RowHeight = 40
+                    .Range("A2:L" & dt1.Rows.Count + 1).RowHeight = 40
 
                     .Range("A2:A" & dt1.Rows.Count + 1).ColumnWidth = 10
                     .Range("A2:B" & dt1.Rows.Count + 1).ColumnWidth = 20
@@ -317,6 +318,7 @@ Public Class sap_uploading
                     .Range("A2:I" & dt1.Rows.Count + 1).ColumnWidth = 20
                     .Range("A2:J" & dt1.Rows.Count + 1).ColumnWidth = 20
                     .Range("A2:K" & dt1.Rows.Count + 1).ColumnWidth = 20
+                    .Range("A2:L" & dt1.Rows.Count + 1).ColumnWidth = 20
                 End With
 
                 shWorkSheet1 = bkWorkBook.Sheets(2)
@@ -339,7 +341,7 @@ Public Class sap_uploading
 
                 objExcel = Nothing
                 Me.Cursor = Cursors.Default
-                MessageBox.Show("Saved" & Environment.NewLine & "Path: " & path, "", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                MessageBox.Show("Saved" & Environment.NewLine & "Path: " & path, "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Information)
             End If
         Catch ex As Exception
             MessageBox.Show(ex.ToString)
@@ -509,7 +511,7 @@ Public Class sap_uploading
 
                 objExcel = Nothing
                 Me.Cursor = Cursors.Default
-                MessageBox.Show("Saved" & Environment.NewLine & "Path: " & path, "", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                MessageBox.Show("Saved" & Environment.NewLine & "Path: " & path, "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Information)
             End If
         Catch ex As Exception
             MessageBox.Show(ex.ToString)
@@ -687,7 +689,7 @@ Public Class sap_uploading
 
                 objExcel = Nothing
                 Me.Cursor = Cursors.Default
-                MessageBox.Show("Saved" & Environment.NewLine & "Path: " & path, "", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                MessageBox.Show("Saved" & Environment.NewLine & "Path: " & path, "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Information)
             End If
         Catch ex As Exception
             MessageBox.Show(ex.ToString)
@@ -794,7 +796,7 @@ Public Class sap_uploading
 
                 objExcel = Nothing
                 Me.Cursor = Cursors.Default
-                MessageBox.Show("Saved" & Environment.NewLine & "Path: " & path, "", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                MessageBox.Show("Saved" & Environment.NewLine & "Path: " & path, "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Information)
             End If
         Catch ex As Exception
             MessageBox.Show(ex.ToString)
@@ -888,12 +890,121 @@ Public Class sap_uploading
 
                 objExcel = Nothing
                 Me.Cursor = Cursors.Default
-                MessageBox.Show("Saved" & Environment.NewLine & "Path: " & path, "", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                MessageBox.Show("Saved" & Environment.NewLine & "Path: " & path, "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Information)
             End If
         Catch ex As Exception
             MessageBox.Show(ex.ToString)
         End Try
     End Sub
+
+    Public Sub actualendingbalance()
+        Try
+            Dim r1 As New Random(), r2 As New Random(), r3 As New Random()
+
+            SaveFileDialog1.Title = "Save As Excel File"
+            SaveFileDialog1.Filter = "Excel Document (*.xlsx) | *.xlsx"
+
+            SaveFileDialog1.FileName = datee.Value.ToString("MMddyyyy") & "_actualendbal"
+            If SaveFileDialog1.ShowDialog = Windows.Forms.DialogResult.OK Then
+                Me.Cursor = Cursors.WaitCursor
+                Dim objExcel As New Excel.Application
+                Dim bkWorkBook As Excel.Workbook
+                Dim shWorkSheet As Excel.Worksheet
+                Dim misValue As Object = System.Reflection.Missing.Value
+
+                objExcel = New Excel.Application
+                bkWorkBook = objExcel.Workbooks.Add
+                shWorkSheet = CType(bkWorkBook.ActiveSheet, Excel.Worksheet)
+
+
+                Dim dt As New DataTable()
+                dt.Columns.Add("ItemCode")
+                dt.Columns.Add("ItemName")
+                dt.Columns.Add("Quantity")
+                dt.Columns.Add("Price")
+                dt.Columns.Add("AccountCode")
+                dt.Columns.Add("WarehouseCode")
+
+
+                Dim acct As String = "", warehouse As String = ""
+
+                con.Open()
+                cmd = New SqlCommand("Select gr,branchcode FROM tblbranch WHERE main=1;", con)
+                rdr = cmd.ExecuteReader
+                If rdr.Read Then
+                    acct = CStr(rdr("gr"))
+                    warehouse = CStr(rdr("branchcode"))
+                End If
+                con.Close()
+
+                con.Open()
+                cmd = New SqlCommand("SELECT a.category,a.item_code,a.item_name,a.quantity,b.price FROM tblproduction a INNER JOIN tblitems b ON a.item_name = b.itemname WHERE CAST(date AS date)='" & datee.Text & "' AND type='Actual Ending Balance'", con)
+                rdr = cmd.ExecuteReader
+                While rdr.Read
+                    dt.Rows.Add(rdr("item_code"), rdr("item_name"), rdr("quantity"), rdr("price"), acct, warehouse)
+                End While
+                con.Close()
+
+                For i As Integer = 0 To dt.Columns.Count - 1
+                    shWorkSheet.Cells(1, i + 1) = dt.Columns(i).ToString
+                Next
+                For i As Integer = 0 To dt.Rows.Count - 1
+                    For j = 0 To dt.Columns.Count - 1
+                        shWorkSheet.Cells(i + 2, j + 1) = dt.Rows(i)(j).ToString
+                    Next
+                Next
+
+                With shWorkSheet
+                    .Range("A1", misValue).EntireRow.Font.Bold = True
+                    .Range("A1:F1").EntireRow.WrapText = True
+
+                    .Range("A1:F1").Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.DodgerBlue)
+                    .Range("A1:F1").Font.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.White)
+
+                    .Range("A1:F" & dt.Rows.Count + 1).HorizontalAlignment = -4108
+                    .Range("A1:F" & dt.Rows.Count + 1).VerticalAlignment = -4108
+                    .Range("A1:F1").Font.Size = 12
+
+
+                    .Range("A2:A" & dt.Rows.Count + 1).RowHeight = 40
+
+                    .Range("A2:B" & dt.Rows.Count + 1).RowHeight = 40
+                    .Range("A2:C" & dt.Rows.Count + 1).RowHeight = 40
+                    .Range("A2:D" & dt.Rows.Count + 1).RowHeight = 40
+                    .Range("A2:E" & dt.Rows.Count + 1).RowHeight = 40
+                    .Range("A2:F" & dt.Rows.Count + 1).RowHeight = 40
+
+                    .Range("A2:A" & dt.Rows.Count + 1).ColumnWidth = 10
+                    .Range("A2:B" & dt.Rows.Count + 1).ColumnWidth = 20
+                    .Range("A2:C" & dt.Rows.Count + 1).ColumnWidth = 20
+                    .Range("A2:D" & dt.Rows.Count + 1).ColumnWidth = 20
+                    .Range("A2:E" & dt.Rows.Count + 1).ColumnWidth = 15
+                    .Range("A2:F" & dt.Rows.Count + 1).ColumnWidth = 20
+                End With
+
+                shWorkSheet.Range("A1").Locked = False
+
+                shWorkSheet.Protect("atlantic")
+
+                objExcel.Visible = False
+                objExcel.Application.DisplayAlerts = False
+
+                objExcel.ActiveWorkbook.Password = "atlantic"
+
+                Dim path As String = IO.Path.GetDirectoryName(SaveFileDialog1.FileName)
+                objExcel.ActiveWorkbook.SaveAs(SaveFileDialog1.FileName.ToString())
+                objExcel.Quit()
+
+                objExcel = Nothing
+                Me.Cursor = Cursors.Default
+                MessageBox.Show("Saved" & Environment.NewLine & "Path: " & path, "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Information)
+
+            End If
+        Catch ex As Exception
+            MessageBox.Show(ex.ToString)
+        End Try
+    End Sub
+
     Private Sub btnok_Click(sender As Object, e As EventArgs) Handles btnok.Click
         If btnsap.ForeColor = Color.Black Then
             sap()
@@ -905,6 +1016,8 @@ Public Class sap_uploading
             coffee_shop()
         ElseIf btnpo.ForeColor = Color.Black Then
             po()
+        ElseIf btnactualendingbalance.ForeColor = Color.Black Then
+            actualendingbalance()
         End If
     End Sub
 
@@ -914,6 +1027,7 @@ Public Class sap_uploading
         btnconversion.ForeColor = Color.White
         btncs.ForeColor = Color.White
         btnpo.ForeColor = Color.White
+        btnactualendingbalance.ForeColor = Color.White
     End Sub
 
     Private Sub btnendingbal_Click(sender As Object, e As EventArgs) Handles btnendingbal.Click
@@ -922,6 +1036,7 @@ Public Class sap_uploading
         btnendingbal.ForeColor = Color.Black
         btncs.ForeColor = Color.White
         btnpo.ForeColor = Color.White
+        btnactualendingbalance.ForeColor = Color.White
     End Sub
 
     Private Sub btnconversion_Click(sender As Object, e As EventArgs) Handles btnconversion.Click
@@ -930,6 +1045,7 @@ Public Class sap_uploading
         btnendingbal.ForeColor = Color.White
         btncs.ForeColor = Color.White
         btnpo.ForeColor = Color.White
+        btnactualendingbalance.ForeColor = Color.White
     End Sub
 
     Private Sub btncs_Click(sender As Object, e As EventArgs) Handles btncs.Click
@@ -938,6 +1054,7 @@ Public Class sap_uploading
         btnendingbal.ForeColor = Color.White
         btncs.ForeColor = Color.Black
         btnpo.ForeColor = Color.White
+        btnactualendingbalance.ForeColor = Color.White
     End Sub
 
     Private Sub sap_uploading_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -950,6 +1067,7 @@ Public Class sap_uploading
         btnendingbal.ForeColor = Color.White
         btncs.ForeColor = Color.White
         btnpo.ForeColor = Color.Black
+        btnactualendingbalance.ForeColor = Color.White
     End Sub
 
     Private Sub lblclose_Click(sender As Object, e As EventArgs) Handles lblclose.Click
@@ -978,5 +1096,14 @@ Public Class sap_uploading
         If e.KeyCode = Keys.Escape Then
             Me.Close()
         End If
+    End Sub
+
+    Private Sub btnactualendingbalance_Click(sender As Object, e As EventArgs) Handles btnactualendingbalance.Click
+        btnsap.ForeColor = Color.White
+        btnconversion.ForeColor = Color.White
+        btnendingbal.ForeColor = Color.White
+        btncs.ForeColor = Color.White
+        btnpo.ForeColor = Color.White
+        btnactualendingbalance.ForeColor = Color.Black
     End Sub
 End Class

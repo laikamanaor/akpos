@@ -27,7 +27,7 @@ Public Class pos_dialog
             Dim result As String = ""
             con.Open()
             cmd = New SqlCommand("SELECT postype FROM tblusers WHERE username=@username;", con)
-            cmd.Parameters.AddWithValue("@username", login.username)
+            cmd.Parameters.AddWithValue("@username", login2.username)
             rdr = cmd.ExecuteReader
             If rdr.Read Then
                 result = rdr("postype")

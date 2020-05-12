@@ -564,7 +564,7 @@ Public Class received_item
             Dim status As String = "", date_from As New DateTime()
             con.Open()
             cmd = New SqlCommand("SELECT status,date FROM tblcutoff WHERE userid=(SELECT systemid FROM tblusers WHERE username=@username) ORDER BY cid DESC;", con)
-            cmd.Parameters.AddWithValue("@username", login.username)
+            cmd.Parameters.AddWithValue("@username", login2.username)
             rdr = cmd.ExecuteReader
             If rdr.Read Then
                 status = rdr("status")
@@ -719,7 +719,7 @@ Public Class received_item
                         End If
                         cmdd.Parameters.AddWithValue("@sap", sap_number)
                         cmdd.Parameters.AddWithValue("@remarks", remarks)
-                        cmdd.Parameters.AddWithValue("@processed_by", login.username)
+                        cmdd.Parameters.AddWithValue("@processed_by", login2.username)
                         cmdd.Parameters.AddWithValue("@type", typee)
                         cmdd.Parameters.AddWithValue("@area", lcacc)
                         cmdd.Parameters.AddWithValue("@status", "Completed")

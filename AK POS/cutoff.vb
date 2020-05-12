@@ -90,57 +90,30 @@ Public Class cutoff
                 End If
                 Dim a As String = MsgBox("Are you sure you want to cutoff?", MsgBoxStyle.Question + MsgBoxStyle.YesNo + MsgBoxStyle.DefaultButton2, "")
                 If a = vbYes Then
-                    If dgvusers.CurrentRow.Cells("workgroup").Value = "Sales" Then
+                    con.Open()
+                    cmd = New SqlCommand("SELECT tblcutoff.userid,tblusers.username FROM tblusers JOIN tblcutoff ON tblcutoff.userid = tblusers.systemid;", con)
+                    Dim adptr As New SqlDataAdapter()
+                    adptr.SelectCommand = cmd
+                    Dim dt As New DataTable()
+                    adptr.Fill(dt)
+                    con.Close()
+
+                    For Each r0w As DataRow In dt.Rows
+                        Dim cid As Integer = 0, date_created As New DateTime
                         con.Open()
-                        cmd = New SqlCommand("SELECT tblcutoff.userid,tblusers.username FROM tblusers JOIN tblcutoff ON tblcutoff.userid = tblusers.systemid WHERE workgroup='" & "Sales" & "' or workgroup='Cashier';", con)
-                        Dim adptr As New SqlDataAdapter()
-                        adptr.SelectCommand = cmd
-                        Dim dt As New DataTable()
-                        adptr.Fill(dt)
+                        cmd = New SqlCommand("SELECT date FROM tblcutoff WHERE userid='" & r0w("userid") & "' AND status='Active' ORDER BY userid DESC;", con)
+                        rdr = cmd.ExecuteReader
+                        If rdr.Read Then
+                            date_created = CDate(rdr("date"))
+                        End If
                         con.Close()
 
-                        For Each r0w As DataRow In dt.Rows
-                            Dim cid As Integer = 0
-                            con.Open()
-                            cmd = New SqlCommand("SELECT cid,userid FROM tblcutoff WHERE userid='" & r0w("userid") & "' AND status='Active' ORDER BY userid DESC;", con)
-                            rdr = cmd.ExecuteReader
-                            If rdr.Read Then
-                                cid = rdr("cid")
-                            End If
-                            con.Close()
-
-                            con.Open()
-                            cmd = New SqlCommand("UPDATE tblcutoff SET date_cutoff=(SELECT GETDATE()), status='In Active' WHERE cid=@id", con)
-                            cmd.Parameters.AddWithValue("@id", cid)
-                            cmd.ExecuteNonQuery()
-                            con.Close()
-                        Next
-                    Else
                         con.Open()
-                        cmd = New SqlCommand("SELECT tblcutoff.userid,tblusers.username FROM tblusers JOIN tblcutoff ON tblcutoff.userid = tblusers.systemid WHERE workgroup='" & dgvusers.CurrentRow.Cells("workgroup").Value & "';", con)
-                        Dim adptr2 As New SqlDataAdapter()
-                        adptr2.SelectCommand = cmd
-                        Dim dt2 As New DataTable()
-                        adptr2.Fill(dt2)
+                        cmd = New SqlCommand("UPDATE tblcutoff SET date_cutoff=(SELECT GETDATE()), status='In Active' WHERE CAST(date AS date)=@date", con)
+                        cmd.Parameters.AddWithValue("@date", date_created.ToString("MM/dd/yyyy"))
+                        cmd.ExecuteNonQuery()
                         con.Close()
-
-                        For Each r0w As DataRow In dt2.Rows
-                            Dim cid As Integer = 0
-                            con.Open()
-                            cmd = New SqlCommand("SELECT cid,userid FROM tblcutoff WHERE userid='" & r0w("userid") & "' AND status='Active' ORDER BY userid DESC;", con)
-                            rdr = cmd.ExecuteReader
-                            If rdr.Read Then
-                                cid = rdr("cid")
-                            End If
-                            con.Close()
-
-                            con.Open()
-                            cmd = New SqlCommand("UPDATE tblcutoff SET date_cutoff=(SELECT GETDATE()), status='In Active' WHERE cid=@id", con)
-                            cmd.Parameters.AddWithValue("@id", cid)
-                            cmd.ExecuteNonQuery()
-                            con.Close()
-                        Next
-                    End If
+                    Next
                     MessageBox.Show("Transaction Completed", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Information)
                     loadData()
                 End If

@@ -117,4 +117,46 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="btncatnxt.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABkAAAAZCAYAAADE6YVjAAAABGdBTUEAALGPC/xhBQAAAJ9JREFUSEtj
+        GAVUB9c1FBRuq8i6Qbm0ATfVZPbdUpX5AaS9oELUB/cUFcWBllwF4l9AiwKhwtQHw9aiK8PHojvK4mJ0
+        sei2irQM0JLbQAxK3p5QYeoDoAXmQPwPiD88lJMThApTD9DcJ8BiRhlo+EMg/nxLVdYOKkw9ALXg0agF
+        OMEdZRkVqAVfaGnBY5pZAALA5En7+oQuNeMogAAGBgDtwnOL3VTz4wAAAABJRU5ErkJggg==
+</value>
+  </data>
+  <data name="btncatprev.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABkAAAAZCAYAAADE6YVjAAAABGdBTUEAALGPC/xhBQAAAL1JREFUSEtj
+        GAV0AbdVZN2uKUrKQ7nUB7dUpb1vqcr8uK0isxcqRF1wU002AmjBHyC+ek9RURwqTD1wU00mEGj4L3pY
+        cGXoW3BHWVwMKkw9gGTBZVpZ4AU0/AcQ3wKypaHC1ANXtWWEgIZ/BOJ/QAvMoMLUBzT3CQzcUpW1A1ry
+        BYgf3lKTU4IKUx8gWwQsr5ShwtQHSBY9GiYWqUm5AC35RgcfybnCLLqjLKMCFaY+oHl9AgM0rxlHKmBg
+        AAD7BnN5gp48NwAAAABJRU5ErkJggg==
+</value>
+  </data>
+  <metadata name="item.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="quantity.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="price.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="discpercent.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="amtdue.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="free.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="pricebefore.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="discamt.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
 </root>

@@ -191,12 +191,6 @@ Partial Class mainmenu
         Me.txtname = New System.Windows.Forms.TextBox()
         Me.lbltrnum = New System.Windows.Forms.Label()
         Me.grd = New System.Windows.Forms.DataGridView()
-        Me.Panel29 = New System.Windows.Forms.Panel()
-        Me.lbldate = New System.Windows.Forms.Label()
-        Me.maximize = New System.Windows.Forms.PictureBox()
-        Me.lblclose = New System.Windows.Forms.Label()
-        Me.Label15 = New System.Windows.Forms.Label()
-        Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
         Me.description = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.quantity = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.price = New System.Windows.Forms.DataGridViewTextBoxColumn()
@@ -208,6 +202,15 @@ Partial Class mainmenu
         Me.cat = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.pricebefore = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.discamt = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Panel29 = New System.Windows.Forms.Panel()
+        Me.lbldate = New System.Windows.Forms.Label()
+        Me.maximize = New System.Windows.Forms.PictureBox()
+        Me.lblclose = New System.Windows.Forms.Label()
+        Me.Label15 = New System.Windows.Forms.Label()
+        Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
+        Me.paneldate = New System.Windows.Forms.Panel()
+        Me.Label16 = New System.Windows.Forms.Label()
+        Me.dtdate = New System.Windows.Forms.DateTimePicker()
         Me.Panel1.SuspendLayout()
         Me.Panel12.SuspendLayout()
         Me.Panel13.SuspendLayout()
@@ -229,6 +232,7 @@ Partial Class mainmenu
         CType(Me.grd, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel29.SuspendLayout()
         CType(Me.maximize, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.paneldate.SuspendLayout()
         Me.SuspendLayout()
         '
         'Panel1
@@ -2340,71 +2344,6 @@ Partial Class mainmenu
         Me.grd.Size = New System.Drawing.Size(721, 220)
         Me.grd.TabIndex = 1
         '
-        'Panel29
-        '
-        Me.Panel29.BackColor = System.Drawing.Color.FromArgb(CType(CType(218, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(28, Byte), Integer))
-        Me.Panel29.Controls.Add(Me.lbldate)
-        Me.Panel29.Controls.Add(Me.maximize)
-        Me.Panel29.Controls.Add(Me.lblclose)
-        Me.Panel29.Controls.Add(Me.Label15)
-        Me.Panel29.Dock = System.Windows.Forms.DockStyle.Top
-        Me.Panel29.Location = New System.Drawing.Point(0, 0)
-        Me.Panel29.Name = "Panel29"
-        Me.Panel29.Size = New System.Drawing.Size(1370, 36)
-        Me.Panel29.TabIndex = 2
-        '
-        'lbldate
-        '
-        Me.lbldate.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.lbldate.AutoSize = True
-        Me.lbldate.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lbldate.ForeColor = System.Drawing.Color.White
-        Me.lbldate.Location = New System.Drawing.Point(597, 11)
-        Me.lbldate.Name = "lbldate"
-        Me.lbldate.Size = New System.Drawing.Size(66, 15)
-        Me.lbldate.TabIndex = 3
-        Me.lbldate.Text = "11:00 PM"
-        '
-        'maximize
-        '
-        Me.maximize.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.maximize.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.maximize.Image = CType(resources.GetObject("maximize.Image"), System.Drawing.Image)
-        Me.maximize.Location = New System.Drawing.Point(1298, 5)
-        Me.maximize.Name = "maximize"
-        Me.maximize.Size = New System.Drawing.Size(36, 27)
-        Me.maximize.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
-        Me.maximize.TabIndex = 2
-        Me.maximize.TabStop = False
-        '
-        'lblclose
-        '
-        Me.lblclose.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.lblclose.AutoSize = True
-        Me.lblclose.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.lblclose.Font = New System.Drawing.Font("Arial Rounded MT Bold", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblclose.ForeColor = System.Drawing.Color.White
-        Me.lblclose.Location = New System.Drawing.Point(1343, 6)
-        Me.lblclose.Name = "lblclose"
-        Me.lblclose.Size = New System.Drawing.Size(23, 24)
-        Me.lblclose.TabIndex = 1
-        Me.lblclose.Text = "X"
-        '
-        'Label15
-        '
-        Me.Label15.AutoSize = True
-        Me.Label15.Font = New System.Drawing.Font("Arial Rounded MT Bold", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label15.ForeColor = System.Drawing.Color.White
-        Me.Label15.Location = New System.Drawing.Point(7, 6)
-        Me.Label15.Name = "Label15"
-        Me.Label15.Size = New System.Drawing.Size(211, 24)
-        Me.Label15.TabIndex = 0
-        Me.Label15.Text = "ATLANTIC BAKERY"
-        '
-        'Timer1
-        '
-        Me.Timer1.Enabled = True
-        '
         'description
         '
         Me.description.HeaderText = "Description"
@@ -2486,6 +2425,103 @@ Partial Class mainmenu
         Me.discamt.ReadOnly = True
         Me.discamt.Visible = False
         '
+        'Panel29
+        '
+        Me.Panel29.BackColor = System.Drawing.Color.FromArgb(CType(CType(218, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(28, Byte), Integer))
+        Me.Panel29.Controls.Add(Me.paneldate)
+        Me.Panel29.Controls.Add(Me.lbldate)
+        Me.Panel29.Controls.Add(Me.maximize)
+        Me.Panel29.Controls.Add(Me.lblclose)
+        Me.Panel29.Controls.Add(Me.Label15)
+        Me.Panel29.Dock = System.Windows.Forms.DockStyle.Top
+        Me.Panel29.Location = New System.Drawing.Point(0, 0)
+        Me.Panel29.Name = "Panel29"
+        Me.Panel29.Size = New System.Drawing.Size(1370, 36)
+        Me.Panel29.TabIndex = 2
+        '
+        'lbldate
+        '
+        Me.lbldate.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.lbldate.AutoSize = True
+        Me.lbldate.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lbldate.ForeColor = System.Drawing.Color.White
+        Me.lbldate.Location = New System.Drawing.Point(597, 11)
+        Me.lbldate.Name = "lbldate"
+        Me.lbldate.Size = New System.Drawing.Size(66, 15)
+        Me.lbldate.TabIndex = 3
+        Me.lbldate.Text = "11:00 PM"
+        '
+        'maximize
+        '
+        Me.maximize.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.maximize.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.maximize.Image = CType(resources.GetObject("maximize.Image"), System.Drawing.Image)
+        Me.maximize.Location = New System.Drawing.Point(1298, 5)
+        Me.maximize.Name = "maximize"
+        Me.maximize.Size = New System.Drawing.Size(36, 27)
+        Me.maximize.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.maximize.TabIndex = 2
+        Me.maximize.TabStop = False
+        '
+        'lblclose
+        '
+        Me.lblclose.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.lblclose.AutoSize = True
+        Me.lblclose.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.lblclose.Font = New System.Drawing.Font("Arial Rounded MT Bold", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblclose.ForeColor = System.Drawing.Color.White
+        Me.lblclose.Location = New System.Drawing.Point(1343, 6)
+        Me.lblclose.Name = "lblclose"
+        Me.lblclose.Size = New System.Drawing.Size(23, 24)
+        Me.lblclose.TabIndex = 1
+        Me.lblclose.Text = "X"
+        '
+        'Label15
+        '
+        Me.Label15.AutoSize = True
+        Me.Label15.Font = New System.Drawing.Font("Arial Rounded MT Bold", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label15.ForeColor = System.Drawing.Color.White
+        Me.Label15.Location = New System.Drawing.Point(7, 6)
+        Me.Label15.Name = "Label15"
+        Me.Label15.Size = New System.Drawing.Size(211, 24)
+        Me.Label15.TabIndex = 0
+        Me.Label15.Text = "ATLANTIC BAKERY"
+        '
+        'Timer1
+        '
+        Me.Timer1.Enabled = True
+        '
+        'paneldate
+        '
+        Me.paneldate.BackColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(192, Byte), Integer))
+        Me.paneldate.Controls.Add(Me.dtdate)
+        Me.paneldate.Controls.Add(Me.Label16)
+        Me.paneldate.Location = New System.Drawing.Point(224, 5)
+        Me.paneldate.Name = "paneldate"
+        Me.paneldate.Size = New System.Drawing.Size(189, 25)
+        Me.paneldate.TabIndex = 4
+        '
+        'Label16
+        '
+        Me.Label16.AutoSize = True
+        Me.Label16.Font = New System.Drawing.Font("Arial Rounded MT Bold", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label16.ForeColor = System.Drawing.Color.Black
+        Me.Label16.Location = New System.Drawing.Point(5, 4)
+        Me.Label16.Name = "Label16"
+        Me.Label16.Size = New System.Drawing.Size(47, 17)
+        Me.Label16.TabIndex = 5
+        Me.Label16.Text = "Date:"
+        '
+        'dtdate
+        '
+        Me.dtdate.CustomFormat = "MM/dd/yyyy"
+        Me.dtdate.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.dtdate.Format = System.Windows.Forms.DateTimePickerFormat.Custom
+        Me.dtdate.Location = New System.Drawing.Point(52, 1)
+        Me.dtdate.Name = "dtdate"
+        Me.dtdate.Size = New System.Drawing.Size(103, 23)
+        Me.dtdate.TabIndex = 6
+        '
         'mainmenu
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -2531,6 +2567,8 @@ Partial Class mainmenu
         Me.Panel29.ResumeLayout(False)
         Me.Panel29.PerformLayout()
         CType(Me.maximize, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.paneldate.ResumeLayout(False)
+        Me.paneldate.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -2715,4 +2753,7 @@ Partial Class mainmenu
     Friend WithEvents cat As DataGridViewTextBoxColumn
     Friend WithEvents pricebefore As DataGridViewTextBoxColumn
     Friend WithEvents discamt As DataGridViewTextBoxColumn
+    Friend WithEvents paneldate As Panel
+    Friend WithEvents Label16 As Label
+    Friend WithEvents dtdate As DateTimePicker
 End Class

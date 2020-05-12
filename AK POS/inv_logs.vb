@@ -1,7 +1,9 @@
 ﻿Imports System.Data.SqlClient
 Imports System.IO
+Imports AK_POS.connection_class
 Public Class inv_logs
-    Dim strconn As String = login.ss
+    Dim cc As New connection_class
+    Dim strconn As String = cc.conString
     Dim con As New SqlConnection(strconn)
     Dim cmd As SqlCommand
     Dim rdr As SqlDataReader

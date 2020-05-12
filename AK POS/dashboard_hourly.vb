@@ -1,8 +1,9 @@
 ﻿Imports System.Data.SqlClient
 Imports System.IO
+Imports AK_POS.connection_class
 Public Class dashboard_hourly
-
-    Dim strconn As String = login.ss
+    Dim cc As New connection_class
+    Dim strconn As String = cc.conString
     Dim con As New SqlConnection(strconn)
     Dim cmd As SqlCommand
     Dim rdr As SqlDataReader
@@ -101,13 +102,13 @@ Public Class dashboard_hourly
                 Dim result_arcash As Double = rdr("ar_cash") / rdr("total") * 100
                 Dim result_archarge As Double = rdr("ar_charge") / rdr("total") * 100
                 Dim result_arsales As Double = rdr("ar_sales") / rdr("total") * 100
-                chartar.Series("ar1").Points.AddXY("A.R Cash", Math.Round(result_arcash))
-                chartar.Series("ar1").Points.AddXY("A.R Charge", Math.Round(result_archarge))
-                chartar.Series("ar1").Points.AddXY("A.R Sales", Math.Round(result_arsales))
+                chartar.Series("ar1").Points.AddXY("A.R Cash (" & CDbl(rdr("ar_cash")).ToString("n2") & ")", Math.Round(result_arcash))
+                chartar.Series("ar1").Points.AddXY("A.R Charge (" & CDbl(rdr("ar_charge")).ToString("n2") & ")", Math.Round(result_archarge))
+                chartar.Series("ar1").Points.AddXY("A.R Sales (" & CDbl(rdr("ar_sales")).ToString("n2") & ")", Math.Round(result_arsales))
             End If
             con.Close()
             chartar.Series("ar1").Label = "#PERCENT"
-            chartar.Series("ar1").LegendText = "#VALX (#VAL)"
+            'chartar.Series("ar1").LegendText = "#VALX (#VAL)"
             chartar.ChartAreas(0).AxisX.Interval = 1
         Catch ex As Exception
             MessageBox.Show(ex.ToString)
@@ -116,14 +117,32 @@ Public Class dashboard_hourly
         End Try
     End Sub
 
-    Public Sub posType()
+    Public Sub postype()
         Try
-            chartar.Series.Clear()
-            chartar.Series.Add("ar1")
-            chartar.Titles.Clear()
-            chartar.Titles.Add("A.R")
-            chartar.Series("ar1").ChartType = DataVisualization.Charting.SeriesChartType.SplineArea
-            chartar.Series("ar1").IsValueShownAsLabel = True
+            chartpostype.Series.Clear()
+            chartpostype.Series.Add("postype")
+            chartpostype.Titles.Clear()
+            chartpostype.Titles.Add("POS Type")
+            chartpostype.Series("postype").ChartType = DataVisualization.Charting.SeriesChartType.SplineArea
+            chartpostype.Series("postype").IsValueShownAsLabel = True
+
+            Dim total_amtdue As Double = 0.00
+            con.Open()
+            cmd = New SqlCommand("SELECT ISNULL(COUNT(a.typez),0)  [retail],ISNULL(SUM(a.amtdue),0) [r_amtdue],x.wholesale,x.w_amtdue, xx.coffeeshop,xx.cs_amtdue,xxx.total,xxx.total_amtdue FROM tbltransaction a OUTER APPLY (SELECT ISNULL(COUNT(b.typez),0) [wholesale],ISNULL(SUM(b.amtdue),0) [w_amtdue] FROM tbltransaction b WHERE CAST(b.datecreated AS date)='" & dtdate.Text & "' AND b.status=1 AND b.typez='Wholesale')x OUTER APPLY (SELECT ISNULL(COUNT(c.typez),0) [coffeeshop],ISNULL(SUM(c.amtdue),0)[cs_amtdue] FROM tbltransaction c WHERE CAST(c.datecreated AS date)='" & dtdate.Text & "' AND c.status=1 AND c.typez='Coffee Shop')xx  OUTER APPLY (SELECT ISNULL(COUNT(c.typez),0)[total],ISNULL(SUM(c.amtdue),0)[total_amtdue] FROM tbltransaction c WHERE CAST(c.datecreated AS date)='05/11/2020' AND c.status=1 AND c.typez IN('Retail','Wholesale','Coffee Shop'))xxx WHERE CAST(a.datecreated AS date)='" & dtdate.Text & "' AND a.status=1 AND a.typez='Retail' GROUP BY x.wholesale,xx.coffeeshop,xxx.total,x.w_amtdue,xx.cs_amtdue,xxx.total_amtdue", con)
+            rdr = cmd.ExecuteReader
+            If rdr.Read Then
+                Dim result_retail As Double = rdr("retail") / rdr("total") * 100
+                Dim result_wholesale As Double = rdr("wholesale") / rdr("total") * 100
+                Dim result_coffeeshop As Double = rdr("coffeeshop") / rdr("total") * 100
+                chartpostype.Series("postype").Points.AddXY("Retail (" & rdr("r_amtdue") & ")", Math.Round(result_retail))
+                chartpostype.Series("postype").Points.AddXY("Wholesale (" & rdr("w_amtdue") & ")", Math.Round(result_wholesale))
+                chartpostype.Series("postype").Points.AddXY("Coffee Shop (" & rdr("cs_amtdue") & ")", Math.Round(result_coffeeshop))
+                total_amtdue = CDbl(rdr("total_amtdue"))
+            End If
+            con.Close()
+            chartpostype.Series("postype").Label = "#PERCENT"
+            chartpostype.Series("postype").LegendText = "POS Type (" & total_amtdue.ToString("n2") & ")"
+            chartpostype.ChartAreas(0).AxisX.Interval = 1
         Catch ex As Exception
             MessageBox.Show(ex.ToString)
         Finally
@@ -135,12 +154,14 @@ Public Class dashboard_hourly
         items()
         sales()
         ars()
+        postype()
     End Sub
 
     Private Sub dtdate_ValueChanged(sender As Object, e As EventArgs) Handles dtdate.ValueChanged
         items()
         sales()
         ars()
+        postype()
     End Sub
 
     Private Sub dashboard_hourly_Shown(sender As Object, e As EventArgs) Handles MyBase.Shown

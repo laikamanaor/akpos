@@ -35,8 +35,8 @@ Public Class transfer
     Private Sub transfer_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load, rbranches.CheckedChanged, rblakus.CheckedChanged
         dtdate.Text = getSystemDate().ToString("MM/dd/yyyy")
         dtdate.MaxDate = getSystemDate()
-        Label6.Visible = IIf(login.wrkgrp = "LC Accounting", True, False)
-        dtdate.Visible = IIf(login.wrkgrp = "LC Accounting", True, False)
+        Label6.Visible = IIf(login2.wrkgrp = "LC Accounting", True, False)
+        dtdate.Visible = IIf(login2.wrkgrp = "LC Accounting", True, False)
         getID()
         load_selecteditems()
         categories()
@@ -246,7 +246,7 @@ Public Class transfer
         Dim id As String = ""
         Dim date_ As New DateTime()
         con.Open()
-        cmd = New SqlCommand("Select TOP 1 invnum,datecreated from tblinvsum WHERE area='" & lcacc & "' " & IIf(login.wrkgrp = "LC Accounting", " AND CAST(datecreated AS date)='" & dtdate.Text & "'", "") & " order by invsumid DESC", con)
+        cmd = New SqlCommand("Select TOP 1 invnum,datecreated from tblinvsum WHERE area='" & lcacc & "' " & IIf(login2.wrkgrp = "LC Accounting", " AND CAST(datecreated AS date)='" & dtdate.Text & "'", "") & " order by invsumid DESC", con)
         rdr = cmd.ExecuteReader()
         If rdr.Read() Then
             id = rdr("invnum")
@@ -403,7 +403,7 @@ Public Class transfer
             Dim status As String = "", date_from As New DateTime()
             con.Open()
             cmd = New SqlCommand("SELECT status,date FROM tblcutoff WHERE userid=(SELECT systemid FROM tblusers WHERE username=@username) ORDER BY cid DESC;", con)
-            cmd.Parameters.AddWithValue("@username", login.username)
+            cmd.Parameters.AddWithValue("@username", login2.username)
             rdr = cmd.ExecuteReader
             If rdr.Read Then
                 status = rdr("status")
@@ -492,7 +492,7 @@ Public Class transfer
                     End If
                     cmdd.Parameters.AddWithValue("@sap", sap_number)
                     cmdd.Parameters.AddWithValue("@remarks", remarks)
-                    cmdd.Parameters.AddWithValue("@processed_by", login.username)
+                    cmdd.Parameters.AddWithValue("@processed_by", login2.username)
                     cmdd.Parameters.AddWithValue("@type", "Transfer Item")
                     cmdd.Parameters.AddWithValue("@transfer_to", fromBranch)
                     cmdd.Parameters.AddWithValue("@transfer_from", toBranch)

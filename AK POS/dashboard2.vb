@@ -11,4 +11,8 @@
         f.BringToFront()
         f.Show()
     End Sub
+
+    Private Sub dashboard2_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+
+    End Sub
 End Class

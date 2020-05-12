@@ -100,6 +100,7 @@ Partial Class main
         Me.Timer2 = New System.Windows.Forms.Timer(Me.components)
         Me.panelchildform = New System.Windows.Forms.Panel()
         Me.SaveFileDialog1 = New System.Windows.Forms.SaveFileDialog()
+        Me.btnlock = New System.Windows.Forms.Button()
         Me.Panel1.SuspendLayout()
         Me.panelsuborders.SuspendLayout()
         Me.panelsubusers.SuspendLayout()
@@ -153,7 +154,7 @@ Partial Class main
         Me.btnmessages.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnmessages.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnmessages.ForeColor = System.Drawing.Color.White
-        Me.btnmessages.Location = New System.Drawing.Point(0, 1983)
+        Me.btnmessages.Location = New System.Drawing.Point(0, 2017)
         Me.btnmessages.Name = "btnmessages"
         Me.btnmessages.Padding = New System.Windows.Forms.Padding(10, 0, 0, 0)
         Me.btnmessages.Size = New System.Drawing.Size(218, 51)
@@ -169,7 +170,7 @@ Partial Class main
         Me.panelsuborders.Controls.Add(Me.btnpendingorder)
         Me.panelsuborders.Controls.Add(Me.btnorderhistory)
         Me.panelsuborders.Dock = System.Windows.Forms.DockStyle.Top
-        Me.panelsuborders.Location = New System.Drawing.Point(0, 1888)
+        Me.panelsuborders.Location = New System.Drawing.Point(0, 1922)
         Me.panelsuborders.Name = "panelsuborders"
         Me.panelsuborders.Size = New System.Drawing.Size(218, 95)
         Me.panelsuborders.TabIndex = 20
@@ -239,7 +240,7 @@ Partial Class main
         Me.btnorders.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnorders.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnorders.ForeColor = System.Drawing.Color.White
-        Me.btnorders.Location = New System.Drawing.Point(0, 1837)
+        Me.btnorders.Location = New System.Drawing.Point(0, 1871)
         Me.btnorders.Name = "btnorders"
         Me.btnorders.Padding = New System.Windows.Forms.Padding(10, 0, 0, 0)
         Me.btnorders.Size = New System.Drawing.Size(218, 51)
@@ -258,7 +259,7 @@ Partial Class main
         Me.btnapdep.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnapdep.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnapdep.ForeColor = System.Drawing.Color.White
-        Me.btnapdep.Location = New System.Drawing.Point(0, 1786)
+        Me.btnapdep.Location = New System.Drawing.Point(0, 1820)
         Me.btnapdep.Name = "btnapdep"
         Me.btnapdep.Padding = New System.Windows.Forms.Padding(10, 0, 0, 0)
         Me.btnapdep.Size = New System.Drawing.Size(218, 51)
@@ -277,7 +278,7 @@ Partial Class main
         Me.btnluckymoney.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnluckymoney.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnluckymoney.ForeColor = System.Drawing.Color.White
-        Me.btnluckymoney.Location = New System.Drawing.Point(0, 1735)
+        Me.btnluckymoney.Location = New System.Drawing.Point(0, 1769)
         Me.btnluckymoney.Name = "btnluckymoney"
         Me.btnluckymoney.Padding = New System.Windows.Forms.Padding(10, 0, 0, 0)
         Me.btnluckymoney.Size = New System.Drawing.Size(218, 51)
@@ -296,7 +297,7 @@ Partial Class main
         Me.btnpos.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnpos.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnpos.ForeColor = System.Drawing.Color.White
-        Me.btnpos.Location = New System.Drawing.Point(0, 1684)
+        Me.btnpos.Location = New System.Drawing.Point(0, 1718)
         Me.btnpos.Name = "btnpos"
         Me.btnpos.Padding = New System.Windows.Forms.Padding(10, 0, 0, 0)
         Me.btnpos.Size = New System.Drawing.Size(218, 51)
@@ -311,7 +312,7 @@ Partial Class main
         Me.panelsubusers.Controls.Add(Me.btnlogs)
         Me.panelsubusers.Controls.Add(Me.btnmanusers)
         Me.panelsubusers.Dock = System.Windows.Forms.DockStyle.Top
-        Me.panelsubusers.Location = New System.Drawing.Point(0, 1619)
+        Me.panelsubusers.Location = New System.Drawing.Point(0, 1653)
         Me.panelsubusers.Name = "panelsubusers"
         Me.panelsubusers.Size = New System.Drawing.Size(218, 65)
         Me.panelsubusers.TabIndex = 13
@@ -363,7 +364,7 @@ Partial Class main
         Me.btnusers.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnusers.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnusers.ForeColor = System.Drawing.Color.White
-        Me.btnusers.Location = New System.Drawing.Point(0, 1568)
+        Me.btnusers.Location = New System.Drawing.Point(0, 1602)
         Me.btnusers.Name = "btnusers"
         Me.btnusers.Padding = New System.Windows.Forms.Padding(10, 0, 0, 0)
         Me.btnusers.Size = New System.Drawing.Size(218, 51)
@@ -381,7 +382,7 @@ Partial Class main
         Me.panelsubsales.Controls.Add(Me.btnmancustomers)
         Me.panelsubsales.Controls.Add(Me.btnbranches)
         Me.panelsubsales.Dock = System.Windows.Forms.DockStyle.Top
-        Me.panelsubsales.Location = New System.Drawing.Point(0, 1410)
+        Me.panelsubsales.Location = New System.Drawing.Point(0, 1444)
         Me.panelsubsales.Name = "panelsubsales"
         Me.panelsubsales.Size = New System.Drawing.Size(218, 158)
         Me.panelsubsales.TabIndex = 11
@@ -487,7 +488,7 @@ Partial Class main
         Me.btnsales.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnsales.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnsales.ForeColor = System.Drawing.Color.White
-        Me.btnsales.Location = New System.Drawing.Point(0, 1359)
+        Me.btnsales.Location = New System.Drawing.Point(0, 1393)
         Me.btnsales.Name = "btnsales"
         Me.btnsales.Padding = New System.Windows.Forms.Padding(10, 0, 0, 0)
         Me.btnsales.Size = New System.Drawing.Size(218, 51)
@@ -521,7 +522,7 @@ Partial Class main
         Me.panelsubinventorytransaction.Controls.Add(Me.btnrecprod)
         Me.panelsubinventorytransaction.Controls.Add(Me.btncreatenew)
         Me.panelsubinventorytransaction.Dock = System.Windows.Forms.DockStyle.Top
-        Me.panelsubinventorytransaction.Location = New System.Drawing.Point(0, 701)
+        Me.panelsubinventorytransaction.Location = New System.Drawing.Point(0, 735)
         Me.panelsubinventorytransaction.Name = "panelsubinventorytransaction"
         Me.panelsubinventorytransaction.Size = New System.Drawing.Size(218, 658)
         Me.panelsubinventorytransaction.TabIndex = 8
@@ -915,7 +916,7 @@ Partial Class main
         Me.btninvtrans.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btninvtrans.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btninvtrans.ForeColor = System.Drawing.Color.White
-        Me.btninvtrans.Location = New System.Drawing.Point(0, 650)
+        Me.btninvtrans.Location = New System.Drawing.Point(0, 684)
         Me.btninvtrans.Name = "btninvtrans"
         Me.btninvtrans.Padding = New System.Windows.Forms.Padding(10, 0, 0, 0)
         Me.btninvtrans.Size = New System.Drawing.Size(218, 51)
@@ -930,7 +931,7 @@ Partial Class main
         Me.panelsubrequests.Controls.Add(Me.btnrequests)
         Me.panelsubrequests.Controls.Add(Me.btnrequestletter)
         Me.panelsubrequests.Dock = System.Windows.Forms.DockStyle.Top
-        Me.panelsubrequests.Location = New System.Drawing.Point(0, 584)
+        Me.panelsubrequests.Location = New System.Drawing.Point(0, 618)
         Me.panelsubrequests.Name = "panelsubrequests"
         Me.panelsubrequests.Size = New System.Drawing.Size(218, 66)
         Me.panelsubrequests.TabIndex = 6
@@ -982,7 +983,7 @@ Partial Class main
         Me.btnrequest.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnrequest.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnrequest.ForeColor = System.Drawing.Color.White
-        Me.btnrequest.Location = New System.Drawing.Point(0, 533)
+        Me.btnrequest.Location = New System.Drawing.Point(0, 567)
         Me.btnrequest.Name = "btnrequest"
         Me.btnrequest.Padding = New System.Windows.Forms.Padding(10, 0, 0, 0)
         Me.btnrequest.Size = New System.Drawing.Size(218, 51)
@@ -1001,7 +1002,7 @@ Partial Class main
         Me.panelsubreports.Controls.Add(Me.btnconvlogssales)
         Me.panelsubreports.Controls.Add(Me.btninvlogssales)
         Me.panelsubreports.Dock = System.Windows.Forms.DockStyle.Top
-        Me.panelsubreports.Location = New System.Drawing.Point(0, 344)
+        Me.panelsubreports.Location = New System.Drawing.Point(0, 378)
         Me.panelsubreports.Name = "panelsubreports"
         Me.panelsubreports.Size = New System.Drawing.Size(218, 189)
         Me.panelsubreports.TabIndex = 4
@@ -1125,7 +1126,7 @@ Partial Class main
         Me.btnreports.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnreports.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnreports.ForeColor = System.Drawing.Color.White
-        Me.btnreports.Location = New System.Drawing.Point(0, 293)
+        Me.btnreports.Location = New System.Drawing.Point(0, 327)
         Me.btnreports.Name = "btnreports"
         Me.btnreports.Padding = New System.Windows.Forms.Padding(10, 0, 0, 0)
         Me.btnreports.Size = New System.Drawing.Size(218, 51)
@@ -1142,7 +1143,7 @@ Partial Class main
         Me.panelsubitems.Controls.Add(Me.btnmanageitem)
         Me.panelsubitems.Controls.Add(Me.btncategory)
         Me.panelsubitems.Dock = System.Windows.Forms.DockStyle.Top
-        Me.panelsubitems.Location = New System.Drawing.Point(0, 166)
+        Me.panelsubitems.Location = New System.Drawing.Point(0, 200)
         Me.panelsubitems.Name = "panelsubitems"
         Me.panelsubitems.Size = New System.Drawing.Size(218, 127)
         Me.panelsubitems.TabIndex = 2
@@ -1230,7 +1231,7 @@ Partial Class main
         Me.btnitems.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnitems.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnitems.ForeColor = System.Drawing.Color.White
-        Me.btnitems.Location = New System.Drawing.Point(0, 115)
+        Me.btnitems.Location = New System.Drawing.Point(0, 149)
         Me.btnitems.Name = "btnitems"
         Me.btnitems.Padding = New System.Windows.Forms.Padding(10, 0, 0, 0)
         Me.btnitems.Size = New System.Drawing.Size(218, 51)
@@ -1242,12 +1243,13 @@ Partial Class main
         'panelsubsettings
         '
         Me.panelsubsettings.BackColor = System.Drawing.Color.White
+        Me.panelsubsettings.Controls.Add(Me.btnlock)
         Me.panelsubsettings.Controls.Add(Me.btncutoff)
         Me.panelsubsettings.Controls.Add(Me.btnlogout)
         Me.panelsubsettings.Dock = System.Windows.Forms.DockStyle.Top
         Me.panelsubsettings.Location = New System.Drawing.Point(0, 51)
         Me.panelsubsettings.Name = "panelsubsettings"
-        Me.panelsubsettings.Size = New System.Drawing.Size(218, 64)
+        Me.panelsubsettings.Size = New System.Drawing.Size(218, 98)
         Me.panelsubsettings.TabIndex = 1
         Me.panelsubsettings.Visible = False
         '
@@ -1405,6 +1407,23 @@ Partial Class main
         Me.panelchildform.Size = New System.Drawing.Size(564, 305)
         Me.panelchildform.TabIndex = 2
         '
+        'btnlock
+        '
+        Me.btnlock.BackColor = System.Drawing.Color.White
+        Me.btnlock.Dock = System.Windows.Forms.DockStyle.Top
+        Me.btnlock.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(CType(CType(23, Byte), Integer), CType(CType(23, Byte), Integer), CType(CType(32, Byte), Integer))
+        Me.btnlock.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnlock.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnlock.ForeColor = System.Drawing.Color.FromArgb(CType(CType(218, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(28, Byte), Integer))
+        Me.btnlock.Location = New System.Drawing.Point(0, 62)
+        Me.btnlock.Name = "btnlock"
+        Me.btnlock.Padding = New System.Windows.Forms.Padding(20, 0, 0, 0)
+        Me.btnlock.Size = New System.Drawing.Size(218, 31)
+        Me.btnlock.TabIndex = 3
+        Me.btnlock.Text = "Lock"
+        Me.btnlock.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnlock.UseVisualStyleBackColor = False
+        '
         'main
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1511,4 +1530,5 @@ Partial Class main
     Friend WithEvents btnminimize As Button
     Friend WithEvents btnadjustment As Button
     Friend WithEvents btnspo As Button
+    Friend WithEvents btnlock As Button
 End Class
