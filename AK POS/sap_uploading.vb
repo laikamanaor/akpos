@@ -12,8 +12,9 @@ Imports System.Xml
 Imports System.Reflection
 Imports ClosedXML.Excel
 Imports AK_POS.connection_class
+Imports AK_POS.sap_class
 Public Class sap_uploading
-    Dim cc As New connection_class
+    Dim cc As New connection_class, sapc As New sap_class
     Dim strconn As String = cc.conString
     Dim con As New SqlConnection(strconn)
     Dim cmd As SqlCommand
@@ -23,28 +24,6 @@ Public Class sap_uploading
     Dim drag As Boolean
     Dim mousex As Integer
     Dim mousey As Integer
-
-    Public Function getSystemDate() As DateTime
-        Try
-            Dim dt As New DateTime()
-            con.Open()
-            cmd = New SqlCommand("SELECT GETDATE()", con)
-            rdr = cmd.ExecuteReader()
-            While rdr.Read
-                dt = CDate(rdr(0).ToString)
-            End While
-            con.Close()
-            Return dt
-        Catch ex As SqlException
-            If ex.Number = -2 Then
-                MessageBox.Show("Timeout Occurred", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
-            End If
-        Catch ex As Exception
-            MessageBox.Show(ex.ToString)
-        Finally
-            con.Close()
-        End Try
-    End Function
 
     Public Sub connect()
         con = New SqlConnection
@@ -62,8 +41,12 @@ Public Class sap_uploading
         End If
     End Sub
 
+    ''' <summary>
+    ''' for summary report generated in excel
+    ''' </summary>
     Public Sub sap()
         Try
+            'datatable to hold data from sheet 1
             Dim dt As New DataTable()
             dt.Columns.Add("DocNum")
             dt.Columns.Add("DocType")
@@ -74,36 +57,36 @@ Public Class sap_uploading
             dt.Columns.Add("#")
             dt.Rows.Add("DocNum", "DocType", "DocDate", "DocDueDate", "CardCode", "CardName", "SAP #")
 
-            Dim gr As String = "", sales As String = "", br_out As String = login.braout
-            connect()
-            cmd = New SqlCommand("Select gr,branchcode FROM tblbranch WHERE main=1;", con)
-            rdr = cmd.ExecuteReader
-            If rdr.Read Then
-                gr = CStr(rdr("gr"))
-                sales = CStr(rdr("branchcode"))
-            End If
+            'variables to hold gr and sales from main branch
+            Dim gr As String = "", sales As String = "", br_out As String = login.braout, dtBranches As New DataTable
 
-            Dim docid As Integer = 0
-            cmd = New SqlCommand("SELECT name FROM tblars1 WHERE CAST(date_created as date)='" & datee.Text & "' AND sap_no='To Follow'  AND name !='Short' GROUP BY name", con)
-            Dim dtName As New DataTable()
-            adptr.SelectCommand = cmd
-            adptr.Fill(dtName)
+            'get branch info from sap_class
+            dtBranches = sapc.getBranchInfo()
 
-            For Each r0w As DataRow In dtName.Rows
-                docid += 1
-                Dim code As String = ""
-                cmd = New SqlCommand("SELECT code FROM tblcustomers WHERE name=@name;", con)
-                cmd.Parameters.AddWithValue("@name", r0w("name"))
-                rdr = cmd.ExecuteReader
-                If rdr.Read Then
-                    code = CStr(rdr("code"))
-                End If
-
-                dt.Rows.Add(docid, "dDocument_Items", CDate(datee.Value).ToString("yyyyMMdd"), CDate(datee.Value).ToString("yyyyMMdd"), IIf(r0w("name") = "CASH", "A1_01", code), IIf(r0w("name") = "CASH", "A1 Main Cash Sales", r0w("name")), "To Follow")
+            ''loop gr and sales from tblbranch
+            For Each r0w As DataRow In dtBranches.Rows
+                gr = CStr(r0w("gr"))
+                sales = CStr(r0w("branchcode"))
             Next
 
+            'docnum and datatabe for name 
+            Dim docid As Integer = 0, dtName As New DataTable()
+            sapc.setDateParameter(datee.Value)
+            dtName = sapc.SgetName()
+
+            'loop name and insert to datatable sheet 1
+            For Each r0w As DataRow In dtName.Rows
+                'increament docid every rows
+                docid += 1
+
+                'if name is CASH the name is A1 Main Cash Sales, if not display the customer name
+                dt.Rows.Add(docid, "dDocument_Items", CDate(datee.Value).ToString("yyyyMMdd"), CDate(datee.Value).ToString("yyyyMMdd"), IIf(r0w("name") = "CASH", "A1_01", r0w("code")), IIf(r0w("name") = "CASH", "A1 Main Cash Sales", r0w("name")), "To Follow")
+            Next
+
+            'insert row for coffee shop
             dt.Rows.Add(docid + 1, "dDocument_Items", CDate(datee.Value).ToString("yyyyMMdd"), CDate(datee.Value).ToString("yyyyMMdd"), "A1_07", "A1 Main Coffee Shop", "To Follow")
 
+            'datatable for items sheet 2
             Dim dt1 As New DataTable()
             dt1.Columns.Add("ParentKey")
             dt1.Columns.Add("LineNum")
@@ -117,25 +100,33 @@ Public Class sap_uploading
             dt1.Columns.Add("CardName")
             dt1.Columns.Add("Total Amount")
             dt1.Columns.Add("Remarks")
+            'add new row default
             dt1.Rows.Add("DocNum", "LineNum", "ItemCode", "ItemDescription", "Quantity", "Price", "WhsCode", "AcctCode", "CardCode", "CardName", "", "")
 
+            'datatable items for coffee shop
             Dim dataCs As New DataTable()
             dataCs.Columns.Add("itemcode")
             dataCs.Columns.Add("itemname")
             dataCs.Columns.Add("price")
             dataCs.Columns.Add("sold")
+
+            'loop from datatable sheet 1
             For Each r0w As DataRow In dt.Rows
+                'init type for customer
                 Dim type As String = ""
 
+                'get type of customer
+                con.Open()
                 cmd = New SqlCommand("SELECT type FROM tblcustomers WHERE name=@name;", con)
                 cmd.Parameters.AddWithValue("@name", IIf(r0w("CardName") = "A1 Main Cash Sales", "CASH", r0w("CardName")))
                 rdr = cmd.ExecuteReader
                 If rdr.Read Then
                     type = CStr(rdr("type"))
                 End If
+                con.Close()
 
+                'switch case define the type
                 Dim dbtype As String = ""
-
                 Select Case type
                     Case "Customer"
                         dbtype = "ar_sales_free"
@@ -145,38 +136,54 @@ Public Class sap_uploading
                         dbtype = "cash_free"
                 End Select
 
+                'syntax to display items information
+                con.Open()
                 cmd = New SqlCommand("select a.description, sum(quantity)-isnull(x." & dbtype & ",0)[sold],ISNULL(x.cash_free,0)[cash_free],ISNULL(x.ar_charged_free,0)[ar_charged_free],ISNULL(x.ar_sales_free,0)[ar_sales_free],i3.itemcode,i3.price,x.ar_sales_free2,x.ar_charged_free2,b.remarks from tblars2 a left join tblars1 b on a.transnum=b.transnum LEFT JOIN tblitems i3 ON a.description = i3.itemname outer apply (SELECT a1.itemname,ISNULL(SUM(CASE WHEN a2.tendertype = 'CASH' THEN a1.qty END),0)[cash_free],ISNULL(SUM(CASE WHEN a2.tendertype = 'A.R Sales'  AND a2.customer='" & IIf(r0w("CardName") = "A1 Main Cash Sales", "CASH", r0w("CardName")) & "' THEN a1.qty END),0)[ar_sales_free],ISNULL(SUM(CASE WHEN a2.tendertype = 'A.R Charge' AND a2.customer='" & IIf(r0w("CardName") = "A1 Main Cash Sales", "CASH", r0w("CardName")) & "' THEN a1.qty END),0)[ar_charged_free],ISNULL(SUM(CASE WHEN a2.tendertype = 'A.R Charge'  THEN a1.qty END),0)[ar_charged_free2],ISNULL(SUM(CASE WHEN a2.tendertype = 'A.R Sales'  THEN a1.qty END),0)[ar_sales_free2]  FROM tblorder a1 LEFT JOIN tbltransaction a2 on a1.transnum=a2.transnum WHERE a.description = a1.itemname AND a1.free = 1 AND CAST(a2.datecreated AS date)='" & datee.Text & "' AND a2.status=1 GROUP BY a1.itemname)x where cast(b.date_created As Date) ='" & datee.Text & "' AND a.name='" & IIf(r0w("CardName") = "A1 Main Cash Sales", "CASH", r0w("CardName")) & "' GROUP BY a.description ,x.ar_charged_free, x.ar_sales_free,x.cash_free,i3.itemcode,i3.price,x.ar_sales_free2,x.ar_charged_free2,b.remarks", con)
-                Dim zz As New DataTable()
+
+                Dim dtitemResult As New DataTable()
                 adptr.SelectCommand = cmd
-                adptr.Fill(zz)
-                For Each row As DataRow In zz.Rows
+                adptr.Fill(dtitemResult)
+                con.Close()
+
+                For Each row As DataRow In dtitemResult.Rows
+                    'init coffee shop quantity,archarge and arsales variables
                     Dim cs_quantity As Double = 0.00, archarged As Double = 0.00, arsales As Double = 0.00
 
+                    'check if column is null
                     If IsDBNull(row("ar_charged_free2")) Then
                         archarged = 0
                     Else
                         archarged = row("ar_charged_free2")
                     End If
+                    'check if column is null
                     If IsDBNull(row("ar_sales_free2")) Then
                         arsales = 0
                     Else
                         arsales = row("ar_sales_free2")
                     End If
+
+                    'add cash,archarge and arsales quantity
                     cs_quantity = (row("cash_free") + archarged + arsales)
+                    'check if quantity is less than zero then insert new row
                     If cs_quantity > 0 Then
                         dataCs.Rows.Add(row("itemcode"), row("description"), row("price"), cs_quantity)
                     End If
+                    'check if quantity is less than zero then insert new row
                     If CDbl(row("sold")) > 0 Then
                         dt1.Rows.Add(r0w("DocNum"), "LineNum", row("itemcode"), row("description"), row("sold"), row("price"), gr, sales, r0w("CardCode"), r0w("CardName"), (CDbl(row("sold")) * CDbl(row("price"))), row("remarks"))
                     End If
                 Next
+                'check if name is coffee shop
                 If CStr(r0w("CardName")).ToLower = "A1 Main Coffee Shop".ToLower Then
                     Dim distinctTable As New DataTable()
+
+                    'distinct datatable coffeeshop
                     distinctTable = dataCs.DefaultView.ToTable("itemname", True)
+                    'loop through datatatble coffee shop
                     For Each cs As DataRow In distinctTable.Rows
+                        'add new row for coffee shop in sheet 2
                         dt1.Rows.Add(r0w("DocNum"), "", cs("itemcode"), cs("itemname"), cs("sold"), cs("price"), gr, sales, r0w("CardCode"), r0w("CardName"))
                     Next
-                    'dt1.Rows.Add(r0w("DocNum"), "", row("description"), row("description"), cs_quantity, 0, gr, sales, r0w("CardCode"), r0w("CardName"))
                 End If
             Next
 
@@ -206,21 +213,18 @@ Public Class sap_uploading
             Next
 
             For index As Integer = 1 To dt1.Rows.Count - 1
-                'Dim quantity As Integer = 0
-                'For index2 As Integer = 0 To distinctFinal.Rows.Count - 1
-                '    'MessageBox.Show("One: " & distinctFinal(index)("id") & "/" & dt1(index2)("DocNum"))
-                'Next
                 dt1(index)("LineNum") = distinctFinal(index)("quantity")
             Next
 
-            Dim r1 As New Random(), r2 As New Random(), r3 As New Random()
-
+            'config to save
             SaveFileDialog1.Title = "Save As Excel File"
             SaveFileDialog1.Filter = "Excel Document (*.xlsx) | *.xlsx"
-            con.Close()
             SaveFileDialog1.FileName = datee.Value.ToString("MMddyyyy")
+
+            'check if user click ok
             If SaveFileDialog1.ShowDialog = Windows.Forms.DialogResult.OK Then
                 Me.Cursor = Cursors.WaitCursor
+                'init excel config
                 Dim objExcel As New Excel.Application
                 Dim bkWorkBook As Excel.Workbook
                 Dim shWorkSheet As Excel.Worksheet
@@ -231,15 +235,18 @@ Public Class sap_uploading
                 bkWorkBook = objExcel.Workbooks.Add
                 shWorkSheet = CType(bkWorkBook.ActiveSheet, Excel.Worksheet)
 
+                'loop through datatable sheet 1 columns
                 For i As Integer = 0 To dt.Columns.Count - 1
                     shWorkSheet.Cells(1, i + 1) = dt.Columns(i).ToString
                 Next
+                'loop through datatable sheet 1 rows
                 For i As Integer = 0 To dt.Rows.Count - 1
                     For j = 0 To dt.Columns.Count - 1
                         shWorkSheet.Cells(i + 2, j + 1) = dt.Rows(i)(j).ToString
                     Next
                 Next
 
+                'sheet 1 worksheet config
                 With shWorkSheet
                     .Range("A1", misValue).EntireRow.Font.Bold = True
                     .Range("A1:G1").EntireRow.WrapText = True
@@ -269,19 +276,24 @@ Public Class sap_uploading
 
                 End With
 
+                'sheet 1 name
                 shWorkSheet = bkWorkBook.Sheets(1)
                 shWorkSheet.Name = "OINV"
 
+                'sheet 2 config
                 shWorkSheet1 = bkWorkBook.Worksheets.Add(, shWorkSheet, , )
+                'loop through datatable sheet 2 columns
                 For i As Integer = 0 To dt1.Columns.Count - 1
                     shWorkSheet1.Cells(1, i + 1) = dt1.Columns(i).ToString
                 Next
+                'loop through datatable sheet 2 rows
                 For i As Integer = 0 To dt1.Rows.Count - 1
                     For j = 0 To dt1.Columns.Count - 1
                         shWorkSheet1.Cells(i + 2, j + 1) = dt1.Rows(i)(j).ToString
                     Next
                 Next
 
+                'sheet 2 config
                 With shWorkSheet1
                     .Range("A1", misValue).EntireRow.Font.Bold = True
                     .Range("A1:L1").EntireRow.WrapText = True
@@ -321,25 +333,33 @@ Public Class sap_uploading
                     .Range("A2:L" & dt1.Rows.Count + 1).ColumnWidth = 20
                 End With
 
+                'sheet 2 name
                 shWorkSheet1 = bkWorkBook.Sheets(2)
                 shWorkSheet1.Name = "INV1"
 
+                'lock sheet 2 A1 
                 shWorkSheet.Range("A1").Locked = False
                 shWorkSheet1.Range("A1").Locked = False
 
+                'protect password for sheet 1 and sheet 2
                 shWorkSheet.Protect("atlantic")
                 shWorkSheet1.Protect("atlantic")
 
+                'excel config
                 objExcel.Visible = False
                 objExcel.Application.DisplayAlerts = False
 
+                'workbook password for excel
                 objExcel.ActiveWorkbook.Password = "atlantic"
 
+                'init and save path 
                 Dim path As String = IO.Path.GetDirectoryName(SaveFileDialog1.FileName)
                 objExcel.ActiveWorkbook.SaveAs(SaveFileDialog1.FileName.ToString())
                 objExcel.Quit()
 
+                'clear object excel
                 objExcel = Nothing
+                'when all is success, this message is pop up and cursor is back to normal
                 Me.Cursor = Cursors.Default
                 MessageBox.Show("Saved" & Environment.NewLine & "Path: " & path, "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Information)
             End If
@@ -351,25 +371,27 @@ Public Class sap_uploading
     End Sub
     Public Sub endingbalance()
         Try
-            Dim r1 As New Random(), r2 As New Random(), r3 As New Random()
-
+            'savedialog format
             SaveFileDialog1.Title = "Save As Excel File"
             SaveFileDialog1.Filter = "Excel Document (*.xlsx) | *.xlsx"
-
             SaveFileDialog1.FileName = datee.Value.ToString("MMddyyyy") & "_endbal"
+
+            'check if user click ok
             If SaveFileDialog1.ShowDialog = Windows.Forms.DialogResult.OK Then
+                'cursor ui change to loading
                 Me.Cursor = Cursors.WaitCursor
+
+                'init excel variables
                 Dim objExcel As New Excel.Application
                 Dim bkWorkBook As Excel.Workbook
                 Dim shWorkSheet As Excel.Worksheet
                 Dim shWorkSheet1 As Excel.Worksheet
                 Dim misValue As Object = System.Reflection.Missing.Value
-
                 objExcel = New Excel.Application
                 bkWorkBook = objExcel.Workbooks.Add
                 shWorkSheet = CType(bkWorkBook.ActiveSheet, Excel.Worksheet)
 
-
+                'init datatable for sheet 1
                 Dim dt As New DataTable()
                 dt.Columns.Add("ItemCode")
                 dt.Columns.Add("ItemName")
@@ -378,25 +400,26 @@ Public Class sap_uploading
                 dt.Columns.Add("AccountCode")
                 dt.Columns.Add("WarehouseCode")
 
+                'init gr, branchcode, and datatable branches info
+                Dim acct As String = "", warehouse As String = "", dtBranchesInfo As New DataTable
+                'return datatable from sap_class
+                dtBranchesInfo = sapc.getBranchInfo()
 
-                Dim acct As String = "", warehouse As String = ""
+                'loop through datatable branches info
+                For Each r0w As DataRow In dtBranchesInfo.Rows
+                    'assign gr and branch code
+                    acct = CStr(r0w("gr"))
+                    warehouse = CStr(r0w("branchcode"))
+                Next
 
-                con.Open()
-                cmd = New SqlCommand("Select gr,branchcode FROM tblbranch WHERE main=1;", con)
-                rdr = cmd.ExecuteReader
-                If rdr.Read Then
-                    acct = CStr(rdr("gr"))
-                    warehouse = CStr(rdr("branchcode"))
-                End If
-                con.Close()
+                'short
+                Dim dtgetEBShort As New DataTable()
+                sapc.setDateParameter(datee.Text)
+                dtgetEBShort = sapc.getendingBalanceShort()
+                For Each r0w As DataRow In dtgetEBShort.Rows
+                    dt.Rows.Add(r0w("itemcode"), r0w("itemname"), r0w("charge"), CDbl(r0w("price")).ToString("n2"), acct, warehouse)
+                Next
 
-                con.Open()
-                cmd = New SqlCommand("SELECT b.itemcode,b.itemname,c.charge,b.price FROM tblinvitems a INNER JOIN tblitems b ON a.itemname = b.itemname INNER JOIN tblproduction c ON a.itemname = c.item_name WHERE CAST(c.date AS date)='" & datee.Text & "' and c.type='Actual Ending Balance' AND a.invnum=(SELECT invnum FROM tblinvsum WHERE CAST(tblinvsum.datecreated AS date)='" & datee.Text & "') AND a.totalav !=0 AND b.category !='Coffee Shop' AND c.charge !=0 GROUP BY b.itemcode,b.itemname,c.charge,b.price", con)
-                rdr = cmd.ExecuteReader
-                While rdr.Read
-                    dt.Rows.Add(rdr("itemcode"), rdr("itemname"), rdr("charge"), CDbl(rdr("price")).ToString("n2"), acct, warehouse)
-                End While
-                con.Close()
 
                 For i As Integer = 0 To dt.Columns.Count - 1
                     shWorkSheet.Cells(1, i + 1) = dt.Columns(i).ToString

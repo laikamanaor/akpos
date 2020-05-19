@@ -45,6 +45,7 @@ Partial Class categories
         Me.btnprev = New System.Windows.Forms.Button()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.cmbstatus = New System.Windows.Forms.ComboBox()
+        Me.SaveFileDialog1 = New System.Windows.Forms.SaveFileDialog()
         Me.Panel1.SuspendLayout()
         Me.Panel2.SuspendLayout()
         CType(Me.dgv, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -85,6 +86,7 @@ Partial Class categories
         '
         Me.btnadd.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnadd.BackColor = System.Drawing.Color.DodgerBlue
+        Me.btnadd.Cursor = System.Windows.Forms.Cursors.Hand
         Me.btnadd.FlatAppearance.BorderSize = 0
         Me.btnadd.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnadd.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -99,6 +101,7 @@ Partial Class categories
         'btnsearch
         '
         Me.btnsearch.BackColor = System.Drawing.Color.DodgerBlue
+        Me.btnsearch.Cursor = System.Windows.Forms.Cursors.Hand
         Me.btnsearch.FlatAppearance.BorderSize = 0
         Me.btnsearch.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnsearch.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -229,6 +232,7 @@ Partial Class categories
         '
         Me.btnexport.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.btnexport.BackColor = System.Drawing.Color.DodgerBlue
+        Me.btnexport.Cursor = System.Windows.Forms.Cursors.Hand
         Me.btnexport.FlatAppearance.BorderSize = 0
         Me.btnexport.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnexport.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -244,6 +248,7 @@ Partial Class categories
         '
         Me.btnimport.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.btnimport.BackColor = System.Drawing.SystemColors.HotTrack
+        Me.btnimport.Cursor = System.Windows.Forms.Cursors.Hand
         Me.btnimport.FlatAppearance.BorderSize = 0
         Me.btnimport.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnimport.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -303,6 +308,7 @@ Partial Class categories
         '
         Me.cmbstatus.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.cmbstatus.BackColor = System.Drawing.Color.DodgerBlue
+        Me.cmbstatus.Cursor = System.Windows.Forms.Cursors.Hand
         Me.cmbstatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cmbstatus.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.cmbstatus.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -367,4 +373,5 @@ Partial Class categories
     Friend WithEvents btnedit As DataGridViewButtonColumn
     Friend WithEvents Label1 As Label
     Friend WithEvents cmbstatus As ComboBox
+    Friend WithEvents SaveFileDialog1 As SaveFileDialog
 End Class

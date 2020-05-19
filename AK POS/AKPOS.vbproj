@@ -629,6 +629,12 @@
     <Compile Include="import_actualend.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="import_categories.Designer.vb">
+      <DependentUpon>import_categories.vb</DependentUpon>
+    </Compile>
+    <Compile Include="import_categories.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="import_itemcode.Designer.vb">
       <DependentUpon>import_itemcode.vb</DependentUpon>
     </Compile>
@@ -731,6 +737,7 @@
     <Compile Include="my_class\pos\pos2_class.vb" />
     <Compile Include="my_class\pos\pos_class.vb" />
     <Compile Include="my_class\received\received_class.vb" />
+    <Compile Include="my_class\sap\sap_class.vb" />
     <Compile Include="my_class\ui_class.vb" />
     <Compile Include="my_class\users\login_class.vb" />
     <Compile Include="my_class\users\user_class.vb" />
@@ -1699,6 +1706,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="import_actualend.resx">
       <DependentUpon>import_actualend.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="import_categories.resx">
+      <DependentUpon>import_categories.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="import_itemcode.resx">
       <DependentUpon>import_itemcode.vb</DependentUpon>
