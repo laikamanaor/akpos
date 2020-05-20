@@ -221,20 +221,24 @@ Public Class main
     End Sub
 
     Private Sub btntransfer_Click(sender As Object, e As EventArgs) Handles btntransfer.Click
-        If checkCutOff("") Then
-            MessageBox.Show("Your account is already cutoff", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        If login2.wrkgrp = "LC Accounting" Or login2.wrkgrp = "Production" Then
+            MessageBox.Show("Access Denied", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
             Exit Sub
         End If
 
+        If checkCutOff("") Then
+            MessageBox.Show("Your account is already cut off", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Exit Sub
+        End If
         hideShow(panelsubinventorytransaction)
-        Dim f As New transfer()
-        f.lcacc = "Sales"
+        Dim frm As New received_item2()
+        frm.received_type = "Transfer Out"
         panelchildform.Controls.Clear()
-        f.TopLevel = False
-        f.Dock = DockStyle.Fill
-        panelchildform.Controls.Add(f)
-        f.BringToFront()
-        f.Show()
+        frm.TopLevel = False
+        frm.Dock = DockStyle.Fill
+        panelchildform.Controls.Add(frm)
+        frm.BringToFront()
+        frm.Show()
     End Sub
 
     Private Sub btnar_Click(sender As Object, e As EventArgs) Handles btnarreject.Click
@@ -320,10 +324,10 @@ Public Class main
     End Sub
 
     Private Sub btnarsales_Click(sender As Object, e As EventArgs) Handles btnarsales.Click
-        If login2.wrkgrp = "Sales" Then
-            MessageBox.Show("Access Denied", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
-            Exit Sub
-        End If
+        'If login2.wrkgrp = "Sales" Then
+        '    MessageBox.Show("Access Denied", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        '    Exit Sub
+        'End If
 
         hideShow(panelsubinventorytransaction)
 
@@ -505,7 +509,7 @@ Public Class main
             Exit Sub
         End If
 
-        If login2.wrkgrp = "LC Accounting" Or login2.wrkgrp = "Administrator" Then
+        If login2.wrkgrp = "Cashier" Then
             MessageBox.Show("Access Denied", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
             Exit Sub
         End If
@@ -600,7 +604,7 @@ Public Class main
             If login2.wrkgrp = "LC Accounting" Then
                 hideShow(panelsubinventorytransaction)
                 Dim f As New received_item2()
-                f.received_type = "Received From Adjustment"
+                f.received_type = "Received from Adjustment"
                 panelchildform.Controls.Clear()
                 f.TopLevel = False
                 f.Dock = DockStyle.Fill
@@ -810,47 +814,18 @@ Public Class main
             Exit Sub
         End If
         hideShow(panelsubinventorytransaction)
-        Dim result As Boolean = False, verify As Integer = 0, invdate As New Date(), invnum As String = ""
-        con.Open()
-        cmd = New SqlCommand("Select TOP 1 verify,invdate,invnum from tblinvsum WHERE area='" & "Sales" & "' order by invsumid DESC", con)
-        rdr = cmd.ExecuteReader
-        If rdr.Read Then
-            result = True
-            verify = rdr("verify")
-            invdate = CDate(rdr("invdate"))
-            invnum = CStr(rdr("invnum"))
-        End If
-        con.Close()
-
-        If verify = 1 Then
-            If invdate = getSystemDate.ToString("MM/dd/yyyy") Then
-                MessageBox.Show("Inventory end for this day", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                Me.Cursor = Cursors.Default
-            Else
-                MessageBox.Show("Created New Inventory First", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
-            End If
-        Else
-            Dim f As New received_item()
-            'f.received_type = "RECEIVED FROM PRODUCTION"
-            panelchildform.Controls.Clear()
-            f.TopLevel = False
-            f.Dock = DockStyle.Fill
-            panelchildform.Controls.Add(f)
-            f.BringToFront()
-            f.Text = "Received From Production"
-            f.received_type = "Production"
-            f.dgvSelectedItem.Rows.Clear()
-            f.lcacc = "Sales"
-            f.type = ""
-            f.GetTransID()
-            f.load_cb()
-            f.loadz()
-            f.Show()
-        End If
+        Dim frm As New received_item2()
+        frm.received_type = "Received from Production"
+        panelchildform.Controls.Clear()
+        frm.TopLevel = False
+        frm.Dock = DockStyle.Fill
+        panelchildform.Controls.Add(frm)
+        frm.BringToFront()
+        frm.Show()
     End Sub
 
     Private Sub btnrecbranch_Click(sender As Object, e As EventArgs) Handles btnrecbranch.Click
-        If login2.wrkgrp = "LC Accounting" Or login2.wrkgrp = "Administrator" Or login2.wrkgrp = "Production" Then
+        If login2.wrkgrp = "LC Accounting" Or login2.wrkgrp = "Production" Then
             MessageBox.Show("Access Denied", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
             Exit Sub
         End If
@@ -859,59 +834,15 @@ Public Class main
             MessageBox.Show("Your account is already cut off", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
             Exit Sub
         End If
-
         hideShow(panelsubinventorytransaction)
-
-        con.Open()
-        cmd = New SqlCommand("Select TOP 1 * from tblinvsum WHERE area='" & "Sales" & "' order by invsumid DESC", con)
-        Dim dt As New DataTable()
-        adptr.SelectCommand = cmd
-        adptr.Fill(dt)
-        con.Close()
-        For Each row As DataRow In dt.Rows
-            If row("verify") = 1 Then
-                If row("invdate") = getSystemDate.ToString("MM/dd/yyyy") Then
-                    MsgBox("Received Item failed! Inventory end for this day.", MsgBoxStyle.Critical, "")
-                    Me.Cursor = Cursors.Default
-                    Exit Sub
-                Else
-                    Dim f As New received_item()
-                    'f.received_type = "RECEIVED FROM OTHER BRANCH"
-                    panelchildform.Controls.Clear()
-                    f.TopLevel = False
-                    f.Dock = DockStyle.Fill
-                    panelchildform.Controls.Add(f)
-                    f.BringToFront()
-
-                    f.Text = "Received from Other Branch"
-                    f.received_type = "Branch"
-                    f.dgvSelectedItem.Rows.Clear()
-                    f.lcacc = "Sales"
-                    f.type = ""
-                    f.GetTransID()
-                    f.load_cb()
-                    f.loadz()
-                    f.Show()
-                End If
-            Else
-                Dim f As New received_item()
-                'f.received_type = "RECEIVED FROM OTHER BRANCH"
-                panelchildform.Controls.Clear()
-                f.TopLevel = False
-                f.Dock = DockStyle.Fill
-                panelchildform.Controls.Add(f)
-                f.BringToFront()
-                f.Text = "Received from Other Branch"
-                f.received_type = "Branch"
-                f.dgvSelectedItem.Rows.Clear()
-                f.lcacc = "Sales"
-                f.type = ""
-                f.GetTransID()
-                f.load_cb()
-                f.loadz()
-                f.Show()
-            End If
-        Next
+        Dim frm As New received_item2()
+        frm.received_type = "Received from Other Branch"
+        panelchildform.Controls.Clear()
+        frm.TopLevel = False
+        frm.Dock = DockStyle.Fill
+        panelchildform.Controls.Add(frm)
+        frm.BringToFront()
+        frm.Show()
     End Sub
 
     Private Sub btnrecsup_Click(sender As Object, e As EventArgs) Handles btnrecsup.Click
@@ -924,62 +855,15 @@ Public Class main
             MessageBox.Show("Your account is already cut off", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
             Exit Sub
         End If
-
         hideShow(panelsubinventorytransaction)
-
-        con.Open()
-        cmd = New SqlCommand("Select TOP 1 * from tblinvsum WHERE area='" & "Sales" & "' order by invsumid DESC", con)
-        Dim dt As New DataTable()
-        adptr.SelectCommand = cmd
-        adptr.Fill(dt)
-        con.Close()
-        For Each row As DataRow In dt.Rows
-            If row("verify") = 1 Then
-                If row("invdate") = getSystemDate.ToString("MM/dd/yyyy") Then
-                    MsgBox("Received Item failed! Inventory end for this day.", MsgBoxStyle.Critical, "")
-                    Me.Cursor = Cursors.Default
-                    Exit Sub
-                Else
-                    Dim f As New received_item()
-                    'f.received_type = "RECEIVED FROM DIRECT SUPPLIER"
-                    panelchildform.Controls.Clear()
-                    f.TopLevel = False
-                    f.Dock = DockStyle.Fill
-                    panelchildform.Controls.Add(f)
-                    f.BringToFront()
-
-                    f.received_type = "Direct"
-                    f.type = "Direct"
-                    f.Text = "Received from Direct Supplier"
-                    f.lcacc = "Sales"
-                    f.load_cb()
-                    f.GetTransID()
-                    f.dgvSelectedItem.Rows.Clear()
-                    f.loadz()
-
-                    f.Show()
-                End If
-            Else
-                Dim f As New received_item()
-                'f.received_type = "RECEIVED FROM DIRECT SUPPLIER"
-                panelchildform.Controls.Clear()
-                f.TopLevel = False
-                f.Dock = DockStyle.Fill
-                panelchildform.Controls.Add(f)
-                f.BringToFront()
-
-                f.received_type = "Direct"
-                f.type = "Direct"
-                f.Text = "Received from Direct Supplier"
-                f.lcacc = "Sales"
-                f.load_cb()
-                f.GetTransID()
-                f.dgvSelectedItem.Rows.Clear()
-                f.loadz()
-
-                f.Show()
-            End If
-        Next
+        Dim frm As New received_item2()
+        frm.received_type = "Received from Direct Supplier"
+        panelchildform.Controls.Clear()
+        frm.TopLevel = False
+        frm.Dock = DockStyle.Fill
+        panelchildform.Controls.Add(frm)
+        frm.BringToFront()
+        frm.Show()
     End Sub
 
     Private Sub btnmanusers_Click(sender As Object, e As EventArgs) Handles btnmanusers.Click
@@ -1019,7 +903,7 @@ Public Class main
 
     Private Sub btnpos_Click(sender As Object, e As EventArgs) Handles btnpos.Click
 
-        If login2.wrkgrp = "Sales" Or login2.wrkgrp = "Manager" Or login2.wrkgrp = "LC Accounting" Then
+        If login2.wrkgrp = "Sales" Or login2.wrkgrp = "Manager" Or login2.wrkgrp = "LC Accounting" Or login2.wrkgrp = "Administrator" Then
             If checkCutOff("") Then
                 MessageBox.Show("Your account is already cut off", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
                 Exit Sub
@@ -1101,7 +985,7 @@ Public Class main
     End Sub
 
     Private Sub btnconvlogssales_Click(sender As Object, e As EventArgs) Handles btnconvlogssales.Click
-        If login2.wrkgrp = "Sales" Or login2.wrkgrp = "Manager" Or login2.wrkgrp = "LC Accounting" Then
+        If login2.wrkgrp = "Sales" Or login2.wrkgrp = "Manager" Or login2.wrkgrp = "LC Accounting" Or login2.wrkgrp = "Administrator" Then
             hideShow(panelsubreports)
             Dim f As New conv_logs
             f.TopLevel = False
@@ -1133,7 +1017,7 @@ Public Class main
     End Sub
 
     Private Sub btninvlogssales_Click(sender As Object, e As EventArgs) Handles btninvlogssales.Click
-        If login2.wrkgrp = "Sales" Or login2.wrkgrp = "Manager" Or login2.wrkgrp = "LC Accounting" Then
+        If login2.wrkgrp = "Sales" Or login2.wrkgrp = "Manager" Or login2.wrkgrp = "LC Accounting" Or login2.wrkgrp = "Administrator" Then
             hideShow(panelsubreports)
             Dim f As New inv_logs
             f.TopLevel = False
@@ -1149,7 +1033,7 @@ Public Class main
     End Sub
 
     Private Sub btnpendingsapsales_Click(sender As Object, e As EventArgs) Handles btnpendingsapsales.Click
-        If login2.wrkgrp = "Sales" Or login2.wrkgrp = "Manager" Or login2.wrkgrp = "LC Accounting" Or login2.wrkgrp = "Sales" Or login2.wrkgrp = "Cashier" Then
+        If login2.wrkgrp = "Sales" Or login2.wrkgrp = "Manager" Or login2.wrkgrp = "LC Accounting" Or login2.wrkgrp = "Administrator" Then
 
             hideShow(panelsubinventorytransaction)
 
@@ -1267,12 +1151,12 @@ Public Class main
 
     Private Sub btnconvsales_Click(sender As Object, e As EventArgs) Handles btnconvsales.Click
 
-        If login2.wrkgrp = "LC Accounting" Or login2.wrkgrp = "Administrator" Then
+        If login2.wrkgrp = "LC Accounting" Then
             MessageBox.Show("Access Denied", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
         Else
 
             If checkCutOff("Sales") Then
-                MessageBox.Show("Sales account is already cut off", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                MessageBox.Show("Sales account Is already cut off", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
                 Exit Sub
             End If
 
@@ -1485,13 +1369,15 @@ Public Class main
     End Sub
 
     Private Sub btnprintreports_Click(sender As Object, e As EventArgs) Handles btnprintreports.Click
-        hideShow(panelsubreports)
-        Dim f As New reportss
-        f.TopLevel = False
-        f.Dock = DockStyle.Fill
-        panelchildform.Controls.Add(f)
-        f.BringToFront()
-        f.Show()
+        If login2.wrkgrp = "Administrator" Then
+            hideShow(panelsubreports)
+            Dim f As New reportss
+            f.TopLevel = False
+            f.Dock = DockStyle.Fill
+            panelchildform.Controls.Add(f)
+            f.BringToFront()
+            f.Show()
+        End If
     End Sub
 
     Private Sub btncancel_Click(sender As Object, e As EventArgs) Handles btncancel.Click
@@ -1519,19 +1405,23 @@ Public Class main
     End Sub
 
     Private Sub btnitemsummary_Click(sender As Object, e As EventArgs) Handles btnitemsummary.Click
-        hideShow(panelsubreports)
-        Dim f As New downloadss
-        f.TopLevel = False
-        f.Dock = DockStyle.Fill
-        panelchildform.Controls.Add(f)
-        f.BringToFront()
-        f.Show()
+        If login2.wrkgrp = "Administrator" Then
+            hideShow(panelsubreports)
+            Dim f As New downloadss
+            f.TopLevel = False
+            f.Dock = DockStyle.Fill
+            panelchildform.Controls.Add(f)
+            f.BringToFront()
+            f.Show()
+        End If
     End Sub
 
     Private Sub btnsapupload_Click(sender As Object, e As EventArgs) Handles btnsapupload.Click
-        Dim frm As New sap_uploading()
-        frm.ShowDialog()
-        hideShow(panelsubreports)
+        If login2.wrkgrp = "Administrator" Then
+            Dim frm As New sap_uploading()
+            frm.ShowDialog()
+            hideShow(panelsubreports)
+        End If
     End Sub
 
     Private Sub btneditsap_Click(sender As Object, e As EventArgs) Handles btneditsap.Click

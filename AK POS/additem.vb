@@ -1,7 +1,8 @@
 ﻿Imports System.Data.SqlClient
 Imports AK_POS.connection_class
+Imports AK_POS.items_class
 Public Class additem
-    Dim cc As New connection_class
+    Dim cc As New connection_class, itemc As New items_class()
     Dim con As New SqlConnection(cc.conString)
     Dim cmd As SqlCommand
     Dim rdr As SqlDataReader
@@ -31,36 +32,28 @@ Public Class additem
         End If
     End Sub
     ''' <summary>
-    ''' get category from tblcat
+    ''' get category from item class
     ''' </summary>
     Public Sub loadCategories()
         Try
-            'clear combobox item
+            'clear category combo box
             cmbcategory.Items.Clear()
-            'open connection
-            con.Open()
-            'syntax
-            cmd = New SqlCommand("SELECT category FROM tblcat WHERE status=1;", con)
-            'read
-            rdr = cmd.ExecuteReader
+            'init result to hold categories
+            Dim result As New DataTable()
+            'assign datatable to get data
+            result = itemc.loadCategories()
             'loop through
-            While rdr.Read
-                'add item to combobox
-                cmbcategory.Items.Add(rdr("category"))
-            End While
-            'close connection
-            con.Close()
-            'check if item count is not equal to zero
-            If cmbcategory.Items.Count <> 0 Then
-                'assign selectedindex to zero
+            For Each r0w As DataRow In result.Rows
+                'add category to combo box
+                cmbcategory.Items.Add(r0w("category"))
+            Next
+            'check if item count is greater than zero
+            If cmbcategory.Items.Count > 0 Then
+                'set selected index to zero
                 cmbcategory.SelectedIndex = 0
             End If
         Catch ex As Exception
-            'error msg
             MessageBox.Show(ex.ToString)
-        Finally
-            'close connection
-            con.Close()
         End Try
     End Sub
     ''' <summary>
@@ -68,26 +61,24 @@ Public Class additem
     ''' </summary>
     Public Sub loadIems()
         Try
-            'open connectopm
-            con.Open()
-            'syntax
-            cmd = New SqlCommand("SELECT a.itemcode,a.itemname,a.category,a.description,a.price,a.deposit,ISNULL((SELECT price FROM tbldepositprice WHERE itemid=a.itemid),0) [deposit_price] FROM tblitems a WHERE a.itemid=" & itemid & ";", con)
-            'read command
-            rdr = cmd.ExecuteReader
+            'set itemid to item class
+            itemc.itemid = itemid
+            'init datatable that hold data
+            Dim result As New DataTable()
+            'get data from item class
+            result = itemc.loadIemsWhereID()
             'loop through
-            While rdr.Read
+            For Each r0w As DataRow In result.Rows
                 'assign values
-                txtcode.Text = rdr("itemcode")
-                current_itemcode = rdr("itemcode")
-                txtname.Text = rdr("itemname")
-                txtdescription.Text = rdr("description")
-                txtprice.Text = CDbl(rdr("price")).ToString("n2")
-                cmbcategory.SelectedItem = rdr("category")
-                chck.Checked = IIf(CInt(rdr("deposit")) = 1, True, False)
-                txtdepositprice.Text = CDbl(rdr("deposit_price")).ToString("n2")
-            End While
-            'close connection
-            con.Close()
+                txtcode.Text = r0w("itemcode")
+                current_itemcode = r0w("itemcode")
+                txtname.Text = r0w("itemname")
+                txtdescription.Text = r0w("description")
+                txtprice.Text = CDbl(r0w("price")).ToString("n2")
+                cmbcategory.SelectedItem = r0w("category")
+                chck.Checked = IIf(CInt(r0w("deposit")) = 1, True, False)
+                txtdepositprice.Text = CDbl(r0w("deposit_price")).ToString("n2")
+            Next
         Catch ex As Exception
             'error msg
             MessageBox.Show(ex.ToString)
@@ -142,31 +133,31 @@ Public Class additem
         'check if item code is empty
         If String.IsNullOrEmpty(txtcode.Text) Then
             'msg
-            MessageBox.Show("Code field is empty", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            MessageBox.Show("Code field Is empty", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
             'focus
             txtcode.Focus()
             'check if item name is empty
         ElseIf String.IsNullOrEmpty(txtname.Text) Then
             'msg
-            MessageBox.Show("Item field is empty", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            MessageBox.Show("Item field Is empty", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
             'focus
             txtname.Focus()
             'check if description is empty
         ElseIf String.IsNullOrEmpty(txtdescription.Text) Then
             'msg
-            MessageBox.Show("Description field is empty", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            MessageBox.Show("Description field Is empty", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
             'focus
             txtdescription.Focus()
             'check if price is empty
         ElseIf String.IsNullOrEmpty(txtprice.Text) Then
             'msg
-            MessageBox.Show("Price field is empty", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            MessageBox.Show("Price field Is empty", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
             'focus
             txtprice.Focus()
             'check if deposit price is empty
         ElseIf chck.Checked = True And String.IsNullOrEmpty(txtdepositprice.Text) Then
             'msg
-            MessageBox.Show("Deposit Price field is empty", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            MessageBox.Show("Deposit Price field Is empty", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
             'focus
             txtdepositprice.Focus()
         Else
@@ -186,34 +177,7 @@ Public Class additem
         submit()
     End Sub
 
-    ''' <summary>
-    ''' check item if exist
-    ''' </summary>
-    ''' <returns></returns>
-    Public Function checkItem(ByVal itemname As String) As Boolean
-        'init result
-        Dim result As Boolean = False
-        'open connection
-        con.Open()
-        'syntax
-        cmd = New SqlCommand("SELECT itemname FROM tblitems WHERE itemname=@itemname;", con)
-        'assign parameter
-        cmd.Parameters.AddWithValue("@itemname", itemname)
-        'read command
-        rdr = cmd.ExecuteReader
-        'check if read has row
-        If rdr.Read Then
-            'assign
-            result = True
-        Else
-            'assign
-            result = False
-        End If
-        'close connection
-        con.Close()
-        'return result
-        Return result
-    End Function
+
 
     ''' <summary>
     ''' get the server date
@@ -226,7 +190,7 @@ Public Class additem
             'open connection
             con.Open()
             'syntax
-            cmd = New SqlCommand("SELECT GETDATE()", con)
+            cmd = New SqlCommand("Select GETDATE()", con)
             'read command
             rdr = cmd.ExecuteReader()
             'loop through
@@ -244,64 +208,21 @@ Public Class additem
         End Try
     End Function
 
-    ''' <summary>
-    '''  get latest inventory number
-    ''' </summary>
-    Public Function getInvID() As String
-        'init variables
-        Dim id As String = "", date_ As New DateTime()
-        'open connection
-        con.Open()
-        'syntax
-        cmd = New SqlCommand("Select TOP 1 invnum,datecreated from tblinvsum WHERE area='" & "Sales" & "' order by invsumid DESC", con)
-        'read command
-        rdr = cmd.ExecuteReader()
-        'check if read has row
-        If rdr.Read() Then
-            'assign values
-            id = rdr("invnum")
-            date_ = CDate(rdr("datecreated"))
-        End If
-        'close connection
-        con.Close()
-        'return expression
-        If date_.ToString("MM/dd/yyyy") = getSystemDate.ToString("MM/dd/yyyy") Then
-            Return id
-        Else
-            Return "N/A"
-        End If
-    End Function
-    ''' <summary>
-    ''' get latest item id that inserted
-    ''' </summary>
-    ''' <returns></returns>
-    Public Function getLastItemID() As Integer
-        'init result
-        Dim result As Integer = 0
-        'open connection
-        con.Open()
-        'syntax
-        cmd = New SqlCommand("Select Top 1 itemid from tblitems order by itemid DESC", con)
-        'assign result
-        result = cmd.ExecuteScalar
-        'close connection
-        con.Close()
-        'return result
-        Return result
-    End Function
+
     ''' <summary>
     ''' add item
     ''' </summary>
     Public Sub addItem()
         'check if item name is already inserted in database
-        If checkItem(txtname.Text) Then
+        itemc.itemName = txtname.Text
+        If itemc.checkItem(txtname.Text) Then
             MessageBox.Show("Item is already exist", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
             'check inventory number
-        ElseIf getInvID() = "N/A" Then
+        ElseIf itemc.getInvID() = "N/A" Then
             MessageBox.Show("Created New Inventory first", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
         Else
             'init inventory id and latest itemid
-            Dim invnum As String = getInvID(), last_itemid As Integer = getLastItemID()
+            Dim invnum As String = itemc.getInvID()
             'confirm dialog
             Dim a As String = MsgBox("Are you sure you want to add item?", MsgBoxStyle.Question + MsgBoxStyle.YesNo, "Add Item")
             'check if user click ok button
@@ -348,20 +269,9 @@ Public Class additem
                             'clear parameters first
                             cmdd.Parameters.Clear()
                             'command syntax
-                            cmdd.CommandText = "INSERT INTO tbldepositprice (itemid,price) VALUES (@itemid,@price);"
+                            cmdd.CommandText = "INSERT INTO tbldepositprice (itemid,price) VALUES ((SELECT TOP 1 itemid FROM tblitems ORDER BY itemid DESC),@price);"
                             'assign parameters
-                            cmdd.Parameters.AddWithValue("@itemid", last_itemid)
                             cmdd.Parameters.AddWithValue("@price", txtdepositprice.Text)
-                            'execute query
-                            cmdd.ExecuteNonQuery()
-
-
-                            'clear parameters first
-                            cmdd.Parameters.Clear()
-                            'command syntax
-                            cmdd.CommandText = "INSERT  INTO tbldiscitems (itemid) VALUES (@itemid);"
-                            'assign parameter
-                            cmdd.Parameters.AddWithValue("@itemid", last_itemid)
                             'execute query
                             cmdd.ExecuteNonQuery()
                         End If

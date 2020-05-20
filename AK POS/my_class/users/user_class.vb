@@ -137,7 +137,7 @@ Public Class user_class
 
     Public Sub insertUser()
         Try
-            Using connection As New SqlConnection(login.ss)
+            Using connection As New SqlConnection(cc.conString)
                 Dim cmdd As New SqlCommand()
                 cmdd.Connection = connection
                 connection.Open()
@@ -168,7 +168,7 @@ Public Class user_class
     End Sub
     Public Sub updateUser()
         Try
-            Using connection As New SqlConnection(login.ss)
+            Using connection As New SqlConnection(cc.conString)
                 Dim cmdd As New SqlCommand()
                 cmdd.Connection = connection
                 connection.Open()

@@ -75,7 +75,7 @@ Public Class items2
             itemc.setDiscontinued(IIf(chck.Checked, 1, 0))
             itemc.setCategory(cmbcategory.Text)
             itemc.setICategory(cmbcategory.SelectedIndex)
-            itemc.setItem(txtsearch.Text)
+            itemc.itemName = txtsearch.Text
             dtResult = itemc.loadItems(offset, rowsFetch)
             'clear dgv rows first
             dgv.Rows.Clear()
@@ -105,7 +105,7 @@ Public Class items2
         itemc.setDiscontinued(IIf(chck.Checked, 1, 0))
         itemc.setCategory(cmbcategory.Text)
         itemc.setICategory(cmbcategory.SelectedIndex)
-        itemc.setItem(txtsearch.Text)
+        itemc.itemName = txtsearch.Text
         'get count result
         Dim result As Integer = itemc.countItems
         'return result

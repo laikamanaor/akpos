@@ -1,0 +1,35 @@
+[33mcommit ada6294adffc011d17d3e1dc3fdf4ad7ca121d41[m[33m ([m[1;36mHEAD -> [m[1;32makpos[m[33m)[m
+Author: laikamanor <juicesyko@gmail.com>
+Date:   Tue May 19 16:54:37 2020 +0800
+
+    optimizing categories and items
+
+[33mcommit b5b0cda5b6c2eb90504b350c223eb518d549629a[m[33m ([m[1;31morigin/akpos[m[33m)[m
+Author: Gordon <juicesyko@gmail.com>
+Date:   Wed May 13 01:47:58 2020 +0800
+
+    added readme
+
+[33mcommit 9895bd02a15fef6f6c461f343ec3039df35c1f6a[m
+Author: Gordon <juicesyko@gmail.com>
+Date:   Wed May 13 01:43:32 2020 +0800
+
+    Added readme
+
+[33mcommit d7db731023d34a57c43d119c53626d6c76416605[m
+Author: Gordon <juicesyko@gmail.com>
+Date:   Wed May 13 00:55:05 2020 +0800
+
+    changes of 05/12/2020
+
+[33mcommit bac245d7542b8f84b57c46c14a5a81c1e5f9e325[m[33m ([m[1;31morigin/master[m[33m, [m[1;32mmaster[m[33m)[m
+Author: Dell1 <Dell1@DELL>
+Date:   Tue May 5 10:32:07 2020 +0800
+
+    Add project files.
+
+[33mcommit c4af8c1402e0aa59e9aecf555273056c2a411e4f[m
+Author: Dell1 <Dell1@DELL>
+Date:   Tue May 5 10:31:27 2020 +0800
+
+    Add .gitignore and .gitattributes.

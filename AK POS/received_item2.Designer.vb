@@ -1,9 +1,9 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class received_item2
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -20,21 +20,19 @@ Partial Class received_item2
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle8 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle9 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle7 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.Panel3 = New System.Windows.Forms.Panel()
         Me.lblheader = New System.Windows.Forms.Label()
-        Me.Label7 = New System.Windows.Forms.Label()
-        Me.dtdate = New System.Windows.Forms.DateTimePicker()
         Me.Label10 = New System.Windows.Forms.Label()
         Me.cmbranches = New System.Windows.Forms.ComboBox()
         Me.Label1 = New System.Windows.Forms.Label()
@@ -45,33 +43,44 @@ Partial Class received_item2
         Me.Label2 = New System.Windows.Forms.Label()
         Me.lblListItemCount = New System.Windows.Forms.Label()
         Me.dgvListItem = New System.Windows.Forms.DataGridView()
-        Me.Panel2 = New System.Windows.Forms.Panel()
-        Me.Label3 = New System.Windows.Forms.Label()
-        Me.lblSelectedItemCount = New System.Windows.Forms.Label()
-        Me.dgvSelectedItem = New System.Windows.Forms.DataGridView()
-        Me.txtboxSelectedItem = New System.Windows.Forms.TextBox()
-        Me.Button2 = New System.Windows.Forms.Button()
-        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
-        Me.txtboxpath = New System.Windows.Forms.TextBox()
-        Me.Label15 = New System.Windows.Forms.Label()
-        Me.btnbrowse = New System.Windows.Forms.Button()
-        Me.btnSubmit = New System.Windows.Forms.Button()
         Me.itemcode = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.itemname = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.category = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Column2 = New System.Windows.Forms.DataGridViewButtonColumn()
+        Me.Panel2 = New System.Windows.Forms.Panel()
+        Me.Label3 = New System.Windows.Forms.Label()
+        Me.lblSelectedItemCount = New System.Windows.Forms.Label()
+        Me.dgvSelectedItem = New System.Windows.Forms.DataGridView()
         Me.itemcodee = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.itemnamee = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.categoryy = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.quantityy = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.updatequantity = New System.Windows.Forms.DataGridViewButtonColumn()
         Me.deletequantity = New System.Windows.Forms.DataGridViewButtonColumn()
+        Me.txtboxSelectedItem = New System.Windows.Forms.TextBox()
+        Me.btnselected = New System.Windows.Forms.Button()
+        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+        Me.txtboxpath = New System.Windows.Forms.TextBox()
+        Me.Label15 = New System.Windows.Forms.Label()
+        Me.btnbrowse = New System.Windows.Forms.Button()
+        Me.btnSubmit = New System.Windows.Forms.Button()
+        Me.panelSAP = New System.Windows.Forms.Panel()
+        Me.chckSAP = New System.Windows.Forms.CheckBox()
+        Me.lblsapdoc = New System.Windows.Forms.Label()
+        Me.checkfollowup = New System.Windows.Forms.CheckBox()
+        Me.lblSAPClose = New System.Windows.Forms.Label()
+        Me.txtsap = New System.Windows.Forms.TextBox()
+        Me.Label4 = New System.Windows.Forms.Label()
+        Me.txtremarks = New System.Windows.Forms.TextBox()
+        Me.Label11 = New System.Windows.Forms.Label()
+        Me.btnProceed = New System.Windows.Forms.Button()
         Me.Panel3.SuspendLayout()
         Me.Panel1.SuspendLayout()
         CType(Me.dgvListItem, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel2.SuspendLayout()
         CType(Me.dgvSelectedItem, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.panelSAP.SuspendLayout()
         Me.SuspendLayout()
         '
         'Panel3
@@ -94,28 +103,6 @@ Partial Class received_item2
         Me.lblheader.Size = New System.Drawing.Size(162, 22)
         Me.lblheader.TabIndex = 33
         Me.lblheader.Text = "RECEIVED ITEM"
-        '
-        'Label7
-        '
-        Me.Label7.AutoSize = True
-        Me.Label7.Font = New System.Drawing.Font("Arial Rounded MT Bold", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label7.ForeColor = System.Drawing.Color.DimGray
-        Me.Label7.Location = New System.Drawing.Point(68, 62)
-        Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(47, 17)
-        Me.Label7.TabIndex = 40
-        Me.Label7.Text = "Date:"
-        Me.Label7.Visible = False
-        '
-        'dtdate
-        '
-        Me.dtdate.CustomFormat = "MM/dd/yyyy"
-        Me.dtdate.Font = New System.Drawing.Font("Arial Rounded MT Bold", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.dtdate.Format = System.Windows.Forms.DateTimePickerFormat.Custom
-        Me.dtdate.Location = New System.Drawing.Point(215, 56)
-        Me.dtdate.Name = "dtdate"
-        Me.dtdate.Size = New System.Drawing.Size(143, 25)
-        Me.dtdate.TabIndex = 39
         '
         'Label10
         '
@@ -281,6 +268,42 @@ Partial Class received_item2
         Me.dgvListItem.Size = New System.Drawing.Size(1230, 154)
         Me.dgvListItem.TabIndex = 45
         '
+        'itemcode
+        '
+        Me.itemcode.HeaderText = "Item Code"
+        Me.itemcode.Name = "itemcode"
+        Me.itemcode.ReadOnly = True
+        Me.itemcode.Visible = False
+        '
+        'itemname
+        '
+        Me.itemname.HeaderText = "Item"
+        Me.itemname.Name = "itemname"
+        Me.itemname.ReadOnly = True
+        '
+        'category
+        '
+        Me.category.HeaderText = "Category"
+        Me.category.Name = "category"
+        Me.category.ReadOnly = True
+        '
+        'Column2
+        '
+        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(0, Byte), Integer))
+        DataGridViewCellStyle2.Font = New System.Drawing.Font("Arial Rounded MT Bold", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle2.ForeColor = System.Drawing.Color.White
+        Me.Column2.DefaultCellStyle = DataGridViewCellStyle2
+        Me.Column2.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.Column2.HeaderText = "Add Quantity"
+        Me.Column2.Name = "Column2"
+        Me.Column2.ReadOnly = True
+        Me.Column2.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.Column2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic
+        Me.Column2.Text = "Add"
+        Me.Column2.ToolTipText = "Add Quantity"
+        Me.Column2.UseColumnTextForButtonValue = True
+        '
         'Panel2
         '
         Me.Panel2.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
@@ -364,141 +387,6 @@ Partial Class received_item2
         Me.dgvSelectedItem.Size = New System.Drawing.Size(1230, 186)
         Me.dgvSelectedItem.TabIndex = 47
         '
-        'txtboxSelectedItem
-        '
-        Me.txtboxSelectedItem.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest
-        Me.txtboxSelectedItem.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource
-        Me.txtboxSelectedItem.BackColor = System.Drawing.Color.White
-        Me.txtboxSelectedItem.Font = New System.Drawing.Font("Arial Rounded MT Bold", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtboxSelectedItem.ForeColor = System.Drawing.Color.Black
-        Me.txtboxSelectedItem.Location = New System.Drawing.Point(71, 334)
-        Me.txtboxSelectedItem.Name = "txtboxSelectedItem"
-        Me.txtboxSelectedItem.ShortcutsEnabled = False
-        Me.txtboxSelectedItem.Size = New System.Drawing.Size(203, 25)
-        Me.txtboxSelectedItem.TabIndex = 49
-        '
-        'Button2
-        '
-        Me.Button2.BackColor = System.Drawing.SystemColors.HotTrack
-        Me.Button2.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.Button2.FlatAppearance.BorderSize = 0
-        Me.Button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.Button2.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Button2.ForeColor = System.Drawing.Color.White
-        Me.Button2.Location = New System.Drawing.Point(273, 334)
-        Me.Button2.Name = "Button2"
-        Me.Button2.Size = New System.Drawing.Size(75, 25)
-        Me.Button2.TabIndex = 50
-        Me.Button2.Text = "Search"
-        Me.Button2.UseVisualStyleBackColor = False
-        '
-        'PictureBox1
-        '
-        Me.PictureBox1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.PictureBox1.BackColor = System.Drawing.Color.White
-        Me.PictureBox1.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.PictureBox1.Image = Global.AK_POS.My.Resources.Resources.not_available
-        Me.PictureBox1.Location = New System.Drawing.Point(71, 574)
-        Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(124, 82)
-        Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
-        Me.PictureBox1.TabIndex = 54
-        Me.PictureBox1.TabStop = False
-        '
-        'txtboxpath
-        '
-        Me.txtboxpath.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.txtboxpath.BackColor = System.Drawing.Color.White
-        Me.txtboxpath.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.txtboxpath.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.txtboxpath.ForeColor = System.Drawing.Color.DimGray
-        Me.txtboxpath.Location = New System.Drawing.Point(252, 601)
-        Me.txtboxpath.Name = "txtboxpath"
-        Me.txtboxpath.ReadOnly = True
-        Me.txtboxpath.Size = New System.Drawing.Size(229, 13)
-        Me.txtboxpath.TabIndex = 53
-        Me.txtboxpath.Text = "N/A"
-        '
-        'Label15
-        '
-        Me.Label15.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.Label15.AutoSize = True
-        Me.Label15.Font = New System.Drawing.Font("Arial Rounded MT Bold", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label15.ForeColor = System.Drawing.Color.DimGray
-        Me.Label15.Location = New System.Drawing.Point(200, 598)
-        Me.Label15.Name = "Label15"
-        Me.Label15.Size = New System.Drawing.Size(46, 17)
-        Me.Label15.TabIndex = 52
-        Me.Label15.Text = "Path:"
-        '
-        'btnbrowse
-        '
-        Me.btnbrowse.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.btnbrowse.BackColor = System.Drawing.SystemColors.HotTrack
-        Me.btnbrowse.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.btnbrowse.FlatAppearance.BorderSize = 0
-        Me.btnbrowse.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnbrowse.Font = New System.Drawing.Font("Arial Rounded MT Bold", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnbrowse.ForeColor = System.Drawing.Color.White
-        Me.btnbrowse.Location = New System.Drawing.Point(203, 623)
-        Me.btnbrowse.Name = "btnbrowse"
-        Me.btnbrowse.Size = New System.Drawing.Size(75, 22)
-        Me.btnbrowse.TabIndex = 51
-        Me.btnbrowse.Text = "Browse"
-        Me.btnbrowse.UseVisualStyleBackColor = False
-        '
-        'btnSubmit
-        '
-        Me.btnSubmit.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnSubmit.BackColor = System.Drawing.Color.ForestGreen
-        Me.btnSubmit.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.btnSubmit.FlatAppearance.BorderSize = 0
-        Me.btnSubmit.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnSubmit.Font = New System.Drawing.Font("Arial Rounded MT Bold", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnSubmit.ForeColor = System.Drawing.Color.White
-        Me.btnSubmit.Location = New System.Drawing.Point(1154, 598)
-        Me.btnSubmit.Name = "btnSubmit"
-        Me.btnSubmit.Size = New System.Drawing.Size(147, 47)
-        Me.btnSubmit.TabIndex = 55
-        Me.btnSubmit.Text = "SUBMIT"
-        Me.btnSubmit.UseVisualStyleBackColor = False
-        '
-        'itemcode
-        '
-        Me.itemcode.HeaderText = "Item Code"
-        Me.itemcode.Name = "itemcode"
-        Me.itemcode.ReadOnly = True
-        Me.itemcode.Visible = False
-        '
-        'itemname
-        '
-        Me.itemname.HeaderText = "Item"
-        Me.itemname.Name = "itemname"
-        Me.itemname.ReadOnly = True
-        '
-        'category
-        '
-        Me.category.HeaderText = "Category"
-        Me.category.Name = "category"
-        Me.category.ReadOnly = True
-        '
-        'Column2
-        '
-        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(0, Byte), Integer))
-        DataGridViewCellStyle2.Font = New System.Drawing.Font("Arial Rounded MT Bold", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle2.ForeColor = System.Drawing.Color.White
-        Me.Column2.DefaultCellStyle = DataGridViewCellStyle2
-        Me.Column2.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.Column2.HeaderText = "Add Quantity"
-        Me.Column2.Name = "Column2"
-        Me.Column2.ReadOnly = True
-        Me.Column2.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.Column2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic
-        Me.Column2.Text = "Add"
-        Me.Column2.ToolTipText = "Add Quantity"
-        Me.Column2.UseColumnTextForButtonValue = True
-        '
         'itemcodee
         '
         Me.itemcodee.HeaderText = "Item Code"
@@ -555,19 +443,251 @@ Partial Class received_item2
         Me.deletequantity.ToolTipText = "Remove Item"
         Me.deletequantity.UseColumnTextForButtonValue = True
         '
+        'txtboxSelectedItem
+        '
+        Me.txtboxSelectedItem.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest
+        Me.txtboxSelectedItem.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource
+        Me.txtboxSelectedItem.BackColor = System.Drawing.Color.White
+        Me.txtboxSelectedItem.Font = New System.Drawing.Font("Arial Rounded MT Bold", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtboxSelectedItem.ForeColor = System.Drawing.Color.Black
+        Me.txtboxSelectedItem.Location = New System.Drawing.Point(71, 334)
+        Me.txtboxSelectedItem.Name = "txtboxSelectedItem"
+        Me.txtboxSelectedItem.ShortcutsEnabled = False
+        Me.txtboxSelectedItem.Size = New System.Drawing.Size(203, 25)
+        Me.txtboxSelectedItem.TabIndex = 49
+        '
+        'btnselected
+        '
+        Me.btnselected.BackColor = System.Drawing.SystemColors.HotTrack
+        Me.btnselected.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btnselected.FlatAppearance.BorderSize = 0
+        Me.btnselected.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnselected.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnselected.ForeColor = System.Drawing.Color.White
+        Me.btnselected.Location = New System.Drawing.Point(273, 334)
+        Me.btnselected.Name = "btnselected"
+        Me.btnselected.Size = New System.Drawing.Size(75, 25)
+        Me.btnselected.TabIndex = 50
+        Me.btnselected.Text = "Search"
+        Me.btnselected.UseVisualStyleBackColor = False
+        '
+        'PictureBox1
+        '
+        Me.PictureBox1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.PictureBox1.BackColor = System.Drawing.Color.White
+        Me.PictureBox1.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.PictureBox1.Image = Global.AK_POS.My.Resources.Resources.not_available
+        Me.PictureBox1.Location = New System.Drawing.Point(71, 574)
+        Me.PictureBox1.Name = "PictureBox1"
+        Me.PictureBox1.Size = New System.Drawing.Size(124, 82)
+        Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.PictureBox1.TabIndex = 54
+        Me.PictureBox1.TabStop = False
+        Me.PictureBox1.Visible = False
+        '
+        'txtboxpath
+        '
+        Me.txtboxpath.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.txtboxpath.BackColor = System.Drawing.Color.White
+        Me.txtboxpath.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.txtboxpath.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.txtboxpath.ForeColor = System.Drawing.Color.DimGray
+        Me.txtboxpath.Location = New System.Drawing.Point(252, 601)
+        Me.txtboxpath.Name = "txtboxpath"
+        Me.txtboxpath.ReadOnly = True
+        Me.txtboxpath.Size = New System.Drawing.Size(229, 13)
+        Me.txtboxpath.TabIndex = 53
+        Me.txtboxpath.Text = "N/A"
+        Me.txtboxpath.Visible = False
+        '
+        'Label15
+        '
+        Me.Label15.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.Label15.AutoSize = True
+        Me.Label15.Font = New System.Drawing.Font("Arial Rounded MT Bold", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label15.ForeColor = System.Drawing.Color.DimGray
+        Me.Label15.Location = New System.Drawing.Point(200, 598)
+        Me.Label15.Name = "Label15"
+        Me.Label15.Size = New System.Drawing.Size(46, 17)
+        Me.Label15.TabIndex = 52
+        Me.Label15.Text = "Path:"
+        Me.Label15.Visible = False
+        '
+        'btnbrowse
+        '
+        Me.btnbrowse.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.btnbrowse.BackColor = System.Drawing.SystemColors.HotTrack
+        Me.btnbrowse.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btnbrowse.FlatAppearance.BorderSize = 0
+        Me.btnbrowse.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnbrowse.Font = New System.Drawing.Font("Arial Rounded MT Bold", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnbrowse.ForeColor = System.Drawing.Color.White
+        Me.btnbrowse.Location = New System.Drawing.Point(203, 623)
+        Me.btnbrowse.Name = "btnbrowse"
+        Me.btnbrowse.Size = New System.Drawing.Size(75, 22)
+        Me.btnbrowse.TabIndex = 51
+        Me.btnbrowse.Text = "Browse"
+        Me.btnbrowse.UseVisualStyleBackColor = False
+        Me.btnbrowse.Visible = False
+        '
+        'btnSubmit
+        '
+        Me.btnSubmit.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnSubmit.BackColor = System.Drawing.Color.ForestGreen
+        Me.btnSubmit.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btnSubmit.FlatAppearance.BorderSize = 0
+        Me.btnSubmit.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnSubmit.Font = New System.Drawing.Font("Arial Rounded MT Bold", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnSubmit.ForeColor = System.Drawing.Color.White
+        Me.btnSubmit.Location = New System.Drawing.Point(1154, 598)
+        Me.btnSubmit.Name = "btnSubmit"
+        Me.btnSubmit.Size = New System.Drawing.Size(147, 47)
+        Me.btnSubmit.TabIndex = 55
+        Me.btnSubmit.Text = "SUBMIT"
+        Me.btnSubmit.UseVisualStyleBackColor = False
+        '
+        'panelSAP
+        '
+        Me.panelSAP.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.panelSAP.BackColor = System.Drawing.SystemColors.HotTrack
+        Me.panelSAP.Controls.Add(Me.chckSAP)
+        Me.panelSAP.Controls.Add(Me.lblsapdoc)
+        Me.panelSAP.Controls.Add(Me.checkfollowup)
+        Me.panelSAP.Controls.Add(Me.lblSAPClose)
+        Me.panelSAP.Controls.Add(Me.txtsap)
+        Me.panelSAP.Controls.Add(Me.Label4)
+        Me.panelSAP.Controls.Add(Me.txtremarks)
+        Me.panelSAP.Controls.Add(Me.Label11)
+        Me.panelSAP.Controls.Add(Me.btnProceed)
+        Me.panelSAP.Location = New System.Drawing.Point(458, 216)
+        Me.panelSAP.Name = "panelSAP"
+        Me.panelSAP.Size = New System.Drawing.Size(371, 267)
+        Me.panelSAP.TabIndex = 56
+        Me.panelSAP.Visible = False
+        '
+        'chckSAP
+        '
+        Me.chckSAP.AutoSize = True
+        Me.chckSAP.Checked = True
+        Me.chckSAP.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chckSAP.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chckSAP.ForeColor = System.Drawing.Color.White
+        Me.chckSAP.Location = New System.Drawing.Point(246, 22)
+        Me.chckSAP.Name = "chckSAP"
+        Me.chckSAP.Size = New System.Drawing.Size(82, 20)
+        Me.chckSAP.TabIndex = 18
+        Me.chckSAP.Text = "Add SAP"
+        Me.chckSAP.UseVisualStyleBackColor = True
+        Me.chckSAP.Visible = False
+        '
+        'lblsapdoc
+        '
+        Me.lblsapdoc.AutoSize = True
+        Me.lblsapdoc.Font = New System.Drawing.Font("Arial Rounded MT Bold", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblsapdoc.ForeColor = System.Drawing.Color.White
+        Me.lblsapdoc.Location = New System.Drawing.Point(175, 21)
+        Me.lblsapdoc.Name = "lblsapdoc"
+        Me.lblsapdoc.Size = New System.Drawing.Size(41, 18)
+        Me.lblsapdoc.TabIndex = 17
+        Me.lblsapdoc.Text = "N/A:"
+        '
+        'checkfollowup
+        '
+        Me.checkfollowup.AutoSize = True
+        Me.checkfollowup.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.checkfollowup.ForeColor = System.Drawing.Color.White
+        Me.checkfollowup.Location = New System.Drawing.Point(246, 48)
+        Me.checkfollowup.Name = "checkfollowup"
+        Me.checkfollowup.Size = New System.Drawing.Size(86, 20)
+        Me.checkfollowup.TabIndex = 16
+        Me.checkfollowup.Text = "To Follow"
+        Me.checkfollowup.UseVisualStyleBackColor = True
+        '
+        'lblSAPClose
+        '
+        Me.lblSAPClose.AutoSize = True
+        Me.lblSAPClose.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.lblSAPClose.Font = New System.Drawing.Font("Arial Rounded MT Bold", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblSAPClose.ForeColor = System.Drawing.Color.White
+        Me.lblSAPClose.Location = New System.Drawing.Point(345, 1)
+        Me.lblSAPClose.Name = "lblSAPClose"
+        Me.lblSAPClose.Size = New System.Drawing.Size(23, 24)
+        Me.lblSAPClose.TabIndex = 6
+        Me.lblSAPClose.Text = "X"
+        '
+        'txtsap
+        '
+        Me.txtsap.Font = New System.Drawing.Font("Arial Rounded MT Bold", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtsap.Location = New System.Drawing.Point(39, 44)
+        Me.txtsap.MaxLength = 6
+        Me.txtsap.Name = "txtsap"
+        Me.txtsap.ShortcutsEnabled = False
+        Me.txtsap.Size = New System.Drawing.Size(201, 29)
+        Me.txtsap.TabIndex = 5
+        '
+        'Label4
+        '
+        Me.Label4.AutoSize = True
+        Me.Label4.Font = New System.Drawing.Font("Arial Rounded MT Bold", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label4.ForeColor = System.Drawing.Color.White
+        Me.Label4.Location = New System.Drawing.Point(36, 21)
+        Me.Label4.Name = "Label4"
+        Me.Label4.Size = New System.Drawing.Size(133, 18)
+        Me.Label4.TabIndex = 4
+        Me.Label4.Text = "SAP Document:"
+        '
+        'txtremarks
+        '
+        Me.txtremarks.Font = New System.Drawing.Font("Arial Rounded MT Bold", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtremarks.Location = New System.Drawing.Point(39, 105)
+        Me.txtremarks.Multiline = True
+        Me.txtremarks.Name = "txtremarks"
+        Me.txtremarks.ScrollBars = System.Windows.Forms.ScrollBars.Both
+        Me.txtremarks.ShortcutsEnabled = False
+        Me.txtremarks.Size = New System.Drawing.Size(289, 90)
+        Me.txtremarks.TabIndex = 2
+        '
+        'Label11
+        '
+        Me.Label11.AutoSize = True
+        Me.Label11.Font = New System.Drawing.Font("Arial Rounded MT Bold", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label11.ForeColor = System.Drawing.Color.White
+        Me.Label11.Location = New System.Drawing.Point(36, 80)
+        Me.Label11.Name = "Label11"
+        Me.Label11.Size = New System.Drawing.Size(79, 18)
+        Me.Label11.TabIndex = 1
+        Me.Label11.Text = "Remarks"
+        '
+        'btnProceed
+        '
+        Me.btnProceed.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.btnProceed.BackColor = System.Drawing.Color.ForestGreen
+        Me.btnProceed.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btnProceed.FlatAppearance.BorderSize = 0
+        Me.btnProceed.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnProceed.Font = New System.Drawing.Font("Arial Rounded MT Bold", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnProceed.ForeColor = System.Drawing.Color.White
+        Me.btnProceed.Location = New System.Drawing.Point(199, 210)
+        Me.btnProceed.Name = "btnProceed"
+        Me.btnProceed.Size = New System.Drawing.Size(129, 31)
+        Me.btnProceed.TabIndex = 0
+        Me.btnProceed.Text = "Proceed"
+        Me.btnProceed.UseVisualStyleBackColor = False
+        '
         'received_item2
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.White
         Me.ClientSize = New System.Drawing.Size(1344, 701)
+        Me.Controls.Add(Me.panelSAP)
         Me.Controls.Add(Me.btnSubmit)
         Me.Controls.Add(Me.PictureBox1)
         Me.Controls.Add(Me.txtboxpath)
         Me.Controls.Add(Me.Label15)
         Me.Controls.Add(Me.btnbrowse)
         Me.Controls.Add(Me.txtboxSelectedItem)
-        Me.Controls.Add(Me.Button2)
+        Me.Controls.Add(Me.btnselected)
         Me.Controls.Add(Me.Panel2)
         Me.Controls.Add(Me.dgvSelectedItem)
         Me.Controls.Add(Me.Panel1)
@@ -576,8 +696,6 @@ Partial Class received_item2
         Me.Controls.Add(Me.cmbCategoryListItem)
         Me.Controls.Add(Me.btnSearchListItem)
         Me.Controls.Add(Me.txtboxListItemSearch)
-        Me.Controls.Add(Me.Label7)
-        Me.Controls.Add(Me.dtdate)
         Me.Controls.Add(Me.Label10)
         Me.Controls.Add(Me.cmbranches)
         Me.Controls.Add(Me.Panel3)
@@ -594,6 +712,8 @@ Partial Class received_item2
         Me.Panel2.PerformLayout()
         CType(Me.dgvSelectedItem, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.panelSAP.ResumeLayout(False)
+        Me.panelSAP.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -601,8 +721,6 @@ Partial Class received_item2
 
     Friend WithEvents Panel3 As Panel
     Public WithEvents lblheader As Label
-    Friend WithEvents Label7 As Label
-    Friend WithEvents dtdate As DateTimePicker
     Friend WithEvents Label10 As Label
     Friend WithEvents cmbranches As ComboBox
     Friend WithEvents Label1 As Label
@@ -617,7 +735,7 @@ Partial Class received_item2
     Friend WithEvents Label3 As Label
     Friend WithEvents lblSelectedItemCount As Label
     Friend WithEvents txtboxSelectedItem As TextBox
-    Friend WithEvents Button2 As Button
+    Friend WithEvents btnselected As Button
     Friend WithEvents PictureBox1 As PictureBox
     Friend WithEvents txtboxpath As TextBox
     Friend WithEvents Label15 As Label
@@ -634,4 +752,14 @@ Partial Class received_item2
     Friend WithEvents quantityy As DataGridViewTextBoxColumn
     Friend WithEvents updatequantity As DataGridViewButtonColumn
     Friend WithEvents deletequantity As DataGridViewButtonColumn
+    Friend WithEvents panelSAP As Panel
+    Friend WithEvents chckSAP As CheckBox
+    Friend WithEvents lblsapdoc As Label
+    Friend WithEvents checkfollowup As CheckBox
+    Friend WithEvents lblSAPClose As Label
+    Friend WithEvents txtsap As TextBox
+    Friend WithEvents Label4 As Label
+    Friend WithEvents txtremarks As TextBox
+    Friend WithEvents Label11 As Label
+    Friend WithEvents btnProceed As Button
 End Class
