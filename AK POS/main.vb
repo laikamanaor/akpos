@@ -922,12 +922,12 @@ Public Class main
                         Exit Sub
                     Else
                         Dim f As New mainmenu()
-                        'f.cas = "Sales"
+                        f.cas = "Sales"
                         f.Show()
                     End If
                 Else
                     Dim f As New mainmenu()
-                    'f.cas = "Sales"
+                    f.cas = "Sales"
                     f.Show()
                 End If
             Next
@@ -1019,12 +1019,12 @@ Public Class main
     Private Sub btninvlogssales_Click(sender As Object, e As EventArgs) Handles btninvlogssales.Click
         If login2.wrkgrp = "Sales" Or login2.wrkgrp = "Manager" Or login2.wrkgrp = "LC Accounting" Or login2.wrkgrp = "Administrator" Then
             hideShow(panelsubreports)
-            Dim f As New inv_logs
+            Dim f As New inv_logs2
             f.TopLevel = False
             f.Dock = DockStyle.Fill
             panelchildform.Controls.Add(f)
             f.BringToFront()
-            f.manager = "Sales"
+            'f.manager = "Sales"
             f.Show()
         Else
             MessageBox.Show("Access Denied", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
@@ -1061,7 +1061,6 @@ Public Class main
             hideShow(panelsubinventorytransaction)
 
             Dim f As New endingbalance
-            f.lcacc = "Sales"
             f.TopLevel = False
             f.Dock = DockStyle.Fill
             panelchildform.Controls.Add(f)
@@ -1150,50 +1149,24 @@ Public Class main
     End Sub
 
     Private Sub btnconvsales_Click(sender As Object, e As EventArgs) Handles btnconvsales.Click
-
-        If login2.wrkgrp = "LC Accounting" Then
+        If login2.wrkgrp = "LC Accounting" Or login2.wrkgrp = "Production" Then
             MessageBox.Show("Access Denied", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
-        Else
-
-            If checkCutOff("Sales") Then
-                MessageBox.Show("Sales account Is already cut off", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                Exit Sub
-            End If
-
-            hideShow(panelsubinventorytransaction)
-
-            con.Open()
-            cmd = New SqlCommand("Select TOP 1 * from tblinvsum WHERE area='" & "Sales" & "' order by invsumid DESC", con)
-            Dim dt As New DataTable()
-            adptr.SelectCommand = cmd
-            adptr.Fill(dt)
-            con.Close()
-            For Each row As DataRow In dt.Rows
-                If row("verify") = 1 Then
-                    If row("invdate") = getSystemDate.ToString("MM/dd/yyyy") Then
-                        MsgBox("Coversion failed! Inventory end for this day.", MsgBoxStyle.Critical, "")
-                        Me.Cursor = Cursors.Default
-                        Exit Sub
-                    Else
-                        Dim f As New conversions
-                        f.lcacc = "Sales"
-                        f.TopLevel = False
-                        f.Dock = DockStyle.Fill
-                        panelchildform.Controls.Add(f)
-                        f.BringToFront()
-                        f.Show()
-                    End If
-                Else
-                    Dim f As New conversions
-                    f.lcacc = "Sales"
-                    f.TopLevel = False
-                    f.Dock = DockStyle.Fill
-                    panelchildform.Controls.Add(f)
-                    f.BringToFront()
-                    f.Show()
-                End If
-            Next
+            Exit Sub
         End If
+
+        If checkCutOff("") Then
+            MessageBox.Show("Your account is already cut off", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Exit Sub
+        End If
+        hideShow(panelsubinventorytransaction)
+        Dim frm As New received_item2()
+        frm.received_type = "Conversion Out"
+        panelchildform.Controls.Clear()
+        frm.TopLevel = False
+        frm.Dock = DockStyle.Fill
+        panelchildform.Controls.Add(frm)
+        frm.BringToFront()
+        frm.Show()
     End Sub
 
     Private Sub btnorders_Click(sender As Object, e As EventArgs) Handles btnorders.Click

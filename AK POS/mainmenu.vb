@@ -1981,7 +1981,6 @@ Public Class mainmenu
                     End If
                 Else
                     If pos_dialog.ans <> posdialog Then
-                        MessageBox.Show("b/" & chckCategory)
                         errorCategory &= grd.Rows(index).Cells("description").Value & Environment.NewLine
                     End If
                 End If
@@ -2120,7 +2119,6 @@ Public Class mainmenu
                         ar_remarks.ShowDialog()
                         arRemarks = ar_remarks.txtremarks.Text
                     End If
-                    MessageBox.Show(arRemarks)
                     cmdd.Parameters.Clear()
                     cmdd.CommandText = "insertTransaction"
                     cmdd.CommandType = CommandType.StoredProcedure
@@ -2427,7 +2425,7 @@ Public Class mainmenu
                 End If
                 transaction.Commit()
             End Using
-            If login2.wrkgrp = "Sales" Or login2.wrkgrp = "Manager" Or login2.wrkgrp = "LC Accounting" Then
+            If login2.wrkgrp <> "Cashier" Then
 
                 Dim frm As New form_printorder()
                 frm.lblordernum.Text = ordernum

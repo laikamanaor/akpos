@@ -52,4 +52,8 @@ Public Class receivedItem_add
             submit()
         End If
     End Sub
+
+    Private Sub receivedItem_add_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+
+    End Sub
 End Class

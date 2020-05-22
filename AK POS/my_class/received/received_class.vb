@@ -2,7 +2,7 @@
 Imports AK_POS.connection_class
 Public Class received_class
     Dim cc As New connection_class(), transaction As SqlTransaction
-    Private sap_number As String = "", datecreated As String, itemname As String = "", category As String = "", vheaderText As String, vinventorynum As String = "", vtableName As String = "", vtransactionNumber As String, vsapNumber As Integer = 0, vsapDoc As String = "", vremarks As String = "", vfromBranch As String = ""
+    Private sap_number As String = "", datecreated As String, itemname As String = "", category As String = "", vheaderText As String, vinventorynum As String = "", vtableName As String = "", vtransactionNumber As String, vsapNumber As Integer = 0, vsapDoc As String = "", vremarks As String = "", vfromBranch As String = "", vconvnum As String = ""
     Public Sub setSAPNumber(ByVal value As String)
         sap_number = value
     End Sub
@@ -99,6 +99,14 @@ Public Class received_class
             Return vfromBranch
         End Get
     End Property
+    Public Property convNumber As String
+        Set(value As String)
+            vconvnum = value
+        End Set
+        Get
+            Return vconvnum
+        End Get
+    End Property
     ''' <summary>
     ''' Check SAP Number if exist
     ''' </summary>
@@ -154,18 +162,28 @@ Public Class received_class
         Return result
     End Function
 
-    Public Function returnTransactionNumber() As String
+    Public Function returnTransactionNumber(ByVal isRecTrans As Boolean) As String
         Dim result As Integer = 0, totalZero As String = "", result_format As String = "", taypz As String = "", type2 As String = "", branchcode As String = "", template As String = ""
         If headerText = "Received from Adjustment" Then
             taypz = "Adjustment Item"
         ElseIf headerText = "Transfer Out" Then
             taypz = "Transfer Item"
+        ElseIf headerText = "Conversion Out" Then
+            taypz = "Parent"
+        ElseIf headerText = "Conversion In" Then
+            taypz = "Child"
         Else
             taypz = "Received Item"
         End If
         type2 = IIf(headerText = "Transfer Out", "Transfer", headerText)
+
+        Dim rectrans_query As String = "Select ISNULL(MAX(transaction_id),0) +1 from tblproduction WHERE area='Sales' AND type='" & taypz & "' AND type2='" & type2 & "';",
+            conv_query As String = "SELECT ISNULL(MAX(conv_id),0) +1 FROM tblconversion WHERE area='Sales' AND type='" & taypz & "';",
+            result_query As String = ""
+        result_query = IIf(isRecTrans, rectrans_query, conv_query)
+
         cc.con.Open()
-        cc.cmd = New SqlClient.SqlCommand("Select ISNULL(MAX(transaction_id),0) +1 from tblproduction WHERE area='Sales' AND type='" & taypz & "' AND type2='" & type2 & "';", cc.con)
+        cc.cmd = New SqlClient.SqlCommand(result_query, cc.con)
         result = cc.cmd.ExecuteScalar
         cc.con.Close()
 
@@ -185,6 +203,10 @@ Public Class received_class
                 template = "ADJIN - "
             Case "Transfer Out"
                 template = "TRA - "
+            Case "Conversion Out"
+                template = "CONVOUT - "
+            Case "Conversion In"
+                template = "CONVIN - "
         End Select
 
         If result < 1000000 Then
@@ -250,32 +272,53 @@ Public Class received_class
                 transaction = connection.BeginTransaction()
                 cmdd.Transaction = transaction
 
-                Dim assignOperator As String = IIf(vheaderText = "Transfer Out", "-", "+")
+                If vheaderText <> "Conversion Out" Then
+                    Dim assignOperator As String = IIf(vheaderText = "Transfer Out", "-", "+")
 
-                For Each r0w As DataRow In dt.Rows
-                    cmdd.Parameters.Clear()
-                    cmdd.CommandText = "UPDATE tblinvitems Set " & vtableName & "+=@quantity" & IIf(vheaderText = "Transfer Out", "", ",totalav+=@quantity") & ", endbal" & assignOperator & "=@quantity, variance" & IIf(vheaderText = "Transfer Out", "+", "-") & "=@quantity WHERE itemname=@itemname And invnum=@invnum And area='Sales';"
-                    cmdd.Parameters.AddWithValue("@quantity", CDbl(r0w("quantity")))
-                    cmdd.Parameters.AddWithValue("@itemname", r0w("item"))
-                    cmdd.Parameters.AddWithValue("@invnum", vinventorynum)
-                    cmdd.ExecuteNonQuery()
+                    For Each r0w As DataRow In dt.Rows
+                        cmdd.Parameters.Clear()
+                        cmdd.CommandText = "UPDATE tblinvitems Set " & vtableName & "+=@quantity" & IIf(vheaderText = "Transfer Out", "", ",totalav+=@quantity") & ", endbal" & assignOperator & "=@quantity, variance" & IIf(vheaderText = "Transfer Out", "+", "-") & "=@quantity WHERE itemname=@itemname And invnum=@invnum And area='Sales';"
+                        cmdd.Parameters.AddWithValue("@quantity", CDbl(r0w("quantity")))
+                        cmdd.Parameters.AddWithValue("@itemname", r0w("item"))
+                        cmdd.Parameters.AddWithValue("@invnum", vinventorynum)
+                        cmdd.ExecuteNonQuery()
 
-                    cmdd.Parameters.Clear()
-                    cmdd.CommandText = "INSERT INTO tblproduction (transaction_number,inv_id,item_code,item_name,category,quantity,reject,charge,sap_number,remarks,date,processed_by,type,area,status,transfer_from,transfer_to,typenum,type2) VALUES (@trans_id,@id,(SELECT itemcode FROM tblitems WHERE itemname=@name),@name,(SELECT category FROM tblitems WHERE itemname=@name),@quantity,0,0,@sap,@remarks,(SELECT GETDATE()),@processed_by,@type,'Sales','Completed',@from,@to,@typenum,@type2);"
-                    cmdd.Parameters.AddWithValue("@trans_id", vtransactionNumber)
-                    cmdd.Parameters.AddWithValue("@id", vinventorynum)
-                    cmdd.Parameters.AddWithValue("@name", r0w("item"))
-                    cmdd.Parameters.AddWithValue("@quantity", CDbl(r0w("quantity")))
-                    cmdd.Parameters.AddWithValue("@sap", IIf(vsapNumber = 0, "", vsapNumber))
-                    cmdd.Parameters.AddWithValue("@remarks", vremarks)
-                    cmdd.Parameters.AddWithValue("@processed_by", login2.username)
-                    cmdd.Parameters.AddWithValue("@type", taypz)
-                    cmdd.Parameters.AddWithValue("@typenum", vsapDoc)
-                    cmdd.Parameters.AddWithValue("@type2", vheaderText)
-                    cmdd.Parameters.AddWithValue("@from", fromBranch)
-                    cmdd.Parameters.AddWithValue("@to", toBranch)
-                    cmdd.ExecuteNonQuery()
-                Next
+                        cmdd.Parameters.Clear()
+                        cmdd.CommandText = "INSERT INTO tblproduction (transaction_number,inv_id,item_code,item_name,category,quantity,reject,charge,sap_number,remarks,date,processed_by,type,area,status,transfer_from,transfer_to,typenum,type2) VALUES (@trans_id,@id,(SELECT itemcode FROM tblitems WHERE itemname=@name),@name,(SELECT category FROM tblitems WHERE itemname=@name),@quantity,0,0,@sap,@remarks,(SELECT GETDATE()),@processed_by,@type,'Sales','Completed',@from,@to,@typenum,@type2);"
+                        cmdd.Parameters.AddWithValue("@trans_id", vtransactionNumber)
+                        cmdd.Parameters.AddWithValue("@id", vinventorynum)
+                        cmdd.Parameters.AddWithValue("@name", r0w("item"))
+                        cmdd.Parameters.AddWithValue("@quantity", CDbl(r0w("quantity")))
+                        cmdd.Parameters.AddWithValue("@sap", IIf(vsapNumber = 0, "To Follow", vsapNumber))
+                        cmdd.Parameters.AddWithValue("@remarks", vremarks)
+                        cmdd.Parameters.AddWithValue("@processed_by", login2.username)
+                        cmdd.Parameters.AddWithValue("@type", taypz)
+                        cmdd.Parameters.AddWithValue("@typenum", vsapDoc)
+                        cmdd.Parameters.AddWithValue("@type2", vheaderText)
+                        cmdd.Parameters.AddWithValue("@from", fromBranch)
+                        cmdd.Parameters.AddWithValue("@to", toBranch)
+                        cmdd.ExecuteNonQuery()
+                    Next
+                ElseIf vheaderText = "Conversion Out" Then
+                    For Each r0w As DataRow In dt.Rows
+                        cmdd.Parameters.Clear()
+                        cmdd.CommandText = "insertConvOut"
+                        cmdd.CommandType = CommandType.StoredProcedure
+                        cmdd.Parameters.AddWithValue("@conv_number", vtransactionNumber)
+                        cmdd.Parameters.AddWithValue("@itemname", r0w("item"))
+                        cmdd.Parameters.AddWithValue("@quantity", CDbl(r0w("quantity")))
+                        cmdd.Parameters.AddWithValue("@type", "Parent")
+                        cmdd.Parameters.AddWithValue("@status", "Open")
+                        cmdd.Parameters.AddWithValue("@createdby", login2.username)
+                        cmdd.Parameters.AddWithValue("@area", "Sales")
+                        cmdd.Parameters.AddWithValue("@typenum", vsapDoc)
+                        cmdd.Parameters.AddWithValue("@sapnum", IIf(vsapNumber = 0, "To Follow", vsapNumber))
+                        cmdd.Parameters.AddWithValue("@remarks", vremarks)
+                        cmdd.Parameters.AddWithValue("@reference", vtransactionNumber)
+                        cmdd.Parameters.AddWithValue("@marks", "")
+                        cmdd.ExecuteNonQuery()
+                    Next
+                End If
                 transaction.Commit()
                 Dim frm As New show_trans()
                 frm.lbltr.Text = vtransactionNumber
@@ -291,4 +334,87 @@ Public Class received_class
         End Try
     End Sub
 
+    Public Sub conversionFunction(ByVal dtConvOut As DataTable, dtConvIn As DataTable)
+        Try
+            Using connection As New SqlConnection(cc.conString)
+                Dim cmdd As New SqlCommand()
+                cmdd.Connection = connection
+                connection.Open()
+                transaction = connection.BeginTransaction()
+                cmdd.Transaction = transaction
+                For Each r0w As DataRow In dtConvOut.Rows
+                    cmdd.Parameters.Clear()
+                    cmdd.CommandText = "Update tblinvitems set  convout+=@quantity, endbal-=@quantity, variance+=@quantity,status=1 where itemname=@itemname and invnum=(Select TOP 1 invnum from tblinvsum WHERE area='Sales' order by invsumid DESC);"
+                    cmdd.Parameters.AddWithValue("@quantity", CDbl(r0w("quantity")))
+                    cmdd.Parameters.AddWithValue("@itemname", r0w("itemname"))
+                    cmdd.ExecuteNonQuery()
+
+                    cmdd.Parameters.Clear()
+                    cmdd.CommandText = "UPDATE tblconversion SET status=@status1 WHERE conv_number=@conv_number AND item_name=@itemname"
+                    cmdd.Parameters.AddWithValue("@conv_number", r0w("conv_number"))
+                    cmdd.Parameters.AddWithValue("@itemname", r0w("itemname"))
+                    cmdd.Parameters.AddWithValue("@status1", "Closed")
+                    cmdd.ExecuteNonQuery()
+                Next
+                For Each r0w As DataRow In dtConvIn.Rows
+                    cmdd.Parameters.Clear()
+                    cmdd.CommandText = "Update tblinvitems set convin+=@quantity, totalav+=@quantity, endbal+=@quantity, variance-=@quantity where itemname=@itemname and invnum=(Select TOP 1 invnum from tblinvsum WHERE area='Sales' order by invsumid DESC)"
+                    cmdd.Parameters.AddWithValue("@quantity", r0w("quantity"))
+                    cmdd.Parameters.AddWithValue("@itemname", r0w("itemname"))
+                    cmdd.ExecuteNonQuery()
+
+                    cmdd.Parameters.Clear()
+                    cmdd.CommandText = "INSERT INTO tblconversion (inv_number,conv_number,item_code,item_name,category,quantity,type,status,sap_id,remarks,date_created,created_by,area,typenum,reference_number,marks) VALUES ((Select TOP 1 invnum from tblinvsum WHERE area='Sales' order by invsumid DESC),@convnumber,(SELECT itemcode FROm tblitems WHERE itemname=@itemname),@itemname,(SELECT category FROM tblitems WHERE itemname=@itemname),@quantity,@type,@status,@sap_id,@remarks,(SELECT GETDATE()),@createdby,@area,@typenum,@reference,@marks)"
+                    cmdd.Parameters.AddWithValue("@convnumber", vconvnum)
+                    cmdd.Parameters.AddWithValue("@itemname", r0w("itemname"))
+                    cmdd.Parameters.AddWithValue("@quantity", CDbl(r0w("quantity")))
+                    cmdd.Parameters.AddWithValue("@type", "Child")
+                    cmdd.Parameters.AddWithValue("@status", "Closed")
+                    cmdd.Parameters.AddWithValue("@typenum", vsapDoc)
+                    cmdd.Parameters.AddWithValue("@sap_id", IIf(vsapNumber = 0, "To Follow", vsapNumber))
+                    cmdd.Parameters.AddWithValue("@remarks", vremarks)
+                    cmdd.Parameters.AddWithValue("@createdby", login2.username)
+                    cmdd.Parameters.AddWithValue("@area", "Sales")
+                    cmdd.Parameters.AddWithValue("@reference", r0w("reference_number"))
+                    cmdd.Parameters.AddWithValue("@marks", "")
+                    cmdd.ExecuteNonQuery()
+                Next
+                transaction.Commit()
+                Dim frm As New show_trans()
+                frm.lbltr.Text = vconvnum
+                frm.ShowDialog()
+            End Using
+        Catch ex As Exception
+            MessageBox.Show(ex.ToString)
+            Try
+                transaction.Rollback()
+            Catch ex2 As Exception
+                MessageBox.Show(ex2.ToString)
+            End Try
+        End Try
+    End Sub
+
+    ''' <summary>
+    ''' load pending conversion out
+    ''' </summary>
+    ''' <returns></returns>
+    Public Function loadPendingConvOut() As DataTable
+        Dim result As New DataTable(), adptr As New SqlDataAdapter
+        cc.con.Open()
+        cc.cmd = New SqlCommand("SELECT * FROM vPendingConvOut", cc.con)
+        adptr.SelectCommand = cc.cmd
+        adptr.Fill(result)
+        cc.con.Close()
+        Return result
+    End Function
+    Public Function loadConvOutItems() As DataTable
+        Dim result As New DataTable(), adptr As New SqlDataAdapter
+        cc.con.Open()
+        cc.cmd = New SqlCommand("SELECT * FROM funcLoadConvOutItems(@convnum)", cc.con)
+        cc.cmd.Parameters.AddWithValue("@convnum", vconvnum)
+        adptr.SelectCommand = cc.cmd
+        adptr.Fill(result)
+        cc.con.Close()
+        Return result
+    End Function
 End Class

@@ -74,6 +74,7 @@ Partial Class received_item2
         Me.txtremarks = New System.Windows.Forms.TextBox()
         Me.Label11 = New System.Windows.Forms.Label()
         Me.btnProceed = New System.Windows.Forms.Button()
+        Me.btnconvin = New System.Windows.Forms.Button()
         Me.Panel3.SuspendLayout()
         Me.Panel1.SuspendLayout()
         CType(Me.dgvListItem, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -477,7 +478,7 @@ Partial Class received_item2
         Me.PictureBox1.BackColor = System.Drawing.Color.White
         Me.PictureBox1.Cursor = System.Windows.Forms.Cursors.Hand
         Me.PictureBox1.Image = Global.AK_POS.My.Resources.Resources.not_available
-        Me.PictureBox1.Location = New System.Drawing.Point(71, 574)
+        Me.PictureBox1.Location = New System.Drawing.Point(302, 576)
         Me.PictureBox1.Name = "PictureBox1"
         Me.PictureBox1.Size = New System.Drawing.Size(124, 82)
         Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
@@ -492,7 +493,7 @@ Partial Class received_item2
         Me.txtboxpath.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.txtboxpath.Cursor = System.Windows.Forms.Cursors.Hand
         Me.txtboxpath.ForeColor = System.Drawing.Color.DimGray
-        Me.txtboxpath.Location = New System.Drawing.Point(252, 601)
+        Me.txtboxpath.Location = New System.Drawing.Point(483, 603)
         Me.txtboxpath.Name = "txtboxpath"
         Me.txtboxpath.ReadOnly = True
         Me.txtboxpath.Size = New System.Drawing.Size(229, 13)
@@ -506,7 +507,7 @@ Partial Class received_item2
         Me.Label15.AutoSize = True
         Me.Label15.Font = New System.Drawing.Font("Arial Rounded MT Bold", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label15.ForeColor = System.Drawing.Color.DimGray
-        Me.Label15.Location = New System.Drawing.Point(200, 598)
+        Me.Label15.Location = New System.Drawing.Point(431, 600)
         Me.Label15.Name = "Label15"
         Me.Label15.Size = New System.Drawing.Size(46, 17)
         Me.Label15.TabIndex = 52
@@ -522,7 +523,7 @@ Partial Class received_item2
         Me.btnbrowse.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnbrowse.Font = New System.Drawing.Font("Arial Rounded MT Bold", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnbrowse.ForeColor = System.Drawing.Color.White
-        Me.btnbrowse.Location = New System.Drawing.Point(203, 623)
+        Me.btnbrowse.Location = New System.Drawing.Point(434, 625)
         Me.btnbrowse.Name = "btnbrowse"
         Me.btnbrowse.Size = New System.Drawing.Size(75, 22)
         Me.btnbrowse.TabIndex = 51
@@ -539,7 +540,7 @@ Partial Class received_item2
         Me.btnSubmit.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnSubmit.Font = New System.Drawing.Font("Arial Rounded MT Bold", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnSubmit.ForeColor = System.Drawing.Color.White
-        Me.btnSubmit.Location = New System.Drawing.Point(1154, 598)
+        Me.btnSubmit.Location = New System.Drawing.Point(1152, 584)
         Me.btnSubmit.Name = "btnSubmit"
         Me.btnSubmit.Size = New System.Drawing.Size(147, 47)
         Me.btnSubmit.TabIndex = 55
@@ -559,7 +560,7 @@ Partial Class received_item2
         Me.panelSAP.Controls.Add(Me.txtremarks)
         Me.panelSAP.Controls.Add(Me.Label11)
         Me.panelSAP.Controls.Add(Me.btnProceed)
-        Me.panelSAP.Location = New System.Drawing.Point(458, 216)
+        Me.panelSAP.Location = New System.Drawing.Point(495, 218)
         Me.panelSAP.Name = "panelSAP"
         Me.panelSAP.Size = New System.Drawing.Size(371, 267)
         Me.panelSAP.TabIndex = 56
@@ -674,12 +675,29 @@ Partial Class received_item2
         Me.btnProceed.Text = "Proceed"
         Me.btnProceed.UseVisualStyleBackColor = False
         '
+        'btnconvin
+        '
+        Me.btnconvin.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.btnconvin.BackColor = System.Drawing.Color.ForestGreen
+        Me.btnconvin.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btnconvin.FlatAppearance.BorderSize = 0
+        Me.btnconvin.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnconvin.Font = New System.Drawing.Font("Arial Rounded MT Bold", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnconvin.ForeColor = System.Drawing.Color.White
+        Me.btnconvin.Location = New System.Drawing.Point(71, 584)
+        Me.btnconvin.Name = "btnconvin"
+        Me.btnconvin.Size = New System.Drawing.Size(225, 47)
+        Me.btnconvin.TabIndex = 57
+        Me.btnconvin.Text = "Goto Conversion In"
+        Me.btnconvin.UseVisualStyleBackColor = False
+        '
         'received_item2
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.White
         Me.ClientSize = New System.Drawing.Size(1344, 701)
+        Me.Controls.Add(Me.btnconvin)
         Me.Controls.Add(Me.panelSAP)
         Me.Controls.Add(Me.btnSubmit)
         Me.Controls.Add(Me.PictureBox1)
@@ -762,4 +780,5 @@ Partial Class received_item2
     Friend WithEvents txtremarks As TextBox
     Friend WithEvents Label11 As Label
     Friend WithEvents btnProceed As Button
+    Friend WithEvents btnconvin As Button
 End Class

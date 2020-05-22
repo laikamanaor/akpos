@@ -200,6 +200,7 @@ Public Class category_class
                 cmdd.ExecuteNonQuery()
                 'commit query
                 transaction.Commit()
+                MessageBox.Show("Transaction Completed", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Information)
             End Using
         Catch ex As Exception
             'display error message

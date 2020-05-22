@@ -119,21 +119,25 @@ Partial Class receivedItem_add
         'txtitemcode
         '
         Me.txtitemcode.BackColor = System.Drawing.Color.White
+        Me.txtitemcode.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.txtitemcode.Cursor = System.Windows.Forms.Cursors.Default
         Me.txtitemcode.Font = New System.Drawing.Font("Arial Rounded MT Bold", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtitemcode.Location = New System.Drawing.Point(29, 95)
         Me.txtitemcode.Name = "txtitemcode"
         Me.txtitemcode.ReadOnly = True
-        Me.txtitemcode.Size = New System.Drawing.Size(312, 29)
+        Me.txtitemcode.Size = New System.Drawing.Size(312, 22)
         Me.txtitemcode.TabIndex = 39
         '
         'txtitemname
         '
         Me.txtitemname.BackColor = System.Drawing.Color.White
+        Me.txtitemname.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.txtitemname.Cursor = System.Windows.Forms.Cursors.Default
         Me.txtitemname.Font = New System.Drawing.Font("Arial Rounded MT Bold", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtitemname.Location = New System.Drawing.Point(29, 161)
         Me.txtitemname.Name = "txtitemname"
         Me.txtitemname.ReadOnly = True
-        Me.txtitemname.Size = New System.Drawing.Size(312, 29)
+        Me.txtitemname.Size = New System.Drawing.Size(312, 22)
         Me.txtitemname.TabIndex = 41
         '
         'Label2
@@ -150,11 +154,13 @@ Partial Class receivedItem_add
         'txtcategory
         '
         Me.txtcategory.BackColor = System.Drawing.Color.White
+        Me.txtcategory.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.txtcategory.Cursor = System.Windows.Forms.Cursors.Default
         Me.txtcategory.Font = New System.Drawing.Font("Arial Rounded MT Bold", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtcategory.Location = New System.Drawing.Point(29, 229)
         Me.txtcategory.Name = "txtcategory"
         Me.txtcategory.ReadOnly = True
-        Me.txtcategory.Size = New System.Drawing.Size(312, 29)
+        Me.txtcategory.Size = New System.Drawing.Size(312, 22)
         Me.txtcategory.TabIndex = 43
         '
         'Label3

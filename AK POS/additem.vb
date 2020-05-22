@@ -177,38 +177,6 @@ Public Class additem
         submit()
     End Sub
 
-
-
-    ''' <summary>
-    ''' get the server date
-    ''' </summary>
-    ''' <returns></returns>
-    Public Function getSystemDate() As DateTime
-        Try
-            'init result
-            Dim result As New DateTime()
-            'open connection
-            con.Open()
-            'syntax
-            cmd = New SqlCommand("Select GETDATE()", con)
-            'read command
-            rdr = cmd.ExecuteReader()
-            'loop through
-            While rdr.Read
-                'assign value
-                result = CDate(rdr(0).ToString)
-            End While
-            'close connection
-            con.Close()
-            'return result
-            Return result
-        Catch ex As Exception
-            'msg error
-            MessageBox.Show(ex.ToString)
-        End Try
-    End Function
-
-
     ''' <summary>
     ''' add item
     ''' </summary>
@@ -221,78 +189,29 @@ Public Class additem
         ElseIf itemc.getInvID() = "N/A" Then
             MessageBox.Show("Created New Inventory first", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
         Else
-            'init inventory id and latest itemid
-            Dim invnum As String = itemc.getInvID()
             'confirm dialog
             Dim a As String = MsgBox("Are you sure you want to add item?", MsgBoxStyle.Question + MsgBoxStyle.YesNo, "Add Item")
             'check if user click ok button
             If a = vbYes Then
-                Try
-                    'create new connection
-                    Using connection As New SqlConnection(cc.conString)
-                        'init command
-                        Dim cmdd As New SqlCommand()
-                        'open connection
-                        cmdd.Connection = connection
-                        connection.Open()
-                        'begin transaction
-                        transaction = connection.BeginTransaction()
-                        cmdd.Transaction = transaction
-
-                        'clear parameter first
-                        cmdd.Parameters.Clear()
-                        'syntax
-                        cmdd.CommandText = "INSERT INTO tblitems (category,itemcode,itemname,description,price,datecreated,createdby,datemodified,status,discontinued,deposit) VALUES (@category,@itemcode,@itemname,@description,@price,(SELECT GETDATE()), @createdby,(SELECT GETDATE()),0,0,@deposit)"
-                        'assign parameters
-                        cmdd.Parameters.AddWithValue("@category", cmbcategory.SelectedItem)
-                        cmdd.Parameters.AddWithValue("@itemcode", txtcode.Text)
-                        cmdd.Parameters.AddWithValue("@itemname", txtname.Text)
-                        cmdd.Parameters.AddWithValue("@description", txtdescription.Text)
-                        cmdd.Parameters.AddWithValue("@price", txtprice.Text)
-                        cmdd.Parameters.AddWithValue("@createdby", login2.username)
-                        cmdd.Parameters.AddWithValue("@deposit", IIf(chck.Checked, 1, 0))
-                        'execute query
-                        cmdd.ExecuteNonQuery()
-
-                        'clear parameter first
-                        cmdd.Parameters.Clear()
-                        'command syntax
-                        cmdd.CommandText = "INSERT INTO tblinvitems (invnum,itemcode,itemname,begbal,produce,good,reject,charge,productionin,itemin,totalav,ctrout,pullout,endbal,actualendbal,variance,shortover,status,convin,archarge,arsales,convout,transfer,area,arreject,supin,adjustmentin,reject_convin,reject_convout,reject_archarge,reject_transfer,reject_totalav,cancelin) VALUES (@invnum,@itemcode,@itemname,0,0,0,0,0,0,0,0,0,0,0,0,0,'',1,0,0,0,0,0,'Sales',0,0,0,0,0,0,0,0,0)"
-                        'assign parameters
-                        cmdd.Parameters.AddWithValue("@invnum", invnum)
-                        cmdd.Parameters.AddWithValue("@itemname", txtcode.Text)
-                        cmdd.Parameters.AddWithValue("@itemcode", txtname.Text)
-                        'execute query
-                        cmdd.ExecuteNonQuery()
-                        'check if checkbox is checked
-                        If chck.Checked Then
-                            'clear parameters first
-                            cmdd.Parameters.Clear()
-                            'command syntax
-                            cmdd.CommandText = "INSERT INTO tbldepositprice (itemid,price) VALUES ((SELECT TOP 1 itemid FROM tblitems ORDER BY itemid DESC),@price);"
-                            'assign parameters
-                            cmdd.Parameters.AddWithValue("@price", txtdepositprice.Text)
-                            'execute query
-                            cmdd.ExecuteNonQuery()
-                        End If
-                        'commit query
-                        transaction.Commit()
-                        'msg 
-                        MessageBox.Show("Item Added", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Information)
-                        'close the form
-                        Me.Close()
-                    End Using
-                Catch ex As Exception
-                    'msg error
-                    MessageBox.Show(ex.ToString)
-                    Try
-                        'rollback query
-                        transaction.Rollback()
-                    Catch ex2 As Exception
-                        'msg sql error
-                        MessageBox.Show(ex2.ToString)
-                    End Try
-                End Try
+                'assign values
+                itemc.setCategory(cmbcategory.Text)
+                itemc.itemName = txtname.Text
+                itemc.itemcode = txtcode.Text
+                itemc.description = txtdescription.Text
+                itemc.price = CDbl(txtprice.Text)
+                itemc.chck = IIf(chck.Checked, 1, 0)
+                'check if checkbox deposit is checked
+                If chck.Checked Then
+                    'assign deposit price if true
+                    itemc.depositPrice = CDbl(txtdepositprice.Text)
+                Else
+                    'assign zero if false
+                    itemc.depositPrice = 0.00
+                End If
+                'call addItem sub from item_class
+                itemc.addItem()
+                'close the form
+                Me.Close()
             End If
         End If
     End Sub
@@ -335,212 +254,30 @@ Public Class additem
     ''' update item
     ''' </summary>
     Public Sub updateItem()
-        'init variables
-        Dim itemname As String = "", result As Boolean = False, current_itemid As Integer = 0
-        Try
-            'open connection
-            con.Open()
-            'syntax
-            cmd = New SqlCommand("SELECT itemname,itemid FROM tblitems WHERE itemname=@itemname;", con)
-            'assign parameters
-            cmd.Parameters.AddWithValue("@itemname", txtname.Text)
-            'read command 
-            rdr = cmd.ExecuteReader
-            'check if read has row
-            If rdr.Read Then
-                'assign values
-                itemname = CStr(rdr("itemname"))
-                current_itemid = CInt(rdr("itemid"))
-                result = True
-            End If
-            'close connection
-            con.Close()
-        Catch ex As Exception
-            MessageBox.Show(ex.ToString)
-        End Try
-        Try
-            'create new connection
-            Using connection As New SqlConnection(cc.conString)
-                'init command
-                Dim cmdd As New SqlCommand()
-                'open connection
-                cmdd.Connection = connection
-                connection.Open()
-                'begin connection
-                transaction = connection.BeginTransaction()
-                cmdd.Transaction = transaction
-
-                'check if itemname is already inserted to database
-                If itemname <> current_itemname And result Then
-                    'msg error
-                    MessageBox.Show("Item Name is already exist", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                Else
-                    'clear parameter first
-                    cmdd.Parameters.Clear()
-                    'command syntax
-                    cmdd.CommandText = "UPDATE tblitems SET category=@category,itemname=@itemname,itemcode=@itemcode,description=@description,price=@price,datemodified=(SELECT GETDATE()),modifiedby=@modby,deposit=@deposit WHERE itemname=@current_itemname"
-                    'assign parameters
-                    cmdd.Parameters.AddWithValue("@current_itemname", current_itemname)
-                    cmdd.Parameters.AddWithValue("@category", cmbcategory.Text)
-                    cmdd.Parameters.AddWithValue("@itemname", txtname.Text)
-                    cmdd.Parameters.AddWithValue("@itemcode", txtcode.Text)
-                    cmdd.Parameters.AddWithValue("@description", txtdescription.Text)
-                    cmdd.Parameters.AddWithValue("@price", txtprice.Text)
-                    cmdd.Parameters.AddWithValue("@modby", login2.username)
-                    cmdd.Parameters.AddWithValue("@deposit", IIf(chck.Checked, 1, 0))
-                    'execute query
-                    cmdd.ExecuteNonQuery()
-
-                    'clear parameters first
-                    cmdd.Parameters.Clear()
-                    'command syntax
-                    cmdd.CommandText = "UPDATE tblconversion SET item_code=@itemcode WHERE item_code=@current_itemcode"
-                    'assign parameters
-                    cmdd.Parameters.AddWithValue("@itemcode", txtcode.Text)
-                    cmdd.Parameters.AddWithValue("@current_itemcode", current_itemcode)
-                    'execute query
-                    cmdd.ExecuteNonQuery()
-
-                    'clear parameter first
-                    cmdd.Parameters.Clear()
-                    'command syntax
-                    cmdd.CommandText = "UPDATE tblinvitems SET itemcode=@itemcode,itemname=@itemname WHERE itemcode=@current_itemcode"
-                    'assign parameters
-                    cmdd.Parameters.AddWithValue("@itemcode", txtcode.Text)
-                    cmdd.Parameters.AddWithValue("@itemname", txtname.Text)
-                    cmdd.Parameters.AddWithValue("@current_itemcode", current_itemcode)
-                    'execute query
-                    cmdd.ExecuteNonQuery()
-
-                    'clear parameters clear
-                    cmdd.Parameters.Clear()
-                    'command syntax
-                    cmdd.CommandText = "UPDATE tblproduction SET item_code=@itemcode,item_name=@itemname WHERE item_code=@current_itemcode"
-                    'assign command parameters
-                    cmdd.Parameters.AddWithValue("@itemcode", txtcode.Text)
-                    cmdd.Parameters.AddWithValue("@itemname", txtname.Text)
-                    cmdd.Parameters.AddWithValue("@current_itemcode", current_itemcode)
-                    'execute query
-                    cmdd.ExecuteNonQuery()
-
-                    'clear parameters first
-                    cmdd.Parameters.Clear()
-                    'command syntax
-                    cmdd.CommandText = "UPDATE tblorder SET itemname=@itemname WHERE itemname=@current_itemcode"
-                    'assign parameters
-                    cmdd.Parameters.AddWithValue("@itemname", txtname.Text)
-                    cmdd.Parameters.AddWithValue("@current_itemcode", current_itemname)
-                    'execute query
-                    cmdd.ExecuteNonQuery()
-
-                    'clear parameters first
-                    cmdd.Parameters.Clear()
-                    'command syntax
-                    cmdd.CommandText = "UPDATE tblorder2 SET itemname=@itemname WHERE itemname=@current_itemcode"
-                    'assign command parameters
-                    cmdd.Parameters.AddWithValue("@itemname", txtname.Text)
-                    cmdd.Parameters.AddWithValue("@current_itemcode", current_itemname)
-                    'execute query
-                    cmdd.ExecuteNonQuery()
-
-                    'clear parameter first
-                    cmdd.Parameters.Clear()
-                    'command syntax
-                    cmdd.CommandText = "UPDATE tblars2 SET description=@description WHERE description=@current_itemname"
-                    'assign parameters
-                    cmdd.Parameters.AddWithValue("@description", txtname.Text)
-                    cmdd.Parameters.AddWithValue("@current_itemname", current_itemname)
-                    'execute query
-                    cmdd.ExecuteNonQuery()
-                End If
-                'check if item id has deposit price
-                If chck.Checked Then
-                    'init variable
-                    Dim haveDeposit As Boolean = False
-                    'command syntax
-                    cmdd.CommandText = "SELECT depid FROM tbldepositprice WHERE itemid=@itemid;"
-                    'assign parameter
-                    cmdd.Parameters.AddWithValue("@itemid", current_itemid)
-                    'read command
-                    rdr = cmdd.ExecuteReader
-                    'check read has row
-                    If rdr.Read Then
-                        'assign value
-                        haveDeposit = True
-                    End If
-                    'dispose read
-                    rdr.Dispose()
-
-                    'check haveDeposit is true
-                    If haveDeposit Then
-                        'clear parameter first
-                        cmdd.Parameters.Clear()
-                        'command syntax
-                        cmdd.CommandText = "UPDATE tbldepositprice SET price=@price,status=1 WHERE itemid=@itemid"
-                        'assign parameters
-                        cmdd.Parameters.AddWithValue("@itemid", current_itemid)
-                        cmdd.Parameters.AddWithValue("@price", txtdepositprice.Text)
-                        'execute query
-                        cmdd.ExecuteNonQuery()
-                    Else
-                        'clear parameter first
-                        cmdd.Parameters.Clear()
-                        'command syntax
-                        cmdd.CommandText = "INSERT INTO tbldepositprice (itemid,price) VALUES (@itemid,@price);"
-                        'assign parameters
-                        cmdd.Parameters.AddWithValue("@itemid", current_itemid)
-                        cmdd.Parameters.AddWithValue("@price", txtdepositprice.Text)
-                        'execute query
-                        cmdd.ExecuteNonQuery()
-                    End If
-                Else
-                    'init variable that check itemname has deposit price
-                    Dim haveDeposit As Boolean = False
-                    'clear parameter first
-                    cmdd.Parameters.Clear()
-                    'syntax
-                    cmdd.CommandText = "SELECT depid FROM tbldepositprice WHERE itemid=@itemid;"
-                    'assign parameters
-                    cmdd.Parameters.AddWithValue("@itemid", current_itemid)
-                    'read command
-                    rdr = cmdd.ExecuteReader
-                    'check read has row
-                    If rdr.Read Then
-                        'assign haveDeposit to true that means item name has deposit price
-                        haveDeposit = True
-                    End If
-                    'dispose read
-                    rdr.Dispose()
-
-                    'check if haveDeposit is true
-                    If haveDeposit Then
-                        'clear parameter first
-                        cmdd.Parameters.Clear()
-                        'command syntax
-                        cmdd.CommandText = "UPDATE tbldepositprice SET status=0,price=0 WHERE itemid=@itemid"
-                        'assign parameter
-                        cmdd.Parameters.AddWithValue("@itemid", current_itemid)
-                        'execute query
-                        cmdd.ExecuteNonQuery()
-                    End If
-                End If
-                'commit query
-                transaction.Commit()
-                'msg
-                MessageBox.Show("Item Updated", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Information)
-                'close the form
-                Me.Close()
-            End Using
-        Catch ex As Exception
+        If txtname.Text <> current_itemname And itemc.checkItem(txtname.Text) Then
             'msg error
-            MessageBox.Show(ex.ToString)
-            Try
-                'rollback query
-                transaction.Rollback()
-            Catch ex2 As Exception
-                'sql msg error
-                MessageBox.Show(ex2.ToString)
-            End Try
-        End Try
+            MessageBox.Show("Item Name is already exist", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        Else
+            'assign values
+            itemc.itemid = itemid
+            itemc.setCategory(cmbcategory.Text)
+            itemc.itemName = txtname.Text
+            itemc.itemcode = txtcode.Text
+            itemc.description = txtdescription.Text
+            itemc.price = CDbl(txtprice.Text)
+            itemc.chck = IIf(chck.Checked, 1, 0)
+            'check if check box deposit is checked
+            If chck.Checked Then
+                'assign deposit price if true
+                itemc.depositPrice = CDbl(txtdepositprice.Text)
+            Else
+                'assign zero if false
+                itemc.depositPrice = 0.00
+            End If
+            'call updateItem sub to item class
+            itemc.updateItem(current_itemcode, current_itemname)
+            'close the form
+            Me.Close()
+        End If
     End Sub
 End Class

@@ -700,12 +700,12 @@ Partial Class pull_out
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.White
         Me.ClientSize = New System.Drawing.Size(1344, 701)
+        Me.Controls.Add(Me.panelRemarks)
         Me.Controls.Add(Me.Label9)
         Me.Controls.Add(Me.dtdate)
         Me.Controls.Add(Me.Panel3)
         Me.Controls.Add(Me.Panel2)
         Me.Controls.Add(Me.panelQuantity)
-        Me.Controls.Add(Me.panelRemarks)
         Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.lblTransactionID)
         Me.Controls.Add(Me.Label8)

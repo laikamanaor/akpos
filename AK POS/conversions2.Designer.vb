@@ -50,7 +50,6 @@ Partial Class conversions2
         Me.txtboxQuantity = New System.Windows.Forms.TextBox()
         Me.Label5 = New System.Windows.Forms.Label()
         Me.btnQuantity = New System.Windows.Forms.Button()
-        Me.Label6 = New System.Windows.Forms.Label()
         Me.btnSubmit = New System.Windows.Forms.Button()
         Me.dgvSelectedItem = New System.Windows.Forms.DataGridView()
         Me.itemcodee = New System.Windows.Forms.DataGridViewTextBoxColumn()
@@ -59,18 +58,18 @@ Partial Class conversions2
         Me.quantityy = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Column6 = New System.Windows.Forms.DataGridViewButtonColumn()
         Me.Column3 = New System.Windows.Forms.DataGridViewButtonColumn()
-        Me.Button2 = New System.Windows.Forms.Button()
+        Me.btnselectedsearch = New System.Windows.Forms.Button()
         Me.Label1 = New System.Windows.Forms.Label()
-        Me.txtboxSelectedItem = New System.Windows.Forms.TextBox()
+        Me.txtselectedseach = New System.Windows.Forms.TextBox()
         Me.cmbCategoryListItem = New System.Windows.Forms.ComboBox()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.lblSAPClose = New System.Windows.Forms.Label()
         Me.btnSearchListItem = New System.Windows.Forms.Button()
         Me.txtboxListItemSearch = New System.Windows.Forms.TextBox()
         Me.dgvListItem = New System.Windows.Forms.DataGridView()
-        Me.i = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.itemcode = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.itemname = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.Column7 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.categoory = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Column2 = New System.Windows.Forms.DataGridViewButtonColumn()
         Me.txtboxRemarks = New System.Windows.Forms.TextBox()
         Me.lblSelectedItemCount = New System.Windows.Forms.Label()
@@ -81,7 +80,6 @@ Partial Class conversions2
         Me.checkfollowup = New System.Windows.Forms.CheckBox()
         Me.Label13 = New System.Windows.Forms.Label()
         Me.Label11 = New System.Windows.Forms.Label()
-        Me.lblID = New System.Windows.Forms.Label()
         Me.dgvConversions = New System.Windows.Forms.DataGridView()
         Me.convnum = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.btnselect = New System.Windows.Forms.DataGridViewButtonColumn()
@@ -123,6 +121,7 @@ Partial Class conversions2
         '
         Me.txtboxSAPNo.Font = New System.Drawing.Font("Arial Rounded MT Bold", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtboxSAPNo.Location = New System.Drawing.Point(39, 44)
+        Me.txtboxSAPNo.MaxLength = 6
         Me.txtboxSAPNo.Multiline = True
         Me.txtboxSAPNo.Name = "txtboxSAPNo"
         Me.txtboxSAPNo.ShortcutsEnabled = False
@@ -140,7 +139,7 @@ Partial Class conversions2
         Me.panelQuantity.Controls.Add(Me.txtboxQuantity)
         Me.panelQuantity.Controls.Add(Me.Label5)
         Me.panelQuantity.Controls.Add(Me.btnQuantity)
-        Me.panelQuantity.Location = New System.Drawing.Point(460, 335)
+        Me.panelQuantity.Location = New System.Drawing.Point(331, 283)
         Me.panelQuantity.Name = "panelQuantity"
         Me.panelQuantity.Size = New System.Drawing.Size(371, 253)
         Me.panelQuantity.TabIndex = 59
@@ -227,19 +226,6 @@ Partial Class conversions2
         Me.btnQuantity.TabIndex = 0
         Me.btnQuantity.Text = "Add Quantity"
         Me.btnQuantity.UseVisualStyleBackColor = False
-        '
-        'Label6
-        '
-        Me.Label6.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.Label6.AutoSize = True
-        Me.Label6.Font = New System.Drawing.Font("Arial Rounded MT Bold", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label6.ForeColor = System.Drawing.Color.ForestGreen
-        Me.Label6.Location = New System.Drawing.Point(385, 80)
-        Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(122, 18)
-        Me.Label6.TabIndex = 67
-        Me.Label6.Text = "INVENTORY #:"
-        Me.Label6.Visible = False
         '
         'btnSubmit
         '
@@ -361,21 +347,21 @@ Partial Class conversions2
         Me.Column3.ToolTipText = "Delete Item"
         Me.Column3.UseColumnTextForButtonValue = True
         '
-        'Button2
+        'btnselectedsearch
         '
-        Me.Button2.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Button2.BackColor = System.Drawing.SystemColors.HotTrack
-        Me.Button2.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.Button2.FlatAppearance.BorderSize = 0
-        Me.Button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.Button2.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Button2.ForeColor = System.Drawing.Color.White
-        Me.Button2.Location = New System.Drawing.Point(1067, 100)
-        Me.Button2.Name = "Button2"
-        Me.Button2.Size = New System.Drawing.Size(75, 25)
-        Me.Button2.TabIndex = 58
-        Me.Button2.Text = "Search"
-        Me.Button2.UseVisualStyleBackColor = False
+        Me.btnselectedsearch.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnselectedsearch.BackColor = System.Drawing.SystemColors.HotTrack
+        Me.btnselectedsearch.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btnselectedsearch.FlatAppearance.BorderSize = 0
+        Me.btnselectedsearch.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnselectedsearch.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnselectedsearch.ForeColor = System.Drawing.Color.White
+        Me.btnselectedsearch.Location = New System.Drawing.Point(1067, 100)
+        Me.btnselectedsearch.Name = "btnselectedsearch"
+        Me.btnselectedsearch.Size = New System.Drawing.Size(75, 25)
+        Me.btnselectedsearch.TabIndex = 58
+        Me.btnselectedsearch.Text = "Search"
+        Me.btnselectedsearch.UseVisualStyleBackColor = False
         '
         'Label1
         '
@@ -388,18 +374,18 @@ Partial Class conversions2
         Me.Label1.TabIndex = 56
         Me.Label1.Text = "Category:"
         '
-        'txtboxSelectedItem
+        'txtselectedseach
         '
-        Me.txtboxSelectedItem.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.txtboxSelectedItem.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend
-        Me.txtboxSelectedItem.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource
-        Me.txtboxSelectedItem.Font = New System.Drawing.Font("Arial Rounded MT Bold", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtboxSelectedItem.ForeColor = System.Drawing.Color.Black
-        Me.txtboxSelectedItem.Location = New System.Drawing.Point(867, 100)
-        Me.txtboxSelectedItem.Name = "txtboxSelectedItem"
-        Me.txtboxSelectedItem.ShortcutsEnabled = False
-        Me.txtboxSelectedItem.Size = New System.Drawing.Size(203, 25)
-        Me.txtboxSelectedItem.TabIndex = 57
+        Me.txtselectedseach.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.txtselectedseach.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend
+        Me.txtselectedseach.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource
+        Me.txtselectedseach.Font = New System.Drawing.Font("Arial Rounded MT Bold", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtselectedseach.ForeColor = System.Drawing.Color.Black
+        Me.txtselectedseach.Location = New System.Drawing.Point(867, 100)
+        Me.txtselectedseach.Name = "txtselectedseach"
+        Me.txtselectedseach.ShortcutsEnabled = False
+        Me.txtselectedseach.Size = New System.Drawing.Size(203, 25)
+        Me.txtselectedseach.TabIndex = 57
         '
         'cmbCategoryListItem
         '
@@ -473,7 +459,7 @@ Partial Class conversions2
         DataGridViewCellStyle24.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
         Me.dgvListItem.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle24
         Me.dgvListItem.ColumnHeadersHeight = 40
-        Me.dgvListItem.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.i, Me.itemname, Me.Column7, Me.Column2})
+        Me.dgvListItem.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.itemcode, Me.itemname, Me.categoory, Me.Column2})
         DataGridViewCellStyle26.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
         DataGridViewCellStyle26.BackColor = System.Drawing.Color.White
         DataGridViewCellStyle26.Font = New System.Drawing.Font("Arial Rounded MT Bold", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -501,12 +487,12 @@ Partial Class conversions2
         Me.dgvListItem.Size = New System.Drawing.Size(536, 225)
         Me.dgvListItem.TabIndex = 49
         '
-        'i
+        'itemcode
         '
-        Me.i.HeaderText = "Item Code"
-        Me.i.Name = "i"
-        Me.i.ReadOnly = True
-        Me.i.Visible = False
+        Me.itemcode.HeaderText = "Item Code"
+        Me.itemcode.Name = "itemcode"
+        Me.itemcode.ReadOnly = True
+        Me.itemcode.Visible = False
         '
         'itemname
         '
@@ -514,11 +500,12 @@ Partial Class conversions2
         Me.itemname.Name = "itemname"
         Me.itemname.ReadOnly = True
         '
-        'Column7
+        'categoory
         '
-        Me.Column7.HeaderText = "Category"
-        Me.Column7.Name = "Column7"
-        Me.Column7.ReadOnly = True
+        Me.categoory.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
+        Me.categoory.HeaderText = "Category"
+        Me.categoory.Name = "categoory"
+        Me.categoory.ReadOnly = True
         '
         'Column2
         '
@@ -598,7 +585,7 @@ Partial Class conversions2
         Me.PanelProduction.Controls.Add(Me.txtboxRemarks)
         Me.PanelProduction.Controls.Add(Me.Label11)
         Me.PanelProduction.Controls.Add(Me.btnProceed)
-        Me.PanelProduction.Location = New System.Drawing.Point(438, 365)
+        Me.PanelProduction.Location = New System.Drawing.Point(402, 219)
         Me.PanelProduction.Name = "PanelProduction"
         Me.PanelProduction.Size = New System.Drawing.Size(371, 264)
         Me.PanelProduction.TabIndex = 60
@@ -648,19 +635,6 @@ Partial Class conversions2
         Me.Label11.Size = New System.Drawing.Size(79, 18)
         Me.Label11.TabIndex = 1
         Me.Label11.Text = "Remarks"
-        '
-        'lblID
-        '
-        Me.lblID.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.lblID.AutoSize = True
-        Me.lblID.Font = New System.Drawing.Font("Arial Rounded MT Bold", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblID.ForeColor = System.Drawing.Color.ForestGreen
-        Me.lblID.Location = New System.Drawing.Point(513, 80)
-        Me.lblID.Name = "lblID"
-        Me.lblID.Size = New System.Drawing.Size(40, 18)
-        Me.lblID.TabIndex = 66
-        Me.lblID.Text = " N/A"
-        Me.lblID.Visible = False
         '
         'dgvConversions
         '
@@ -989,28 +963,26 @@ Partial Class conversions2
         Me.BackColor = System.Drawing.Color.White
         Me.ClientSize = New System.Drawing.Size(1175, 682)
         Me.Controls.Add(Me.panelQuantity)
+        Me.Controls.Add(Me.PanelProduction)
         Me.Controls.Add(Me.Panel8)
         Me.Controls.Add(Me.Panel7)
         Me.Controls.Add(Me.Panel6)
         Me.Controls.Add(Me.Panel5)
-        Me.Controls.Add(Me.PanelProduction)
         Me.Controls.Add(Me.Panel2)
         Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.dgvitems)
         Me.Controls.Add(Me.lblConvID)
         Me.Controls.Add(Me.Label15)
         Me.Controls.Add(Me.dgvConversions)
-        Me.Controls.Add(Me.Label6)
         Me.Controls.Add(Me.btnSubmit)
         Me.Controls.Add(Me.dgvSelectedItem)
-        Me.Controls.Add(Me.Button2)
+        Me.Controls.Add(Me.btnselectedsearch)
         Me.Controls.Add(Me.Label1)
-        Me.Controls.Add(Me.txtboxSelectedItem)
+        Me.Controls.Add(Me.txtselectedseach)
         Me.Controls.Add(Me.cmbCategoryListItem)
         Me.Controls.Add(Me.btnSearchListItem)
         Me.Controls.Add(Me.txtboxListItemSearch)
         Me.Controls.Add(Me.dgvListItem)
-        Me.Controls.Add(Me.lblID)
         Me.Controls.Add(Me.Panel3)
         Me.Controls.Add(Me.Panel4)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
@@ -1052,12 +1024,11 @@ Partial Class conversions2
     Friend WithEvents txtboxQuantity As System.Windows.Forms.TextBox
     Friend WithEvents Label5 As System.Windows.Forms.Label
     Friend WithEvents btnQuantity As System.Windows.Forms.Button
-    Friend WithEvents Label6 As System.Windows.Forms.Label
     Friend WithEvents btnSubmit As System.Windows.Forms.Button
     Friend WithEvents dgvSelectedItem As System.Windows.Forms.DataGridView
-    Friend WithEvents Button2 As System.Windows.Forms.Button
+    Friend WithEvents btnselectedsearch As System.Windows.Forms.Button
     Friend WithEvents Label1 As System.Windows.Forms.Label
-    Friend WithEvents txtboxSelectedItem As System.Windows.Forms.TextBox
+    Friend WithEvents txtselectedseach As System.Windows.Forms.TextBox
     Friend WithEvents cmbCategoryListItem As System.Windows.Forms.ComboBox
     Friend WithEvents lblSAPClose As System.Windows.Forms.Label
     Friend WithEvents btnSearchListItem As System.Windows.Forms.Button
@@ -1069,7 +1040,6 @@ Partial Class conversions2
     Friend WithEvents lblListItemCount As System.Windows.Forms.Label
     Friend WithEvents PanelProduction As System.Windows.Forms.Panel
     Friend WithEvents Label11 As System.Windows.Forms.Label
-    Friend WithEvents lblID As System.Windows.Forms.Label
     Friend WithEvents dgvConversions As System.Windows.Forms.DataGridView
     Friend WithEvents lblConvID As System.Windows.Forms.Label
     Friend WithEvents Label15 As System.Windows.Forms.Label
@@ -1077,10 +1047,6 @@ Partial Class conversions2
     Friend WithEvents checkfollowup As System.Windows.Forms.CheckBox
     Friend WithEvents lbltype As System.Windows.Forms.Label
     Friend WithEvents dgvitems As DataGridView
-    Friend WithEvents i As DataGridViewTextBoxColumn
-    Friend WithEvents itemname As DataGridViewTextBoxColumn
-    Friend WithEvents Column7 As DataGridViewTextBoxColumn
-    Friend WithEvents Column2 As DataGridViewButtonColumn
     Friend WithEvents item_name As DataGridViewTextBoxColumn
     Friend WithEvents category As DataGridViewTextBoxColumn
     Friend WithEvents quantity As DataGridViewTextBoxColumn
@@ -1107,4 +1073,8 @@ Partial Class conversions2
     Friend WithEvents quantityy As DataGridViewTextBoxColumn
     Friend WithEvents Column6 As DataGridViewButtonColumn
     Friend WithEvents Column3 As DataGridViewButtonColumn
+    Friend WithEvents itemcode As DataGridViewTextBoxColumn
+    Friend WithEvents itemname As DataGridViewTextBoxColumn
+    Friend WithEvents categoory As DataGridViewTextBoxColumn
+    Friend WithEvents Column2 As DataGridViewButtonColumn
 End Class

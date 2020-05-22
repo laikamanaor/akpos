@@ -23,6 +23,7 @@ Public Class received_item2
             cmbranches.Visible = False
             Label10.Visible = False
         End If
+        btnconvin.Visible = IIf(lblheader.Text = "Conversion Out", True, False)
     End Sub
 
 
@@ -69,7 +70,12 @@ Public Class received_item2
         recc.setItemName(txtboxListItemSearch.Text)
         recc.setCategory(cmbCategoryListItem.Text)
         Dim result As New DataTable()
-        result = recc.loadAvailableItems(IIf(lblheader.Text = "Transfer Out", "trans", "rec"))
+        'result = recc.loadAvailableItems(IIf(lblheader.Text = "Transfer Out", "trans", "rec"))
+        If lblheader.Text = "Transfer Out" Or lblheader.Text = "Conversion Out" Then
+            result = recc.loadAvailableItems("trans")
+        Else
+            result = recc.loadAvailableItems("rec")
+        End If
         dgvListItem.Rows.Clear()
         For Each r0w As DataRow In result.Rows
             dgvListItem.Rows.Add(r0w("itemcode"), r0w("itemname"), r0w("category"))
@@ -106,7 +112,7 @@ Public Class received_item2
             End If
         Next
         If checkError <> 0 Then
-            MessageBox.Show(" Then '" & dgvListItem.CurrentRow.Cells("itemname").Value & "' has already exist in Selected Item", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            MessageBox.Show("'" & dgvListItem.CurrentRow.Cells("itemname").Value & "' has already exist in Selected Item", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
         Else
             Dim itemcode As String = dgvListItem.CurrentRow.Cells("itemcode").Value,
                  itemname As String = dgvListItem.CurrentRow.Cells("itemname").Value,
@@ -120,6 +126,8 @@ Public Class received_item2
         receivedItem_add.txtitemname.Text = iname
         receivedItem_add.txtcategory.Text = icat
         receivedItem_add.txtquantity.Text = iquantity
+        receivedItem_add.lblheader.Text = typee & " QUANTITY"
+        receivedItem_add.txtquantity.Focus()
         receivedItem_add.ShowDialog()
         If receivedItem_add.isSuccess Then
             Dim itemname As String = "", itemcode As String = "", category As String = "", quantity As Double = 0.00
@@ -275,6 +283,8 @@ Public Class received_item2
                 tableName = "adjustmentin"
             Case "Transfer Out"
                 tableName = "transfer"
+            Case "Conversio Out"
+                tableName = "convout"
         End Select
         dtItems.Columns.Add("item")
         dtItems.Columns.Add("quantity")
@@ -290,7 +300,7 @@ Public Class received_item2
         recc.sapDocument = lblsapdoc.Text
         recc.remarks = txtremarks.Text
         recc.sapNumber = IIf(String.IsNullOrEmpty(Trim(txtsap.Text)), 0, txtsap.Text)
-        transactionNumber = recc.returnTransactionNumber()
+        transactionNumber = recc.returnTransactionNumber(IIf(lblheader.Text = "Conversion Out", False, True))
         recc.transactionNumber = transactionNumber
         recc.updateInventory(dtItems)
         dgvSelectedItem.Rows.Clear()
@@ -301,6 +311,11 @@ Public Class received_item2
         If Not Char.IsControl(e.KeyChar) And Not Char.IsDigit(e.KeyChar) Then
             e.Handled = True
         End If
+    End Sub
+
+    Private Sub btnconvin_Click(sender As Object, e As EventArgs) Handles btnconvin.Click
+        Dim conversion2 As New conversions2()
+        conversion2.ShowDialog()
     End Sub
 
     Private Sub btnSubmit_Click(sender As Object, e As EventArgs) Handles btnSubmit.Click
@@ -327,6 +342,8 @@ Public Class received_item2
                     lblsapdoc.Text = "IT"
                 Case "Received from Direct Supplier"
                     lblsapdoc.Text = "GRPO"
+                Case "Conversion Out"
+                    lblsapdoc.Text = "GI"
             End Select
             panelSAP.Visible = True
         End If

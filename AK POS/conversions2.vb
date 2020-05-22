@@ -1,8 +1,9 @@
 ﻿Imports System.Data.SqlClient
 Imports System.IO
 Imports AK_POS.connection_class
+Imports AK_POS.received_class
 Public Class conversions2
-    Dim cc As New connection_class()
+    Dim cc As New connection_class(), recc As New received_class()
     Dim drag As Boolean
     Dim mousex As Integer
     Dim mousey As Integer
@@ -13,506 +14,228 @@ Public Class conversions2
     Dim rdr As SqlDataReader
     Dim transaction As SqlTransaction
 
-    Dim selectedQuantity As String = "", conv_number As String = ""
-    Public lcacc As String = ""
+    Dim conv_number As String = ""
 
-    Public Function decryptConString() As String
-        Dim base64encoded As String = File.ReadAllText("connectionstring.txt")
-        Dim data As Byte() = System.Convert.FromBase64String(base64encoded)
-        Return System.Text.ASCIIEncoding.ASCII.GetString(data)
-    End Function
-    Public Function getSystemDate() As DateTime
-        Try
-            Dim dt As New DateTime()
-            con.Open()
-            cmd = New SqlCommand("SELECT GETDATE()", con)
-            rdr = cmd.ExecuteReader()
-            While rdr.Read
-                dt = CDate(rdr(0).ToString)
-            End While
-            con.Close()
-            Return dt
-        Catch ex As Exception
-            MessageBox.Show(ex.ToString)
-        Finally
-            con.Close()
-        End Try
-    End Function
     Private Sub conversions2_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        If lcacc = "Production" Then
-            load_items("SELECT itemcode,itemname,category FROM tblitems WHERE discontinued='0'  and Not category='Noodles' AND Not category='Packaging' AND not category='Drinks' AND NOT category='Meal' AND NOT category='Combo' ORDER BY itemcode")
-        Else
-            load_items("SELECT itemcode,itemname,category FROM tblitems WHERE discontinued='0' ORDER BY itemcode")
-        End If
         load_convesions()
-        load_selecteditems()
-        categories()
-        getID()
+        loadCategories()
         cmbCategoryListItem.SelectedIndex = cmbCategoryListItem.Items.IndexOf("All")
     End Sub
-    Private Sub lblClose_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lblClose.Click
-        panelQuantity.Visible = False
-    End Sub
 
-    Private Sub btnQuantity_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnQuantity.Click
-        If selectedQuantity = "Add Quantity" Then
-            Dim get_itemname As String = lblQuantityItemName.Text.Replace("Item Name: ", "")
-            Dim get_itemcode As String = lblQuantityItemCode.Text.Replace("Item Code: ", "")
-            Dim get_category As String = lblQuantityCategory.Text.Replace("Category: ", "")
-            If checkRowsExist() Then
-                Return
-            End If
-            If String.IsNullOrEmpty(txtboxQuantity.Text) OrElse CInt(txtboxQuantity.Text) = 0 Then
-                MessageBox.Show("Quantity is empty", "", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                Return
-            Else
-                Me.Cursor = Cursors.WaitCursor
-                panelQuantity.Visible = False
-                dgvSelectedItem.Rows.Add(get_itemcode, get_itemname, get_category, txtboxQuantity.Text, "", "")
-                lblQuantityItemCode.Text = "Item Code: N/A"
-                lblQuantityItemName.Text = "Item Name: N/A"
-                lblQuantityCategory.Text = "Category: N/A"
-                Me.Cursor = Cursors.Default
-                txtboxQuantity.Text = ""
-                dgvSelectedItem.ClearSelection()
-                dgvSelectedItem.Rows(dgvSelectedItem.Rows.Count - 1).Selected = True
-                dgvCount()
-                load_selecteditems()
-                Return
-            End If
-        ElseIf selectedQuantity = "Update Quantity" Then
-            If String.IsNullOrEmpty(txtboxQuantity.Text) OrElse CInt(txtboxQuantity.Text) = 0 Then
-                MessageBox.Show("Quantity is empty", "", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                Exit Sub
-            End If
-            Dim get_itemname As String = lblQuantityItemName.Text.Replace("Item Name: ", "")
-            Dim get_itemcode As String = lblQuantityItemCode.Text.Replace("Item Code: ", "")
-            For i As Integer = 0 To dgvSelectedItem.Rows.Count - 1
-                If get_itemcode = dgvSelectedItem.Rows(i).Cells(0).Value And get_itemname = dgvSelectedItem.Rows(i).Cells(1).Value Then
-                    dgvSelectedItem.Rows(i).Cells(3).Value = txtboxQuantity.Text
-                    txtboxQuantity.Text = ""
-                    panelQuantity.Visible = False
-                End If
-            Next
-        End If
-    End Sub
-    Public Function checkRowsExist() As Boolean
-        Dim get_itemname As String = lblQuantityItemName.Text.Replace("Item Name: ", "")
-        Dim get_itemcode As String = lblQuantityItemCode.Text.Replace("Item Code: ", "")
-        For i As Integer = 0 To dgvSelectedItem.Rows.Count - 1
-            If get_itemcode = dgvSelectedItem.Rows(i).Cells(0).Value And get_itemname = dgvSelectedItem.Rows(i).Cells(1).Value Then
-                Dim quantity_add As Integer = CInt(dgvSelectedItem.Rows(i).Cells(3).Value) + CInt(txtboxQuantity.Text)
-                dgvSelectedItem.Rows(i).Cells(3).Value = quantity_add
-                Me.Cursor = Cursors.WaitCursor
-                panelQuantity.Visible = False
-                Me.Cursor = Cursors.Default
-                txtboxQuantity.Text = ""
-                dgvSelectedItem.ClearSelection()
-                dgvSelectedItem.Rows(dgvSelectedItem.Rows.Count - 1).Selected = True
-                dgvCount()
-                load_selecteditems()
-                Return True
-            End If
-        Next
-    End Function
-    Public Sub load_items(ByVal query As String)
-        dgvListItem.Rows.Clear()
-        Dim auto As New AutoCompleteStringCollection()
-        con.Open()
-        cmd = New SqlCommand(query, con)
-        rdr = cmd.ExecuteReader()
-        While rdr.Read()
-            dgvListItem.Rows.Add(rdr("itemcode").ToString(), rdr("itemname").ToString(), rdr("category").ToString(), "")
-            auto.Add(rdr("itemcode"))
-            auto.Add(rdr("itemname"))
-        End While
-        con.Close()
-        txtboxListItemSearch.AutoCompleteCustomSource = auto
-        dgvCount()
-    End Sub
     Public Sub load_convesions()
-        getID()
+        Dim result As New DataTable()
+        result = recc.loadPendingConvOut()
         dgvConversions.Rows.Clear()
-        con.Open()
-        cmd = New SqlCommand("SELECT DISTINCT conv_number FROM tblconversion WHERE inv_number=@inv_num AND type=@type AND status=@stat;", con)
-        cmd.Parameters.AddWithValue("@inv_num", lblID.Text)
-        cmd.Parameters.AddWithValue("@type", "Parent")
-        cmd.Parameters.AddWithValue("@stat", "Open")
-        rdr = cmd.ExecuteReader()
-        While rdr.Read()
-            dgvConversions.Rows.Add(rdr("conv_number"))
-        End While
-        con.Close()
+        For Each r0w As DataRow In result.Rows
+            dgvConversions.Rows.Add(r0w("conv_number"))
+        Next
     End Sub
     Public Sub dgvCount()
         lblListItemCount.Text = CStr(dgvListItem.Rows.Count)
         lblSelectedItemCount.Text = CStr(dgvSelectedItem.Rows.Count)
     End Sub
-    Public Sub load_selecteditems()
-        Dim auto As New AutoCompleteStringCollection()
-        For i As Integer = 0 To dgvSelectedItem.Rows.Count - 1
-            auto.Add(dgvSelectedItem.Rows(i).Cells(0).Value)
-            auto.Add(dgvSelectedItem.Rows(i).Cells(1).Value)
+
+    ''' <summary>
+    ''' load categories to combobox
+    ''' </summary>
+    Public Sub loadCategories()
+        Dim result As New DataTable()
+        result = recc.loadCategories()
+        cmbCategoryListItem.Items.Clear()
+        cmbCategoryListItem.Items.Add("All")
+        For Each r0w As DataRow In result.Rows
+            cmbCategoryListItem.Items.Add(r0w("result"))
         Next
-        txtboxSelectedItem.AutoCompleteCustomSource = auto
-    End Sub
-    Public Sub categories()
-        Try
-            cmbCategoryListItem.Items.Clear()
-            Dim q As String = ""
-            If lcacc = "Production" Then
-                q = "SELECT category FROM tblcat WHERE  status='1' AND Not category='Noodles' AND Not category='Packaging' AND not category='Drinks' AND NOT category='Meal' AND NOT category='Combo'"
-        Else
-                q = "Select category from tblcat where status='1' order by category"
-            End If
-            con.Open()
-            cmd = New SqlCommand(q, con)
-            rdr = cmd.ExecuteReader
-            While rdr.Read
-                cmbCategoryListItem.Items.Add(rdr("category"))
-            End While
-            con.Close()
-            If cmbCategoryListItem.Items.Count <> 0 Then
-                cmbCategoryListItem.Items.Add("All")
-            End If
-
-        Catch ex As System.InvalidOperationException
-            Me.Cursor = Cursors.Default
-            MsgBox(ex.Message, MsgBoxStyle.Critical, "")
-        Catch ex As Exception
-            Me.Cursor = Cursors.Default
-            MsgBox(ex.Message, MsgBoxStyle.Information)
-        Finally
-            con.Close()
-        End Try
-    End Sub
-    Public Sub getID()
-        Dim id As String = ""
-        Dim date_ As New DateTime()
-        con.Open()
-        cmd = New SqlCommand("Select TOP 1 invnum,datecreated from tblinvsum WHERE area='" & lcacc & "' order by invsumid DESC", con)
-        rdr = cmd.ExecuteReader()
-        If rdr.Read() Then
-            id = rdr("invnum")
-            date_ = CDate(rdr("datecreated"))
-        End If
-        con.Close()
-        If date_.ToString("MM/dd/yyyy") = getSystemDate.ToString("MM/dd/yyyy") Then
-            lblID.Text = id
-        Else
-            lblID.Text = "N/A"
-        End If
-    End Sub
-    Public Sub addQuantity()
-        Dim count As Integer = 0
-        For index As Integer = 0 To dgvitems.RowCount - 1
-            If dgvitems.Rows(index).Cells("item_name").Value = dgvListItem.CurrentRow.Cells("itemname").Value Then
-                count += 1
-            End If
-        Next
-
-        If count > 0 Then
-            MessageBox.Show("Can't convert to same item", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
-            Exit Sub
-        End If
-
-        lblQuantityItemCode.Text = "Item Code: " & dgvListItem.CurrentRow.Cells(0).Value.ToString
-        lblQuantityItemName.Text = "Item Name: " & dgvListItem.CurrentRow.Cells(1).Value.ToString
-        lblQuantityCategory.Text = "Category: " & dgvListItem.CurrentRow.Cells(2).Value.ToString
-        panelQuantity.Visible = True
-        panelQuantity.BringToFront()
-        selectedQuantity = "Add Quantity"
-        txtboxQuantity.Focus()
+        cmbCategoryListItem.SelectedIndex = 0
     End Sub
     Private Sub dgvListItem_CellContentClick(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvListItem.CellContentClick
         If dgvListItem.Rows.Count <> 0 Then
             If e.ColumnIndex = 3 Then
-                addQuantity()
+                addQty()
             End If
         End If
     End Sub
 
     Private Sub btnSearchListItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSearchListItem.Click
-        con.Open()
-        cmd = New SqlCommand("SELECT itemcode,itemname FROM tblitems WHERE  itemname LIKE @name", con)
-        cmd.Parameters.AddWithValue("@name", "%" & txtboxListItemSearch.Text & "%")
-        rdr = cmd.ExecuteReader()
-        If rdr.Read() Then
-            For i As Integer = 0 To dgvListItem.Rows.Count - 1
-                If dgvListItem.Rows(i).Cells("itemname").Value = rdr("itemname") Then
-                    dgvListItem.Rows(i).Selected = True
-                    dgvListItem.CurrentCell = dgvListItem.Rows(i).Cells(1)
-                Else
-                    dgvListItem.Rows(i).Selected = False
-                End If
-            Next
-            addQuantity()
-        End If
-        con.Close()
-    End Sub
+        'loop dgv items
+        For i As Integer = 0 To dgvListItem.Rows.Count - 1
+            'check if row is equal to search bar
+            If dgvListItem.Rows(i).Cells("itemname").Value.ToString.ToLower = txtboxListItemSearch.Text.ToLower Then
+                'assign row to be selected
+                dgvListItem.Rows(i).Selected = True
+                dgvListItem.CurrentCell = dgvListItem.Rows(i).Cells("itemname")
+            Else
+                'assign row to be unselected if row and search it not match
+                dgvListItem.Rows(i).Selected = False
+            End If
+        Next
 
-    Private Sub txtboxQuantity_KeyPress(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtboxQuantity.KeyPress
-        If Not Char.IsControl(e.KeyChar) And Not Char.IsDigit(e.KeyChar) Then
-            e.Handled = True
+        If dgvListItem.RowCount <> 0 And Not String.IsNullOrEmpty(txtboxListItemSearch.Text) Then
+            addQty()
+        End If
+    End Sub
+    Public Sub addQty()
+
+        Dim checkError As Integer = 0
+        For index As Integer = 0 To dgvSelectedItem.RowCount - 1
+            If dgvSelectedItem.Rows(index).Cells("itemnamee").Value.ToString.ToLower = dgvListItem.CurrentRow.Cells("itemname").Value.ToString.ToLower Then
+                checkError += 1
+            End If
+        Next
+
+        Dim count As Integer = 0
+        For index As Integer = 0 To dgvitems.RowCount - 1
+            If dgvitems.Rows(index).Cells("item_name").Value.ToString.ToLower = dgvListItem.CurrentRow.Cells("itemname").Value.ToString.ToLower Then
+                count += 1
+            End If
+        Next
+
+        If checkError > 0 Then
+            MessageBox.Show("'" & dgvListItem.CurrentRow.Cells("itemname").Value & "' has already exist in Selected Item", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        ElseIf count > 0 Then
+            MessageBox.Show("Can't convert to same item", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        ElseIf lblConvID.Text = "N/A" Then
+            MessageBox.Show("Pick Conversion Out first", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        Else
+            receivedItem_add.txtitemcode.Text = dgvListItem.CurrentRow.Cells("itemcode").Value
+            receivedItem_add.txtitemname.Text = dgvListItem.CurrentRow.Cells("itemname").Value
+            receivedItem_add.txtcategory.Text = dgvListItem.CurrentRow.Cells("categoory").Value
+            receivedItem_add.txtquantity.Text = 0
+            receivedItem_add.lblheader.Text = "ADD QUANTITY"
+            receivedItem_add.txtquantity.Focus()
+            receivedItem_add.ShowDialog()
+            If receivedItem_add.isSuccess Then
+                Dim itemname As String = "", itemcode As String = "", category As String = "", quantity As Double = 0.00
+                itemname = receivedItem_add.txtitemname.Text
+                itemcode = receivedItem_add.txtitemcode.Text
+                category = receivedItem_add.txtcategory.Text
+                quantity = receivedItem_add.txtquantity.Text
+                receivedItem_add.txtquantity.Focus()
+                dgvSelectedItem.Rows.Add(itemcode, itemname, category, quantity)
+            End If
+        End If
+    End Sub
+    Public Sub updateQty()
+        receivedItem_add.txtitemcode.Text = dgvSelectedItem.CurrentRow.Cells("itemcodee").Value
+        receivedItem_add.txtitemname.Text = dgvSelectedItem.CurrentRow.Cells("itemnamee").Value
+        receivedItem_add.txtcategory.Text = dgvSelectedItem.CurrentRow.Cells("categoryy").Value
+        receivedItem_add.txtquantity.Text = 0
+        receivedItem_add.lblheader.Text = "EDIT QUANTITY"
+        receivedItem_add.txtquantity.Focus()
+        receivedItem_add.ShowDialog()
+        If receivedItem_add.isSuccess Then
+            Dim itemname As String = "", itemcode As String = "", category As String = "", quantity As Double = 0.00
+            itemname = receivedItem_add.txtitemname.Text
+            itemcode = receivedItem_add.txtitemcode.Text
+            category = receivedItem_add.txtcategory.Text
+            quantity = receivedItem_add.txtquantity.Text
+            receivedItem_add.txtquantity.Focus()
+            dgvSelectedItem.CurrentRow.Cells("quantityy").Value = quantity
         End If
     End Sub
 
     Private Sub dgvSelectedItem_CellContentClick(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvSelectedItem.CellContentClick
-        If e.ColumnIndex = 4 Then
-            lblQuantityItemCode.Text = "Item Code: " & dgvSelectedItem.CurrentRow.Cells(0).Value.ToString
-            lblQuantityItemName.Text = "Item Name: " & dgvSelectedItem.CurrentRow.Cells(1).Value.ToString
-            panelQuantity.Visible = True
-            panelQuantity.BringToFront()
-            selectedQuantity = "Update Quantity"
-            txtboxQuantity.Text = dgvSelectedItem.CurrentRow.Cells(3).Value
-        ElseIf e.ColumnIndex = 5 Then
-            Dim a As String = MsgBox("Are you sure you want to delete?", MsgBoxStyle.Question + MsgBoxStyle.YesNo, "")
-            If a = vbYes Then
-                dgvSelectedItem.Rows.RemoveAt(e.RowIndex)
+        If dgvSelectedItem.RowCount <> 0 Then
+            If e.ColumnIndex = 4 Then
+                updateQty()
+            ElseIf e.ColumnIndex = 5 Then
+                Dim a As String = MsgBox("Are you sure you want to remove?", MsgBoxStyle.Question + MsgBoxStyle.YesNo, "Atlantic Bakery")
+                If a = vbYes Then
+                    dgvSelectedItem.Rows.RemoveAt(e.RowIndex)
+                End If
             End If
         End If
     End Sub
 
-    Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button2.Click
-        con.Open()
-        cmd = New SqlCommand("SELECT itemcode,itemname FROM tblitems WHERE itemcode=@code OR itemname=@name", con)
-        cmd.Parameters.AddWithValue("@code", txtboxSelectedItem.Text)
-        cmd.Parameters.AddWithValue("@name", txtboxSelectedItem.Text)
-        rdr = cmd.ExecuteReader()
-
-        If rdr.Read() Then
-
-            For i As Integer = 0 To dgvSelectedItem.Rows.Count - 1
-                If dgvSelectedItem.Rows(i).Cells(0).Value = rdr("itemcode") Or dgvSelectedItem.Rows(i).Cells(1).Value = rdr("itemname") Then
-                    dgvSelectedItem.Rows(i).Selected = True
-                    dgvSelectedItem.CurrentCell = dgvSelectedItem.Rows(i).Cells(0)
-                Else
-                    dgvSelectedItem.Rows(i).Selected = False
-                End If
-            Next
-        End If
-
-        con.Close()
+    Public Sub loadAvailableItems()
+        recc.setDateCreated(DateTime.Now.ToString("MM/dd/yyy"))
+        recc.setItemName(txtboxListItemSearch.Text)
+        recc.setCategory(cmbCategoryListItem.Text)
+        Dim result As New DataTable()
+        result = recc.loadAvailableItems("rec")
+        dgvListItem.Rows.Clear()
+        For Each r0w As DataRow In result.Rows
+            dgvListItem.Rows.Add(r0w("itemcode"), r0w("itemname"), r0w("category"))
+        Next
+        txtboxListItemSearch.AutoCompleteCustomSource = fillAutoComplete(dgvListItem, "itemname")
+        lblListItemCount.Text = dgvListItem.RowCount.ToString("N0")
     End Sub
 
     Private Sub cmbCategoryListItem_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmbCategoryListItem.SelectedIndexChanged
-        If lcacc = "Production" And cmbCategoryListItem.Text = "All" Then
-            load_items("SELECT itemcode,itemname,category FROM tblitems WHERE discontinued='0'  and Not category='Noodles' AND Not category='Packaging' AND not category='Drinks' AND NOT category='Meal' AND NOT category='Combo' ORDER BY itemcode")
-        ElseIf lcacc <> "Production" And cmbCategoryListItem.Text = "All" Then
-            load_items("SELECT itemcode,itemname,category FROM tblitems WHERE discontinued='0' AND Not tblitems.category='Packaging'   AND Not tblitems.category='Drinks' ORDER BY itemcode")
-        Else
-            load_items("SELECT itemcode,itemname,category FROM tblitems WHERE discontinued='0' AND Not tblitems.category='Packaging'  AND category='" & cmbCategoryListItem.Text & "' AND Not tblitems.category='Drinks'  ORDER BY itemcode")
-        End If
-    End Sub
-    Public Sub query()
-        Dim a As String = MsgBox("Are you sure you want to add?", MsgBoxStyle.Question + MsgBoxStyle.YesNo + MessageBoxDefaultButton.Button2, "")
-        If a = vbYes Then
-            PanelProduction.Visible = True
-            txtboxRemarks.Focus()
-        End If
+        loadAvailableItems()
     End Sub
 
     Private Sub btnSubmit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSubmit.Click
-        If dgvSelectedItem.Rows.Count = 0 Then
-            MessageBox.Show("Please select item first", "", MessageBoxButtons.OK, MessageBoxIcon.Error)
-            Exit Sub
-        ElseIf lblID.Text = "N/A" Then
-            MessageBox.Show("Create New Inventory before adding item", "", MessageBoxButtons.OK, MessageBoxIcon.Error)
-            Exit Sub
-        End If
-
         Dim count As Integer = 0
         For index As Integer = 0 To dgvitems.RowCount - 1
             If dgvitems.Rows(index).Cells("item_name").Value = dgvListItem.CurrentRow.Cells("itemname").Value Then
                 count += 1
             End If
         Next
-
-        If count > 0 Then
+        If dgvSelectedItem.Rows.Count = 0 Then
+            MessageBox.Show("Please select item first", "", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        ElseIf count > 0 Then
             MessageBox.Show("Can't convert to same item", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
-            Exit Sub
+        Else
+            PanelProduction.Visible = True
         End If
-
-        query()
     End Sub
-    Public Sub getConvNum()
-        Try
-            Dim temp As String = "0", area_format As String = "", selectcount_result As Integer = 0
-            con.Open()
-            cmd = New SqlCommand("Select ISNULL( MAX(conv_id),0) from tblconversion WHERE area='" & lcacc & "' AND type='Child';", con)
-            selectcount_result = cmd.ExecuteScalar() + 1
-            con.Close()
-
-            Dim branchcode As String = ""
-            con.Open()
-            cmd = New SqlCommand("SELECT branchcode FROM tblbranch WHERE main='1';", con)
-            rdr = cmd.ExecuteReader
-            If rdr.Read Then
-                branchcode = rdr("branchcode")
-            End If
-            con.Close()
-
-            Dim format As String = ""
-            If lcacc = "Production" Then
-                format = "PRODCONVIN - "
-            ElseIf lcacc = "Sales" Then
-                format = "SALCONVIN - "
-            End If
-
-            area_format = format & branchcode & " - "
-
-            If selectcount_result < 1000000 Then
-                Dim cselectcount_result As String = CStr(selectcount_result)
-                For vv As Integer = 1 To 6 - cselectcount_result.Length
-                    temp += "0"
-                Next
-                conv_number = area_format & temp & selectcount_result
-            End If
-        Catch ex As System.InvalidOperationException
-            Me.Cursor = Cursors.Default
-            MsgBox(ex.Message, MsgBoxStyle.Critical, "")
-        Catch ex As Exception
-            Me.Cursor = Cursors.Default
-            MsgBox(ex.ToString, MsgBoxStyle.Information, "")
-        Finally
-            con.Close()
-        End Try
-    End Sub
-    Public Function checkCutOff() As Boolean
-        Try
-            Dim status As String = "", date_from As New DateTime()
-            con.Open()
-            cmd = New SqlCommand("SELECT status,date FROM tblcutoff WHERE userid=(SELECT systemid FROM tblusers WHERE username=@username) ORDER BY cid DESC;", con)
-            cmd.Parameters.AddWithValue("@username", login.username)
-            rdr = cmd.ExecuteReader
-            If rdr.Read Then
-                status = rdr("status")
-                date_from = CDate(rdr("date"))
-            End If
-            con.Close()
-            If status = "In Active" And date_from.ToString("MM/dd/yyyy") = getSystemDate.ToString("MM/dd/yyyy") Then
-                Return True
-            Else
-                Return False
-            End If
-        Catch ex As Exception
-            MessageBox.Show(ex.ToString)
-        End Try
-    End Function
     Private Sub btnProceed_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnProceed.Click
         Try
-            If checkCutOff() Then
-                MessageBox.Show("Your account is already cut off", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                Exit Sub
-            End If
-
-            If lblConvID.Text = "N/A" Then
-                MessageBox.Show("Please select to convert", "", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                Exit Sub
-            End If
-
-            Dim count As Integer = 0
+            Dim count As Integer = 0, err As String = ""
             For index As Integer = 0 To dgvitems.RowCount - 1
                 If dgvitems.Rows(index).Cells("item_name").Value = dgvListItem.CurrentRow.Cells("itemname").Value Then
                     count += 1
                 End If
             Next
-
-            If count > 0 Then
-                MessageBox.Show("Can't convert to same item", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                Exit Sub
-            End If
-            getID()
-            Dim err As String = "", endbal As Double = 0.00
-            For index As Integer = 0 To dgvSelectedItem.RowCount - 1
+            For index As Integer = 0 To dgvitems.RowCount - 1
+                Dim endbal As Double = 0.00
                 con.Open()
-                cmd = New SqlCommand("SELECT endbal FROM tblinvitems WHERE  itemname=@itemname AND invnum=@invnum AND area='" & lcacc & "'", con)
+                cmd = New SqlCommand("SELECT dbo.checkStock(@itemname)", con)
                 cmd.Parameters.AddWithValue("@itemname", dgvitems.Rows(index).Cells("item_name").Value)
-                cmd.Parameters.AddWithValue("@invnum", lblID.Text)
-                rdr = cmd.ExecuteReader()
-                If rdr.Read Then
-                    endbal = CDbl(rdr("endbal"))
-                End If
+                endbal = cmd.ExecuteScalar
                 con.Close()
+
                 If endbal < CDbl(dgvitems.Rows(index).Cells("quantity").Value) Then
                     err &= dgvitems.Rows(index).Cells("item_name").Value & "(" & endbal & ")" & Environment.NewLine
                 End If
             Next
-
-            If err <> "" Then
+            If lblConvID.Text = "N/A" Then
+                MessageBox.Show("Please select to convert", "", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            ElseIf count > 0 Then
+                MessageBox.Show("Can't convert to same item", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            ElseIf err <> "" Then
                 MessageBox.Show("Below Item is insufficient stock" & Environment.NewLine & err, "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                Exit Sub
-            End If
-
-            If String.IsNullOrEmpty(txtboxSAPNo.Text) And String.IsNullOrEmpty(txtboxRemarks.Text) Then
+            ElseIf String.IsNullOrEmpty(txtboxSAPNo.Text) And String.IsNullOrEmpty(txtboxRemarks.Text) Then
                 MessageBox.Show("Please fill all fields", "", MessageBoxButtons.OK, MessageBoxIcon.Error)
             ElseIf String.IsNullOrEmpty(txtboxSAPNo.Text) And checkfollowup.Checked = False Then
                 MessageBox.Show("Please enter #", "", MessageBoxButtons.OK, MessageBoxIcon.Error)
             ElseIf String.IsNullOrEmpty(txtboxRemarks.Text) Then
                 MessageBox.Show("Please enter remarks", "", MessageBoxButtons.OK, MessageBoxIcon.Error)
             Else
-                Try
-                    Using connection As New SqlConnection(login.ss)
-                        Dim cmdd As New SqlCommand()
-                        cmdd.Connection = connection
-                        connection.Open()
-                        transaction = connection.BeginTransaction()
-                        cmdd.Transaction = transaction
-                        For i As Integer = 0 To dgvitems.RowCount - 1
-                            cmdd.Parameters.Clear()
-                            cmdd.CommandText = "Update tblinvitems set  convout+='" & CDbl(dgvitems.Rows(i).Cells("quantity").Value) & "', endbal-='" & CDbl(dgvitems.Rows(i).Cells("quantity").Value) & "', variance+='" & CDbl(dgvitems.Rows(i).Cells("quantity").Value) & "',status=1 where itemname='" & dgvitems.Rows(i).Cells("item_name").Value & "' and invnum='" & lblID.Text & "'"
-                            cmdd.ExecuteNonQuery()
+                Dim dtConvOut As New DataTable(), dtConvIn As New DataTable()
+                dtConvOut.Columns.Add("quantity")
+                dtConvOut.Columns.Add("itemname")
+                dtConvOut.Columns.Add("conv_number")
 
-                            cmdd.Parameters.Clear()
-                            cmdd.CommandText = "UPDATE tblconversion SET status=@status1 WHERE conv_number=@conv_number AND item_name=@itemname"
-                            cmdd.Parameters.AddWithValue("@conv_number", lblConvID.Text)
-                            cmdd.Parameters.AddWithValue("@itemname", dgvitems.Rows(i).Cells("item_name").Value)
-                            cmdd.Parameters.AddWithValue("@status1", "Closed")
-                            cmdd.ExecuteNonQuery()
-                        Next
-                        For r0w As Integer = 0 To dgvSelectedItem.Rows.Count - 1
-                            cmdd.Parameters.Clear()
-                            cmdd.CommandText = "Update tblinvitems set convin+='" & CDbl(dgvSelectedItem.Rows(r0w).Cells("quantityy").Value) & "', totalav+='" & CDbl(dgvSelectedItem.Rows(r0w).Cells("quantityy").Value) & "', endbal+='" & CDbl(dgvSelectedItem.Rows(r0w).Cells("quantityy").Value) & "', variance-='" & CDbl(dgvSelectedItem.Rows(r0w).Cells("quantityy").Value) & "' where itemname='" & dgvSelectedItem.Rows(r0w).Cells("itemnamee").Value & "' and invnum='" & lblID.Text & "'"
-                            cmdd.ExecuteNonQuery()
+                dtConvIn.Columns.Add("quantity")
+                dtConvIn.Columns.Add("itemname")
+                dtConvIn.Columns.Add("reference_number")
 
-                            cmdd.Parameters.Clear()
-                            cmdd.CommandText = "INSERT INTO tblconversion (inv_number,conv_number,item_code,item_name,category,quantity,type,status,sap_id,remarks,date_created,created_by,area,typenum,reference_number,marks) VALUES (@invnum,@convnumber,@itemcode,@itemname,@category,@quantity,@type,@status,@sap_id,@remarks,(SELECT GETDATE()),@createdby,@area,@typenum,@reference,@marks)"
-                            cmdd.Parameters.AddWithValue("@invnum", lblID.Text)
-                            cmdd.Parameters.AddWithValue("@convnumber", conv_number)
-                            cmdd.Parameters.AddWithValue("@itemcode", dgvSelectedItem.Rows(r0w).Cells(0).Value)
-                            cmdd.Parameters.AddWithValue("@itemname", dgvSelectedItem.Rows(r0w).Cells(1).Value)
-                            cmdd.Parameters.AddWithValue("@category", dgvSelectedItem.Rows(r0w).Cells(2).Value)
-                            cmdd.Parameters.AddWithValue("@quantity", dgvSelectedItem.Rows(r0w).Cells(3).Value)
-                            cmdd.Parameters.AddWithValue("@type", "Child")
-                            cmdd.Parameters.AddWithValue("@status", "Closed")
-                            cmdd.Parameters.AddWithValue("@typenum", lbltype.Text)
-                            Dim sap As String = ""
-                            If checkfollowup.Checked = True Then
-                                sap = "To Follow"
-                            Else
-                                sap = txtboxSAPNo.Text
-                            End If
-                            cmdd.Parameters.AddWithValue("@sap_id", sap)
-                            cmdd.Parameters.AddWithValue("@remarks", txtboxRemarks.Text)
-                            cmdd.Parameters.AddWithValue("@createdby", login.username)
-                            cmdd.Parameters.AddWithValue("@area", lcacc)
-                            cmdd.Parameters.AddWithValue("@reference", lblConvID.Text)
-                            cmdd.Parameters.AddWithValue("@marks", "")
-                            cmdd.ExecuteNonQuery()
-                        Next
-                        transaction.Commit()
-                    End Using
-                    MessageBox.Show("Transaction Completed", "", MessageBoxButtons.OK, MessageBoxIcon.Information)
-                    lblConvID.Text = "N/A"
-                    Me.Close()
-                Catch ex As Exception
-                    MessageBox.Show(ex.ToString)
-                    Try
-                        transaction.Rollback()
-                    Catch ex2 As Exception
-                        MessageBox.Show(ex2.ToString)
-                    End Try
-                End Try
+                For i As Integer = 0 To dgvitems.Rows.Count - 1
+                    dtConvOut.Rows.Add(CDbl(dgvitems.Rows(i).Cells("quantity").Value), dgvitems.Rows(i).Cells("item_name").Value, lblConvID.Text)
+                Next
+
+                For i As Integer = 0 To dgvSelectedItem.Rows.Count - 1
+                    dtConvIn.Rows.Add(CDbl(dgvSelectedItem.Rows(i).Cells("quantityy").Value), dgvSelectedItem.Rows(i).Cells("itemnamee").Value, lblConvID.Text)
+                Next
+                recc.sapDocument = lbltype.Text
+                recc.headerText = "Conversion In"
+                recc.convNumber = recc.returnTransactionNumber(False)
+                recc.sapNumber = IIf(String.IsNullOrEmpty(Trim(txtboxSAPNo.Text)), 0, txtboxSAPNo.Text)
+                recc.remarks = txtboxRemarks.Text
+                recc.conversionFunction(dtConvOut, dtConvIn)
+                Me.Close()
             End If
         Catch ex As Exception
             MessageBox.Show(ex.ToString)
@@ -526,32 +249,56 @@ Public Class conversions2
         txtboxSAPNo.Text = ""
     End Sub
 
+    ''' <summary>
+    ''' return auto complete string collection of datagridview cells that u want to get
+    ''' </summary>
+    ''' <param name="dgv"></param>
+    ''' <param name="cellName"></param>
+    ''' <returns></returns>
+    Public Function fillAutoComplete(ByVal dgv As DataGridView, cellName As String) As AutoCompleteStringCollection
+        Dim result As New AutoCompleteStringCollection
+        For i As Integer = 0 To dgv.RowCount - 1
+            result.Add(dgv.Rows(i).Cells(cellName).Value)
+        Next
+        Return result
+    End Function
+
     Private Sub dgvConversions_CellContentClick(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvConversions.CellContentClick
         Try
-            If e.ColumnIndex = 1 Then
-                lblConvID.Text = CStr(dgvConversions.CurrentRow.Cells("convnum").Value)
-                dgvitems.Rows.Clear()
-                con.Open()
-                cmd = New SqlCommand("SELECT item_name,category,quantity FROM tblconversion WHERE conv_number=@convnum;", con)
-                cmd.Parameters.AddWithValue("@convnum", dgvConversions.CurrentRow.Cells("convnum").Value)
-                rdr = cmd.ExecuteReader
-                While rdr.Read
-                    dgvitems.Rows.Add(rdr("item_name"), rdr("category"), rdr("quantity"))
-                End While
-                con.Close()
-            ElseIf e.ColumnIndex = 2 Then
-                Dim a As String = MsgBox("Are you sure you want to cancel?", MsgBoxStyle.Question + MsgBoxStyle.YesNo, "")
-                If a = vbYes Then
-                    con.Open()
-                    cmd = New SqlCommand("DELETE FROM tblconversion WHERE conv_number=@convnum", con)
-                    cmd.Parameters.AddWithValue("@convnum", dgvConversions.CurrentRow.Cells("convnum").Value)
-                    cmd.ExecuteNonQuery()
-                    con.Close()
-
-                    MessageBox.Show("Item Cancelled", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Information)
-                    load_convesions()
+            'check if dgv has row
+            If dgvConversions.Rows.Count <> 0 Then
+                'check if user click column index one
+                If e.ColumnIndex = 1 Then
+                    'assign conversion number to label
+                    lblConvID.Text = CStr(dgvConversions.CurrentRow.Cells("convnum").Value)
+                    'assign conversion number to received item class
+                    recc.convNumber = CStr(dgvConversions.CurrentRow.Cells("convnum").Value)
+                    'init datatable that hold items
+                    Dim result As New DataTable()
+                    'assign datatable to get items
+                    result = recc.loadConvOutItems()
+                    'clear dgv items first
                     dgvitems.Rows.Clear()
-                    lblConvID.Text = "N/A"
+                    'loop through
+                    For Each r0w As DataRow In result.Rows
+                        'assign every data to dgv items
+                        dgvitems.Rows.Add(r0w("item_name"), r0w("category"), CInt(r0w("quantity")).ToString("N0"))
+                    Next
+                    txtselectedseach.AutoCompleteCustomSource = fillAutoComplete(dgvitems, "item_name")
+                ElseIf e.ColumnIndex = 2 Then
+                    Dim a As String = MsgBox("Are you sure you want to cancel?", MsgBoxStyle.Question + MsgBoxStyle.YesNo, "Atlantic Bakery")
+                    If a = vbYes Then
+                        con.Open()
+                        cmd = New SqlCommand("DELETE FROM tblconversion WHERE conv_number=@convnum", con)
+                        cmd.Parameters.AddWithValue("@convnum", dgvConversions.CurrentRow.Cells("convnum").Value)
+                        cmd.ExecuteNonQuery()
+                        con.Close()
+
+                        MessageBox.Show("Item Cancelled", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                        load_convesions()
+                        dgvitems.Rows.Clear()
+                        lblConvID.Text = "N/A"
+                    End If
                 End If
             End If
         Catch ex As Exception
@@ -559,17 +306,9 @@ Public Class conversions2
         End Try
     End Sub
 
-    Private Sub conversions2_Activated(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Activated
-        getConvNum()
-    End Sub
-
     Private Sub checkfollowup_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles checkfollowup.CheckedChanged
-        If checkfollowup.Checked Then
-            txtboxSAPNo.Text = ""
-            txtboxSAPNo.Enabled = False
-        Else
-            txtboxSAPNo.Enabled = True
-        End If
+        txtboxSAPNo.Text = IIf(checkfollowup.Checked, "", txtboxSAPNo.Text)
+        txtboxSAPNo.Enabled = IIf(checkfollowup.Checked, False, True)
     End Sub
 
     Private Sub Panel5_MouseDown(sender As Object, e As MouseEventArgs) Handles Panel5.MouseDown, MyBase.MouseDown
@@ -602,17 +341,33 @@ Public Class conversions2
 
     Private Sub txtboxListItemSearch_KeyDown(sender As Object, e As KeyEventArgs) Handles txtboxListItemSearch.KeyDown
         If e.KeyCode = Keys.Enter Then
-           btnSearchListItem.PerformClick
+            btnSearchListItem.PerformClick()
         End If
     End Sub
 
-    Private Sub txtboxQuantity_KeyDown(sender As Object, e As KeyEventArgs) Handles txtboxQuantity.KeyDown
+    Private Sub btnselectedsearch_Click(sender As Object, e As EventArgs) Handles btnselectedsearch.Click
+        'loop dgv items
+        For i As Integer = 0 To dgvitems.Rows.Count - 1
+            'check if row is equal to search bar
+            If dgvitems.Rows(i).Cells("item_name").Value.ToString.ToLower = txtselectedseach.Text.ToLower Then
+                'assign row to be selected
+                dgvitems.Rows(i).Selected = True
+                dgvitems.CurrentCell = dgvitems.Rows(i).Cells("item_name")
+            Else
+                'assign row to be unselected if row and search it not match
+                dgvitems.Rows(i).Selected = False
+            End If
+        Next
+    End Sub
+
+    Private Sub txtselectedseach_KeyDown(sender As Object, e As KeyEventArgs) Handles txtselectedseach.KeyDown
+        'check if user pressed ENTER button
         If e.KeyCode = Keys.Enter Then
-            btnQuantity.PerformClick()
+            btnselectedsearch.PerformClick()
         End If
     End Sub
 
-    Private Sub txtboxSelectedItem_TextChanged(sender As Object, e As EventArgs) Handles txtboxSelectedItem.TextChanged
+    Private Sub txtboxSelectedItem_TextChanged(sender As Object, e As EventArgs) Handles txtselectedseach.TextChanged
 
     End Sub
 

@@ -383,7 +383,6 @@ Public Class conversions
 
     Private Sub btnConvIn_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnConvIn.Click
         Dim conversion2 As New conversions2()
-        conversion2.lcacc = "Sales"
         'conversion2.btnfrom1.Visible = True
         'conversion2.btnfrom1.PerformClick()
         'conversion2.btnfrom1.Visible = False
@@ -445,7 +444,7 @@ Public Class conversions
                             cmdd.Parameters.AddWithValue("@quantity", dgvSelectedItem.Rows(index).Cells(3).Value)
                             cmdd.Parameters.AddWithValue("@type", "Parent")
                             cmdd.Parameters.AddWithValue("@status", "Open")
-                            cmdd.Parameters.AddWithValue("@created_by", login.username)
+                            cmdd.Parameters.AddWithValue("@created_by", login2.username)
                             cmdd.Parameters.AddWithValue("@area", lcacc)
                             cmdd.Parameters.AddWithValue("@typenum", lbltype.Text)
                             Dim sap As String = ""

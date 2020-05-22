@@ -653,6 +653,12 @@
     <Compile Include="inv_logs.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="inv_logs2.Designer.vb">
+      <DependentUpon>inv_logs2.vb</DependentUpon>
+    </Compile>
+    <Compile Include="inv_logs2.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="itemprice.Designer.vb">
       <DependentUpon>itemprice.vb</DependentUpon>
     </Compile>
@@ -732,6 +738,7 @@
     <Compile Include="my_class\branch\branch_class.vb" />
     <Compile Include="my_class\categories\category_class.vb" />
     <Compile Include="my_class\connection_class.vb" />
+    <Compile Include="my_class\inventories\inventory_class.vb" />
     <Compile Include="my_class\items\items_class.vb" />
     <Compile Include="my_class\pos\mini_pos.vb" />
     <Compile Include="my_class\pos\pos2_class.vb" />
@@ -1719,6 +1726,9 @@
     <EmbeddedResource Include="inv_logs.resx">
       <DependentUpon>inv_logs.vb</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="inv_logs2.resx">
+      <DependentUpon>inv_logs2.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="itemprice.resx">
       <DependentUpon>itemprice.vb</DependentUpon>

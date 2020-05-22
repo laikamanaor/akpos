@@ -60,8 +60,6 @@ Public Class addcategory
         catc.status = IIf(cmbstatus.SelectedIndex = 0, 1, 0)
         'call insert category sub to insert query
         catc.insertCategory()
-        'message
-        MessageBox.Show("Transaction Completed", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Information)
     End Sub
     ''' <summary>
     ''' sub to update category
@@ -75,9 +73,14 @@ Public Class addcategory
         catc.status = IIf(cmbstatus.SelectedIndex = 0, 1, 0)
         'call update category sub to update query
         catc.updateCategory()
-        'message
-        MessageBox.Show("Transaction Completed", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Information)
     End Sub
+
+    Private Sub txtcategory_KeyDown(sender As Object, e As KeyEventArgs) Handles txtcategory.KeyDown
+        If e.KeyCode = Keys.Enter Then
+            submit()
+        End If
+    End Sub
+
     ''' <summary>
     ''' sub to submit button
     ''' </summary>

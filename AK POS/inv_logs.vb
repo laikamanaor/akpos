@@ -59,12 +59,6 @@ Public Class inv_logs
             con.Open()
             Dim query As String = ""
             If cat = "" Then
-                'Dim workgroup As String = ""
-                'If q = "Adjustment Item" Then
-                '    workgroup = "Sales"
-                'Else
-                '    workgroup = manager
-                'End If
                 query = "SELECT transaction_number, inv_id,item_code,item_name,category,quantity,date,type,area,type,area,transfer_to,transfer_from,reject,charge,processed_by FROM tblproduction WHERE type='" & q & "' AND area='" & manager & "'"
             ElseIf cat = "" And q = "Transfer Item" Then
                 query = "SELECT transaction_number, inv_id,item_code,item_name,category,quantity,date,type,area,type,area,transfer_to,transfer_from,reject,charge,processed_by FROM tblproduction WHERE type='" & q & "' AND area='" & manager & "'"

@@ -19,7 +19,7 @@ Public Class items2
         'show form
         frm.ShowDialog()
         'btnrefresh button will fire when add item form is closed
-        btnrefresh.PerformClick()
+        refreshh()
     End Sub
     Private Sub items2_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'display totalpage to label
@@ -171,41 +171,17 @@ Public Class items2
         End If
     End Sub
     ''' <summary>
-    '''  get latest inventory number
-    ''' </summary>
-    Public Function getInvID() As String
-        'init variables
-        Dim id As String = "", date_ As New DateTime()
-        'open connection
-        con.Open()
-        'syntax
-        cmd = New SqlCommand("Select TOP 1 invnum, datecreated from tblinvsum WHERE area='" & "Sales" & "' order by invsumid DESC", con)
-        'read command
-        rdr = cmd.ExecuteReader()
-        'check read has row
-        If rdr.Read() Then
-            'assign values
-            id = rdr("invnum")
-            date_ = CDate(rdr("datecreated"))
-        End If
-        'close connection
-        con.Close()
-        'return result
-        Return id
-    End Function
-    ''' <summary>
     ''' check stock of item before update discontinue column
     ''' </summary>
     ''' <returns></returns>
     Public Function checkStock() As Boolean
         Try
             'init variables
-            Dim invnum As String = getInvID(), result As Boolean = False, endbal As Double = 0.00
+            Dim result As Boolean = False, endbal As Double = 0.00
             'open connection
             con.Open()
             'syntax
-            cmd = New SqlCommand("SELECT endbal FROM tblinvitems WHERE invnum=@invnum AND itemname=@itemname;", con)
-            cmd.Parameters.AddWithValue("@invnum", invnum)
+            cmd = New SqlCommand("SELECT endbal FROM tblinvitems WHERE invnum=(Select TOP 1 invnum from tblinvsum WHERE area='Sales' order by invsumid DESC) AND itemname=@itemname;", con)
             cmd.Parameters.AddWithValue("@itemname", dgv.CurrentRow.Cells("itemname").Value)
             'read command
             rdr = cmd.ExecuteReader
@@ -230,79 +206,11 @@ Public Class items2
     ''' </summary>
     Public Sub addInventory()
         Try
-            'init variables
-            Dim invnum As String = getInvID(), result As Boolean = False
-            'create new connection
-            Using connection As New SqlConnection(cc.conString)
-                'init command
-                Dim cmdd As New SqlCommand()
-                'open connection
-                cmdd.Connection = connection
-                connection.Open()
-                'begin sql transaction
-                transaction = connection.BeginTransaction()
-                cmdd.Transaction = transaction
-
-                'clear parameters first
-                cmdd.Parameters.Clear()
-                'procedure name for updating discontinued status
-                cmdd.CommandText = "updateDiscontinued"
-                'command type
-                cmdd.CommandType = CommandType.StoredProcedure
-                'assign parameters
-                cmdd.Parameters.AddWithValue("@itemid", dgv.CurrentRow.Cells("itemid").Value)
-                cmdd.Parameters.AddWithValue("@discontinued", IIf(chck.Checked = True, 0, 1))
-                'execute query
-                cmdd.ExecuteNonQuery()
-
-                'clear parameters first
-                cmdd.Parameters.Clear()
-                'command syntax
-                cmdd.CommandText = "SELECT invid FROM tblinvitems WHERE invnum=@invnum AND itemname=@itemname;"
-                'command type
-                cmdd.CommandType = CommandType.Text
-                'command parameters
-                cmdd.Parameters.AddWithValue("@invnum", invnum)
-                cmdd.Parameters.AddWithValue("@itemname", dgv.CurrentRow.Cells("itemname").Value)
-                'read command
-                rdr = cmdd.ExecuteReader
-                'return result depends on expression
-                If rdr.Read Then
-                    result = True
-                Else
-                    result = False
-                End If
-                rdr.Close()
-                'close read
-
-                'check if result is true
-                If result Then
-                    'clear parameters
-                    cmdd.Parameters.Clear()
-                    'procedure name
-                    cmdd.CommandText = "updateInvStatus"
-                    'command type
-                    cmdd.CommandType = CommandType.StoredProcedure
-                    'assign parameters
-                    cmdd.Parameters.AddWithValue("@itemid", dgv.CurrentRow.Cells("itemid").Value)
-                    cmdd.Parameters.AddWithValue("@status", IIf(chck.Checked = True, 1, 0))
-                    'execute query
-                    cmdd.ExecuteNonQuery()
-                Else
-                    'clear parameters first
-                    cmdd.Parameters.Clear()
-                    'procedure name
-                    cmdd.CommandText = "insertContinueInvitems"
-                    'command type
-                    cmdd.CommandType = CommandType.StoredProcedure
-                    'assign parameters
-                    cmdd.Parameters.AddWithValue("@itemid", dgv.CurrentRow.Cells("itemid").Value)
-                    'execute query
-                    cmdd.ExecuteNonQuery()
-                End If
-                'commit query
-                transaction.Commit()
-            End Using
+            itemc.itemName = dgv.CurrentRow.Cells("itemname").Value
+            itemc.itemid = dgv.CurrentRow.Cells("itemid").Value
+            itemc.setDiscontinued(IIf(chck.Checked = True, 0, 1))
+            itemc.status = IIf(chck.Checked = True, 1, 0)
+            itemc.addInventory()
         Catch ex As Exception
             'msg error
             MessageBox.Show(ex.ToString)

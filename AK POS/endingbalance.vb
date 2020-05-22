@@ -11,48 +11,14 @@ Public Class endingbalance
     Dim transaction As SqlTransaction
     Dim selectedQuantity As String = ""
     Dim trans_num As String = "", ar_number As String = 0
-
-    Public lcacc As String = ""
-    Public Function decryptConString() As String
-        Dim base64encoded As String = File.ReadAllText("connectionstring.txt")
-        Dim data As Byte() = System.Convert.FromBase64String(base64encoded)
-        Return System.Text.ASCIIEncoding.ASCII.GetString(data)
-    End Function
-
-    Public Function removeVowels(ByVal workgrp As String) As String
-        Dim result = New StringBuilder
-        For Each c In workgrp
-            If Not "aeiou".Contains(c.ToString.ToLower) Then
-                result.Append(c)
-            End If
-        Next
-        Return result.ToString
-    End Function
-    Public Function getSystemDate() As DateTime
-        Try
-            Dim dt As New DateTime()
-            con.Open()
-            cmd = New SqlCommand("SELECT GETDATE()", con)
-            rdr = cmd.ExecuteReader()
-            While rdr.Read
-                dt = CDate(rdr(0).ToString)
-            End While
-            con.Close()
-            Return dt
-        Catch ex As Exception
-            MessageBox.Show(ex.ToString)
-        Finally
-            con.Close()
-        End Try
-    End Function
     Public Sub GetTransID()
         Try
             Dim selectcount_result As Integer = 0
             Dim get_area As String = "", temp As String = ""
             Dim area_format As String = ""
             con.Open()
-            cmd = New SqlCommand("Select COUNT(*) transaction_number  from tblproduction WHERE area='" & lcacc & "' AND type='Actual Ending Balance';", con)
-            selectcount_result = cmd.ExecuteScalar + 1
+            cmd = New SqlCommand("Select ISNULL(MAX(transaction_id),0)+1 transaction_number  from tblproduction WHERE area='Sales' AND type='Actual Ending Balance';", con)
+            selectcount_result = cmd.ExecuteScalar
             con.Close()
 
             Dim branchcode As String = ""
@@ -64,21 +30,12 @@ Public Class endingbalance
             End If
             con.Close()
 
-            'Dim s As String = ""
-            'If lcacc = "Sales" Then
-            '    s = "(SLS) "
-            'Else
-            '    s = "(PRD) "
-            'End If
-
-
-
             If selectcount_result < 1000000 Then
                 Dim cselectcount_result As String = CStr(selectcount_result)
                 For vv As Integer = 1 To 6 - cselectcount_result.Length
                     temp += "0"
                 Next
-                area_format = "AEB - " & branchcode & " - " & selectcount_result
+                area_format = "AEB - " & branchcode & " - " & temp & selectcount_result
             End If
             trans_num = area_format
         Catch ex As System.InvalidOperationException
@@ -115,37 +72,10 @@ Public Class endingbalance
         con.Close()
         Return endbal2
     End Function
-    Public Function checkCutOff() As Boolean
-        Try
-            Dim status As String = "", date_from As New DateTime()
-            con.Open()
-            cmd = New SqlCommand("Select status, Date FROM tblcutoff WHERE userid=(SELECT systemid FROM tblusers WHERE username=@username) ORDER BY cid DESC;", con)
-            cmd.Parameters.AddWithValue("@username", login.username)
-            rdr = cmd.ExecuteReader
-            If rdr.Read Then
-                status = rdr("status")
-                date_from = CDate(rdr("date"))
-            End If
-            con.Close()
-            If status = "In Active" And date_from.ToString("MM/dd/yyyy") = getSystemDate.ToString("MM/dd/yyyy") Then
-                Return True
-            Else
-                Return False
-            End If
-        Catch ex As Exception
-            MessageBox.Show(ex.ToString)
-        End Try
-    End Function
-
     Public Sub addquantity()
         Dim get_itemname As String = lblQuantityItemName.Text.Replace("Item Name: ", "")
         Dim get_itemcode As String = lblQuantityItemCode.Text.Replace("Item Code: ", "")
         Dim get_category As String = lblQuantityCategory.Text.Replace("Category: ", "")
-        'If CDbl(txtboxQuantity.Text) > checkEndbal(lblID.Text, get_itemname, get_itemcode) Then
-        '    MessageBox.Show("Invalid quantity, Actual Ending Balance should Not greater than Ending Balance. If you want to over, Request Adjustment Item to LC.", "", MessageBoxButtons.OK, MessageBoxIcon.Error)
-        '    Return
-        'End If
-
         If selectedQuantity = "Add Quantity" Then
             If checkRowsExist() Then
                 Return
@@ -366,7 +296,7 @@ Public Class endingbalance
         Dim id As String = ""
         Dim date_ As New DateTime()
         con.Open()
-        cmd = New SqlCommand("Select TOP 1 invnum,datecreated from tblinvsum WHERE area='" & lcacc & "' order by invsumid DESC", con)
+        cmd = New SqlCommand("Select TOP 1 invnum,datecreated from tblinvsum WHERE area='Sales' order by invsumid DESC", con)
         rdr = cmd.ExecuteReader()
         If rdr.Read() Then
             id = rdr("invnum")
@@ -545,7 +475,7 @@ Public Class endingbalance
                             cmdd.ExecuteNonQuery()
 
                             cmdd.Parameters.Clear()
-                            cmdd.CommandText = "INSERT INTO tblproduction (transaction_number,inv_id,item_code,item_name,category,quantity,charge,date,processed_by,type,area,status,remarks) VALUES ('" & trans_num & "','" & lblID.Text & "','" & index("itemcode") & "','" & index("itemname") & "','" & index("category") & "','" & index("quantity") & "','" & index("charge") & "',(SELECT GETDATE()),'" & login.username & "','Actual Ending Balance', '" & lcacc & "', 'Completed',@remarks);"
+                            cmdd.CommandText = "INSERT INTO tblproduction (transaction_number,inv_id,item_code,item_name,category,quantity,charge,date,processed_by,type,area,status,remarks) VALUES ('" & trans_num & "','" & lblID.Text & "','" & index("itemcode") & "','" & index("itemname") & "','" & index("category") & "','" & index("quantity") & "','" & index("charge") & "',(SELECT GETDATE()),'" & login2.username & "','Actual Ending Balance', 'Sales', 'Completed',@remarks);"
                             cmdd.Parameters.AddWithValue("@remarks", txtboxremarks.Text)
                             cmdd.ExecuteNonQuery()
                         Next
@@ -596,7 +526,7 @@ Public Class endingbalance
                                     cmdd.ExecuteNonQuery()
                                 Next
                                 cmdd.Parameters.Clear()
-                                cmdd.CommandText = "Insert into tbltransaction (ornum, transnum, transdate, cashier, tendertype, servicetype, delcharge, subtotal, disctype, less, vatsales, vat, amtdue, gctotal, tenderamt, change, refund, comment, remarks, customer, tinnum, tablenum, pax, datecreated, datemodified, status, area, invnum, partialamt,typenum,sap_number,sap_remarks,typez,discamt,salesname) values ('0', '" & ar_number & "', '" & Format(Date.Now, "MM/dd/yyyy") & "','" & login.cashier & "','A.R Charge','N/A','0', '" & amount & "', 'N/A', '0', '0', '0', '" & amount & "', '0', '0', '0', '0', '', '','" & itemz & "' , 'N/A', '0','1', '" & Date.Now & "', '" & Date.Now & "', '1','Sales','" & lblID.Text & "','0','AR','To Follow','','Retail',0,'" & login.username & "')"
+                                cmdd.CommandText = "Insert into tbltransaction (ornum, transnum, transdate, cashier, tendertype, servicetype, delcharge, subtotal, disctype, less, vatsales, vat, amtdue, gctotal, tenderamt, change, refund, comment, remarks, customer, tinnum, tablenum, pax, datecreated, datemodified, status, area, invnum, partialamt,typenum,sap_number,sap_remarks,typez,discamt,salesname) values ('0', '" & ar_number & "', '" & Format(Date.Now, "MM/dd/yyyy") & "','" & login.cashier & "','A.R Charge','N/A','0', '" & amount & "', 'N/A', '0', '0', '0', '" & amount & "', '0', '0', '0', '0', '', '','" & itemz & "' , 'N/A', '0','1', '" & Date.Now & "', '" & Date.Now & "', '1','Sales','" & lblID.Text & "','0','AR','To Follow','','Retail',0,'" & login2.username & "')"
                                 cmdd.ExecuteNonQuery()
 
                                 cmdd.Parameters.Clear()
@@ -610,7 +540,7 @@ Public Class endingbalance
                                 cmdd.Parameters.AddWithValue("@amountdue", amount)
                                 cmdd.Parameters.AddWithValue("@name", itemz)
                                 cmdd.Parameters.AddWithValue("@status", "Unpaid")
-                                cmdd.Parameters.AddWithValue("@createdby", login.username)
+                                cmdd.Parameters.AddWithValue("@createdby", login2.username)
                                 cmdd.Parameters.AddWithValue("@area", "Sales")
                                 cmdd.Parameters.AddWithValue("@invnum", lblID.Text)
                                 cmdd.Parameters.AddWithValue("@tayp", "AR Charge")
@@ -643,14 +573,8 @@ Public Class endingbalance
 
     Public Function cash(ByVal typee As String) As Double
         Try
-
-            Dim systemDate As String = getSystemDate.ToString("MM/dd/yyyy")
-
             Dim totalprice As Double = 0.0
-            Dim query As String = "Select ISNULL(SUM(tbltransaction.amtdue),0) from tbltransaction JOIN tbltransaction2 On tbltransaction2.transnum = tbltransaction.transnum WHERE tbltransaction.tendertype='" & typee & "' AND tbltransaction.status=1 AND CAST(tbltransaction.datecreated AS date)='" & systemDate & "'"
-
-
-
+            Dim query As String = "Select ISNULL(SUM(tbltransaction.amtdue),0) from tbltransaction JOIN tbltransaction2 On tbltransaction2.transnum = tbltransaction.transnum WHERE tbltransaction.tendertype='" & typee & "' AND tbltransaction.status=1 AND CAST(tbltransaction.datecreated AS date)=(select cast(getdate() as date))"
             con.Open()
             cmd = New SqlCommand(query, con)
             totalprice = cmd.ExecuteScalar
@@ -665,9 +589,8 @@ Public Class endingbalance
     End Function
     Public Function apcash(ByVal typee As String) As Double
         Try
-            Dim systemDate As String = getSystemDate.ToString("MM/dd/yyyy")
             Dim totalprice As Double = 0.0
-            Dim query As String = "select ISNULL(SUM(tbltransaction.amtdue),0) from tbltransaction WHERE tbltransaction.tendertype='" & typee & "' AND tbltransaction.status=1 AND CAST(tbltransaction.datecreated AS date)='" & systemDate & "'"
+            Dim query As String = "select ISNULL(SUM(tbltransaction.amtdue),0) from tbltransaction WHERE tbltransaction.tendertype='" & typee & "' AND tbltransaction.status=1 AND CAST(tbltransaction.datecreated AS date)=(select cast(getdate() as date))"
             con.Open()
             cmd = New SqlCommand(query, con)
             totalprice = cmd.ExecuteScalar
@@ -685,9 +608,7 @@ Public Class endingbalance
             Dim temp As String = "1", area_format As String = "", selectcount_result As Integer = 0
             con.Open()
 
-            Dim aa As String = lcacc
-
-            cmd = New SqlCommand("Select COUNT(*)  from tblars1 WHERE area='" & aa & "' AND type=@type;", con)
+            cmd = New SqlCommand("Select COUNT(*)  from tblars1 WHERE area='Sales' AND type=@type;", con)
             cmd.Parameters.AddWithValue("@type", typee)
             selectcount_result = cmd.ExecuteScalar() + 1
             con.Close()
@@ -702,13 +623,7 @@ Public Class endingbalance
             con.Close()
 
 
-            Dim format As String = ""
-            If lcacc = "Production" Then
-                format = "PRODAR" & formatsu & " - "
-            ElseIf lcacc = "Sales" Then
-                format = "SALAR" & formatsu & " - "
-            End If
-
+            Dim format As String = "SALAR" & formatsu & " - "
             area_format = format & branchcode & " - "
 
             If selectcount_result < 1000000 Then
@@ -730,7 +645,7 @@ Public Class endingbalance
     End Sub
     Private Sub btnSubmit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSubmit.Click
         If dgvSelectedItem.Rows.Count = 0 Then
-            MessageBox.Show("Please select item first", "", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            MessageBox.Show("Please Select item first", "", MessageBoxButtons.OK, MessageBoxIcon.Error)
             Exit Sub
         ElseIf lblID.Text = "N/A" Then
             MessageBox.Show("Create New Inventory before adding item", "", MessageBoxButtons.OK, MessageBoxIcon.Error)
@@ -742,7 +657,7 @@ Public Class endingbalance
     End Sub
 
     Private Sub endingbalance_Activated(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Activated
-        'load_items("SELECT itemcode,itemname,category FROM tblitems WHERE discontinued='0'")
+        'load_items("Select itemcode,itemname,category FROM tblitems WHERE discontinued='0'")
         load_selecteditems()
         categories()
         getID()
