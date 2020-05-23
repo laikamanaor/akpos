@@ -26,12 +26,12 @@ Partial Class pull_out
         Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle8 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle9 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle7 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.lblTransactionID = New System.Windows.Forms.Label()
         Me.Label8 = New System.Windows.Forms.Label()
         Me.Label6 = New System.Windows.Forms.Label()
@@ -48,12 +48,6 @@ Partial Class pull_out
         Me.Label5 = New System.Windows.Forms.Label()
         Me.btnQuantity = New System.Windows.Forms.Button()
         Me.dgvSelectedItem = New System.Windows.Forms.DataGridView()
-        Me.itemcodee = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.itemnamee = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.Column8 = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.quantity = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.Column6 = New System.Windows.Forms.DataGridViewButtonColumn()
-        Me.Column3 = New System.Windows.Forms.DataGridViewButtonColumn()
         Me.Button2 = New System.Windows.Forms.Button()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.txtboxSelectedItem = New System.Windows.Forms.TextBox()
@@ -79,6 +73,12 @@ Partial Class pull_out
         Me.Label7 = New System.Windows.Forms.Label()
         Me.dtdate = New System.Windows.Forms.DateTimePicker()
         Me.Label9 = New System.Windows.Forms.Label()
+        Me.itemcodee = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.itemnamee = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.categoryy = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.quantityy = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Column6 = New System.Windows.Forms.DataGridViewButtonColumn()
+        Me.Column3 = New System.Windows.Forms.DataGridViewButtonColumn()
         Me.panelQuantity.SuspendLayout()
         CType(Me.dgvSelectedItem, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.dgvListItem, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -187,7 +187,7 @@ Partial Class pull_out
         Me.panelQuantity.Controls.Add(Me.txtboxQuantity)
         Me.panelQuantity.Controls.Add(Me.Label5)
         Me.panelQuantity.Controls.Add(Me.btnQuantity)
-        Me.panelQuantity.Location = New System.Drawing.Point(470, 119)
+        Me.panelQuantity.Location = New System.Drawing.Point(453, 209)
         Me.panelQuantity.Name = "panelQuantity"
         Me.panelQuantity.Size = New System.Drawing.Size(371, 222)
         Me.panelQuantity.TabIndex = 36
@@ -294,7 +294,7 @@ Partial Class pull_out
         DataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
         Me.dgvSelectedItem.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle1
         Me.dgvSelectedItem.ColumnHeadersHeight = 40
-        Me.dgvSelectedItem.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.itemcodee, Me.itemnamee, Me.Column8, Me.quantity, Me.Column6, Me.Column3})
+        Me.dgvSelectedItem.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.itemcodee, Me.itemnamee, Me.categoryy, Me.quantityy, Me.Column6, Me.Column3})
         DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
         DataGridViewCellStyle4.BackColor = System.Drawing.Color.White
         DataGridViewCellStyle4.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -321,63 +321,6 @@ Partial Class pull_out
         Me.dgvSelectedItem.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
         Me.dgvSelectedItem.Size = New System.Drawing.Size(1210, 206)
         Me.dgvSelectedItem.TabIndex = 38
-        '
-        'itemcodee
-        '
-        Me.itemcodee.HeaderText = "Item Code"
-        Me.itemcodee.Name = "itemcodee"
-        Me.itemcodee.ReadOnly = True
-        Me.itemcodee.Visible = False
-        '
-        'itemnamee
-        '
-        Me.itemnamee.HeaderText = "Item"
-        Me.itemnamee.Name = "itemnamee"
-        Me.itemnamee.ReadOnly = True
-        '
-        'Column8
-        '
-        Me.Column8.HeaderText = "Category"
-        Me.Column8.Name = "Column8"
-        Me.Column8.ReadOnly = True
-        '
-        'quantity
-        '
-        Me.quantity.HeaderText = "Quantity"
-        Me.quantity.Name = "quantity"
-        Me.quantity.ReadOnly = True
-        '
-        'Column6
-        '
-        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(0, Byte), Integer))
-        DataGridViewCellStyle2.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle2.ForeColor = System.Drawing.Color.White
-        Me.Column6.DefaultCellStyle = DataGridViewCellStyle2
-        Me.Column6.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.Column6.HeaderText = "Update Quantity"
-        Me.Column6.Name = "Column6"
-        Me.Column6.ReadOnly = True
-        Me.Column6.Text = "Update"
-        Me.Column6.ToolTipText = "Update Quantity"
-        Me.Column6.UseColumnTextForButtonValue = True
-        '
-        'Column3
-        '
-        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle3.BackColor = System.Drawing.Color.Firebrick
-        DataGridViewCellStyle3.Font = New System.Drawing.Font("Arial Rounded MT Bold", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle3.ForeColor = System.Drawing.Color.White
-        Me.Column3.DefaultCellStyle = DataGridViewCellStyle3
-        Me.Column3.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.Column3.HeaderText = "Remove Item"
-        Me.Column3.Name = "Column3"
-        Me.Column3.ReadOnly = True
-        Me.Column3.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.Column3.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic
-        Me.Column3.Text = "Remove Item"
-        Me.Column3.ToolTipText = "Remove Item"
-        Me.Column3.UseColumnTextForButtonValue = True
         '
         'Button2
         '
@@ -550,7 +493,7 @@ Partial Class pull_out
         Me.panelRemarks.Controls.Add(Me.btnproceed)
         Me.panelRemarks.Controls.Add(Me.Label4)
         Me.panelRemarks.Controls.Add(Me.txtremarks)
-        Me.panelRemarks.Location = New System.Drawing.Point(493, 99)
+        Me.panelRemarks.Location = New System.Drawing.Point(476, 189)
         Me.panelRemarks.Name = "panelRemarks"
         Me.panelRemarks.Size = New System.Drawing.Size(365, 217)
         Me.panelRemarks.TabIndex = 48
@@ -694,6 +637,63 @@ Partial Class pull_out
         Me.Label9.TabIndex = 53
         Me.Label9.Text = "Date:"
         '
+        'itemcodee
+        '
+        Me.itemcodee.HeaderText = "Item Code"
+        Me.itemcodee.Name = "itemcodee"
+        Me.itemcodee.ReadOnly = True
+        Me.itemcodee.Visible = False
+        '
+        'itemnamee
+        '
+        Me.itemnamee.HeaderText = "Item"
+        Me.itemnamee.Name = "itemnamee"
+        Me.itemnamee.ReadOnly = True
+        '
+        'categoryy
+        '
+        Me.categoryy.HeaderText = "Category"
+        Me.categoryy.Name = "categoryy"
+        Me.categoryy.ReadOnly = True
+        '
+        'quantityy
+        '
+        Me.quantityy.HeaderText = "Quantity"
+        Me.quantityy.Name = "quantityy"
+        Me.quantityy.ReadOnly = True
+        '
+        'Column6
+        '
+        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(0, Byte), Integer))
+        DataGridViewCellStyle2.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle2.ForeColor = System.Drawing.Color.White
+        Me.Column6.DefaultCellStyle = DataGridViewCellStyle2
+        Me.Column6.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.Column6.HeaderText = "Update Quantity"
+        Me.Column6.Name = "Column6"
+        Me.Column6.ReadOnly = True
+        Me.Column6.Text = "Update"
+        Me.Column6.ToolTipText = "Update Quantity"
+        Me.Column6.UseColumnTextForButtonValue = True
+        '
+        'Column3
+        '
+        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle3.BackColor = System.Drawing.Color.Firebrick
+        DataGridViewCellStyle3.Font = New System.Drawing.Font("Arial Rounded MT Bold", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle3.ForeColor = System.Drawing.Color.White
+        Me.Column3.DefaultCellStyle = DataGridViewCellStyle3
+        Me.Column3.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.Column3.HeaderText = "Remove Item"
+        Me.Column3.Name = "Column3"
+        Me.Column3.ReadOnly = True
+        Me.Column3.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.Column3.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic
+        Me.Column3.Text = "Remove Item"
+        Me.Column3.ToolTipText = "Remove Item"
+        Me.Column3.UseColumnTextForButtonValue = True
+        '
         'pull_out
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -701,11 +701,11 @@ Partial Class pull_out
         Me.BackColor = System.Drawing.Color.White
         Me.ClientSize = New System.Drawing.Size(1344, 701)
         Me.Controls.Add(Me.panelRemarks)
+        Me.Controls.Add(Me.panelQuantity)
         Me.Controls.Add(Me.Label9)
         Me.Controls.Add(Me.dtdate)
         Me.Controls.Add(Me.Panel3)
         Me.Controls.Add(Me.Panel2)
-        Me.Controls.Add(Me.panelQuantity)
         Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.lblTransactionID)
         Me.Controls.Add(Me.Label8)
@@ -776,12 +776,6 @@ Partial Class pull_out
     Friend WithEvents Label4 As Label
     Friend WithEvents txtremarks As TextBox
     Friend WithEvents lblremarksclose As Label
-    Friend WithEvents itemcodee As DataGridViewTextBoxColumn
-    Friend WithEvents itemnamee As DataGridViewTextBoxColumn
-    Friend WithEvents Column8 As DataGridViewTextBoxColumn
-    Friend WithEvents quantity As DataGridViewTextBoxColumn
-    Friend WithEvents Column6 As DataGridViewButtonColumn
-    Friend WithEvents Column3 As DataGridViewButtonColumn
     Friend WithEvents Panel1 As Panel
     Friend WithEvents Panel2 As Panel
     Friend WithEvents Label3 As Label
@@ -790,4 +784,10 @@ Partial Class pull_out
     Friend WithEvents Label7 As Label
     Friend WithEvents dtdate As DateTimePicker
     Friend WithEvents Label9 As Label
+    Friend WithEvents itemcodee As DataGridViewTextBoxColumn
+    Friend WithEvents itemnamee As DataGridViewTextBoxColumn
+    Friend WithEvents categoryy As DataGridViewTextBoxColumn
+    Friend WithEvents quantityy As DataGridViewTextBoxColumn
+    Friend WithEvents Column6 As DataGridViewButtonColumn
+    Friend WithEvents Column3 As DataGridViewButtonColumn
 End Class

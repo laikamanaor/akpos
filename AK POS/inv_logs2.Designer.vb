@@ -29,7 +29,7 @@ Partial Class inv_logs2
         Me.Panel2 = New System.Windows.Forms.Panel()
         Me.Panel3 = New System.Windows.Forms.Panel()
         Me.Label1 = New System.Windows.Forms.Label()
-        Me.btnobb = New System.Windows.Forms.Button()
+        Me.btnadjin = New System.Windows.Forms.Button()
         Me.btnActualEndingBalance = New System.Windows.Forms.Button()
         Me.btnPullOut = New System.Windows.Forms.Button()
         Me.btnTransfer = New System.Windows.Forms.Button()
@@ -52,9 +52,17 @@ Partial Class inv_logs2
         Me.quantity = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.dtdate = New System.Windows.Forms.DateTimePicker()
         Me.Label3 = New System.Windows.Forms.Label()
+        Me.btnprev = New System.Windows.Forms.Button()
+        Me.btnnext = New System.Windows.Forms.Button()
+        Me.lblcount = New System.Windows.Forms.Label()
+        Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.Panel4 = New System.Windows.Forms.Panel()
+        Me.lblitemscount = New System.Windows.Forms.Label()
         Me.Panel2.SuspendLayout()
         CType(Me.dgvtrans, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.dgvitems, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.Panel1.SuspendLayout()
+        Me.Panel4.SuspendLayout()
         Me.SuspendLayout()
         '
         'Panel2
@@ -88,21 +96,21 @@ Partial Class inv_logs2
         Me.Label1.TabIndex = 0
         Me.Label1.Text = "INVENTORY LOGS"
         '
-        'btnobb
+        'btnadjin
         '
-        Me.btnobb.BackColor = System.Drawing.Color.Teal
-        Me.btnobb.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.btnobb.FlatAppearance.BorderColor = System.Drawing.Color.LightSeaGreen
-        Me.btnobb.FlatAppearance.BorderSize = 0
-        Me.btnobb.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnobb.Font = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnobb.ForeColor = System.Drawing.Color.White
-        Me.btnobb.Location = New System.Drawing.Point(721, 57)
-        Me.btnobb.Name = "btnobb"
-        Me.btnobb.Size = New System.Drawing.Size(189, 29)
-        Me.btnobb.TabIndex = 30
-        Me.btnobb.Text = "Adjustment In Item"
-        Me.btnobb.UseVisualStyleBackColor = False
+        Me.btnadjin.BackColor = System.Drawing.Color.Teal
+        Me.btnadjin.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btnadjin.FlatAppearance.BorderColor = System.Drawing.Color.LightSeaGreen
+        Me.btnadjin.FlatAppearance.BorderSize = 0
+        Me.btnadjin.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnadjin.Font = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnadjin.ForeColor = System.Drawing.Color.White
+        Me.btnadjin.Location = New System.Drawing.Point(527, 57)
+        Me.btnadjin.Name = "btnadjin"
+        Me.btnadjin.Size = New System.Drawing.Size(189, 29)
+        Me.btnadjin.TabIndex = 30
+        Me.btnadjin.Text = "Adjustment In Item"
+        Me.btnadjin.UseVisualStyleBackColor = False
         '
         'btnActualEndingBalance
         '
@@ -129,7 +137,7 @@ Partial Class inv_logs2
         Me.btnPullOut.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnPullOut.Font = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnPullOut.ForeColor = System.Drawing.Color.White
-        Me.btnPullOut.Location = New System.Drawing.Point(527, 57)
+        Me.btnPullOut.Location = New System.Drawing.Point(717, 57)
         Me.btnPullOut.Name = "btnPullOut"
         Me.btnPullOut.Size = New System.Drawing.Size(193, 29)
         Me.btnPullOut.TabIndex = 28
@@ -149,7 +157,7 @@ Partial Class inv_logs2
         Me.btnTransfer.Name = "btnTransfer"
         Me.btnTransfer.Size = New System.Drawing.Size(147, 29)
         Me.btnTransfer.TabIndex = 27
-        Me.btnTransfer.Text = "Transfer"
+        Me.btnTransfer.Text = "Transfer Out"
         Me.btnTransfer.UseVisualStyleBackColor = False
         '
         'btnreceived
@@ -225,10 +233,10 @@ Partial Class inv_logs2
         Me.dgvtrans.DefaultCellStyle = DataGridViewCellStyle2
         Me.dgvtrans.EnableHeadersVisualStyles = False
         Me.dgvtrans.GridColor = System.Drawing.Color.Black
-        Me.dgvtrans.Location = New System.Drawing.Point(21, 164)
+        Me.dgvtrans.Location = New System.Drawing.Point(22, 191)
         Me.dgvtrans.Name = "dgvtrans"
         Me.dgvtrans.RowHeadersVisible = False
-        Me.dgvtrans.Size = New System.Drawing.Size(537, 348)
+        Me.dgvtrans.Size = New System.Drawing.Size(537, 292)
         Me.dgvtrans.TabIndex = 33
         '
         'transnum
@@ -240,14 +248,14 @@ Partial Class inv_logs2
         '
         'fromreceived
         '
-        Me.fromreceived.HeaderText = "From"
+        Me.fromreceived.HeaderText = "Received From"
         Me.fromreceived.Name = "fromreceived"
         Me.fromreceived.ReadOnly = True
         Me.fromreceived.Width = 120
         '
         'toreceived
         '
-        Me.toreceived.HeaderText = "To"
+        Me.toreceived.HeaderText = "Received To"
         Me.toreceived.Name = "toreceived"
         Me.toreceived.ReadOnly = True
         Me.toreceived.Width = 120
@@ -351,10 +359,10 @@ Partial Class inv_logs2
         Me.dgvitems.DefaultCellStyle = DataGridViewCellStyle4
         Me.dgvitems.EnableHeadersVisualStyles = False
         Me.dgvitems.GridColor = System.Drawing.Color.Black
-        Me.dgvitems.Location = New System.Drawing.Point(564, 164)
+        Me.dgvitems.Location = New System.Drawing.Point(564, 191)
         Me.dgvitems.Name = "dgvitems"
         Me.dgvitems.RowHeadersVisible = False
-        Me.dgvitems.Size = New System.Drawing.Size(346, 348)
+        Me.dgvitems.Size = New System.Drawing.Size(346, 321)
         Me.dgvitems.TabIndex = 39
         '
         'itemname
@@ -397,12 +405,90 @@ Partial Class inv_logs2
         Me.Label3.TabIndex = 41
         Me.Label3.Text = "Date:"
         '
+        'btnprev
+        '
+        Me.btnprev.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.btnprev.BackColor = System.Drawing.Color.DodgerBlue
+        Me.btnprev.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btnprev.FlatAppearance.BorderSize = 0
+        Me.btnprev.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnprev.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnprev.ForeColor = System.Drawing.Color.White
+        Me.btnprev.Location = New System.Drawing.Point(22, 485)
+        Me.btnprev.Name = "btnprev"
+        Me.btnprev.Size = New System.Drawing.Size(75, 23)
+        Me.btnprev.TabIndex = 43
+        Me.btnprev.Text = "Previous"
+        Me.btnprev.UseVisualStyleBackColor = False
+        '
+        'btnnext
+        '
+        Me.btnnext.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.btnnext.BackColor = System.Drawing.SystemColors.HotTrack
+        Me.btnnext.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btnnext.FlatAppearance.BorderSize = 0
+        Me.btnnext.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnnext.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnnext.ForeColor = System.Drawing.Color.White
+        Me.btnnext.Location = New System.Drawing.Point(97, 485)
+        Me.btnnext.Name = "btnnext"
+        Me.btnnext.Size = New System.Drawing.Size(75, 23)
+        Me.btnnext.TabIndex = 42
+        Me.btnnext.Text = "Next"
+        Me.btnnext.UseVisualStyleBackColor = False
+        '
+        'lblcount
+        '
+        Me.lblcount.AutoSize = True
+        Me.lblcount.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblcount.ForeColor = System.Drawing.Color.White
+        Me.lblcount.Location = New System.Drawing.Point(3, 6)
+        Me.lblcount.Name = "lblcount"
+        Me.lblcount.Size = New System.Drawing.Size(80, 19)
+        Me.lblcount.TabIndex = 44
+        Me.lblcount.Text = "Page: 0/0"
+        '
+        'Panel1
+        '
+        Me.Panel1.BackColor = System.Drawing.Color.FromArgb(CType(CType(218, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(28, Byte), Integer))
+        Me.Panel1.Controls.Add(Me.lblcount)
+        Me.Panel1.Location = New System.Drawing.Point(22, 164)
+        Me.Panel1.Name = "Panel1"
+        Me.Panel1.Size = New System.Drawing.Size(537, 28)
+        Me.Panel1.TabIndex = 45
+        '
+        'Panel4
+        '
+        Me.Panel4.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Panel4.BackColor = System.Drawing.Color.FromArgb(CType(CType(218, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(28, Byte), Integer))
+        Me.Panel4.Controls.Add(Me.lblitemscount)
+        Me.Panel4.Location = New System.Drawing.Point(565, 164)
+        Me.Panel4.Name = "Panel4"
+        Me.Panel4.Size = New System.Drawing.Size(345, 28)
+        Me.Panel4.TabIndex = 46
+        '
+        'lblitemscount
+        '
+        Me.lblitemscount.AutoSize = True
+        Me.lblitemscount.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblitemscount.ForeColor = System.Drawing.Color.White
+        Me.lblitemscount.Location = New System.Drawing.Point(3, 5)
+        Me.lblitemscount.Name = "lblitemscount"
+        Me.lblitemscount.Size = New System.Drawing.Size(69, 19)
+        Me.lblitemscount.TabIndex = 45
+        Me.lblitemscount.Text = "Items(0)"
+        '
         'inv_logs2
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.White
         Me.ClientSize = New System.Drawing.Size(934, 524)
+        Me.Controls.Add(Me.Panel4)
+        Me.Controls.Add(Me.Panel1)
+        Me.Controls.Add(Me.btnprev)
+        Me.Controls.Add(Me.btnnext)
         Me.Controls.Add(Me.Label3)
         Me.Controls.Add(Me.dtdate)
         Me.Controls.Add(Me.dgvitems)
@@ -413,7 +499,7 @@ Partial Class inv_logs2
         Me.Controls.Add(Me.dgvtrans)
         Me.Controls.Add(Me.btnSearch)
         Me.Controls.Add(Me.txttrans)
-        Me.Controls.Add(Me.btnobb)
+        Me.Controls.Add(Me.btnadjin)
         Me.Controls.Add(Me.btnActualEndingBalance)
         Me.Controls.Add(Me.Panel2)
         Me.Controls.Add(Me.btnPullOut)
@@ -427,6 +513,10 @@ Partial Class inv_logs2
         Me.Panel2.PerformLayout()
         CType(Me.dgvtrans, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.dgvitems, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.Panel1.ResumeLayout(False)
+        Me.Panel1.PerformLayout()
+        Me.Panel4.ResumeLayout(False)
+        Me.Panel4.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -435,7 +525,7 @@ Partial Class inv_logs2
     Friend WithEvents Panel2 As Panel
     Friend WithEvents Panel3 As Panel
     Friend WithEvents Label1 As Label
-    Friend WithEvents btnobb As Button
+    Friend WithEvents btnadjin As Button
     Friend WithEvents btnActualEndingBalance As Button
     Friend WithEvents btnPullOut As Button
     Friend WithEvents btnTransfer As Button
@@ -451,11 +541,17 @@ Partial Class inv_logs2
     Friend WithEvents itemname As DataGridViewTextBoxColumn
     Friend WithEvents category As DataGridViewTextBoxColumn
     Friend WithEvents quantity As DataGridViewTextBoxColumn
+    Friend WithEvents dtdate As DateTimePicker
+    Friend WithEvents Label3 As Label
+    Friend WithEvents btnprev As Button
+    Friend WithEvents btnnext As Button
+    Friend WithEvents lblcount As Label
     Friend WithEvents transnum As DataGridViewTextBoxColumn
     Friend WithEvents fromreceived As DataGridViewTextBoxColumn
     Friend WithEvents toreceived As DataGridViewTextBoxColumn
     Friend WithEvents processedby As DataGridViewTextBoxColumn
     Friend WithEvents time As DataGridViewTextBoxColumn
-    Friend WithEvents dtdate As DateTimePicker
-    Friend WithEvents Label3 As Label
+    Friend WithEvents Panel1 As Panel
+    Friend WithEvents Panel4 As Panel
+    Friend WithEvents lblitemscount As Label
 End Class

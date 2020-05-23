@@ -6,6 +6,7 @@ Public Class pull_out
     Dim con As New SqlConnection(cc.conString)
     Dim cmd As SqlCommand
     Dim rdr As SqlDataReader
+    Dim transaction As SqlTransaction
     Public lcacc As String = ""
     Dim selectedQuantity As String = ""
     Dim lastin As Double, lasttotal As Double, lastpull As Double, lastout As Double, lastend As Double, lastactual As Double, rems As String
@@ -199,13 +200,9 @@ Public Class pull_out
             Dim get_area As String = "", temp As String = "1"
             Dim area_format As String = ""
             con.Open()
-            cmd = New SqlCommand("Select COUNT(*) transaction_number  from tblproduction WHERE area='" & lcacc & "' AND type='Adjustment Out Item' AND type2='Adjustment Out';", con)
-            rdr = cmd.ExecuteReader
-            While rdr.Read
-                selectcount_result += 1
-            End While
+            cmd = New SqlCommand("Select ISNULL(COUNT(transaction_id),0)+1  from tblproduction WHERE area='" & lcacc & "' AND type='Adjustment Out Item' AND type2='Adjustment Out';", con)
+            selectcount_result = cmd.ExecuteScalar
             con.Close()
-            selectcount_result += 1
 
             Dim branchcode As String = ""
             con.Open()
@@ -346,7 +343,7 @@ Public Class pull_out
                     endbal = CDbl(rdr("endbal"))
                 End If
                 con.Close()
-                If endbal < CDbl(dgvSelectedItem.Rows(index).Cells("quantity").Value) Then
+                If endbal < CDbl(dgvSelectedItem.Rows(index).Cells("quantityy").Value) Then
                     err &= dgvSelectedItem.Rows(index).Cells("itemnamee").Value & "(" & endbal & ")" & Environment.NewLine
                 End If
             Next
@@ -355,68 +352,48 @@ Public Class pull_out
                 MessageBox.Show("Below Item is insufficient stock" & Environment.NewLine & err, "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
                 Exit Sub
             End If
+            Try
+                Using connection As New SqlConnection(cc.conString)
+                    Dim command As New SqlCommand()
+                    command.Connection = connection
+                    connection.Open()
+                    transaction = connection.BeginTransaction()
+                    command.Transaction = transaction
 
-            For Each r0w As DataGridViewRow In dgvSelectedItem.Rows
-                lastend = 0.0
-                Dim transfer As Double, casend As Double, casact As Double, casvar As Double, casrem As String = "", invid As Integer = 0
-                con.Open()
-                cmd = New SqlCommand("Select pullout,endbal,actualendbal,invid from tblinvitems where itemcode='" & dgvSelectedItem.Rows(r0w.Index).Cells(0).Value & "' and invnum='" & lblID.Text & "' AND area='" & lcacc & "'", con)
-                rdr = cmd.ExecuteReader
-                If rdr.Read Then
-                    transfer = rdr("pullout")
-                    casend = rdr("endbal")
-                    casact = rdr("actualendbal")
-                    lastend = rdr("endbal")
-                    invid = rdr("invid")
-                End If
-                con.Close()
-                Dim uend2 As Double = lastend - Val(dgvSelectedItem.Rows(r0w.Index).Cells(3).Value)
-                transfer = transfer + dgvSelectedItem.Rows(r0w.Index).Cells(3).Value
-                casend = casend - dgvSelectedItem.Rows(r0w.Index).Cells(3).Value
-                casvar = casact - casend
-                If casvar < 0 Then
-                    casrem = "Short"
-                ElseIf casvar > 0 Then
-                    casrem = "Over"
-                End If
+                    For Each r0w As DataGridViewRow In dgvSelectedItem.Rows
+                        command.CommandText = "Update tblinvitems set pullout+=@quantity, endbal-=@quantity, variance+=@quantity where invnum=(SELECT invnum FROM tblinvsum WHERE CAST(datecreated AS date)='" & dtdate.Text & "') AND area='Sales';"
+                        command.Parameters.AddWithValue("@quantity", dgvSelectedItem.Rows(r0w.Index).Cells("quantityy").Value)
+                        command.ExecuteNonQuery()
 
-                con.Open()
-                cmd = New SqlCommand("Update tblinvitems set pullout='" & transfer & "', endbal='" & casend & "', variance='" & casvar & "', shortover='" & casrem & "' where invid='" & invid & "' AND area='" & lcacc & "'", con)
-                cmd.ExecuteNonQuery()
-                con.Close()
-
-                Dim mahBranch As String = ""
-                con.Open()
-                cmd = New SqlCommand("SELECT branchcode FROM tblbranch WHERE main='1';", con)
-                rdr = cmd.ExecuteReader
-                If rdr.Read Then
-                    mahBranch = rdr("branchcode")
-                End If
-                con.Close()
-
-
-                con.Open()
-                cmd = New SqlCommand("INSERT INTO tblproduction (transaction_number,inv_id,item_code,item_name,category,quantity,date,processed_by,type,status,area,reject,charge,typenum,type2,remarks) VALUES (@trans_id,@id, @code,@name,@cat,@qty,(SELECT GETDATE()),@processed_by,@type,@status,@area,@reject,@charge,@typenum,@type2,@remarks)", con)
-                cmd.Parameters.AddWithValue("@trans_id", lblTransactionID.Text)
-                cmd.Parameters.AddWithValue("@id", lblID.Text)
-                cmd.Parameters.AddWithValue("@code", dgvSelectedItem.Rows(r0w.Index).Cells(0).Value)
-                cmd.Parameters.AddWithValue("@name", dgvSelectedItem.Rows(r0w.Index).Cells(1).Value)
-                cmd.Parameters.AddWithValue("@cat", dgvSelectedItem.Rows(r0w.Index).Cells(2).Value)
-                cmd.Parameters.AddWithValue("@qty", dgvSelectedItem.Rows(r0w.Index).Cells(3).Value)
-
-                cmd.Parameters.AddWithValue("@sap", "")
-                cmd.Parameters.AddWithValue("@remarks", txtremarks.Text)
-                cmd.Parameters.AddWithValue("@processed_by", login.username)
-                cmd.Parameters.AddWithValue("@type", "Adjustment Out Item")
-                cmd.Parameters.AddWithValue("@status", "Completed")
-                cmd.Parameters.AddWithValue("@area", lcacc)
-                cmd.Parameters.AddWithValue("@reject", "0")
-                cmd.Parameters.AddWithValue("@charge", "0")
-                cmd.Parameters.AddWithValue("@typenum", "")
-                cmd.Parameters.AddWithValue("@type2", "Adjustment Out")
-                cmd.ExecuteNonQuery()
-                con.Close()
-            Next
+                        command.CommandText = "INSERT INTO tblproduction (transaction_number,inv_id,item_code,item_name,category,quantity,date,processed_by,type,status,area,reject,charge,typenum,type2,remarks) VALUES (@trans_id,@id, @code,@name,@cat,@qty,(SELECT GETDATE()),@processed_by,@type,@status,@area,@reject,@charge,@typenum,@type2,@remarks)"
+                        command.Parameters.AddWithValue("@trans_id", lblTransactionID.Text)
+                        command.Parameters.AddWithValue("@id", lblID.Text)
+                        command.Parameters.AddWithValue("@code", dgvSelectedItem.Rows(r0w.Index).Cells("itemcodee").Value)
+                        command.Parameters.AddWithValue("@name", dgvSelectedItem.Rows(r0w.Index).Cells("itemnamee").Value)
+                        command.Parameters.AddWithValue("@cat", dgvSelectedItem.Rows(r0w.Index).Cells("categoryy").Value)
+                        command.Parameters.AddWithValue("@qty", dgvSelectedItem.Rows(r0w.Index).Cells("quantityy").Value)
+                        command.Parameters.AddWithValue("@sap", "")
+                        command.Parameters.AddWithValue("@remarks", txtremarks.Text)
+                        command.Parameters.AddWithValue("@processed_by", login2.username)
+                        command.Parameters.AddWithValue("@type", "Adjustment Out Item")
+                        command.Parameters.AddWithValue("@status", "Completed")
+                        command.Parameters.AddWithValue("@area", "Sales")
+                        command.Parameters.AddWithValue("@reject", "0")
+                        command.Parameters.AddWithValue("@charge", "0")
+                        command.Parameters.AddWithValue("@typenum", "")
+                        command.Parameters.AddWithValue("@type2", "Adjustment Out")
+                        command.ExecuteNonQuery()
+                    Next
+                    transaction.Commit()
+                End Using
+            Catch ex As Exception
+                MessageBox.Show(ex.ToString)
+                Try
+                    transaction.Rollback()
+                Catch ex2 As Exception
+                    MessageBox.Show(ex2.ToString)
+                End Try
+            End Try
         End If
         MessageBox.Show("Added", "", MessageBoxButtons.OK, MessageBoxIcon.Information)
         panelRemarks.Visible = False

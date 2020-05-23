@@ -738,6 +738,7 @@
     <Compile Include="my_class\branch\branch_class.vb" />
     <Compile Include="my_class\categories\category_class.vb" />
     <Compile Include="my_class\connection_class.vb" />
+    <Compile Include="my_class\conversions\conversion_class.vb" />
     <Compile Include="my_class\inventories\inventory_class.vb" />
     <Compile Include="my_class\items\items_class.vb" />
     <Compile Include="my_class\pos\mini_pos.vb" />
@@ -1332,6 +1333,12 @@
       <DependentUpon>short_pullout_dialog.vb</DependentUpon>
     </Compile>
     <Compile Include="short_pullout_dialog.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="showSAPNumber.Designer.vb">
+      <DependentUpon>showSAPNumber.vb</DependentUpon>
+    </Compile>
+    <Compile Include="showSAPNumber.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="show_trans.Designer.vb">
@@ -2124,6 +2131,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="short_pullout_dialog.resx">
       <DependentUpon>short_pullout_dialog.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="showSAPNumber.resx">
+      <DependentUpon>showSAPNumber.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="show_trans.resx">
       <DependentUpon>show_trans.vb</DependentUpon>

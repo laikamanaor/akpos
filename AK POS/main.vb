@@ -989,7 +989,6 @@ Public Class main
             hideShow(panelsubreports)
             Dim f As New conv_logs
             f.TopLevel = False
-            f.manager = "Sales"
             f.Dock = DockStyle.Fill
             panelchildform.Controls.Add(f)
             f.BringToFront()
@@ -999,23 +998,6 @@ Public Class main
             Exit Sub
         End If
     End Sub
-
-    Private Sub btnconvlogsprod_Click(sender As Object, e As EventArgs)
-        If login2.wrkgrp = "Production" Or login2.wrkgrp = "Manager" Or login2.wrkgrp = "LC Accounting" Then
-            hideShow(panelsubreports)
-            Dim f As New conv_logs
-            f.TopLevel = False
-            f.Dock = DockStyle.Fill
-            panelchildform.Controls.Add(f)
-            f.BringToFront()
-            f.manager = "Production"
-            f.Show()
-        Else
-            MessageBox.Show("Access Denied", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
-            Exit Sub
-        End If
-    End Sub
-
     Private Sub btninvlogssales_Click(sender As Object, e As EventArgs) Handles btninvlogssales.Click
         If login2.wrkgrp = "Sales" Or login2.wrkgrp = "Manager" Or login2.wrkgrp = "LC Accounting" Or login2.wrkgrp = "Administrator" Then
             hideShow(panelsubreports)

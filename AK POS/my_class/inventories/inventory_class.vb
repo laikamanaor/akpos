@@ -117,6 +117,18 @@ Public Class inventory_class
         Return result
     End Function
 
+    Public Function countTransaction() As Integer
+        Dim result As Integer = 0
+        cc.con.Open()
+        cc.cmd = New SqlClient.SqlCommand("SELECT dbo.funcCountInventoryLogs(@transnum,@date,@type)", cc.con)
+        cc.cmd.Parameters.AddWithValue("@transnum", vtransnum)
+        cc.cmd.Parameters.AddWithValue("@date", vdatecreated)
+        cc.cmd.Parameters.AddWithValue("@type", vtype)
+        result = cc.cmd.ExecuteScalar
+        cc.con.Close()
+        Return result
+    End Function
+
     Public Function loadItems() As DataTable
         Dim result As New DataTable(), adptr As New SqlClient.SqlDataAdapter
         cc.con.Open()
@@ -127,6 +139,17 @@ Public Class inventory_class
         cc.con.Close()
         adptr.SelectCommand = cc.cmd
         adptr.Fill(result)
+        Return result
+    End Function
+
+    Public Function loadSAPRemarks() As DataTable
+        Dim result As New DataTable(), adptr As New SqlClient.SqlDataAdapter
+        cc.con.Open()
+        cc.cmd = New SqlClient.SqlCommand("SELECT sap_number,remarks FROM tblproduction WHERE transaction_number=@transnum;", cc.con)
+        cc.cmd.Parameters.AddWithValue("@transnum", vtransnum)
+        adptr.SelectCommand = cc.cmd
+        adptr.Fill(result)
+        cc.con.Close()
         Return result
     End Function
 
