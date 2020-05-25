@@ -24,17 +24,10 @@ Partial Class cancel_rectrans
     Private Sub InitializeComponent()
         Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.dgvtrans = New System.Windows.Forms.DataGridView()
-        Me.invnum = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.transnum = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.type = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.sapnumber = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.remarks = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.processed_by = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.btncancel = New System.Windows.Forms.DataGridViewButtonColumn()
         Me.dgvitems = New System.Windows.Forms.DataGridView()
         Me.itemname = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Category = New System.Windows.Forms.DataGridViewTextBoxColumn()
@@ -55,6 +48,13 @@ Partial Class cancel_rectrans
         Me.Panel3 = New System.Windows.Forms.Panel()
         Me.Panel4 = New System.Windows.Forms.Panel()
         Me.Label2 = New System.Windows.Forms.Label()
+        Me.btnprev = New System.Windows.Forms.Button()
+        Me.btnnext = New System.Windows.Forms.Button()
+        Me.invnum = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.transnum = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.typez = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.processed_by = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.btncancel = New System.Windows.Forms.DataGridViewButtonColumn()
         CType(Me.dgvtrans, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.dgvitems, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel1.SuspendLayout()
@@ -83,7 +83,7 @@ Partial Class cancel_rectrans
         DataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
         Me.dgvtrans.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle1
         Me.dgvtrans.ColumnHeadersHeight = 40
-        Me.dgvtrans.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.invnum, Me.transnum, Me.type, Me.sapnumber, Me.remarks, Me.processed_by, Me.btncancel})
+        Me.dgvtrans.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.invnum, Me.transnum, Me.typez, Me.processed_by, Me.btncancel})
         DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
         DataGridViewCellStyle3.BackColor = System.Drawing.Color.White
         DataGridViewCellStyle3.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -99,60 +99,8 @@ Partial Class cancel_rectrans
         Me.dgvtrans.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None
         Me.dgvtrans.RowHeadersVisible = False
         Me.dgvtrans.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.dgvtrans.Size = New System.Drawing.Size(789, 230)
+        Me.dgvtrans.Size = New System.Drawing.Size(789, 205)
         Me.dgvtrans.TabIndex = 0
-        '
-        'invnum
-        '
-        Me.invnum.HeaderText = "Inv. #"
-        Me.invnum.Name = "invnum"
-        Me.invnum.ReadOnly = True
-        '
-        'transnum
-        '
-        Me.transnum.HeaderText = "Reference #"
-        Me.transnum.Name = "transnum"
-        Me.transnum.ReadOnly = True
-        '
-        'type
-        '
-        Me.type.HeaderText = "Type"
-        Me.type.Name = "type"
-        Me.type.ReadOnly = True
-        Me.type.Visible = False
-        '
-        'sapnumber
-        '
-        Me.sapnumber.HeaderText = "SAP #"
-        Me.sapnumber.Name = "sapnumber"
-        Me.sapnumber.ReadOnly = True
-        '
-        'remarks
-        '
-        Me.remarks.HeaderText = "Remarks"
-        Me.remarks.Name = "remarks"
-        Me.remarks.ReadOnly = True
-        '
-        'processed_by
-        '
-        Me.processed_by.HeaderText = "Processed By"
-        Me.processed_by.Name = "processed_by"
-        Me.processed_by.ReadOnly = True
-        '
-        'btncancel
-        '
-        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle2.BackColor = System.Drawing.Color.Firebrick
-        DataGridViewCellStyle2.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle2.ForeColor = System.Drawing.Color.White
-        Me.btncancel.DefaultCellStyle = DataGridViewCellStyle2
-        Me.btncancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btncancel.HeaderText = "Action"
-        Me.btncancel.Name = "btncancel"
-        Me.btncancel.ReadOnly = True
-        Me.btncancel.Text = "Cancel"
-        Me.btncancel.ToolTipText = "Cancel this transaction"
-        Me.btncancel.UseColumnTextForButtonValue = True
         '
         'dgvitems
         '
@@ -258,9 +206,9 @@ Partial Class cancel_rectrans
         Me.lbltr.ForeColor = System.Drawing.Color.White
         Me.lbltr.Location = New System.Drawing.Point(5, 6)
         Me.lbltr.Name = "lbltr"
-        Me.lbltr.Size = New System.Drawing.Size(129, 17)
+        Me.lbltr.Size = New System.Drawing.Size(71, 17)
         Me.lbltr.TabIndex = 3
-        Me.lbltr.Text = "TRANSACTIONS"
+        Me.lbltr.Text = "Page 0/0"
         '
         'cmbtype
         '
@@ -272,7 +220,7 @@ Partial Class cancel_rectrans
         Me.cmbtype.ForeColor = System.Drawing.Color.White
         Me.cmbtype.FormattingEnabled = True
         Me.cmbtype.Items.AddRange(New Object() {"Received Item", "Transfer Item"})
-        Me.cmbtype.Location = New System.Drawing.Point(631, 135)
+        Me.cmbtype.Location = New System.Drawing.Point(631, 139)
         Me.cmbtype.Name = "cmbtype"
         Me.cmbtype.Size = New System.Drawing.Size(193, 25)
         Me.cmbtype.TabIndex = 5
@@ -313,7 +261,7 @@ Partial Class cancel_rectrans
         Me.Label3.AutoSize = True
         Me.Label3.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label3.ForeColor = System.Drawing.Color.DimGray
-        Me.Label3.Location = New System.Drawing.Point(584, 141)
+        Me.Label3.Location = New System.Drawing.Point(584, 145)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(41, 14)
         Me.Label3.TabIndex = 9
@@ -324,7 +272,7 @@ Partial Class cancel_rectrans
         Me.txtsearch.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest
         Me.txtsearch.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource
         Me.txtsearch.Font = New System.Drawing.Font("Arial Rounded MT Bold", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtsearch.Location = New System.Drawing.Point(35, 135)
+        Me.txtsearch.Location = New System.Drawing.Point(35, 139)
         Me.txtsearch.Name = "txtsearch"
         Me.txtsearch.Size = New System.Drawing.Size(235, 25)
         Me.txtsearch.TabIndex = 10
@@ -337,7 +285,7 @@ Partial Class cancel_rectrans
         Me.btnsearch.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnsearch.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnsearch.ForeColor = System.Drawing.Color.White
-        Me.btnsearch.Location = New System.Drawing.Point(269, 135)
+        Me.btnsearch.Location = New System.Drawing.Point(269, 139)
         Me.btnsearch.Name = "btnsearch"
         Me.btnsearch.Size = New System.Drawing.Size(75, 25)
         Me.btnsearch.TabIndex = 11
@@ -350,7 +298,7 @@ Partial Class cancel_rectrans
         Me.dt.CustomFormat = "MM/dd/yyyy"
         Me.dt.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.dt.Format = System.Windows.Forms.DateTimePickerFormat.Custom
-        Me.dt.Location = New System.Drawing.Point(689, 106)
+        Me.dt.Location = New System.Drawing.Point(689, 110)
         Me.dt.Name = "dt"
         Me.dt.Size = New System.Drawing.Size(135, 23)
         Me.dt.TabIndex = 12
@@ -361,7 +309,7 @@ Partial Class cancel_rectrans
         Me.Label1.AutoSize = True
         Me.Label1.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label1.ForeColor = System.Drawing.Color.DimGray
-        Me.Label1.Location = New System.Drawing.Point(645, 113)
+        Me.Label1.Location = New System.Drawing.Point(645, 117)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(38, 14)
         Me.Label1.TabIndex = 13
@@ -398,12 +346,86 @@ Partial Class cancel_rectrans
         Me.Label2.TabIndex = 0
         Me.Label2.Text = "CANCEL RECEIVED OR TRANSFER"
         '
+        'btnprev
+        '
+        Me.btnprev.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnprev.BackColor = System.Drawing.Color.DodgerBlue
+        Me.btnprev.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btnprev.FlatAppearance.BorderSize = 0
+        Me.btnprev.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnprev.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnprev.ForeColor = System.Drawing.Color.White
+        Me.btnprev.Location = New System.Drawing.Point(672, 403)
+        Me.btnprev.Name = "btnprev"
+        Me.btnprev.Size = New System.Drawing.Size(75, 23)
+        Me.btnprev.TabIndex = 28
+        Me.btnprev.Text = "Previous"
+        Me.btnprev.UseVisualStyleBackColor = False
+        '
+        'btnnext
+        '
+        Me.btnnext.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnnext.BackColor = System.Drawing.SystemColors.HotTrack
+        Me.btnnext.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btnnext.FlatAppearance.BorderSize = 0
+        Me.btnnext.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnnext.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnnext.ForeColor = System.Drawing.Color.White
+        Me.btnnext.Location = New System.Drawing.Point(748, 403)
+        Me.btnnext.Name = "btnnext"
+        Me.btnnext.Size = New System.Drawing.Size(75, 23)
+        Me.btnnext.TabIndex = 27
+        Me.btnnext.Text = "Next"
+        Me.btnnext.UseVisualStyleBackColor = False
+        '
+        'invnum
+        '
+        Me.invnum.HeaderText = "Inv. #"
+        Me.invnum.Name = "invnum"
+        Me.invnum.ReadOnly = True
+        '
+        'transnum
+        '
+        Me.transnum.HeaderText = "Reference #"
+        Me.transnum.Name = "transnum"
+        Me.transnum.ReadOnly = True
+        '
+        'typez
+        '
+        Me.typez.HeaderText = "Type"
+        Me.typez.Name = "typez"
+        Me.typez.ReadOnly = True
+        Me.typez.Visible = False
+        '
+        'processed_by
+        '
+        Me.processed_by.HeaderText = "Processed By"
+        Me.processed_by.Name = "processed_by"
+        Me.processed_by.ReadOnly = True
+        '
+        'btncancel
+        '
+        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle2.BackColor = System.Drawing.Color.Firebrick
+        DataGridViewCellStyle2.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle2.ForeColor = System.Drawing.Color.White
+        Me.btncancel.DefaultCellStyle = DataGridViewCellStyle2
+        Me.btncancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btncancel.HeaderText = "Action"
+        Me.btncancel.Name = "btncancel"
+        Me.btncancel.ReadOnly = True
+        Me.btncancel.Text = "Cancel"
+        Me.btncancel.ToolTipText = "Cancel this transaction"
+        Me.btncancel.UseColumnTextForButtonValue = True
+        '
         'cancel_rectrans
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.White
         Me.ClientSize = New System.Drawing.Size(866, 528)
+        Me.Controls.Add(Me.btnprev)
+        Me.Controls.Add(Me.btnnext)
         Me.Controls.Add(Me.Panel3)
         Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.dt)
@@ -454,16 +476,16 @@ Partial Class cancel_rectrans
     Friend WithEvents charge As DataGridViewTextBoxColumn
     Friend WithEvents txtsearch As TextBox
     Friend WithEvents btnsearch As Button
-    Friend WithEvents invnum As DataGridViewTextBoxColumn
-    Friend WithEvents transnum As DataGridViewTextBoxColumn
-    Friend WithEvents type As DataGridViewTextBoxColumn
-    Friend WithEvents sapnumber As DataGridViewTextBoxColumn
-    Friend WithEvents remarks As DataGridViewTextBoxColumn
-    Friend WithEvents processed_by As DataGridViewTextBoxColumn
-    Friend WithEvents btncancel As DataGridViewButtonColumn
     Friend WithEvents dt As DateTimePicker
     Friend WithEvents Label1 As Label
     Friend WithEvents Panel3 As Panel
     Friend WithEvents Panel4 As Panel
     Friend WithEvents Label2 As Label
+    Friend WithEvents btnprev As Button
+    Friend WithEvents btnnext As Button
+    Friend WithEvents invnum As DataGridViewTextBoxColumn
+    Friend WithEvents transnum As DataGridViewTextBoxColumn
+    Friend WithEvents typez As DataGridViewTextBoxColumn
+    Friend WithEvents processed_by As DataGridViewTextBoxColumn
+    Friend WithEvents btncancel As DataGridViewButtonColumn
 End Class

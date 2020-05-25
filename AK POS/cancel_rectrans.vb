@@ -1,261 +1,206 @@
-﻿Imports System.Data.SqlClient
-Imports AK_POS.connection_class
+﻿Imports AK_POS.adjustment_class
 Public Class cancel_rectrans
-    Dim cc As New connection_class
-    Dim con As New SqlConnection(cc.conString)
-    Dim cmd As SqlCommand
-    Dim rdr As SqlDataReader
-
-
+    Dim cc As New connection_class, adjc As New adjustment_class()
+    Dim typee As String = "", status As String = ""
+    Dim offset As Integer = 0, totalCount As Integer = 0, totalPage As Integer = 0, currentPage As Integer = 1, rowsFetch As Integer = 50
     Private Sub cancel_rectrans_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        dt.MaxDate = getSystemDate()
-        dt.Text = getSystemDate.ToString("MM/dd/yyyy")
-        btn1.ForeColor = Color.Black
+        dt.MaxDate = DateTime.Now
+        dt.Text = DateTime.Now.ToString("MM/dd/yyyy")
+        btn1.PerformClick()
         cmbtype.SelectedIndex = 0
+
+        adjc.datecreated = dt.Text
+        adjc.typee = typee
+        adjc.status = status
+        adjc.transnum = Trim(txtsearch.Text)
+
+        totalCount = adjc.countData()
+        totalPage = Math.Ceiling(totalCount / rowsFetch) * 1
+
+        lbltr.Text = "Page: " & currentPage & "/" & totalPage
+        loadData()
     End Sub
-    Public Sub loadTrans(ByVal status As String)
-        Try
-
-            If status = "Completed" Then
-                dgvtrans.Columns("btncancel").Visible = True
-            Else
-                dgvtrans.Columns("btncancel").Visible = False
-            End If
-            Dim trcount As Integer = 0
-
-            lbltr.Text = "TRANSACTIONS (0)"
-            lblitems.Text = "ITEMS (0)"
-
-
-
-            Dim serverDate As String = dt.Text
-            dgvtrans.Rows.Clear()
-            dgvitems.Rows.Clear()
-            con.Open()
-
-            Dim query As String = ""
-
-            If String.IsNullOrEmpty(txtsearch.Text) Then
-                query = "SELECT DISTINCT inv_id,transaction_number,type2,sap_number,remarks,processed_by FROM tblproduction WHERE type='" & cmbtype.SelectedItem & "' AND CAST(date AS date)='" & serverDate & "' AND status ='" & status & "' ORDER BY transaction_number ASC;"
-            Else
-                query = "SELECT DISTINCT inv_id,transaction_number,type2,sap_number,remarks,processed_by FROM tblproduction WHERE type='" & cmbtype.SelectedItem & "' AND CAST(date AS date)='" & serverDate & "' AND status ='" & status & "' AND transaction_number LIKE @search ORDER BY transaction_number ASC;"
-            End If
-            Dim auto As New AutoCompleteStringCollection()
-            cmd = New SqlCommand(query, con)
-            If Not String.IsNullOrEmpty(txtsearch.Text) Then
-                cmd.Parameters.AddWithValue("@search", "%" & txtsearch.Text & "%")
-            End If
-            rdr = cmd.ExecuteReader
-            While rdr.Read
-                dgvtrans.Rows.Add(rdr("inv_id"), rdr("transaction_number"), rdr("type2"), rdr("sap_number"), rdr("remarks"), rdr("processed_by"))
-
-                If String.IsNullOrEmpty(txtsearch.Text) Then
-                    auto.Add(rdr("transaction_number"))
-                End If
-
-                trcount += 1
-            End While
-            con.Close()
-            If String.IsNullOrEmpty(txtsearch.Text) Then
-                txtsearch.AutoCompleteCustomSource = auto
-            End If
-            lbltr.Text = "TRANSACTIONS (" & trcount & ")"
-
-        Catch ex As Exception
-            MessageBox.Show(ex.ToString)
-        End Try
+    ''' <summary>
+    ''' load transaction from adjustment class
+    ''' </summary>
+    Public Sub loadData()
+        adjc.datecreated = dt.Text
+        adjc.typee = typee
+        adjc.status = status
+        adjc.transnum = Trim(txtsearch.Text)
+        Dim result As New DataTable()
+        result = adjc.loadTransaction(offset, rowsFetch)
+        dgvitems.Rows.Clear()
+        lblitems.Text = "ITEMS (0)"
+        dgvtrans.Rows.Clear()
+        For Each r0w As DataRow In result.Rows
+            dgvtrans.Rows.Add(r0w("inv_id"), r0w("transaction_number"), r0w("type"), r0w("processed_by"))
+        Next
+        txtsearch.AutoCompleteCustomSource = fillAutoComplete(dgvtrans, "transnum")
     End Sub
-    Public Function getSystemDate() As DateTime
-        Try
-            Dim dt As New DateTime()
-            con.Open()
-            cmd = New SqlCommand("SELECT GETDATE()", con)
-            rdr = cmd.ExecuteReader()
-            While rdr.Read
-                dt = CDate(rdr(0).ToString)
-            End While
-            con.Close()
-            Return dt
-        Catch ex As Exception
-            MessageBox.Show(ex.ToString)
-        Finally
-            con.Close()
-        End Try
+
+    Public Function fillAutoComplete(ByVal dgv As DataGridView, ByVal columnName As String) As AutoCompleteStringCollection
+        Dim result As New AutoCompleteStringCollection()
+        If dgv.Rows.Count <> 0 Then
+            For i As Integer = 0 To dgv.Rows.Count - 1
+                result.Add(dgv.Rows(i).Cells(columnName).Value)
+            Next
+        End If
+        Return result
     End Function
 
-    Private Sub cmbtype_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbtype.SelectedIndexChanged
-        loadTrans(IIf(btn1.ForeColor = Color.Black, "Completed", "Cancelled"))
-    End Sub
     Private Sub dgvtrans_CellClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvtrans.CellClick
+        loadItems()
         Try
-            If e.ColumnIndex = 6 Then
-                Dim result As Boolean = False
-                con.Open()
-                cmd = New SqlCommand("SELECT transaction_id FROM tblproduction WHERE transaction_number=@transnum AND status != 'Cancelled';", con)
-                cmd.Parameters.AddWithValue("@transnum", dgvtrans.CurrentRow.Cells("transnum").Value)
-                rdr = cmd.ExecuteReader
-                If rdr.Read Then
-                    result = True
-                End If
-                con.Close()
+            If dgvtrans.RowCount <> 0 Then
+                If e.ColumnIndex = 4 Then
 
-                If result = False Then
-                    MessageBox.Show("This transaction is already Cancelled", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                    Exit Sub
-                End If
+                    adjc.transnum = dgvtrans.CurrentRow.Cells("transnum").Value
+                    adjc.invnum = dgvtrans.CurrentRow.Cells("invnum").Value
 
-                Dim invnum As String = dgvtrans.CurrentRow.Cells("invnum").Value
+                    Dim result As New DataTable(), errMsg As String = "You can't cancel this transaction because the item(s) below of ending balance is less than the Received quantity:" & Environment.NewLine & Environment.NewLine
+                    result = adjc.checkQuantity()
 
-                Dim errStr As String = "You can't cancel this transaction because the item(s) below of ending balance is less than the Received quantity:" & Environment.NewLine & Environment.NewLine
-                con.Open()
-                cmd = New SqlCommand("SELECT a.item_name,a.quantity,b.endbal AS endbal FROM tblproduction a JOIN tblinvitems b ON a.item_name = b.itemname  WHERE a.transaction_number=@transnum  AND b.invnum=@invnum;", con)
-                cmd.Parameters.AddWithValue("@transnum", dgvtrans.CurrentRow.Cells("transnum").Value)
-                cmd.Parameters.AddWithValue("@invnum", invnum)
-                rdr = cmd.ExecuteReader
-                While rdr.Read
-                    If CDbl(rdr("quantity")) > CDbl(rdr("endbal")) Then
-                        errStr &= rdr("item_name") & "/Ending Balance: (" & rdr("endbal") & ")/Received Item: (" & rdr("quantity") & ")" & Environment.NewLine
-                    End If
-                End While
-                con.Close()
-
-                If errStr <> "You can't cancel this transaction because the item(s) below of ending balance is less than the Received quantity:" & Environment.NewLine & Environment.NewLine Then
-                    MessageBox.Show(errStr, "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                    Exit Sub
-                End If
-                Dim a As String = MsgBox("Are you sure you want to cancel this transaction?", MsgBoxStyle.Question + MsgBoxStyle.YesNo, "")
-                If a = vbYes Then
-                    con.Open()
-                    cmd = New SqlCommand("UPDATE tblproduction SET status='Cancelled' WHERE transaction_number=@transnum;", con)
-                    cmd.Parameters.AddWithValue("@transnum", dgvtrans.CurrentRow.Cells("transnum").Value)
-                    cmd.ExecuteNonQuery()
-                    con.Close()
-
-                    Dim iin As String = ""
-                    Select Case dgvtrans.CurrentRow.Cells("type").Value
-                        Case "Received from Other Branch"
-                            iin = "itemin"
-                        Case "Received From Production"
-                            iin = "productionin"
-                        Case "Transfer"
-                            iin = "transfer"
-                    End Select
-
-                    con.Open()
-                    cmd = New SqlCommand("SELECT item_name,quantity,a.charge,b.variance FROM tblproduction a JOIN tblinvitems b ON a.item_name=b.itemname WHERE transaction_number=@transnum AND b.invnum=@invnum;", con)
-                    cmd.Parameters.AddWithValue("@invnum", invnum)
-                    cmd.Parameters.AddWithValue("@transnum", dgvtrans.CurrentRow.Cells("transnum").Value)
-                    Dim dt As New DataTable()
-                    Dim adptr As New SqlDataAdapter()
-                    adptr.SelectCommand = cmd
-                    adptr.Fill(dt)
-                    con.Close()
-                    For Each r0w In dt.Rows
-
-                        'Dim variance As Double = CDbl(r0w("variance"))
-                        'variance = variance + CDbl(r0w("quantity"))
-                        con.Open()
-                        cmd = New SqlCommand("UPDATE tblinvitems SET " & iin & "-=@quantity,charge-=@charge,archarge-=@charge" & IIf(iin = "transfer", "", ",totalav-=@quantity") & ",endbal" & IIf(iin = "transfer", "+", "-") & "=@quantity,variance" & IIf(iin = "transfer", "-", "+") & "=@quantity WHERE invnum=@invnum AND itemname=@itemname;", con)
-                        cmd.Parameters.AddWithValue("@charge", CDbl(r0w("charge")))
-                        cmd.Parameters.AddWithValue("@quantity", CDbl(r0w("quantity")))
-                        cmd.Parameters.AddWithValue("@invnum", invnum)
-                        cmd.Parameters.AddWithValue("@itemname", CStr(r0w("item_name")))
-                        cmd.ExecuteNonQuery()
-                        con.Close()
-
-                        Dim tr As String = "", name As String = ""
-                        con.Open()
-                        cmd = New SqlCommand("SELECT transnum,name FROM tblars1 WHERE arnum=@arnum", con)
-                        cmd.Parameters.AddWithValue("@arnum", dgvtrans.CurrentRow.Cells("transnum").Value)
-                        rdr = cmd.ExecuteReader
-                        If rdr.Read Then
-                            tr = rdr("transnum")
-                            name = rdr("name")
-                        End If
-                        con.Close()
-
-                        con.Open()
-                        cmd = New SqlCommand("DELETE FROM tblars1 WHERE name=@name AND transnum=@transnum;", con)
-                        cmd.Parameters.AddWithValue("@name", name)
-                        cmd.Parameters.AddWithValue("@transnum", tr)
-                        cmd.ExecuteNonQuery()
-                        con.Close()
-
-                        con.Open()
-                        cmd = New SqlCommand("DELETE FROM tblars2 WHERE name=@name AND transnum=@transnum;", con)
-                        cmd.Parameters.AddWithValue("@name", name)
-                        cmd.Parameters.AddWithValue("@transnum", tr)
-                        cmd.ExecuteNonQuery()
-                        con.Close()
-
-                        con.Open()
-                        cmd = New SqlCommand("", con)
-                        con.Close()
-
+                    For Each r0w As DataRow In result.Rows
+                        errMsg &= r0w("item_name") & "/Ending Balance: (" & CInt(r0w("endbal")).ToString("N0") & ")/ Received Item: (" & CInt(r0w("quantity")).ToString("N0") & ")" & Environment.NewLine
                     Next
 
-                    MessageBox.Show("Transaction Completed", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Information)
-                    loadTrans("Completed")
+                    If adjc.checkTransactionStatus() Then
+                        MessageBox.Show("This transaction is already cancelled", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
+
+                    ElseIf cmbtype.SelectedIndex = 0 And errMsg <> "You can't cancel this transaction because the item(s) below of ending balance is less than the Received quantity:" & Environment.NewLine & Environment.NewLine Then
+                        MessageBox.Show(errMsg, "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
+
+                    ElseIf cmbtype.SelectedIndex = 0 And errMsg = "You can't cancel this transaction because the item(s) below of ending balance is less than the Received quantity:" & Environment.NewLine & Environment.NewLine Then
+                        Dim a As String = MsgBox("Are you sure you want to cancel this transaction?", MsgBoxStyle.Question + MsgBoxStyle.YesNo, "Atlantic Bakery")
+                        If a = vbYes Then
+                            cancelTransation()
+                        End If
+                    ElseIf cmbtype.SelectedIndex <> 0 Then
+                        Dim a As String = MsgBox("Are you sure you want to cancel this transaction?", MsgBoxStyle.Question + MsgBoxStyle.YesNo, "Atlantic Bakery")
+                        If a = vbYes Then
+                            cancelTransation()
+                        End If
+                    End If
                 End If
-            Else
-                viewItems()
             End If
         Catch ex As Exception
             MessageBox.Show(ex.ToString)
         End Try
     End Sub
-    Private Sub btn1_Click(sender As Object, e As EventArgs) Handles btn1.Click
-        btn1.ForeColor = Color.Black
-        btn2.ForeColor = Color.White
-        loadTrans("Completed")
+
+    Public Sub cancelTransation()
+        Dim columnName As String = ""
+        Select Case dgvtrans.CurrentRow.Cells("typez").Value
+            Case "Received from Other Branch"
+                columnName = "itemin"
+            Case "Received From Production"
+                columnName = "productionin"
+            Case "Transfer Item"
+                columnName = "transfer"
+        End Select
+        Dim result As New DataTable()
+        adjc.transnum = dgvtrans.CurrentRow.Cells("transnum").Value
+        result = adjc.loadItems()
+        adjc.cancelTransaction(result, columnName)
+        loadData()
     End Sub
 
-    Private Sub btn2_Click(sender As Object, e As EventArgs) Handles btn2.Click
-        btn2.ForeColor = Color.Black
-        btn1.ForeColor = Color.White
-        loadTrans("Cancelled")
-    End Sub
-    Public Sub viewItems()
+    Public Sub loadItems()
         If dgvtrans.RowCount <> 0 Then
-
-            Dim itemcount As Integer = 0
-
+            adjc.transnum = dgvtrans.CurrentRow.Cells("transnum").Value
+            Dim result As New DataTable()
+            result = adjc.loadItems()
             dgvitems.Rows.Clear()
-            con.Open()
-            cmd = New SqlCommand("SELECT item_name,category,quantity,charge FROM tblproduction WHERE transaction_number=@transnum;", con)
-            cmd.Parameters.AddWithValue("@transnum", dgvtrans.CurrentRow.Cells("transnum").Value)
-            rdr = cmd.ExecuteReader
-            While rdr.Read
-                dgvitems.Rows.Add(rdr("item_name"), rdr("category"), rdr("quantity"), rdr("charge"))
-                itemcount += 1
-            End While
-            con.Close()
-
-            lblitems.Text = "ITEMS (" & itemcount & ")"
-
+            For Each r0w As DataRow In result.Rows
+                dgvitems.Rows.Add(r0w("item_name"), r0w("category"), CInt(r0w("quantity")).ToString("N0"), CInt(r0w("charge")).ToString("N0"))
+            Next
+            lblitems.Text = "ITEMS (" & dgvitems.RowCount.ToString("N0") & ")"
         End If
+    End Sub
+
+    Private Sub btnnext_Click(sender As Object, e As EventArgs) Handles btnnext.Click
+        offset += rowsFetch
+        currentPage += 1
+        If offset <= totalCount Then
+            loadData()
+            adjc.datecreated = dt.Text
+            adjc.typee = typee
+            adjc.status = status
+            adjc.transnum = Trim(txtsearch.Text)
+            totalCount = adjc.countData()
+            totalPage = Math.Ceiling(totalCount / rowsFetch) * 1
+            lbltr.Text = "Page: " & currentPage & "/" & totalPage
+        Else
+            offset -= rowsFetch
+            currentPage -= 1
+            lbltr.Text = "Page: " & currentPage & "/" & totalPage
+        End If
+    End Sub
+
+    Private Sub btnprev_Click(sender As Object, e As EventArgs) Handles btnprev.Click
+        If offset > 0 Then
+            offset -= rowsFetch
+            currentPage -= 1
+            loadData()
+            adjc.datecreated = dt.Text
+            adjc.typee = typee
+            adjc.status = status
+            adjc.transnum = Trim(txtsearch.Text)
+            totalCount = adjc.countData()
+            totalPage = Math.Ceiling(totalCount / rowsFetch) * 1
+            lbltr.Text = "Page: " & currentPage & "/" & totalPage
+        Else
+            offset = 0
+            currentPage = 1
+            lbltr.Text = "Page: " & currentPage & "/" & totalPage
+        End If
+    End Sub
+
+    Private Sub cmbtype_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbtype.SelectedIndexChanged
+        typee = IIf(cmbtype.SelectedIndex = 0, "Received Item", "Transfer Item")
+        refreshh()
+    End Sub
+
+    Private Sub btnsearch_Click(sender As Object, e As EventArgs) Handles btnsearch.Click
+        refreshh()
     End Sub
 
     Private Sub txtsearch_KeyDown(sender As Object, e As KeyEventArgs) Handles txtsearch.KeyDown
         If e.KeyCode = Keys.Enter Then
-            loadTrans(IIf(btn1.ForeColor = Color.Black, "Completed", "Cancelled"))
-        End If
-    End Sub
-
-    Private Sub btnsearch_Click(sender As Object, e As EventArgs) Handles btnsearch.Click
-        loadTrans(IIf(btn1.ForeColor = Color.Black, "Completed", "Cancelled"))
-    End Sub
-
-    Private Sub dgvtrans_CellDoubleClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvtrans.CellDoubleClick
-        If dgvtrans.RowCount <> 0 Then
-            Dim frm As New saplogs()
-            frm.lblsap.Text = dgvtrans.CurrentRow.Cells("sapnumber").Value
-            frm.lbltransnum.Text = dgvtrans.CurrentRow.Cells("transnum").Value
-            frm.ShowDialog()
+            refreshh()
         End If
     End Sub
 
     Private Sub dt_ValueChanged(sender As Object, e As EventArgs) Handles dt.ValueChanged
-        loadTrans(IIf(btn1.ForeColor = Color.Black, "Completed", "Cancelled"))
+        loadData()
     End Sub
+
+    Private Sub btn1_Click(sender As Object, e As EventArgs) Handles btn1.Click
+        status = "Completed"
+        btn1.ForeColor = Color.Black
+        btn2.ForeColor = Color.White
+        refreshh()
+    End Sub
+
+    Private Sub btn2_Click(sender As Object, e As EventArgs) Handles btn2.Click
+        status = "Cancelled"
+        btn1.ForeColor = Color.White
+        btn2.ForeColor = Color.Black
+        refreshh()
+    End Sub
+
+    Public Sub refreshh()
+        currentPage = 1
+        offset = 0
+        adjc.datecreated = dt.Text
+        adjc.typee = typee
+        adjc.status = status
+        adjc.transnum = Trim(txtsearch.Text)
+        totalCount = adjc.countData()
+        totalPage = Math.Ceiling(totalCount / rowsFetch) * 1
+        lbltr.Text = "Page: " & currentPage & "/" & totalPage
+        loadData()
+    End Sub
+
 End Class

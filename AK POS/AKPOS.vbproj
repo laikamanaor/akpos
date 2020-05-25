@@ -744,7 +744,9 @@
     <Compile Include="my_class\pos\mini_pos.vb" />
     <Compile Include="my_class\pos\pos2_class.vb" />
     <Compile Include="my_class\pos\pos_class.vb" />
+    <Compile Include="my_class\received\adjustment_class.vb" />
     <Compile Include="my_class\received\received_class.vb" />
+    <Compile Include="my_class\sap\pendingsap_class.vb" />
     <Compile Include="my_class\sap\sap_class.vb" />
     <Compile Include="my_class\ui_class.vb" />
     <Compile Include="my_class\users\login_class.vb" />
@@ -819,6 +821,12 @@
       <DependentUpon>pendingsap2.vb</DependentUpon>
     </Compile>
     <Compile Include="pendingsap2.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="pendingsap3.Designer.vb">
+      <DependentUpon>pendingsap3.vb</DependentUpon>
+    </Compile>
+    <Compile Include="pendingsap3.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="pictures.Designer.vb">
@@ -1810,6 +1818,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="pendingsap2.resx">
       <DependentUpon>pendingsap2.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="pendingsap3.resx">
+      <DependentUpon>pendingsap3.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="pictures.resx">
       <DependentUpon>pictures.vb</DependentUpon>

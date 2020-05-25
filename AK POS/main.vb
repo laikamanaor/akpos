@@ -422,12 +422,9 @@ Public Class main
                 branchcode = rdr("branchcode")
             End If
             con.Close()
-            If login2.wrkgrp = "Sales" Or login2.wrkgrp = "Manager" Then
-                area_format = "SAL" & "INV - " & branchcode.ToUpper() & " - "
-            ElseIf login2.wrkgrp = "Production" Then
-                'area_format = "I." & removeVowels(login.wrkgrp.Substring(0, 4)).ToUpper
-                area_format = "PROD" & "INV - " & branchcode.ToUpper() & " - "
-            End If
+
+
+            area_format = "SAL" & "INV - " & branchcode.ToUpper() & " - "
             If selectcount_result < 1000000 Then
                 Dim cselectcount_result As String = CStr(selectcount_result)
                 For vv As Integer = 1 To 6 - cselectcount_result.Length
@@ -1019,12 +1016,12 @@ Public Class main
 
             hideShow(panelsubinventorytransaction)
 
-            Dim f As New pendingsap2
+            Dim f As New pendingsap3
             f.TopLevel = False
             f.Dock = DockStyle.Fill
             panelchildform.Controls.Add(f)
             f.BringToFront()
-            f.manager = "Sales"
+            'f.manager = "Sales"
             'f.loadTypes()
             f.Show()
         Else

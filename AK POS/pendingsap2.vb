@@ -50,42 +50,6 @@ Public Class pendingsap2
         End Try
     End Sub
     Private Sub pendingsap2_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        If manager = "Production" Then
-            cmbtype.Items.Clear()
-            cmbtype.Items.Add("---")
-            cmbtype.Items.Add("Produce Item")
-            cmbtype.Items.Add("Adjustment Item")
-            cmbtype.Items.Add("Transfer Item")
-            cmbtype.Items.Add("AR Reject")
-            cmbtype.Items.Add("AR Charge")
-            cmbtype.Items.Add("Conversion In")
-            cmbtype.Items.Add("Conversion OUT")
-        ElseIf manager = "Sales" Then
-            cmbtype.Items.Clear()
-            cmbtype.Items.Add("---")
-            cmbtype.Items.Add("Received Item")
-            cmbtype.Items.Add("Adjustment Item")
-            cmbtype.Items.Add("Transfer Item")
-            cmbtype.Items.Add("AR Charge")
-            cmbtype.Items.Add("AR Sales")
-            cmbtype.Items.Add("AR Cash")
-            cmbtype.Items.Add("Conversion In")
-            cmbtype.Items.Add("Conversion Out")
-            cmbtype.Items.Add("Cash Out For Deposit")
-            'ElseIf login.wrkgrp = "Manager" Or login.wrkgrp = "LC Accounting" Then
-            '    cmbtype.Items.Clear()
-            '    cmbtype.Items.Add("---")
-            '    cmbtype.Items.Add("Produce Item")
-            '    cmbtype.Items.Add("Received Item")
-            '    cmbtype.Items.Add("Transfer Item")
-            '    cmbtype.Items.Add("AR Reject")
-            '    cmbtype.Items.Add("AR Charge")
-            '    cmbtype.Items.Add("AR Sales")
-            '    cmbtype.Items.Add("AR Cash")
-            '    cmbtype.Items.Add("Conversion In")
-            '    cmbtype.Items.Add("Conversion OUT")
-            '    'dgvlists.Columns("btnupdate").Visible = False
-        End If
         cmbtype.SelectedIndex = 0
     End Sub
     Public Sub loadCashOut()
