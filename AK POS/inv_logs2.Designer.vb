@@ -207,7 +207,7 @@ Partial Class inv_logs2
         '
         Me.dgvtrans.AllowUserToAddRows = False
         Me.dgvtrans.AllowUserToDeleteRows = False
-        Me.dgvtrans.AllowUserToResizeColumns = False
+        Me.dgvtrans.AllowUserToOrderColumns = True
         Me.dgvtrans.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.dgvtrans.BackgroundColor = System.Drawing.Color.White
@@ -331,7 +331,7 @@ Partial Class inv_logs2
         '
         Me.dgvitems.AllowUserToAddRows = False
         Me.dgvitems.AllowUserToDeleteRows = False
-        Me.dgvitems.AllowUserToResizeColumns = False
+        Me.dgvitems.AllowUserToOrderColumns = True
         Me.dgvitems.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)

@@ -34,6 +34,14 @@ Partial Class users2
         Me.Panel2 = New System.Windows.Forms.Panel()
         Me.lblcount = New System.Windows.Forms.Label()
         Me.dgv = New System.Windows.Forms.DataGridView()
+        Me.userid = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.fullname = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.username = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.workgroup = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.brout = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.status = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.postype = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.btnedit = New System.Windows.Forms.DataGridViewButtonColumn()
         Me.btnexport = New System.Windows.Forms.Button()
         Me.btnimport = New System.Windows.Forms.Button()
         Me.btnnext = New System.Windows.Forms.Button()
@@ -43,14 +51,6 @@ Partial Class users2
         Me.btnadd = New System.Windows.Forms.Button()
         Me.Label3 = New System.Windows.Forms.Label()
         Me.cmbworkgroup = New System.Windows.Forms.ComboBox()
-        Me.userid = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.fullname = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.username = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.workgroup = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.brout = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.status = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.postype = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.btnedit = New System.Windows.Forms.DataGridViewButtonColumn()
         Me.Panel1.SuspendLayout()
         Me.Panel2.SuspendLayout()
         CType(Me.dgv, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -184,6 +184,62 @@ Partial Class users2
         Me.dgv.Size = New System.Drawing.Size(734, 245)
         Me.dgv.TabIndex = 18
         '
+        'userid
+        '
+        Me.userid.HeaderText = "ID"
+        Me.userid.Name = "userid"
+        Me.userid.ReadOnly = True
+        Me.userid.Visible = False
+        '
+        'fullname
+        '
+        Me.fullname.HeaderText = "Name"
+        Me.fullname.Name = "fullname"
+        Me.fullname.ReadOnly = True
+        '
+        'username
+        '
+        Me.username.HeaderText = "Username"
+        Me.username.Name = "username"
+        Me.username.ReadOnly = True
+        '
+        'workgroup
+        '
+        Me.workgroup.HeaderText = "Workgroup"
+        Me.workgroup.Name = "workgroup"
+        Me.workgroup.ReadOnly = True
+        '
+        'brout
+        '
+        Me.brout.HeaderText = "Branch/Outlet"
+        Me.brout.Name = "brout"
+        Me.brout.ReadOnly = True
+        '
+        'status
+        '
+        Me.status.HeaderText = "Status"
+        Me.status.Name = "status"
+        Me.status.ReadOnly = True
+        '
+        'postype
+        '
+        Me.postype.HeaderText = "POS Type"
+        Me.postype.Name = "postype"
+        Me.postype.ReadOnly = True
+        '
+        'btnedit
+        '
+        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(192, Byte), Integer))
+        DataGridViewCellStyle2.ForeColor = System.Drawing.Color.White
+        Me.btnedit.DefaultCellStyle = DataGridViewCellStyle2
+        Me.btnedit.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnedit.HeaderText = "Action"
+        Me.btnedit.Name = "btnedit"
+        Me.btnedit.ReadOnly = True
+        Me.btnedit.Text = "Edit"
+        Me.btnedit.UseColumnTextForButtonValue = True
+        '
         'btnexport
         '
         Me.btnexport.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
@@ -314,62 +370,6 @@ Partial Class users2
         Me.cmbworkgroup.Name = "cmbworkgroup"
         Me.cmbworkgroup.Size = New System.Drawing.Size(190, 22)
         Me.cmbworkgroup.TabIndex = 30
-        '
-        'userid
-        '
-        Me.userid.HeaderText = "ID"
-        Me.userid.Name = "userid"
-        Me.userid.ReadOnly = True
-        Me.userid.Visible = False
-        '
-        'fullname
-        '
-        Me.fullname.HeaderText = "Name"
-        Me.fullname.Name = "fullname"
-        Me.fullname.ReadOnly = True
-        '
-        'username
-        '
-        Me.username.HeaderText = "Username"
-        Me.username.Name = "username"
-        Me.username.ReadOnly = True
-        '
-        'workgroup
-        '
-        Me.workgroup.HeaderText = "Workgroup"
-        Me.workgroup.Name = "workgroup"
-        Me.workgroup.ReadOnly = True
-        '
-        'brout
-        '
-        Me.brout.HeaderText = "Branch/Outlet"
-        Me.brout.Name = "brout"
-        Me.brout.ReadOnly = True
-        '
-        'status
-        '
-        Me.status.HeaderText = "Status"
-        Me.status.Name = "status"
-        Me.status.ReadOnly = True
-        '
-        'postype
-        '
-        Me.postype.HeaderText = "POS Type"
-        Me.postype.Name = "postype"
-        Me.postype.ReadOnly = True
-        '
-        'btnedit
-        '
-        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(192, Byte), Integer))
-        DataGridViewCellStyle2.ForeColor = System.Drawing.Color.White
-        Me.btnedit.DefaultCellStyle = DataGridViewCellStyle2
-        Me.btnedit.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnedit.HeaderText = "Action"
-        Me.btnedit.Name = "btnedit"
-        Me.btnedit.ReadOnly = True
-        Me.btnedit.Text = "Edit"
-        Me.btnedit.UseColumnTextForButtonValue = True
         '
         'users2
         '

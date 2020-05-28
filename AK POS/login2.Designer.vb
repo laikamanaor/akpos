@@ -43,6 +43,13 @@ Partial Class login2
         Me.btnlogin = New System.Windows.Forms.Button()
         Me.btnminimize = New System.Windows.Forms.Button()
         Me.btnexit = New System.Windows.Forms.Button()
+        Me.Panel2 = New System.Windows.Forms.Panel()
+        Me.Panel4 = New System.Windows.Forms.Panel()
+        Me.Panel5 = New System.Windows.Forms.Panel()
+        Me.Panel8 = New System.Windows.Forms.Panel()
+        Me.Panel6 = New System.Windows.Forms.Panel()
+        Me.Panel10 = New System.Windows.Forms.Panel()
+        Me.Panel11 = New System.Windows.Forms.Panel()
         Me.Panel7.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel1.SuspendLayout()
@@ -54,6 +61,9 @@ Partial Class login2
         'Panel7
         '
         Me.Panel7.BackColor = System.Drawing.Color.FromArgb(CType(CType(218, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(28, Byte), Integer))
+        Me.Panel7.Controls.Add(Me.Panel11)
+        Me.Panel7.Controls.Add(Me.Panel10)
+        Me.Panel7.Controls.Add(Me.Panel6)
         Me.Panel7.Controls.Add(Me.Label5)
         Me.Panel7.Controls.Add(Me.Label10)
         Me.Panel7.Controls.Add(Me.Label9)
@@ -133,6 +143,7 @@ Partial Class login2
         Me.Label6.Size = New System.Drawing.Size(59, 15)
         Me.Label6.TabIndex = 43
         Me.Label6.Text = "Version:"
+        Me.Label6.Visible = False
         '
         'Label3
         '
@@ -144,6 +155,7 @@ Partial Class login2
         Me.Label3.Size = New System.Drawing.Size(41, 15)
         Me.Label3.TabIndex = 39
         Me.Label3.Text = "Date:"
+        Me.Label3.Visible = False
         '
         'Label4
         '
@@ -154,6 +166,7 @@ Partial Class login2
         Me.Label4.Size = New System.Drawing.Size(27, 13)
         Me.Label4.TabIndex = 40
         Me.Label4.Text = "N/A"
+        Me.Label4.Visible = False
         '
         'lblversions
         '
@@ -164,6 +177,7 @@ Partial Class login2
         Me.lblversions.Size = New System.Drawing.Size(22, 13)
         Me.lblversions.TabIndex = 42
         Me.lblversions.Text = "1.0"
+        Me.lblversions.Visible = False
         '
         'Panel1
         '
@@ -266,7 +280,7 @@ Partial Class login2
         Me.btnminimize.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnminimize.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnminimize.ForeColor = System.Drawing.Color.Black
-        Me.btnminimize.Location = New System.Drawing.Point(565, 0)
+        Me.btnminimize.Location = New System.Drawing.Point(564, 3)
         Me.btnminimize.Name = "btnminimize"
         Me.btnminimize.Size = New System.Drawing.Size(30, 27)
         Me.btnminimize.TabIndex = 2
@@ -280,12 +294,75 @@ Partial Class login2
         Me.btnexit.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnexit.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnexit.ForeColor = System.Drawing.Color.Black
-        Me.btnexit.Location = New System.Drawing.Point(600, 0)
+        Me.btnexit.Location = New System.Drawing.Point(599, 3)
         Me.btnexit.Name = "btnexit"
         Me.btnexit.Size = New System.Drawing.Size(30, 27)
         Me.btnexit.TabIndex = 3
         Me.btnexit.Text = "X"
         Me.btnexit.UseVisualStyleBackColor = True
+        '
+        'Panel2
+        '
+        Me.Panel2.BackColor = System.Drawing.Color.Black
+        Me.Panel2.Dock = System.Windows.Forms.DockStyle.Right
+        Me.Panel2.Location = New System.Drawing.Point(631, 0)
+        Me.Panel2.Name = "Panel2"
+        Me.Panel2.Size = New System.Drawing.Size(1, 389)
+        Me.Panel2.TabIndex = 65
+        '
+        'Panel4
+        '
+        Me.Panel4.BackColor = System.Drawing.Color.Black
+        Me.Panel4.Dock = System.Windows.Forms.DockStyle.Top
+        Me.Panel4.Location = New System.Drawing.Point(297, 0)
+        Me.Panel4.Name = "Panel4"
+        Me.Panel4.Size = New System.Drawing.Size(334, 1)
+        Me.Panel4.TabIndex = 66
+        '
+        'Panel5
+        '
+        Me.Panel5.BackColor = System.Drawing.Color.Black
+        Me.Panel5.Dock = System.Windows.Forms.DockStyle.Bottom
+        Me.Panel5.Location = New System.Drawing.Point(296, 388)
+        Me.Panel5.Name = "Panel5"
+        Me.Panel5.Size = New System.Drawing.Size(335, 1)
+        Me.Panel5.TabIndex = 66
+        '
+        'Panel8
+        '
+        Me.Panel8.BackColor = System.Drawing.Color.Black
+        Me.Panel8.Dock = System.Windows.Forms.DockStyle.Left
+        Me.Panel8.Location = New System.Drawing.Point(296, 0)
+        Me.Panel8.Name = "Panel8"
+        Me.Panel8.Size = New System.Drawing.Size(1, 388)
+        Me.Panel8.TabIndex = 66
+        '
+        'Panel6
+        '
+        Me.Panel6.BackColor = System.Drawing.Color.Black
+        Me.Panel6.Dock = System.Windows.Forms.DockStyle.Top
+        Me.Panel6.Location = New System.Drawing.Point(0, 0)
+        Me.Panel6.Name = "Panel6"
+        Me.Panel6.Size = New System.Drawing.Size(296, 1)
+        Me.Panel6.TabIndex = 67
+        '
+        'Panel10
+        '
+        Me.Panel10.BackColor = System.Drawing.Color.Black
+        Me.Panel10.Dock = System.Windows.Forms.DockStyle.Bottom
+        Me.Panel10.Location = New System.Drawing.Point(0, 388)
+        Me.Panel10.Name = "Panel10"
+        Me.Panel10.Size = New System.Drawing.Size(296, 1)
+        Me.Panel10.TabIndex = 68
+        '
+        'Panel11
+        '
+        Me.Panel11.BackColor = System.Drawing.Color.Black
+        Me.Panel11.Dock = System.Windows.Forms.DockStyle.Left
+        Me.Panel11.Location = New System.Drawing.Point(0, 1)
+        Me.Panel11.Name = "Panel11"
+        Me.Panel11.Size = New System.Drawing.Size(1, 387)
+        Me.Panel11.TabIndex = 68
         '
         'login2
         '
@@ -293,6 +370,10 @@ Partial Class login2
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.White
         Me.ClientSize = New System.Drawing.Size(632, 389)
+        Me.Controls.Add(Me.Panel4)
+        Me.Controls.Add(Me.Panel8)
+        Me.Controls.Add(Me.Panel5)
+        Me.Controls.Add(Me.Panel2)
         Me.Controls.Add(Me.btnminimize)
         Me.Controls.Add(Me.btnexit)
         Me.Controls.Add(Me.Panel1)
@@ -338,4 +419,11 @@ Partial Class login2
     Friend WithEvents btnlogin As Button
     Friend WithEvents btnminimize As Button
     Friend WithEvents btnexit As Button
+    Friend WithEvents Panel2 As Panel
+    Friend WithEvents Panel4 As Panel
+    Friend WithEvents Panel5 As Panel
+    Friend WithEvents Panel8 As Panel
+    Friend WithEvents Panel11 As Panel
+    Friend WithEvents Panel10 As Panel
+    Friend WithEvents Panel6 As Panel
 End Class

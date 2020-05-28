@@ -203,14 +203,14 @@ Partial Class mainmenu
         Me.pricebefore = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.discamt = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Panel29 = New System.Windows.Forms.Panel()
+        Me.paneldate = New System.Windows.Forms.Panel()
+        Me.dtdate = New System.Windows.Forms.DateTimePicker()
+        Me.Label16 = New System.Windows.Forms.Label()
         Me.lbldate = New System.Windows.Forms.Label()
         Me.maximize = New System.Windows.Forms.PictureBox()
         Me.lblclose = New System.Windows.Forms.Label()
         Me.Label15 = New System.Windows.Forms.Label()
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
-        Me.paneldate = New System.Windows.Forms.Panel()
-        Me.Label16 = New System.Windows.Forms.Label()
-        Me.dtdate = New System.Windows.Forms.DateTimePicker()
         Me.Panel1.SuspendLayout()
         Me.Panel12.SuspendLayout()
         Me.Panel13.SuspendLayout()
@@ -231,8 +231,8 @@ Partial Class mainmenu
         Me.Panel15.SuspendLayout()
         CType(Me.grd, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel29.SuspendLayout()
-        CType(Me.maximize, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.paneldate.SuspendLayout()
+        CType(Me.maximize, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'Panel1
@@ -2439,6 +2439,37 @@ Partial Class mainmenu
         Me.Panel29.Size = New System.Drawing.Size(1370, 36)
         Me.Panel29.TabIndex = 2
         '
+        'paneldate
+        '
+        Me.paneldate.BackColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(192, Byte), Integer))
+        Me.paneldate.Controls.Add(Me.dtdate)
+        Me.paneldate.Controls.Add(Me.Label16)
+        Me.paneldate.Location = New System.Drawing.Point(224, 5)
+        Me.paneldate.Name = "paneldate"
+        Me.paneldate.Size = New System.Drawing.Size(189, 25)
+        Me.paneldate.TabIndex = 4
+        '
+        'dtdate
+        '
+        Me.dtdate.CustomFormat = "MM/dd/yyyy"
+        Me.dtdate.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.dtdate.Format = System.Windows.Forms.DateTimePickerFormat.Custom
+        Me.dtdate.Location = New System.Drawing.Point(52, 1)
+        Me.dtdate.Name = "dtdate"
+        Me.dtdate.Size = New System.Drawing.Size(103, 23)
+        Me.dtdate.TabIndex = 6
+        '
+        'Label16
+        '
+        Me.Label16.AutoSize = True
+        Me.Label16.Font = New System.Drawing.Font("Arial Rounded MT Bold", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label16.ForeColor = System.Drawing.Color.Black
+        Me.Label16.Location = New System.Drawing.Point(5, 4)
+        Me.Label16.Name = "Label16"
+        Me.Label16.Size = New System.Drawing.Size(47, 17)
+        Me.Label16.TabIndex = 5
+        Me.Label16.Text = "Date:"
+        '
         'lbldate
         '
         Me.lbldate.Anchor = System.Windows.Forms.AnchorStyles.None
@@ -2491,37 +2522,6 @@ Partial Class mainmenu
         '
         Me.Timer1.Enabled = True
         '
-        'paneldate
-        '
-        Me.paneldate.BackColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(192, Byte), Integer))
-        Me.paneldate.Controls.Add(Me.dtdate)
-        Me.paneldate.Controls.Add(Me.Label16)
-        Me.paneldate.Location = New System.Drawing.Point(224, 5)
-        Me.paneldate.Name = "paneldate"
-        Me.paneldate.Size = New System.Drawing.Size(189, 25)
-        Me.paneldate.TabIndex = 4
-        '
-        'Label16
-        '
-        Me.Label16.AutoSize = True
-        Me.Label16.Font = New System.Drawing.Font("Arial Rounded MT Bold", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label16.ForeColor = System.Drawing.Color.Black
-        Me.Label16.Location = New System.Drawing.Point(5, 4)
-        Me.Label16.Name = "Label16"
-        Me.Label16.Size = New System.Drawing.Size(47, 17)
-        Me.Label16.TabIndex = 5
-        Me.Label16.Text = "Date:"
-        '
-        'dtdate
-        '
-        Me.dtdate.CustomFormat = "MM/dd/yyyy"
-        Me.dtdate.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.dtdate.Format = System.Windows.Forms.DateTimePickerFormat.Custom
-        Me.dtdate.Location = New System.Drawing.Point(52, 1)
-        Me.dtdate.Name = "dtdate"
-        Me.dtdate.Size = New System.Drawing.Size(103, 23)
-        Me.dtdate.TabIndex = 6
-        '
         'mainmenu
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -2566,9 +2566,9 @@ Partial Class mainmenu
         CType(Me.grd, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Panel29.ResumeLayout(False)
         Me.Panel29.PerformLayout()
-        CType(Me.maximize, System.ComponentModel.ISupportInitialize).EndInit()
         Me.paneldate.ResumeLayout(False)
         Me.paneldate.PerformLayout()
+        CType(Me.maximize, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub

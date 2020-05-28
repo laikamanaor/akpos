@@ -61,7 +61,7 @@ Public Class adjustment_class
     Public Function loadTransaction(ByVal offset As Integer, rowFetch As Integer) As DataTable
         Dim result As New DataTable(), adptr As New SqlClient.SqlDataAdapter
         cc.con.Open()
-        cc.cmd = New SqlClient.SqlCommand("SELECT DISTINCT inv_id,transaction_number,type,processed_by FROM tblproduction WHERE type=@type AND CAST(date AS date)=@date AND status=@status AND transaction_number LIKE '%" & vtransnum & "%' ORDER BY transaction_number OFFSET @offset ROW FETCH NEXT @rowfetch ROWS ONLY", cc.con)
+        cc.cmd = New SqlClient.SqlCommand("SELECT DISTINCT inv_id,transaction_number,type2,processed_by FROM tblproduction WHERE type=@type AND CAST(date AS date)=@date AND status=@status AND transaction_number LIKE '%" & vtransnum & "%' ORDER BY transaction_number OFFSET @offset ROW FETCH NEXT @rowfetch ROWS ONLY", cc.con)
         cc.cmd.Parameters.AddWithValue("@type", vtype)
         cc.cmd.Parameters.AddWithValue("@status", vstatus)
         cc.cmd.Parameters.AddWithValue("@date", vdatecreated)

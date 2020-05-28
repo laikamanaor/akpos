@@ -1,9 +1,9 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class pendingsap3
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -20,24 +20,15 @@ Partial Class pendingsap3
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.dgvtrans = New System.Windows.Forms.DataGridView()
-        Me.txtsearch = New System.Windows.Forms.TextBox()
-        Me.btnsearch = New System.Windows.Forms.Button()
-        Me.Label1 = New System.Windows.Forms.Label()
-        Me.cmbtype = New System.Windows.Forms.ComboBox()
-        Me.Panel2 = New System.Windows.Forms.Panel()
-        Me.Panel3 = New System.Windows.Forms.Panel()
-        Me.dgvitems = New System.Windows.Forms.DataGridView()
-        Me.datee = New System.Windows.Forms.DateTimePicker()
-        Me.btnsubmit = New System.Windows.Forms.Button()
-        Me.btnprev = New System.Windows.Forms.Button()
-        Me.btnnext = New System.Windows.Forms.Button()
         Me.selectt = New System.Windows.Forms.DataGridViewCheckBoxColumn()
         Me.transnum = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.namee = New System.Windows.Forms.DataGridViewTextBoxColumn()
@@ -46,9 +37,32 @@ Partial Class pendingsap3
         Me.remarks = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.from = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.timee = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.txtsearch = New System.Windows.Forms.TextBox()
+        Me.btnsearch = New System.Windows.Forms.Button()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.cmbtype = New System.Windows.Forms.ComboBox()
+        Me.Panel2 = New System.Windows.Forms.Panel()
+        Me.lblcount = New System.Windows.Forms.Label()
+        Me.Panel3 = New System.Windows.Forms.Panel()
+        Me.datee = New System.Windows.Forms.DateTimePicker()
+        Me.btnsubmit = New System.Windows.Forms.Button()
+        Me.btnprev = New System.Windows.Forms.Button()
+        Me.btnnext = New System.Windows.Forms.Button()
+        Me.dgvitems = New System.Windows.Forms.DataGridView()
+        Me.itemname = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.quantity = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.panelSAP = New System.Windows.Forms.Panel()
+        Me.lblSAPClose = New System.Windows.Forms.Label()
+        Me.txtsap = New System.Windows.Forms.TextBox()
+        Me.Label4 = New System.Windows.Forms.Label()
+        Me.txtremarks = New System.Windows.Forms.TextBox()
+        Me.Label11 = New System.Windows.Forms.Label()
+        Me.btnProceed = New System.Windows.Forms.Button()
         Me.Panel1.SuspendLayout()
         CType(Me.dgvtrans, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.Panel2.SuspendLayout()
         CType(Me.dgvitems, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.panelSAP.SuspendLayout()
         Me.SuspendLayout()
         '
         'Panel1
@@ -76,8 +90,7 @@ Partial Class pendingsap3
         '
         Me.dgvtrans.AllowUserToAddRows = False
         Me.dgvtrans.AllowUserToDeleteRows = False
-        Me.dgvtrans.AllowUserToResizeColumns = False
-        Me.dgvtrans.AllowUserToResizeRows = False
+        Me.dgvtrans.AllowUserToOrderColumns = True
         Me.dgvtrans.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.dgvtrans.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill
@@ -110,14 +123,64 @@ Partial Class pendingsap3
         Me.dgvtrans.Size = New System.Drawing.Size(867, 251)
         Me.dgvtrans.TabIndex = 67
         '
+        'selectt
+        '
+        Me.selectt.HeaderText = "Select"
+        Me.selectt.Name = "selectt"
+        '
+        'transnum
+        '
+        Me.transnum.HeaderText = "Reference #"
+        Me.transnum.Name = "transnum"
+        Me.transnum.ReadOnly = True
+        Me.transnum.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.transnum.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
+        '
+        'namee
+        '
+        Me.namee.HeaderText = "Name"
+        Me.namee.Name = "namee"
+        Me.namee.ReadOnly = True
+        '
+        'sapdoc
+        '
+        Me.sapdoc.HeaderText = "SAP Document"
+        Me.sapdoc.Name = "sapdoc"
+        Me.sapdoc.ReadOnly = True
+        '
+        'sapnum
+        '
+        Me.sapnum.HeaderText = "SAP #"
+        Me.sapnum.Name = "sapnum"
+        Me.sapnum.ReadOnly = True
+        '
+        'remarks
+        '
+        Me.remarks.HeaderText = "Remarks"
+        Me.remarks.Name = "remarks"
+        Me.remarks.ReadOnly = True
+        '
+        'from
+        '
+        Me.from.HeaderText = "From"
+        Me.from.Name = "from"
+        Me.from.ReadOnly = True
+        '
+        'timee
+        '
+        Me.timee.HeaderText = "Time"
+        Me.timee.Name = "timee"
+        Me.timee.ReadOnly = True
+        '
         'txtsearch
         '
+        Me.txtsearch.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest
+        Me.txtsearch.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource
         Me.txtsearch.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtsearch.Location = New System.Drawing.Point(30, 68)
         Me.txtsearch.Name = "txtsearch"
         Me.txtsearch.Size = New System.Drawing.Size(213, 26)
         Me.txtsearch.TabIndex = 69
-        Me.txtsearch.Text = "1234"
         '
         'btnsearch
         '
@@ -163,10 +226,22 @@ Partial Class pendingsap3
         Me.Panel2.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Panel2.BackColor = System.Drawing.Color.FromArgb(CType(CType(218, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(28, Byte), Integer))
+        Me.Panel2.Controls.Add(Me.lblcount)
         Me.Panel2.Location = New System.Drawing.Point(30, 97)
         Me.Panel2.Name = "Panel2"
         Me.Panel2.Size = New System.Drawing.Size(867, 29)
         Me.Panel2.TabIndex = 73
+        '
+        'lblcount
+        '
+        Me.lblcount.AutoSize = True
+        Me.lblcount.Font = New System.Drawing.Font("Arial Rounded MT Bold", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblcount.ForeColor = System.Drawing.Color.White
+        Me.lblcount.Location = New System.Drawing.Point(4, 6)
+        Me.lblcount.Name = "lblcount"
+        Me.lblcount.Size = New System.Drawing.Size(71, 17)
+        Me.lblcount.TabIndex = 73
+        Me.lblcount.Text = "Page 0/0"
         '
         'Panel3
         '
@@ -177,17 +252,6 @@ Partial Class pendingsap3
         Me.Panel3.Name = "Panel3"
         Me.Panel3.Size = New System.Drawing.Size(867, 29)
         Me.Panel3.TabIndex = 76
-        '
-        'dgvitems
-        '
-        Me.dgvitems.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.dgvitems.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.dgvitems.Location = New System.Drawing.Point(30, 450)
-        Me.dgvitems.Name = "dgvitems"
-        Me.dgvitems.Size = New System.Drawing.Size(867, 92)
-        Me.dgvitems.TabIndex = 75
         '
         'datee
         '
@@ -248,54 +312,143 @@ Partial Class pendingsap3
         Me.btnnext.Text = "Next"
         Me.btnnext.UseVisualStyleBackColor = False
         '
-        'selectt
+        'dgvitems
         '
-        Me.selectt.HeaderText = "Select"
-        Me.selectt.Name = "selectt"
+        Me.dgvitems.AllowUserToAddRows = False
+        Me.dgvitems.AllowUserToDeleteRows = False
+        Me.dgvitems.AllowUserToResizeColumns = False
+        Me.dgvitems.AllowUserToResizeRows = False
+        Me.dgvitems.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.dgvitems.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill
+        Me.dgvitems.BackgroundColor = System.Drawing.Color.White
+        Me.dgvitems.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+        Me.dgvitems.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None
+        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(CType(CType(218, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(28, Byte), Integer))
+        DataGridViewCellStyle3.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle3.ForeColor = System.Drawing.Color.White
+        DataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.dgvitems.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle3
+        Me.dgvitems.ColumnHeadersHeight = 40
+        Me.dgvitems.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.itemname, Me.quantity})
+        DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle4.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.dgvitems.DefaultCellStyle = DataGridViewCellStyle4
+        Me.dgvitems.EnableHeadersVisualStyles = False
+        Me.dgvitems.Location = New System.Drawing.Point(30, 450)
+        Me.dgvitems.Name = "dgvitems"
+        Me.dgvitems.RowHeadersVisible = False
+        Me.dgvitems.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
+        Me.dgvitems.Size = New System.Drawing.Size(867, 97)
+        Me.dgvitems.TabIndex = 81
         '
-        'transnum
+        'itemname
         '
-        Me.transnum.HeaderText = "Reference #"
-        Me.transnum.Name = "transnum"
-        Me.transnum.ReadOnly = True
-        Me.transnum.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.transnum.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
+        Me.itemname.HeaderText = "Item"
+        Me.itemname.Name = "itemname"
+        Me.itemname.ReadOnly = True
         '
-        'namee
+        'quantity
         '
-        Me.namee.HeaderText = "Name"
-        Me.namee.Name = "namee"
-        Me.namee.ReadOnly = True
+        Me.quantity.HeaderText = "Quantity"
+        Me.quantity.Name = "quantity"
+        Me.quantity.ReadOnly = True
         '
-        'sapdoc
+        'panelSAP
         '
-        Me.sapdoc.HeaderText = "SAP Document"
-        Me.sapdoc.Name = "sapdoc"
-        Me.sapdoc.ReadOnly = True
+        Me.panelSAP.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.panelSAP.BackColor = System.Drawing.SystemColors.HotTrack
+        Me.panelSAP.Controls.Add(Me.lblSAPClose)
+        Me.panelSAP.Controls.Add(Me.txtsap)
+        Me.panelSAP.Controls.Add(Me.Label4)
+        Me.panelSAP.Controls.Add(Me.txtremarks)
+        Me.panelSAP.Controls.Add(Me.Label11)
+        Me.panelSAP.Controls.Add(Me.btnProceed)
+        Me.panelSAP.Location = New System.Drawing.Point(287, 177)
+        Me.panelSAP.Name = "panelSAP"
+        Me.panelSAP.Size = New System.Drawing.Size(371, 267)
+        Me.panelSAP.TabIndex = 82
+        Me.panelSAP.Visible = False
         '
-        'sapnum
+        'lblSAPClose
         '
-        Me.sapnum.HeaderText = "SAP #"
-        Me.sapnum.Name = "sapnum"
-        Me.sapnum.ReadOnly = True
+        Me.lblSAPClose.AutoSize = True
+        Me.lblSAPClose.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.lblSAPClose.Font = New System.Drawing.Font("Arial Rounded MT Bold", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblSAPClose.ForeColor = System.Drawing.Color.White
+        Me.lblSAPClose.Location = New System.Drawing.Point(345, 1)
+        Me.lblSAPClose.Name = "lblSAPClose"
+        Me.lblSAPClose.Size = New System.Drawing.Size(23, 24)
+        Me.lblSAPClose.TabIndex = 6
+        Me.lblSAPClose.Text = "X"
         '
-        'remarks
+        'txtsap
         '
-        Me.remarks.HeaderText = "Remarks"
-        Me.remarks.Name = "remarks"
-        Me.remarks.ReadOnly = True
+        Me.txtsap.Font = New System.Drawing.Font("Arial Rounded MT Bold", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtsap.Location = New System.Drawing.Point(39, 44)
+        Me.txtsap.MaxLength = 6
+        Me.txtsap.Name = "txtsap"
+        Me.txtsap.ShortcutsEnabled = False
+        Me.txtsap.Size = New System.Drawing.Size(289, 29)
+        Me.txtsap.TabIndex = 5
         '
-        'from
+        'Label4
         '
-        Me.from.HeaderText = "From"
-        Me.from.Name = "from"
-        Me.from.ReadOnly = True
+        Me.Label4.AutoSize = True
+        Me.Label4.Font = New System.Drawing.Font("Arial Rounded MT Bold", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label4.ForeColor = System.Drawing.Color.White
+        Me.Label4.Location = New System.Drawing.Point(36, 21)
+        Me.Label4.Name = "Label4"
+        Me.Label4.Size = New System.Drawing.Size(55, 18)
+        Me.Label4.TabIndex = 4
+        Me.Label4.Text = "SAP #"
         '
-        'timee
+        'txtremarks
         '
-        Me.timee.HeaderText = "Time"
-        Me.timee.Name = "timee"
-        Me.timee.ReadOnly = True
+        Me.txtremarks.Font = New System.Drawing.Font("Arial Rounded MT Bold", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtremarks.Location = New System.Drawing.Point(39, 105)
+        Me.txtremarks.Multiline = True
+        Me.txtremarks.Name = "txtremarks"
+        Me.txtremarks.ScrollBars = System.Windows.Forms.ScrollBars.Both
+        Me.txtremarks.ShortcutsEnabled = False
+        Me.txtremarks.Size = New System.Drawing.Size(289, 90)
+        Me.txtremarks.TabIndex = 2
+        '
+        'Label11
+        '
+        Me.Label11.AutoSize = True
+        Me.Label11.Font = New System.Drawing.Font("Arial Rounded MT Bold", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label11.ForeColor = System.Drawing.Color.White
+        Me.Label11.Location = New System.Drawing.Point(36, 80)
+        Me.Label11.Name = "Label11"
+        Me.Label11.Size = New System.Drawing.Size(79, 18)
+        Me.Label11.TabIndex = 1
+        Me.Label11.Text = "Remarks"
+        '
+        'btnProceed
+        '
+        Me.btnProceed.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.btnProceed.BackColor = System.Drawing.Color.ForestGreen
+        Me.btnProceed.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btnProceed.FlatAppearance.BorderSize = 0
+        Me.btnProceed.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnProceed.Font = New System.Drawing.Font("Arial Rounded MT Bold", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnProceed.ForeColor = System.Drawing.Color.White
+        Me.btnProceed.Location = New System.Drawing.Point(199, 210)
+        Me.btnProceed.Name = "btnProceed"
+        Me.btnProceed.Size = New System.Drawing.Size(129, 31)
+        Me.btnProceed.TabIndex = 0
+        Me.btnProceed.Text = "Proceed"
+        Me.btnProceed.UseVisualStyleBackColor = False
         '
         'pendingsap3
         '
@@ -303,12 +456,13 @@ Partial Class pendingsap3
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.White
         Me.ClientSize = New System.Drawing.Size(924, 560)
+        Me.Controls.Add(Me.panelSAP)
+        Me.Controls.Add(Me.dgvitems)
         Me.Controls.Add(Me.btnprev)
         Me.Controls.Add(Me.btnnext)
         Me.Controls.Add(Me.btnsubmit)
         Me.Controls.Add(Me.datee)
         Me.Controls.Add(Me.Panel3)
-        Me.Controls.Add(Me.dgvitems)
         Me.Controls.Add(Me.Panel2)
         Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.cmbtype)
@@ -323,7 +477,11 @@ Partial Class pendingsap3
         Me.Panel1.ResumeLayout(False)
         Me.Panel1.PerformLayout()
         CType(Me.dgvtrans, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.Panel2.ResumeLayout(False)
+        Me.Panel2.PerformLayout()
         CType(Me.dgvitems, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.panelSAP.ResumeLayout(False)
+        Me.panelSAP.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -338,7 +496,6 @@ Partial Class pendingsap3
     Friend WithEvents cmbtype As ComboBox
     Friend WithEvents Panel2 As Panel
     Friend WithEvents Panel3 As Panel
-    Friend WithEvents dgvitems As DataGridView
     Friend WithEvents datee As DateTimePicker
     Friend WithEvents btnsubmit As Button
     Friend WithEvents btnprev As Button
@@ -351,4 +508,15 @@ Partial Class pendingsap3
     Friend WithEvents remarks As DataGridViewTextBoxColumn
     Friend WithEvents from As DataGridViewTextBoxColumn
     Friend WithEvents timee As DataGridViewTextBoxColumn
+    Friend WithEvents dgvitems As DataGridView
+    Friend WithEvents itemname As DataGridViewTextBoxColumn
+    Friend WithEvents quantity As DataGridViewTextBoxColumn
+    Friend WithEvents lblcount As Label
+    Friend WithEvents panelSAP As Panel
+    Friend WithEvents lblSAPClose As Label
+    Friend WithEvents txtsap As TextBox
+    Friend WithEvents Label4 As Label
+    Friend WithEvents txtremarks As TextBox
+    Friend WithEvents Label11 As Label
+    Friend WithEvents btnProceed As Button
 End Class

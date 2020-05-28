@@ -118,13 +118,16 @@ Public Class inventory_class
     End Function
 
     Public Function countTransaction() As Integer
-        Dim result As Integer = 0
+        Dim result As Integer = 0, rdr As SqlClient.SqlDataReader
         cc.con.Open()
-        cc.cmd = New SqlClient.SqlCommand("SELECT dbo.funcCountInventoryLogs(@transnum,@date,@type)", cc.con)
-        cc.cmd.Parameters.AddWithValue("@transnum", vtransnum)
+        cc.cmd = New SqlClient.SqlCommand("SELECT DISTINCT transaction_number FROM vInventoryLogs WHERE transaction_number LIKE '% " & vtransnum & "%' AND CAST(date AS date)=@date AND type=@type AND status='Completed'", cc.con)
+        'cc.cmd.Parameters.AddWithValue("@transnum", vtransnum)
         cc.cmd.Parameters.AddWithValue("@date", vdatecreated)
         cc.cmd.Parameters.AddWithValue("@type", vtype)
-        result = cc.cmd.ExecuteScalar
+        rdr = cc.cmd.ExecuteReader
+        While rdr.Read
+            result += 1
+        End While
         cc.con.Close()
         Return result
     End Function

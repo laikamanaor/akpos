@@ -918,13 +918,13 @@ Public Class main
                         Me.Cursor = Cursors.Default
                         Exit Sub
                     Else
-                        Dim f As New mainmenu()
-                        f.cas = "Sales"
+                        Dim f As New mainmenu2()
+                        'f.cas = "Sales"
                         f.Show()
                     End If
                 Else
-                    Dim f As New mainmenu()
-                    f.cas = "Sales"
+                    Dim f As New mainmenu2()
+                    'f.cas = "Sales"
                     f.Show()
                 End If
             Next

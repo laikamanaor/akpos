@@ -34,7 +34,7 @@ Public Class cancel_rectrans
         lblitems.Text = "ITEMS (0)"
         dgvtrans.Rows.Clear()
         For Each r0w As DataRow In result.Rows
-            dgvtrans.Rows.Add(r0w("inv_id"), r0w("transaction_number"), r0w("type"), r0w("processed_by"))
+            dgvtrans.Rows.Add(r0w("inv_id"), r0w("transaction_number"), r0w("type2"), r0w("processed_by"))
         Next
         txtsearch.AutoCompleteCustomSource = fillAutoComplete(dgvtrans, "transnum")
     End Sub
@@ -91,12 +91,12 @@ Public Class cancel_rectrans
 
     Public Sub cancelTransation()
         Dim columnName As String = ""
-        Select Case dgvtrans.CurrentRow.Cells("typez").Value
-            Case "Received from Other Branch"
+        Select Case dgvtrans.CurrentRow.Cells("typez").Value.ToString.ToLower
+            Case "Received from Other Branch".ToLower
                 columnName = "itemin"
-            Case "Received From Production"
+            Case "Received From Production".ToLower
                 columnName = "productionin"
-            Case "Transfer Item"
+            Case "Transfer Item".ToLower
                 columnName = "transfer"
         End Select
         Dim result As New DataTable()
@@ -104,6 +104,9 @@ Public Class cancel_rectrans
         result = adjc.loadItems()
         adjc.cancelTransaction(result, columnName)
         loadData()
+
+        TextBox1.Text = "UPDATE tblinvitems SET " & columnName & "-=@quantity,charge-=@charge,archarge-=@charge" & IIf(columnName = "transfer", "", ",totalav-=@quantity") & ",endbal" & IIf(columnName = "transfer", "+", "-") & "=@quantity,variance" & IIf(columnName = "transfer", "-", "+") & "=@quantity WHERE invnum=@invnum AND itemname=@itemname;"
+
     End Sub
 
     Public Sub loadItems()

@@ -57,6 +57,10 @@ Public Class login2
         End If
     End Sub
 
+    Private Sub login2_Shown(sender As Object, e As EventArgs) Handles MyBase.Shown
+        txtusername.Focus()
+    End Sub
+
     Private Sub checkseepass_CheckedChanged(sender As Object, e As EventArgs) Handles checkseepass.CheckedChanged
         txtpass.PasswordChar = IIf(checkseepass.Checked, "", "*")
         txtpass.Font = IIf(checkseepass.Checked, New Font("Arial", 12, FontStyle.Bold), New Font("Arial", 18, FontStyle.Bold))

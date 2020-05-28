@@ -135,6 +135,16 @@ Public Class user_class
         Return result
     End Function
 
+    Public Function returnPOSType() As String
+        Dim result As String = ""
+        cc.con.Open()
+        cc.cmd = New SqlCommand("SELECT dbo.getPOSType(@username)", cc.con)
+        cc.cmd.Parameters.AddWithValue("@username", login2.username)
+        result = IIf(IsDBNull(cc.cmd.ExecuteScalar), "N/A", cc.cmd.ExecuteScalar)
+        cc.con.Close()
+        Return result
+    End Function
+
     Public Sub insertUser()
         Try
             Using connection As New SqlConnection(cc.conString)

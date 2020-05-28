@@ -1936,18 +1936,36 @@ Public Class mainmenu
             txtname.Focus()
         ElseIf checkCoffeeShopItem(pos_dialog.ans).ToLower <> "Below item Is invalid for ".ToLower & pos_dialog.ans.ToLower & Environment.NewLine Then
             MessageBox.Show(checkCoffeeShopItem(pos_dialog.ans), "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
-        ElseIf posc.checkStocks(grd, inv_id) <> "" Then
-            MessageBox.Show("Insufficient supply of item below. Please enter valid input" & Environment.NewLine & posc.checkStocks(grd, inv_id), "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
         ElseIf Trim(txttendered.Text) = "" Or Val(txttendered.Text) = 0 And login2.wrkgrp = "Cashier" And rbcash.Checked Then
             If String.IsNullOrEmpty(txtchange.Text) And rbcash.Checked Then
                 amount()
                 MsgBox("Amount tendered is empty. Enter amount first.", MsgBoxStyle.Exclamation, "")
                 txttendered.Focus()
             Else
-                final()
+                If posc.checkStocks(grd, inv_id) <> "" Then
+                    Dim a As String = MsgBox("Insufficient supply of item below. Are you sure you want to proceed?" & Environment.NewLine & posc.checkStocks(grd, inv_id), MsgBoxStyle.Question + MsgBoxStyle.YesNo + MsgBoxStyle.DefaultButton2, "Atlantic Bakery")
+                    If a = vbYes Then
+                        confirm.ShowDialog()
+                        If voidd Then
+                            final()
+                        End If
+                    End If
+                Else
+                    final()
+                End If
             End If
         Else
-            final()
+            If posc.checkStocks(grd, inv_id) <> "" Then
+                Dim a As String = MsgBox("Insufficient supply of item below. Are you sure you want to proceed?" & Environment.NewLine & posc.checkStocks(grd, inv_id), MsgBoxStyle.Question + MsgBoxStyle.YesNo + MsgBoxStyle.DefaultButton2, "Atlantic Bakery")
+                If a = vbYes Then
+                    confirm.ShowDialog()
+                    If voidd Then
+                        final()
+                    End If
+                End If
+            Else
+                final()
+            End If
         End If
     End Sub
     Public Sub final()

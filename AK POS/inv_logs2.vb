@@ -203,6 +203,7 @@ Public Class inv_logs2
         invc.typee = typee
         result = invc.loadTransaction(offset, rowsFetch)
         dgvtrans.Rows.Clear()
+        dgvitems.Rows.Clear()
         For Each r0w As DataRow In result.Rows
             dgvtrans.Rows.Add(r0w("transaction_number"), IIf(typee = "Received Item", r0w("transfer_from"), r0w("transfer_to")), IIf(typee = "Received Item", r0w("transfer_to"), r0w("transfer_from")), r0w("processed_by"), CDate(r0w("date")).ToString("hh:mm tt"))
             auto.Add(r0w("transaction_number"))

@@ -50,6 +50,7 @@ Partial Class cancel_rectrans
         Me.Label2 = New System.Windows.Forms.Label()
         Me.btnprev = New System.Windows.Forms.Button()
         Me.btnnext = New System.Windows.Forms.Button()
+        Me.TextBox1 = New System.Windows.Forms.TextBox()
         Me.invnum = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.transnum = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.typez = New System.Windows.Forms.DataGridViewTextBoxColumn()
@@ -378,6 +379,13 @@ Partial Class cancel_rectrans
         Me.btnnext.Text = "Next"
         Me.btnnext.UseVisualStyleBackColor = False
         '
+        'TextBox1
+        '
+        Me.TextBox1.Location = New System.Drawing.Point(411, 68)
+        Me.TextBox1.Name = "TextBox1"
+        Me.TextBox1.Size = New System.Drawing.Size(95, 20)
+        Me.TextBox1.TabIndex = 29
+        '
         'invnum
         '
         Me.invnum.HeaderText = "Inv. #"
@@ -395,7 +403,6 @@ Partial Class cancel_rectrans
         Me.typez.HeaderText = "Type"
         Me.typez.Name = "typez"
         Me.typez.ReadOnly = True
-        Me.typez.Visible = False
         '
         'processed_by
         '
@@ -424,6 +431,7 @@ Partial Class cancel_rectrans
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.White
         Me.ClientSize = New System.Drawing.Size(866, 528)
+        Me.Controls.Add(Me.TextBox1)
         Me.Controls.Add(Me.btnprev)
         Me.Controls.Add(Me.btnnext)
         Me.Controls.Add(Me.Panel3)
@@ -483,6 +491,7 @@ Partial Class cancel_rectrans
     Friend WithEvents Label2 As Label
     Friend WithEvents btnprev As Button
     Friend WithEvents btnnext As Button
+    Friend WithEvents TextBox1 As TextBox
     Friend WithEvents invnum As DataGridViewTextBoxColumn
     Friend WithEvents transnum As DataGridViewTextBoxColumn
     Friend WithEvents typez As DataGridViewTextBoxColumn

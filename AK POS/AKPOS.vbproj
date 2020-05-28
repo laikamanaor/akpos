@@ -739,6 +739,7 @@
     <Compile Include="my_class\categories\category_class.vb" />
     <Compile Include="my_class\connection_class.vb" />
     <Compile Include="my_class\conversions\conversion_class.vb" />
+    <Compile Include="my_class\customers\customer_class.vb" />
     <Compile Include="my_class\inventories\inventory_class.vb" />
     <Compile Include="my_class\items\items_class.vb" />
     <Compile Include="my_class\pos\mini_pos.vb" />
