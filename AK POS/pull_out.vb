@@ -361,8 +361,9 @@ Public Class pull_out
                     command.Transaction = transaction
 
                     For Each r0w As DataGridViewRow In dgvSelectedItem.Rows
-                        command.CommandText = "Update tblinvitems set pullout+=@quantity, endbal-=@quantity, variance+=@quantity where invnum=(SELECT invnum FROM tblinvsum WHERE CAST(datecreated AS date)='" & dtdate.Text & "') AND area='Sales';"
+                        command.CommandText = "Update tblinvitems set pullout+=@quantity, endbal-=@quantity, variance+=@quantity where invnum=(SELECT invnum FROM tblinvsum WHERE CAST(datecreated AS date)='" & dtdate.Text & "') AND area='Sales' AND itemname=@itemname;"
                         command.Parameters.AddWithValue("@quantity", dgvSelectedItem.Rows(r0w.Index).Cells("quantityy").Value)
+                        command.Parameters.AddWithValue("@itemname", dgvSelectedItem.Rows(r0w.Index).Cells("itemnamee").Value)
                         command.ExecuteNonQuery()
 
                         command.CommandText = "INSERT INTO tblproduction (transaction_number,inv_id,item_code,item_name,category,quantity,date,processed_by,type,status,area,reject,charge,typenum,type2,remarks) VALUES (@trans_id,@id, @code,@name,@cat,@qty,(SELECT GETDATE()),@processed_by,@type,@status,@area,@reject,@charge,@typenum,@type2,@remarks)"

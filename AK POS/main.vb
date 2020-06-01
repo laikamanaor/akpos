@@ -1170,11 +1170,11 @@ Public Class main
     Private Sub btnpendingorder_Click(sender As Object, e As EventArgs) Handles btnpendingorder.Click
         If login2.wrkgrp = "Cashier" Or login2.wrkgrp = "LC Accounting" Or login2.wrkgrp = "Administrator" Then
             hideShow(panelsuborders)
-            cashier.TopLevel = False
-            cashier.Dock = DockStyle.Fill
-            panelchildform.Controls.Add(cashier)
-            cashier.BringToFront()
-            cashier.Show()
+            cashier2.TopLevel = False
+            cashier2.Dock = DockStyle.Fill
+            panelchildform.Controls.Add(cashier2)
+            cashier2.BringToFront()
+            cashier2.Show()
         Else
             MessageBox.Show("Access Denied", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
             Exit Sub

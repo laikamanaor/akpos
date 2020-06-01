@@ -24,6 +24,7 @@ Partial Class mainmenu2
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(mainmenu2))
         Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.Panel2 = New System.Windows.Forms.Panel()
@@ -50,35 +51,44 @@ Partial Class mainmenu2
         Me.btnsearch = New System.Windows.Forms.Button()
         Me.txtsearch = New System.Windows.Forms.TextBox()
         Me.Panel11 = New System.Windows.Forms.Panel()
-        Me.Panel12 = New System.Windows.Forms.Panel()
-        Me.Label7 = New System.Windows.Forms.Label()
-        Me.Label6 = New System.Windows.Forms.Label()
-        Me.dgv = New System.Windows.Forms.DataGridView()
-        Me.Panel44 = New System.Windows.Forms.Panel()
-        Me.btngc = New System.Windows.Forms.Button()
-        Me.btnvoid = New System.Windows.Forms.Button()
+        Me.txtamounttendered = New System.Windows.Forms.TextBox()
         Me.btncancel = New System.Windows.Forms.Button()
         Me.btnlast10 = New System.Windows.Forms.Button()
+        Me.lblchange = New System.Windows.Forms.Label()
+        Me.lblamountpayable = New System.Windows.Forms.Label()
+        Me.btngcbrowse = New System.Windows.Forms.Button()
+        Me.lblgc = New System.Windows.Forms.Label()
+        Me.lblsubtotalafter = New System.Windows.Forms.Label()
+        Me.lbldiscamt = New System.Windows.Forms.Label()
+        Me.lbldiscpercent = New System.Windows.Forms.Label()
+        Me.cmbdisctype = New System.Windows.Forms.ComboBox()
+        Me.lblsubtotalbefore = New System.Windows.Forms.Label()
+        Me.Panel13 = New System.Windows.Forms.Panel()
+        Me.lblitemscount = New System.Windows.Forms.Label()
+        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+        Me.Panel12 = New System.Windows.Forms.Panel()
+        Me.lblgrandtotal = New System.Windows.Forms.Label()
+        Me.Label6 = New System.Windows.Forms.Label()
+        Me.dgv = New System.Windows.Forms.DataGridView()
         Me.Label1 = New System.Windows.Forms.Label()
-        Me.Button11 = New System.Windows.Forms.Button()
+        Me.btnpay = New System.Windows.Forms.Button()
         Me.Label16 = New System.Windows.Forms.Label()
-        Me.Label15 = New System.Windows.Forms.Label()
         Me.Label8 = New System.Windows.Forms.Label()
+        Me.Label5 = New System.Windows.Forms.Label()
         Me.Label14 = New System.Windows.Forms.Label()
         Me.Label13 = New System.Windows.Forms.Label()
-        Me.Label12 = New System.Windows.Forms.Label()
+        Me.Label4 = New System.Windows.Forms.Label()
         Me.Label10 = New System.Windows.Forms.Label()
         Me.Label9 = New System.Windows.Forms.Label()
         Me.Panel43 = New System.Windows.Forms.Panel()
+        Me.txtname = New System.Windows.Forms.TextBox()
         Me.lblordernumber = New System.Windows.Forms.Label()
         Me.Label44 = New System.Windows.Forms.Label()
-        Me.lbltransnum = New System.Windows.Forms.Label()
         Me.rbcharge = New System.Windows.Forms.RadioButton()
         Me.rbsales = New System.Windows.Forms.RadioButton()
         Me.rbcash = New System.Windows.Forms.RadioButton()
-        Me.Label3 = New System.Windows.Forms.Label()
         Me.Label2 = New System.Windows.Forms.Label()
-        Me.txtname = New System.Windows.Forms.TextBox()
+        Me.lbladvancepayment = New System.Windows.Forms.Label()
         Me.item = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.quantity = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.price = New System.Windows.Forms.DataGridViewTextBoxColumn()
@@ -87,12 +97,14 @@ Partial Class mainmenu2
         Me.free = New System.Windows.Forms.DataGridViewCheckBoxColumn()
         Me.pricebefore = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.discamt = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.btnremove = New System.Windows.Forms.DataGridViewButtonColumn()
         Me.Panel6.SuspendLayout()
         Me.Panel10.SuspendLayout()
         Me.Panel11.SuspendLayout()
+        Me.Panel13.SuspendLayout()
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel12.SuspendLayout()
         CType(Me.dgv, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.Panel44.SuspendLayout()
         Me.Panel43.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -248,11 +260,14 @@ Partial Class mainmenu2
         Me.btnitemnxt.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnitemnxt.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnitemnxt.ForeColor = System.Drawing.Color.White
+        Me.btnitemnxt.Image = CType(resources.GetObject("btnitemnxt.Image"), System.Drawing.Image)
+        Me.btnitemnxt.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.btnitemnxt.Location = New System.Drawing.Point(123, 555)
         Me.btnitemnxt.Name = "btnitemnxt"
         Me.btnitemnxt.Size = New System.Drawing.Size(78, 23)
         Me.btnitemnxt.TabIndex = 19
-        Me.btnitemnxt.Text = "Next"
+        Me.btnitemnxt.Text = "Nxt."
+        Me.btnitemnxt.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.btnitemnxt.UseVisualStyleBackColor = False
         '
         'btnitemprev
@@ -264,16 +279,19 @@ Partial Class mainmenu2
         Me.btnitemprev.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnitemprev.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnitemprev.ForeColor = System.Drawing.Color.White
+        Me.btnitemprev.Image = CType(resources.GetObject("btnitemprev.Image"), System.Drawing.Image)
+        Me.btnitemprev.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.btnitemprev.Location = New System.Drawing.Point(45, 555)
         Me.btnitemprev.Name = "btnitemprev"
         Me.btnitemprev.Size = New System.Drawing.Size(78, 23)
         Me.btnitemprev.TabIndex = 18
-        Me.btnitemprev.Text = "Previous"
+        Me.btnitemprev.Text = "Prev."
+        Me.btnitemprev.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.btnitemprev.UseVisualStyleBackColor = False
         '
         'btncat4
         '
-        Me.btncat4.BackColor = System.Drawing.Color.Gainsboro
+        Me.btncat4.BackColor = System.Drawing.Color.FromArgb(CType(CType(244, Byte), Integer), CType(CType(244, Byte), Integer), CType(CType(244, Byte), Integer))
         Me.btncat4.Cursor = System.Windows.Forms.Cursors.Hand
         Me.btncat4.FlatAppearance.BorderSize = 0
         Me.btncat4.FlatStyle = System.Windows.Forms.FlatStyle.Flat
@@ -288,7 +306,7 @@ Partial Class mainmenu2
         '
         'btncat3
         '
-        Me.btncat3.BackColor = System.Drawing.Color.Gainsboro
+        Me.btncat3.BackColor = System.Drawing.Color.FromArgb(CType(CType(244, Byte), Integer), CType(CType(244, Byte), Integer), CType(CType(244, Byte), Integer))
         Me.btncat3.Cursor = System.Windows.Forms.Cursors.Hand
         Me.btncat3.FlatAppearance.BorderSize = 0
         Me.btncat3.FlatStyle = System.Windows.Forms.FlatStyle.Flat
@@ -303,7 +321,7 @@ Partial Class mainmenu2
         '
         'btncat2
         '
-        Me.btncat2.BackColor = System.Drawing.Color.Gainsboro
+        Me.btncat2.BackColor = System.Drawing.Color.FromArgb(CType(CType(244, Byte), Integer), CType(CType(244, Byte), Integer), CType(CType(244, Byte), Integer))
         Me.btncat2.Cursor = System.Windows.Forms.Cursors.Hand
         Me.btncat2.FlatAppearance.BorderSize = 0
         Me.btncat2.FlatStyle = System.Windows.Forms.FlatStyle.Flat
@@ -318,7 +336,7 @@ Partial Class mainmenu2
         '
         'btncatnxt
         '
-        Me.btncatnxt.BackColor = System.Drawing.Color.Gainsboro
+        Me.btncatnxt.BackColor = System.Drawing.Color.FromArgb(CType(CType(244, Byte), Integer), CType(CType(244, Byte), Integer), CType(CType(244, Byte), Integer))
         Me.btncatnxt.Cursor = System.Windows.Forms.Cursors.Hand
         Me.btncatnxt.FlatAppearance.BorderSize = 0
         Me.btncatnxt.FlatStyle = System.Windows.Forms.FlatStyle.Flat
@@ -332,7 +350,7 @@ Partial Class mainmenu2
         '
         'btncat1
         '
-        Me.btncat1.BackColor = System.Drawing.Color.Gainsboro
+        Me.btncat1.BackColor = System.Drawing.Color.FromArgb(CType(CType(244, Byte), Integer), CType(CType(244, Byte), Integer), CType(CType(244, Byte), Integer))
         Me.btncat1.Cursor = System.Windows.Forms.Cursors.Hand
         Me.btncat1.FlatAppearance.BorderSize = 0
         Me.btncat1.FlatStyle = System.Windows.Forms.FlatStyle.Flat
@@ -347,7 +365,7 @@ Partial Class mainmenu2
         '
         'btncatprev
         '
-        Me.btncatprev.BackColor = System.Drawing.Color.Gainsboro
+        Me.btncatprev.BackColor = System.Drawing.Color.FromArgb(CType(CType(244, Byte), Integer), CType(CType(244, Byte), Integer), CType(CType(244, Byte), Integer))
         Me.btncatprev.Cursor = System.Windows.Forms.Cursors.Hand
         Me.btncatprev.FlatAppearance.BorderSize = 0
         Me.btncatprev.FlatStyle = System.Windows.Forms.FlatStyle.Flat
@@ -373,17 +391,20 @@ Partial Class mainmenu2
         '
         'btnsearch
         '
-        Me.btnsearch.BackColor = System.Drawing.Color.ForestGreen
+        Me.btnsearch.BackColor = System.Drawing.SystemColors.HotTrack
         Me.btnsearch.Cursor = System.Windows.Forms.Cursors.Hand
         Me.btnsearch.FlatAppearance.BorderSize = 0
         Me.btnsearch.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnsearch.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnsearch.ForeColor = System.Drawing.Color.White
+        Me.btnsearch.Image = CType(resources.GetObject("btnsearch.Image"), System.Drawing.Image)
+        Me.btnsearch.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.btnsearch.Location = New System.Drawing.Point(293, 42)
         Me.btnsearch.Name = "btnsearch"
         Me.btnsearch.Size = New System.Drawing.Size(90, 29)
         Me.btnsearch.TabIndex = 3
         Me.btnsearch.Text = "Search"
+        Me.btnsearch.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.btnsearch.UseVisualStyleBackColor = False
         '
         'txtsearch
@@ -402,49 +423,248 @@ Partial Class mainmenu2
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Panel11.BackColor = System.Drawing.Color.White
+        Me.Panel11.Controls.Add(Me.txtamounttendered)
+        Me.Panel11.Controls.Add(Me.btncancel)
+        Me.Panel11.Controls.Add(Me.btnlast10)
+        Me.Panel11.Controls.Add(Me.lblchange)
+        Me.Panel11.Controls.Add(Me.lblamountpayable)
+        Me.Panel11.Controls.Add(Me.btngcbrowse)
+        Me.Panel11.Controls.Add(Me.lblgc)
+        Me.Panel11.Controls.Add(Me.lblsubtotalafter)
+        Me.Panel11.Controls.Add(Me.lbldiscamt)
+        Me.Panel11.Controls.Add(Me.lbldiscpercent)
+        Me.Panel11.Controls.Add(Me.cmbdisctype)
+        Me.Panel11.Controls.Add(Me.lblsubtotalbefore)
+        Me.Panel11.Controls.Add(Me.Panel13)
         Me.Panel11.Controls.Add(Me.Panel12)
         Me.Panel11.Controls.Add(Me.dgv)
-        Me.Panel11.Controls.Add(Me.Panel44)
         Me.Panel11.Controls.Add(Me.Label1)
-        Me.Panel11.Controls.Add(Me.Button11)
+        Me.Panel11.Controls.Add(Me.btnpay)
         Me.Panel11.Controls.Add(Me.Label16)
-        Me.Panel11.Controls.Add(Me.Label15)
         Me.Panel11.Controls.Add(Me.Label8)
+        Me.Panel11.Controls.Add(Me.Label5)
         Me.Panel11.Controls.Add(Me.Label14)
         Me.Panel11.Controls.Add(Me.Label13)
-        Me.Panel11.Controls.Add(Me.Label12)
+        Me.Panel11.Controls.Add(Me.Label4)
         Me.Panel11.Controls.Add(Me.Label10)
         Me.Panel11.Controls.Add(Me.Label9)
         Me.Panel11.Controls.Add(Me.Panel43)
+        Me.Panel11.Controls.Add(Me.lbladvancepayment)
         Me.Panel11.Location = New System.Drawing.Point(539, 39)
         Me.Panel11.Name = "Panel11"
         Me.Panel11.Size = New System.Drawing.Size(521, 609)
         Me.Panel11.TabIndex = 7
+        '
+        'txtamounttendered
+        '
+        Me.txtamounttendered.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.txtamounttendered.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtamounttendered.Location = New System.Drawing.Point(349, 420)
+        Me.txtamounttendered.Name = "txtamounttendered"
+        Me.txtamounttendered.Size = New System.Drawing.Size(165, 26)
+        Me.txtamounttendered.TabIndex = 112
+        '
+        'btncancel
+        '
+        Me.btncancel.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.btncancel.BackColor = System.Drawing.Color.FromArgb(CType(CType(246, Byte), Integer), CType(CType(150, Byte), Integer), CType(CType(2, Byte), Integer))
+        Me.btncancel.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btncancel.FlatAppearance.BorderSize = 0
+        Me.btncancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btncancel.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btncancel.ForeColor = System.Drawing.Color.White
+        Me.btncancel.Image = CType(resources.GetObject("btncancel.Image"), System.Drawing.Image)
+        Me.btncancel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btncancel.Location = New System.Drawing.Point(13, 497)
+        Me.btncancel.Name = "btncancel"
+        Me.btncancel.Size = New System.Drawing.Size(155, 36)
+        Me.btncancel.TabIndex = 110
+        Me.btncancel.Text = "CANCEL (F3)"
+        Me.btncancel.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btncancel.UseVisualStyleBackColor = False
+        '
+        'btnlast10
+        '
+        Me.btnlast10.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.btnlast10.BackColor = System.Drawing.Color.FromArgb(CType(CType(62, Byte), Integer), CType(CType(90, Byte), Integer), CType(CType(200, Byte), Integer))
+        Me.btnlast10.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btnlast10.FlatAppearance.BorderSize = 0
+        Me.btnlast10.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnlast10.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnlast10.ForeColor = System.Drawing.Color.White
+        Me.btnlast10.Location = New System.Drawing.Point(169, 497)
+        Me.btnlast10.Name = "btnlast10"
+        Me.btnlast10.Size = New System.Drawing.Size(163, 36)
+        Me.btnlast10.TabIndex = 111
+        Me.btnlast10.Text = "LAST 10 ORDERS (F2)"
+        Me.btnlast10.UseVisualStyleBackColor = False
+        '
+        'lblchange
+        '
+        Me.lblchange.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.lblchange.AutoSize = True
+        Me.lblchange.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblchange.Location = New System.Drawing.Point(349, 448)
+        Me.lblchange.Name = "lblchange"
+        Me.lblchange.Size = New System.Drawing.Size(40, 19)
+        Me.lblchange.TabIndex = 108
+        Me.lblchange.Text = "0.00"
+        '
+        'lblamountpayable
+        '
+        Me.lblamountpayable.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.lblamountpayable.AutoSize = True
+        Me.lblamountpayable.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblamountpayable.Location = New System.Drawing.Point(349, 393)
+        Me.lblamountpayable.Name = "lblamountpayable"
+        Me.lblamountpayable.Size = New System.Drawing.Size(40, 19)
+        Me.lblamountpayable.TabIndex = 106
+        Me.lblamountpayable.Text = "0.00"
+        '
+        'btngcbrowse
+        '
+        Me.btngcbrowse.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btngcbrowse.BackColor = System.Drawing.Color.FromArgb(CType(CType(244, Byte), Integer), CType(CType(244, Byte), Integer), CType(CType(244, Byte), Integer))
+        Me.btngcbrowse.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btngcbrowse.FlatAppearance.BorderSize = 0
+        Me.btngcbrowse.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btngcbrowse.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btngcbrowse.Location = New System.Drawing.Point(187, 337)
+        Me.btngcbrowse.Name = "btngcbrowse"
+        Me.btngcbrowse.Size = New System.Drawing.Size(75, 21)
+        Me.btngcbrowse.TabIndex = 104
+        Me.btngcbrowse.Text = "Browse..."
+        Me.btngcbrowse.UseVisualStyleBackColor = False
+        '
+        'lblgc
+        '
+        Me.lblgc.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.lblgc.AutoSize = True
+        Me.lblgc.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblgc.Location = New System.Drawing.Point(349, 337)
+        Me.lblgc.Name = "lblgc"
+        Me.lblgc.Size = New System.Drawing.Size(40, 19)
+        Me.lblgc.TabIndex = 103
+        Me.lblgc.Text = "0.00"
+        '
+        'lblsubtotalafter
+        '
+        Me.lblsubtotalafter.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.lblsubtotalafter.AutoSize = True
+        Me.lblsubtotalafter.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblsubtotalafter.Location = New System.Drawing.Point(131, 423)
+        Me.lblsubtotalafter.Name = "lblsubtotalafter"
+        Me.lblsubtotalafter.Size = New System.Drawing.Size(40, 19)
+        Me.lblsubtotalafter.TabIndex = 102
+        Me.lblsubtotalafter.Text = "0.00"
+        '
+        'lbldiscamt
+        '
+        Me.lbldiscamt.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.lbldiscamt.AutoSize = True
+        Me.lbldiscamt.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lbldiscamt.Location = New System.Drawing.Point(143, 393)
+        Me.lbldiscamt.Name = "lbldiscamt"
+        Me.lbldiscamt.Size = New System.Drawing.Size(40, 19)
+        Me.lbldiscamt.TabIndex = 101
+        Me.lbldiscamt.Text = "0.00"
+        '
+        'lbldiscpercent
+        '
+        Me.lbldiscpercent.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.lbldiscpercent.AutoSize = True
+        Me.lbldiscpercent.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lbldiscpercent.Location = New System.Drawing.Point(99, 393)
+        Me.lbldiscpercent.Name = "lbldiscpercent"
+        Me.lbldiscpercent.Size = New System.Drawing.Size(34, 19)
+        Me.lbldiscpercent.TabIndex = 100
+        Me.lbldiscpercent.Text = "0%"
+        '
+        'cmbdisctype
+        '
+        Me.cmbdisctype.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.cmbdisctype.BackColor = System.Drawing.Color.DodgerBlue
+        Me.cmbdisctype.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.cmbdisctype.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cmbdisctype.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.cmbdisctype.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.cmbdisctype.ForeColor = System.Drawing.Color.White
+        Me.cmbdisctype.FormattingEnabled = True
+        Me.cmbdisctype.Location = New System.Drawing.Point(135, 365)
+        Me.cmbdisctype.Name = "cmbdisctype"
+        Me.cmbdisctype.Size = New System.Drawing.Size(225, 27)
+        Me.cmbdisctype.TabIndex = 99
+        '
+        'lblsubtotalbefore
+        '
+        Me.lblsubtotalbefore.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.lblsubtotalbefore.AutoSize = True
+        Me.lblsubtotalbefore.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblsubtotalbefore.Location = New System.Drawing.Point(157, 339)
+        Me.lblsubtotalbefore.Name = "lblsubtotalbefore"
+        Me.lblsubtotalbefore.Size = New System.Drawing.Size(40, 19)
+        Me.lblsubtotalbefore.TabIndex = 98
+        Me.lblsubtotalbefore.Text = "0.00"
+        '
+        'Panel13
+        '
+        Me.Panel13.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Panel13.BackColor = System.Drawing.Color.FromArgb(CType(CType(218, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(28, Byte), Integer))
+        Me.Panel13.Controls.Add(Me.lblitemscount)
+        Me.Panel13.Controls.Add(Me.PictureBox1)
+        Me.Panel13.Location = New System.Drawing.Point(10, 153)
+        Me.Panel13.Name = "Panel13"
+        Me.Panel13.Size = New System.Drawing.Size(497, 31)
+        Me.Panel13.TabIndex = 97
+        '
+        'lblitemscount
+        '
+        Me.lblitemscount.AutoSize = True
+        Me.lblitemscount.Font = New System.Drawing.Font("Arial Rounded MT Bold", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblitemscount.ForeColor = System.Drawing.Color.White
+        Me.lblitemscount.Location = New System.Drawing.Point(30, 6)
+        Me.lblitemscount.Name = "lblitemscount"
+        Me.lblitemscount.Size = New System.Drawing.Size(18, 18)
+        Me.lblitemscount.TabIndex = 1
+        Me.lblitemscount.Text = "0"
+        '
+        'PictureBox1
+        '
+        Me.PictureBox1.Image = CType(resources.GetObject("PictureBox1.Image"), System.Drawing.Image)
+        Me.PictureBox1.Location = New System.Drawing.Point(3, 4)
+        Me.PictureBox1.Name = "PictureBox1"
+        Me.PictureBox1.Size = New System.Drawing.Size(21, 21)
+        Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+        Me.PictureBox1.TabIndex = 0
+        Me.PictureBox1.TabStop = False
         '
         'Panel12
         '
         Me.Panel12.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Panel12.BackColor = System.Drawing.Color.FromArgb(CType(CType(23, Byte), Integer), CType(CType(23, Byte), Integer), CType(CType(23, Byte), Integer))
-        Me.Panel12.Controls.Add(Me.Label7)
+        Me.Panel12.Controls.Add(Me.lblgrandtotal)
         Me.Panel12.Controls.Add(Me.Label6)
         Me.Panel12.Location = New System.Drawing.Point(9, 539)
         Me.Panel12.Name = "Panel12"
         Me.Panel12.Size = New System.Drawing.Size(289, 56)
         Me.Panel12.TabIndex = 96
         '
-        'Label7
+        'lblgrandtotal
         '
-        Me.Label7.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+        Me.lblgrandtotal.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Label7.AutoSize = True
-        Me.Label7.Font = New System.Drawing.Font("Arial", 18.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label7.ForeColor = System.Drawing.Color.LimeGreen
-        Me.Label7.Location = New System.Drawing.Point(193, 15)
-        Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(72, 29)
-        Me.Label7.TabIndex = 98
-        Me.Label7.Text = "4,000"
+        Me.lblgrandtotal.AutoSize = True
+        Me.lblgrandtotal.Font = New System.Drawing.Font("Arial", 18.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblgrandtotal.ForeColor = System.Drawing.Color.LimeGreen
+        Me.lblgrandtotal.Location = New System.Drawing.Point(193, 15)
+        Me.lblgrandtotal.Name = "lblgrandtotal"
+        Me.lblgrandtotal.Size = New System.Drawing.Size(59, 29)
+        Me.lblgrandtotal.TabIndex = 98
+        Me.lblgrandtotal.Text = "0.00"
         '
         'Label6
         '
@@ -482,231 +702,178 @@ Partial Class mainmenu2
         DataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
         Me.dgv.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle1
         Me.dgv.ColumnHeadersHeight = 40
-        Me.dgv.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.item, Me.quantity, Me.price, Me.discpercent, Me.amount, Me.free, Me.pricebefore, Me.discamt})
-        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle2.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.dgv.DefaultCellStyle = DataGridViewCellStyle2
+        Me.dgv.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.item, Me.quantity, Me.price, Me.discpercent, Me.amount, Me.free, Me.pricebefore, Me.discamt, Me.btnremove})
+        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle3.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.dgv.DefaultCellStyle = DataGridViewCellStyle3
         Me.dgv.EnableHeadersVisualStyles = False
         Me.dgv.GridColor = System.Drawing.Color.White
-        Me.dgv.Location = New System.Drawing.Point(9, 150)
+        Me.dgv.Location = New System.Drawing.Point(9, 183)
         Me.dgv.MultiSelect = False
         Me.dgv.Name = "dgv"
         Me.dgv.RowHeadersVisible = False
-        Me.dgv.Size = New System.Drawing.Size(498, 173)
+        Me.dgv.Size = New System.Drawing.Size(498, 140)
         Me.dgv.TabIndex = 95
-        '
-        'Panel44
-        '
-        Me.Panel44.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Panel44.AutoScroll = True
-        Me.Panel44.Controls.Add(Me.btngc)
-        Me.Panel44.Controls.Add(Me.btnvoid)
-        Me.Panel44.Controls.Add(Me.btncancel)
-        Me.Panel44.Controls.Add(Me.btnlast10)
-        Me.Panel44.Location = New System.Drawing.Point(9, 474)
-        Me.Panel44.Name = "Panel44"
-        Me.Panel44.Size = New System.Drawing.Size(496, 60)
-        Me.Panel44.TabIndex = 69
-        '
-        'btngc
-        '
-        Me.btngc.BackColor = System.Drawing.Color.FromArgb(CType(CType(197, Byte), Integer), CType(CType(70, Byte), Integer), CType(CType(48, Byte), Integer))
-        Me.btngc.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.btngc.FlatAppearance.BorderSize = 0
-        Me.btngc.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btngc.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btngc.ForeColor = System.Drawing.Color.White
-        Me.btngc.Location = New System.Drawing.Point(1, 9)
-        Me.btngc.Name = "btngc"
-        Me.btngc.Size = New System.Drawing.Size(162, 28)
-        Me.btngc.TabIndex = 65
-        Me.btngc.Text = "WITH GC (F5)"
-        Me.btngc.UseVisualStyleBackColor = False
-        '
-        'btnvoid
-        '
-        Me.btnvoid.BackColor = System.Drawing.Color.FromArgb(CType(CType(218, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(28, Byte), Integer))
-        Me.btnvoid.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.btnvoid.FlatAppearance.BorderSize = 0
-        Me.btnvoid.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnvoid.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnvoid.ForeColor = System.Drawing.Color.White
-        Me.btnvoid.Location = New System.Drawing.Point(487, 8)
-        Me.btnvoid.Name = "btnvoid"
-        Me.btnvoid.Size = New System.Drawing.Size(162, 30)
-        Me.btnvoid.TabIndex = 63
-        Me.btnvoid.Text = "VOID (F4)"
-        Me.btnvoid.UseVisualStyleBackColor = False
-        '
-        'btncancel
-        '
-        Me.btncancel.BackColor = System.Drawing.Color.FromArgb(CType(CType(246, Byte), Integer), CType(CType(150, Byte), Integer), CType(CType(2, Byte), Integer))
-        Me.btncancel.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.btncancel.FlatAppearance.BorderSize = 0
-        Me.btncancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btncancel.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btncancel.ForeColor = System.Drawing.Color.White
-        Me.btncancel.Location = New System.Drawing.Point(330, 9)
-        Me.btncancel.Name = "btncancel"
-        Me.btncancel.Size = New System.Drawing.Size(155, 28)
-        Me.btncancel.TabIndex = 64
-        Me.btncancel.Text = "CANCEL (F3)"
-        Me.btncancel.UseVisualStyleBackColor = False
-        '
-        'btnlast10
-        '
-        Me.btnlast10.BackColor = System.Drawing.Color.FromArgb(CType(CType(62, Byte), Integer), CType(CType(90, Byte), Integer), CType(CType(200, Byte), Integer))
-        Me.btnlast10.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.btnlast10.FlatAppearance.BorderSize = 0
-        Me.btnlast10.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnlast10.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnlast10.ForeColor = System.Drawing.Color.White
-        Me.btnlast10.Location = New System.Drawing.Point(165, 9)
-        Me.btnlast10.Name = "btnlast10"
-        Me.btnlast10.Size = New System.Drawing.Size(163, 28)
-        Me.btnlast10.TabIndex = 66
-        Me.btnlast10.Text = "LAST 10 ORDERS (F2)"
-        Me.btnlast10.UseVisualStyleBackColor = False
         '
         'Label1
         '
         Me.Label1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.Label1.AutoSize = True
-        Me.Label1.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label1.Location = New System.Drawing.Point(6, 421)
+        Me.Label1.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label1.ForeColor = System.Drawing.Color.DimGray
+        Me.Label1.Location = New System.Drawing.Point(8, 423)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(117, 16)
+        Me.Label1.Size = New System.Drawing.Size(126, 19)
         Me.Label1.TabIndex = 67
-        Me.Label1.Text = "Sub Total After: 0"
+        Me.Label1.Text = "Sub Total After:"
         '
-        'Button11
+        'btnpay
         '
-        Me.Button11.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Button11.BackColor = System.Drawing.Color.FromArgb(CType(CType(16, Byte), Integer), CType(CType(170, Byte), Integer), CType(CType(50, Byte), Integer))
-        Me.Button11.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.Button11.FlatAppearance.BorderSize = 0
-        Me.Button11.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.Button11.Font = New System.Drawing.Font("Arial Rounded MT Bold", 21.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Button11.ForeColor = System.Drawing.Color.White
-        Me.Button11.Location = New System.Drawing.Point(304, 539)
-        Me.Button11.Name = "Button11"
-        Me.Button11.Size = New System.Drawing.Size(201, 56)
-        Me.Button11.TabIndex = 34
-        Me.Button11.Text = "PAY"
-        Me.Button11.UseVisualStyleBackColor = False
+        Me.btnpay.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnpay.BackColor = System.Drawing.Color.FromArgb(CType(CType(16, Byte), Integer), CType(CType(170, Byte), Integer), CType(CType(50, Byte), Integer))
+        Me.btnpay.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btnpay.FlatAppearance.BorderSize = 0
+        Me.btnpay.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnpay.Font = New System.Drawing.Font("Arial Rounded MT Bold", 21.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnpay.ForeColor = System.Drawing.Color.White
+        Me.btnpay.Image = CType(resources.GetObject("btnpay.Image"), System.Drawing.Image)
+        Me.btnpay.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnpay.Location = New System.Drawing.Point(304, 539)
+        Me.btnpay.Name = "btnpay"
+        Me.btnpay.Size = New System.Drawing.Size(201, 56)
+        Me.btnpay.TabIndex = 34
+        Me.btnpay.Text = "     PAY"
+        Me.btnpay.UseVisualStyleBackColor = False
         '
         'Label16
         '
         Me.Label16.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label16.AutoSize = True
-        Me.Label16.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label16.Location = New System.Drawing.Point(209, 421)
+        Me.Label16.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label16.ForeColor = System.Drawing.Color.DimGray
+        Me.Label16.Location = New System.Drawing.Point(184, 448)
         Me.Label16.Name = "Label16"
-        Me.Label16.Size = New System.Drawing.Size(72, 16)
+        Me.Label16.Size = New System.Drawing.Size(75, 19)
         Me.Label16.TabIndex = 33
-        Me.Label16.Text = "Change: 0"
-        '
-        'Label15
-        '
-        Me.Label15.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Label15.AutoSize = True
-        Me.Label15.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label15.Location = New System.Drawing.Point(209, 394)
-        Me.Label15.Name = "Label15"
-        Me.Label15.Size = New System.Drawing.Size(136, 16)
-        Me.Label15.TabIndex = 32
-        Me.Label15.Text = "Amount Tendered: 0"
+        Me.Label16.Text = "Change:"
         '
         'Label8
         '
         Me.Label8.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label8.AutoSize = True
-        Me.Label8.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label8.Location = New System.Drawing.Point(209, 366)
+        Me.Label8.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label8.ForeColor = System.Drawing.Color.DimGray
+        Me.Label8.Location = New System.Drawing.Point(184, 421)
         Me.Label8.Name = "Label8"
-        Me.Label8.Size = New System.Drawing.Size(128, 16)
-        Me.Label8.TabIndex = 31
-        Me.Label8.Text = "Amount Payable: 0"
+        Me.Label8.Size = New System.Drawing.Size(151, 19)
+        Me.Label8.TabIndex = 32
+        Me.Label8.Text = "Amount Tendered:"
+        '
+        'Label5
+        '
+        Me.Label5.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label5.AutoSize = True
+        Me.Label5.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label5.ForeColor = System.Drawing.Color.DimGray
+        Me.Label5.Location = New System.Drawing.Point(184, 393)
+        Me.Label5.Name = "Label5"
+        Me.Label5.Size = New System.Drawing.Size(140, 19)
+        Me.Label5.TabIndex = 31
+        Me.Label5.Text = "Amount Payable:"
         '
         'Label14
         '
         Me.Label14.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label14.AutoSize = True
-        Me.Label14.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label14.Location = New System.Drawing.Point(209, 339)
+        Me.Label14.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label14.Location = New System.Drawing.Point(185, 366)
         Me.Label14.Name = "Label14"
-        Me.Label14.Size = New System.Drawing.Size(153, 16)
+        Me.Label14.Size = New System.Drawing.Size(153, 19)
         Me.Label14.TabIndex = 30
-        Me.Label14.Text = "Advance Payment: N/A"
+        Me.Label14.Text = "Advance Payment:"
         '
         'Label13
         '
         Me.Label13.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.Label13.AutoSize = True
-        Me.Label13.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label13.Location = New System.Drawing.Point(6, 394)
+        Me.Label13.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label13.ForeColor = System.Drawing.Color.DimGray
+        Me.Label13.Location = New System.Drawing.Point(9, 393)
         Me.Label13.Name = "Label13"
-        Me.Label13.Size = New System.Drawing.Size(130, 16)
+        Me.Label13.Size = New System.Drawing.Size(84, 19)
         Me.Label13.TabIndex = 29
-        Me.Label13.Text = "Discount: 0% 100.00"
+        Me.Label13.Text = "Discount:"
         '
-        'Label12
+        'Label4
         '
-        Me.Label12.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.Label12.AutoSize = True
-        Me.Label12.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label12.Location = New System.Drawing.Point(6, 339)
-        Me.Label12.Name = "Label12"
-        Me.Label12.Size = New System.Drawing.Size(129, 16)
-        Me.Label12.TabIndex = 28
-        Me.Label12.Text = "Sub Total Before: 0"
+        Me.Label4.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.Label4.AutoSize = True
+        Me.Label4.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label4.ForeColor = System.Drawing.Color.DimGray
+        Me.Label4.Location = New System.Drawing.Point(9, 339)
+        Me.Label4.Name = "Label4"
+        Me.Label4.Size = New System.Drawing.Size(142, 19)
+        Me.Label4.TabIndex = 28
+        Me.Label4.Text = "Sub Total Before:"
         '
         'Label10
         '
-        Me.Label10.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.Label10.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label10.AutoSize = True
-        Me.Label10.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label10.Location = New System.Drawing.Point(6, 446)
+        Me.Label10.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label10.ForeColor = System.Drawing.Color.DimGray
+        Me.Label10.Location = New System.Drawing.Point(266, 339)
         Me.Label10.Name = "Label10"
-        Me.Label10.Size = New System.Drawing.Size(42, 16)
+        Me.Label10.Size = New System.Drawing.Size(39, 19)
         Me.Label10.TabIndex = 27
-        Me.Label10.Text = "GC: 0"
+        Me.Label10.Text = "GC:"
         '
         'Label9
         '
         Me.Label9.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.Label9.AutoSize = True
-        Me.Label9.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label9.Location = New System.Drawing.Point(6, 366)
+        Me.Label9.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label9.ForeColor = System.Drawing.Color.DimGray
+        Me.Label9.Location = New System.Drawing.Point(9, 366)
         Me.Label9.Name = "Label9"
-        Me.Label9.Size = New System.Drawing.Size(111, 16)
+        Me.Label9.Size = New System.Drawing.Size(125, 19)
         Me.Label9.TabIndex = 26
-        Me.Label9.Text = "Discount Type: 0"
+        Me.Label9.Text = "Discount Type:"
         '
         'Panel43
         '
         Me.Panel43.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Panel43.BackColor = System.Drawing.Color.Gainsboro
+        Me.Panel43.BackColor = System.Drawing.Color.FromArgb(CType(CType(244, Byte), Integer), CType(CType(244, Byte), Integer), CType(CType(244, Byte), Integer))
         Me.Panel43.Controls.Add(Me.txtname)
         Me.Panel43.Controls.Add(Me.lblordernumber)
         Me.Panel43.Controls.Add(Me.Label44)
-        Me.Panel43.Controls.Add(Me.lbltransnum)
         Me.Panel43.Controls.Add(Me.rbcharge)
         Me.Panel43.Controls.Add(Me.rbsales)
         Me.Panel43.Controls.Add(Me.rbcash)
-        Me.Panel43.Controls.Add(Me.Label3)
         Me.Panel43.Controls.Add(Me.Label2)
         Me.Panel43.Location = New System.Drawing.Point(9, 6)
         Me.Panel43.Name = "Panel43"
         Me.Panel43.Size = New System.Drawing.Size(498, 143)
         Me.Panel43.TabIndex = 9
+        '
+        'txtname
+        '
+        Me.txtname.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest
+        Me.txtname.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource
+        Me.txtname.BackColor = System.Drawing.Color.FromArgb(CType(CType(244, Byte), Integer), CType(CType(244, Byte), Integer), CType(CType(244, Byte), Integer))
+        Me.txtname.Cursor = System.Windows.Forms.Cursors.Default
+        Me.txtname.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtname.Location = New System.Drawing.Point(190, 63)
+        Me.txtname.Name = "txtname"
+        Me.txtname.ReadOnly = True
+        Me.txtname.Size = New System.Drawing.Size(265, 25)
+        Me.txtname.TabIndex = 11
         '
         'lblordernumber
         '
@@ -733,18 +900,6 @@ Partial Class mainmenu2
         Me.Label44.Size = New System.Drawing.Size(80, 20)
         Me.Label44.TabIndex = 9
         Me.Label44.Text = "ORDER #:"
-        '
-        'lbltransnum
-        '
-        Me.lbltransnum.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.lbltransnum.AutoSize = True
-        Me.lbltransnum.Font = New System.Drawing.Font("Arial Unicode MS", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lbltransnum.ForeColor = System.Drawing.Color.Black
-        Me.lbltransnum.Location = New System.Drawing.Point(357, 33)
-        Me.lbltransnum.Name = "lbltransnum"
-        Me.lbltransnum.Size = New System.Drawing.Size(125, 20)
-        Me.lbltransnum.TabIndex = 5
-        Me.lbltransnum.Text = "TR - GB - 100001"
         '
         'rbcharge
         '
@@ -792,18 +947,6 @@ Partial Class mainmenu2
         Me.rbcash.Text = "Cash"
         Me.rbcash.UseVisualStyleBackColor = True
         '
-        'Label3
-        '
-        Me.Label3.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Label3.AutoSize = True
-        Me.Label3.Font = New System.Drawing.Font("Arial Unicode MS", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label3.ForeColor = System.Drawing.Color.Black
-        Me.Label3.Location = New System.Drawing.Point(204, 33)
-        Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(132, 20)
-        Me.Label3.TabIndex = 1
-        Me.Label3.Text = "TRANSACTION #:"
-        '
         'Label2
         '
         Me.Label2.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
@@ -817,18 +960,16 @@ Partial Class mainmenu2
         Me.Label2.TabIndex = 0
         Me.Label2.Text = "NAME:"
         '
-        'txtname
+        'lbladvancepayment
         '
-        Me.txtname.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest
-        Me.txtname.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource
-        Me.txtname.BackColor = System.Drawing.Color.Gainsboro
-        Me.txtname.Cursor = System.Windows.Forms.Cursors.Default
-        Me.txtname.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtname.Location = New System.Drawing.Point(190, 63)
-        Me.txtname.Name = "txtname"
-        Me.txtname.ReadOnly = True
-        Me.txtname.Size = New System.Drawing.Size(265, 25)
-        Me.txtname.TabIndex = 11
+        Me.lbladvancepayment.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.lbladvancepayment.AutoSize = True
+        Me.lbladvancepayment.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lbladvancepayment.Location = New System.Drawing.Point(349, 366)
+        Me.lbladvancepayment.Name = "lbladvancepayment"
+        Me.lbladvancepayment.Size = New System.Drawing.Size(36, 19)
+        Me.lbladvancepayment.TabIndex = 105
+        Me.lbladvancepayment.Text = "N/A"
         '
         'item
         '
@@ -868,7 +1009,6 @@ Partial Class mainmenu2
         Me.free.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
         Me.free.HeaderText = "Free"
         Me.free.Name = "free"
-        Me.free.ReadOnly = True
         '
         'pricebefore
         '
@@ -883,6 +1023,21 @@ Partial Class mainmenu2
         Me.discamt.HeaderText = "Disc. Amt."
         Me.discamt.Name = "discamt"
         Me.discamt.ReadOnly = True
+        '
+        'btnremove
+        '
+        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle2.BackColor = System.Drawing.Color.Red
+        DataGridViewCellStyle2.ForeColor = System.Drawing.Color.White
+        Me.btnremove.DefaultCellStyle = DataGridViewCellStyle2
+        Me.btnremove.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnremove.HeaderText = "Action"
+        Me.btnremove.Name = "btnremove"
+        Me.btnremove.ReadOnly = True
+        Me.btnremove.Text = "Remove"
+        Me.btnremove.ToolTipText = "Remove this item"
+        Me.btnremove.UseColumnTextForButtonValue = True
+        Me.btnremove.Width = 53
         '
         'mainmenu2
         '
@@ -902,6 +1057,7 @@ Partial Class mainmenu2
         Me.Controls.Add(Me.Panel2)
         Me.Controls.Add(Me.Panel1)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
+        Me.KeyPreview = True
         Me.Name = "mainmenu2"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "mainmenu2"
@@ -912,10 +1068,12 @@ Partial Class mainmenu2
         Me.Panel10.PerformLayout()
         Me.Panel11.ResumeLayout(False)
         Me.Panel11.PerformLayout()
+        Me.Panel13.ResumeLayout(False)
+        Me.Panel13.PerformLayout()
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Panel12.ResumeLayout(False)
         Me.Panel12.PerformLayout()
         CType(Me.dgv, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.Panel44.ResumeLayout(False)
         Me.Panel43.ResumeLayout(False)
         Me.Panel43.PerformLayout()
         Me.ResumeLayout(False)
@@ -939,27 +1097,20 @@ Partial Class mainmenu2
     Friend WithEvents Panel43 As Panel
     Friend WithEvents lblordernumber As Label
     Friend WithEvents Label44 As Label
-    Friend WithEvents lbltransnum As Label
     Friend WithEvents rbcharge As RadioButton
     Friend WithEvents rbsales As RadioButton
     Friend WithEvents rbcash As RadioButton
-    Friend WithEvents Label3 As Label
     Friend WithEvents Label2 As Label
-    Friend WithEvents Button11 As Button
-    Friend WithEvents btnlast10 As Button
-    Friend WithEvents btncancel As Button
-    Friend WithEvents btngc As Button
+    Friend WithEvents btnpay As Button
     Friend WithEvents Label16 As Label
-    Friend WithEvents Label15 As Label
     Friend WithEvents Label8 As Label
+    Friend WithEvents Label5 As Label
     Friend WithEvents Label14 As Label
     Friend WithEvents Label13 As Label
-    Friend WithEvents Label12 As Label
+    Friend WithEvents Label4 As Label
     Friend WithEvents Label10 As Label
     Friend WithEvents Label9 As Label
     Friend WithEvents Label1 As Label
-    Friend WithEvents btnvoid As Button
-    Friend WithEvents Panel44 As Panel
     Friend WithEvents panelitems As FlowLayoutPanel
     Friend WithEvents dgv As DataGridView
     Friend WithEvents btncat4 As Button
@@ -972,10 +1123,26 @@ Partial Class mainmenu2
     Friend WithEvents btnitemprev As Button
     Friend WithEvents Panel12 As Panel
     Friend WithEvents Label6 As Label
-    Friend WithEvents Label7 As Label
+    Friend WithEvents lblgrandtotal As Label
     Friend WithEvents dtdate As DateTimePicker
     Friend WithEvents Label11 As Label
     Friend WithEvents txtname As TextBox
+    Friend WithEvents Panel13 As Panel
+    Friend WithEvents lblitemscount As Label
+    Friend WithEvents PictureBox1 As PictureBox
+    Friend WithEvents lblsubtotalbefore As Label
+    Friend WithEvents cmbdisctype As ComboBox
+    Friend WithEvents lbldiscamt As Label
+    Friend WithEvents lbldiscpercent As Label
+    Friend WithEvents lbladvancepayment As Label
+    Friend WithEvents btngcbrowse As Button
+    Friend WithEvents lblgc As Label
+    Friend WithEvents lblsubtotalafter As Label
+    Friend WithEvents lblamountpayable As Label
+    Friend WithEvents lblchange As Label
+    Friend WithEvents btncancel As Button
+    Friend WithEvents btnlast10 As Button
+    Friend WithEvents txtamounttendered As TextBox
     Friend WithEvents item As DataGridViewTextBoxColumn
     Friend WithEvents quantity As DataGridViewTextBoxColumn
     Friend WithEvents price As DataGridViewTextBoxColumn
@@ -984,4 +1151,5 @@ Partial Class mainmenu2
     Friend WithEvents free As DataGridViewCheckBoxColumn
     Friend WithEvents pricebefore As DataGridViewTextBoxColumn
     Friend WithEvents discamt As DataGridViewTextBoxColumn
+    Friend WithEvents btnremove As DataGridViewButtonColumn
 End Class

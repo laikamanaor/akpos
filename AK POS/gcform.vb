@@ -52,10 +52,12 @@ Public Class gcform
                 If Val(lblgctotal.Text) <> 0 Then
                     'merong gc
                     mainmenu.txtgc.Text = lblgctotal.Text
+                    gccnf = True
                     Dim gcamt As Double = Double.Parse(grdgc.Rows(0).Cells(0).Value.ToString, culture)
                     'MsgBox(gcamt)
                     Me.Close()
                 Else
+                    gccnf = False
                     Me.Close()
                 End If
             End If
@@ -63,6 +65,7 @@ Public Class gcform
             If (lblgctotal.Text.Equals("0.00")) Then
                 mainmenu.txtgc.Text = "0.00"
             End If
+            gccnf = False
             Me.Close()
         End If
     End Sub
@@ -75,6 +78,7 @@ Public Class gcform
             txtserial.Text = ""
             lblgctotal.Text = "0.00"
             mainmenu.txtgc.Text = lblgctotal.Text
+            gccnf = False
             Me.Close()
         End If
     End Sub

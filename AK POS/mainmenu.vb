@@ -3113,6 +3113,10 @@ Public Class mainmenu
         getID()
     End Sub
 
+    Private Sub txttendered_TextChanged(sender As Object, e As EventArgs) Handles txttendered.TextChanged
+
+    End Sub
+
     Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
         lbldate.Text = DateTime.Now.ToString("hh:mm tt")
     End Sub

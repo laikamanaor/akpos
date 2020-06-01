@@ -77,6 +77,7 @@ Public Class confirm
                         inv2.cnfrm = True
                         transfer.cnfrm = True
                         items2.cnfrm = True
+                        mainmenu2.voidd = True
                         Me.Close()
                         Exit Sub
                         'End If
@@ -127,6 +128,7 @@ Public Class confirm
         inv2.cnfrm = True
         transfer.cnfrm = False
         items2.cnfrm = False
+        mainmenu2.voidd = False
         Me.Close()
     End Sub
 

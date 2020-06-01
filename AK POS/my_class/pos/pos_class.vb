@@ -90,13 +90,6 @@ Public Class pos_class
                     errrrr += 1
                 End If
             Next
-            'Dim errrrr As Integer = 0, sal As Boolean = False
-            'For index As Integer = 0 To dgv.RowCount - 1
-            '    If CBool(dgv.Rows(index).Cells("free").Value) <> False And dgv.Rows(index).Cells("quantity").Value = free_count Then
-            '        errrrr += 1
-            '    End If
-            'Next
-
             If errrrr = 0 Then
                 result = result_temp
             End If

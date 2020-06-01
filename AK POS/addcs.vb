@@ -1,7 +1,8 @@
 ﻿Imports System.Data.SqlClient
+Imports AK_POS.connection_class
 Public Class addcs
-
-    Dim strconn As String = login.ss
+    Dim cc As New connection_class
+    Dim strconn As String = cc.conString
     Dim con As New SqlConnection(strconn)
     Dim cmd As SqlCommand
     Dim rdr As SqlDataReader
@@ -75,7 +76,7 @@ Public Class addcs
                 con.Open()
                 cmd = New SqlCommand("INSERT INTO tblcsitems (itemid,free,datecreated,datemodified,createdby,modifiedby) VALUES ((SELECT itemid FROM tblitems WHERE itemname=@itemname),@free,(SELECT GETDATE()),(SELECT GETDATE()),(SELECT systemid FROM tblusers WHERE username=@username),(SELECT systemid FROM tblusers WHERE username=@username) );", con)
                 cmd.Parameters.AddWithValue("@itemname", Trim(txt.Text))
-                cmd.Parameters.AddWithValue("@username", login.username)
+                cmd.Parameters.AddWithValue("@username", login2.username)
                 cmd.Parameters.AddWithValue("@free", txtfree.text)
                 cmd.ExecuteNonQuery()
                 con.Close()

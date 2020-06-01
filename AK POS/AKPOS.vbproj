@@ -190,6 +190,12 @@
     <Compile Include="branches.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="cashier2.Designer.vb">
+      <DependentUpon>cashier2.vb</DependentUpon>
+    </Compile>
+    <Compile Include="cashier2.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="categories.Designer.vb">
       <DependentUpon>categories.vb</DependentUpon>
     </Compile>
@@ -740,8 +746,10 @@
     <Compile Include="my_class\connection_class.vb" />
     <Compile Include="my_class\conversions\conversion_class.vb" />
     <Compile Include="my_class\customers\customer_class.vb" />
+    <Compile Include="my_class\discounts\discount_class.vb" />
     <Compile Include="my_class\inventories\inventory_class.vb" />
     <Compile Include="my_class\items\items_class.vb" />
+    <Compile Include="my_class\pos\cashier_class.vb" />
     <Compile Include="my_class\pos\mini_pos.vb" />
     <Compile Include="my_class\pos\pos2_class.vb" />
     <Compile Include="my_class\pos\pos_class.vb" />
@@ -1428,6 +1436,12 @@
     <Compile Include="version.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="void.Designer.vb">
+      <DependentUpon>void.vb</DependentUpon>
+    </Compile>
+    <Compile Include="void.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="voidform.Designer.vb">
       <DependentUpon>voidform.vb</DependentUpon>
     </Compile>
@@ -1473,6 +1487,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="branches.resx">
       <DependentUpon>branches.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="cashier2.resx">
+      <DependentUpon>cashier2.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="categories.resx">
       <DependentUpon>categories.vb</DependentUpon>
@@ -2191,6 +2208,9 @@
     <EmbeddedResource Include="version.resx">
       <DependentUpon>version.vb</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="void.resx">
+      <DependentUpon>void.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="voidform.resx">
       <DependentUpon>voidform.vb</DependentUpon>
