@@ -12,7 +12,7 @@ Public Class mainmenu2
     Private catoffset As Integer = 0, catrowFetch As Integer = 4, cattotalCount As Integer = 0, cattotalPage As Integer = 0, catcurrentPage As Integer = 1,
         itemoffset As Integer = 0, itemrowFetch As Integer = 30, itemtotalCount As Integer = 0, itemtotalPage As Integer = 0, itemcurrentPage As Integer = 1
 
-    Dim tendetype As String = "", cashierOrderNumber As Integer = 0, cashierPOSType As String = ""
+    Dim tendetype As String = "", cashierOrderNumber As Integer = 0, cashierPOSType As String = "", currentCashierRemoveOrderID As String = ""
 
     Public apdep As Double = 0.00, orderid As Integer = 0, isConfirm As Boolean = False
     Public Shared voidd As Boolean = False
@@ -62,7 +62,7 @@ Public Class mainmenu2
         If login2.wrkgrp = "Cashier" Then
             loadSelectedTransaction()
         End If
-
+        btngcbrowse.Enabled = IIf(login2.wrkgrp = "Cashier", True, False)
     End Sub
 
     Public Sub loadSelectedTransaction()
@@ -77,7 +77,7 @@ Public Class mainmenu2
         dgv.Rows.Clear()
         result = cashc.loadItems()
         For Each r0w As DataRow In result.Rows
-            dgv.Rows.Add(r0w("itemname"), CInt(r0w("qty")).ToString("N0"), CDbl(r0w("price")).ToString("n2"), CInt(r0w("dscnt")).ToString("N0"), CDbl(r0w("totalprice")).ToString("n2"), IIf(CInt(r0w("free")) = 0, False, True), CDbl(r0w("pricebefore")).ToString("n2"), CDbl(r0w("discamt")).ToString("n2"))
+            dgv.Rows.Add(r0w("itemname"), CInt(r0w("qty")).ToString("N0"), CDbl(r0w("price")).ToString("n2"), CInt(r0w("dscnt")).ToString("N0"), CDbl(r0w("totalprice")).ToString("n2"), IIf(CInt(r0w("free")) = 0, False, True), CDbl(r0w("pricebefore")).ToString("n2"), CDbl(r0w("discamt")).ToString("n2"), "", r0w("orderid"))
         Next
     End Sub
 
@@ -405,29 +405,7 @@ Public Class mainmenu2
     End Sub
 
     Private Sub cmbdisctype_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbdisctype.SelectedIndexChanged
-        If dgv.RowCount > 0 Then
-            If cmbdisctype.Text <> "" Then
-                'insert info there
-                If login2.wrkgrp <> "Cashier" And cmbdisctype.SelectedItem <> "Ar Discount Pullout" Then
-                    senior.txtidno.Clear()
-                    senior.txtname.Clear()
-                    senior.ShowDialog()
-                    If senior.add Then
-                        discc.discountName = cmbdisctype.Text
-                        lbldiscpercent.Text = discc.returnAmount() & "%"
-                        lbldiscamt.Text = CDbl(CDbl(lblsubtotalbefore.Text) * CDbl(lbldiscpercent.Text.Replace("%", "") / 100)).ToString("n2")
-                    Else
-                        cmbdisctype.SelectedIndex = 0
-                        lbldiscpercent.Text = "0%"
-                        lbldiscamt.Text = "0.00"
-                    End If
-                End If
-            Else
-                lbldiscamt.Text = "0.00"
-                lbldiscpercent.Text = "0%"
-            End If
-            computeTotal()
-        End If
+
     End Sub
 
     Private Sub btngcbrowse_Click(sender As Object, e As EventArgs) Handles btngcbrowse.Click
@@ -453,6 +431,40 @@ Public Class mainmenu2
         End Try
     End Sub
 
+    Private Sub Panel11_Paint(sender As Object, e As PaintEventArgs) Handles Panel11.Paint
+
+    End Sub
+
+    Private Sub cmbdisctype_Leave(sender As Object, e As EventArgs) Handles cmbdisctype.Leave
+        If dgv.RowCount > 0 Then
+            If cmbdisctype.Text <> "" Then
+                'insert info there
+                If cmbdisctype.SelectedItem <> "Ar Discount Pullout" Then
+                    senior.txtidno.Clear()
+                    senior.txtname.Clear()
+                    senior.ShowDialog()
+                    If senior.add Then
+                        discc.discountName = cmbdisctype.Text
+                        lbldiscpercent.Text = discc.returnAmount() & "%"
+                        lbldiscamt.Text = CDbl(CDbl(lblsubtotalbefore.Text) * CDbl(lbldiscpercent.Text.Replace("%", "") / 100)).ToString("n2")
+                    Else
+                        cmbdisctype.SelectedIndex = 0
+                        lbldiscpercent.Text = "0%"
+                        lbldiscamt.Text = "0.00"
+                    End If
+                End If
+            Else
+                lbldiscamt.Text = "0.00"
+                lbldiscpercent.Text = "0%"
+            End If
+            computeTotal()
+        End If
+    End Sub
+
+    Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
+        lbltime.Text = DateTime.Now.ToString("hh:mm tt")
+    End Sub
+
     Private Sub txtamounttendered_Leave(sender As Object, e As EventArgs) Handles txtamounttendered.Leave
         If String.IsNullOrEmpty(Trim(txtamounttendered.Text)) Then
             txtamounttendered.Text = "0.00"
@@ -462,11 +474,15 @@ Public Class mainmenu2
 
     End Sub
 
+
     Private Sub dgv_CellClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgv.CellClick
         If dgv.Rows.Count > 0 Then
             If e.ColumnIndex = 8 And isConfirm = False Then
-                Dim a As String = MsgBox("Are you sure you want To remove this item?", MsgBoxStyle.Question + MsgBoxStyle.YesNo + MsgBoxStyle.DefaultButton2, "Atlantic Bakery")
+                Dim a As String = MsgBox("Are you sure you want to remove this item?", MsgBoxStyle.Question + MsgBoxStyle.YesNo + MsgBoxStyle.DefaultButton2, "Atlantic Bakery")
                 If a = vbYes Then
+                    If login2.wrkgrp = "Cashier" Then
+                        currentCashierRemoveOrderID &= dgv.CurrentRow.Cells("id").Value & ","
+                    End If
                     dgv.Rows.RemoveAt(e.RowIndex)
                     computeTotal()
                     lblitemscount.Text = dgv.RowCount.ToString("N0")
@@ -498,6 +514,26 @@ Public Class mainmenu2
         End If
     End Sub
 
+    Public Sub clear()
+        lblsubtotalbefore.Text = "0.00"
+        cmbdisctype.SelectedIndex = 0
+        lbldiscpercent.Text = "0%"
+        lbldiscamt.Text = "0.00"
+        lblsubtotalafter.Text = "0.00"
+        lblgc.Text = "0.00"
+        lbladvancepayment.Text = "N/A"
+        lblamountpayable.Text = "0.00"
+        txtamounttendered.Text = ""
+        lblchange.Text = "0.00"
+        lblgrandtotal.Text = "0.00"
+        txtsearch.Text = ""
+        dgv.Rows.Clear()
+        lblitemscount.Text = "0"
+        loadItems("")
+        rbcash.Checked = True
+        dtdate.Text = DateTime.Now
+    End Sub
+
     Private Sub btnpay_Click(sender As Object, e As EventArgs) Handles btnpay.Click
         If uc.checkCutOff() Then
             MessageBox.Show("POS already cut off", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
@@ -515,7 +551,7 @@ Public Class mainmenu2
             MessageBox.Show("Please input amount In item. Please enter valid input" & Environment.NewLine & posc.checkCSFree(dgv), "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
 
         ElseIf posc.checkOrderNumber(cashierOrderNumber.ToString) = True And login2.wrkgrp = "Cashier" Then
-            MessageBox.Show("Order # " & lblordernumber.Text & " Is already transact", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            MessageBox.Show("Order # " & cashierOrderNumber.ToString("N0") & " Is already transact", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
 
         ElseIf dgv.RowCount = 0 Then
             MessageBox.Show("No orders entered", "", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
@@ -538,7 +574,7 @@ Public Class mainmenu2
 
         ElseIf Trim(txtamounttendered.Text) = "" Or Val(txtamounttendered.Text) = 0 And login2.wrkgrp = "Cashier" And rbcash.Checked Then
 
-            If String.IsNullOrEmpty(lblchange.Text) And rbcash.Checked Then
+            If String.IsNullOrEmpty(lblchange.Text) And rbcash.Checked And login2.wrkgrp = "Cashier" Then
                 computeTotal()
                 MsgBox("Amount tendered is empty. Enter amount first.", MsgBoxStyle.Exclamation, "")
                 txtamounttendered.Focus()
@@ -587,111 +623,272 @@ Public Class mainmenu2
 
     Public Sub query()
         Try
-            Using connection As New SqlConnection(cc.conString)
-                Dim command As New SqlCommand(),
-                 addStock As Double = 0.00, seniorResult As Boolean = False, tayp As String = "", resultNo As Double = 0.00
-                command.Connection = connection
+            Dim a As String = MsgBox("Confirm Order?", MsgBoxStyle.Question + MsgBoxStyle.YesNo + MsgBoxStyle.DefaultButton2, "Atlantic Bakery")
+            If a = vbYes Then
+                Using connection As New SqlConnection(cc.conString)
+                    Dim command As New SqlCommand(),
+                     addStock As Double = 0.00, seniorResult As Boolean = False, tayp As String = "", resultNo As Double = 0.00
+                    command.Connection = connection
 
-                recc.headerText = "Received from Production"
-                Dim transactionNumber As String = recc.returnTransactionNumber(True)
-                Dim dateParameter As Date = posc.getDateParameterResult()
+                    recc.headerText = "Received from Production"
+                    Dim transactionNumber As String = recc.returnTransactionNumber(True)
+                    Dim transnum As String = posc.getTransactionNumber
+                    Dim ordernum As Integer = posc.returnLatestOrderNumber()
+                    Dim salesname As String = getSalesName()
+                    connection.Open()
+                    transaction = connection.BeginTransaction()
 
-                connection.Open()
-                transaction = connection.BeginTransaction()
+                    command.Transaction = transaction
+                    If cashierPOSType = "Coffee Shop" And login2.wrkgrp = "Cashier" Then
+                        posc.datecreated = dtdate.Text
+                        For i As Integer = 0 To dgv.RowCount - 1
+                            posc.setItem(dgv.Rows(i).Cells("item").Value)
+                            Dim currentEndbal As Double = posc.returnEndingBalance()
+                            If CDbl(dgv.Rows(i).Cells("quantity").Value) > currentEndbal And posc.returnCategory() = "Coffee Shop" Then
+                                addStock = CDbl(dgv.Rows(i).Cells("quantity").Value) - currentEndbal
+                            End If
+                            If currentEndbal < addStock And posc.returnCategory() = "Coffee Shop" Then
+                                command.Parameters.Clear()
+                                command.CommandText = "insertCSItemsVersion2"
+                                command.CommandType = CommandType.StoredProcedure
+                                command.Parameters.Add(New SqlParameter("@itemname", dgv.Rows(i).Cells("item").Value))
+                                command.Parameters.Add(New SqlParameter("@quantity", addStock))
+                                command.Parameters.Add(New SqlParameter("@transnum", transactionNumber))
+                                command.Parameters.Add(New SqlParameter("@username", login2.username))
+                                command.ExecuteNonQuery()
+                            End If
+                        Next
+                    End If
+                    If login2.wrkgrp <> "Cashier" Then
+                        command.Parameters.Clear()
+                        command.CommandText = "insertOrders"
+                        command.CommandType = CommandType.StoredProcedure
+                        command.Parameters.AddWithValue("@ordernum", ordernum)
+                        command.Parameters.AddWithValue("@cashier", login2.username)
+                        command.Parameters.AddWithValue("@tendertype", tendetype)
+                        command.Parameters.AddWithValue("@servicetype", "Take Out")
+                        command.Parameters.AddWithValue("@delcharge", 0)
+                        command.Parameters.AddWithValue("@subtotal", CDbl(lblsubtotalbefore.Text))
+                        command.Parameters.AddWithValue("@disctype", cmbdisctype.Text)
+                        command.Parameters.AddWithValue("@less", CDbl(lbldiscpercent.Text.Replace("%", "")))
+                        command.Parameters.AddWithValue("@vatsales", 0)
+                        command.Parameters.AddWithValue("@vat", 0)
+                        command.Parameters.AddWithValue("@amtdue", CDbl(lblamountpayable.Text))
+                        command.Parameters.AddWithValue("@tenderamt", CDbl(txtamounttendered.Text))
+                        command.Parameters.AddWithValue("@change", CDbl(lblchange.Text))
+                        command.Parameters.AddWithValue("@refund", 0)
+                        command.Parameters.AddWithValue("@comment", "")
+                        command.Parameters.AddWithValue("@remarks", "")
+                        command.Parameters.AddWithValue("@customer", txtname.Text)
+                        command.Parameters.AddWithValue("@tinum", "0")
+                        command.Parameters.AddWithValue("@createdby", login2.username)
+                        command.Parameters.AddWithValue("@gctotal", CDbl(lblgc.Text))
+                        command.Parameters.AddWithValue("@type", pos_dialog.ans)
+                        command.Parameters.AddWithValue("@discamt", CDbl(lbldiscamt.Text))
+                        command.ExecuteNonQuery()
 
-                command.Transaction = transaction
-                If cashierPOSType = "Coffee Shop" And login2.wrkgrp = "Cashier" Then
-                    posc.datecreated = dtdate.Text
-                    For i As Integer = 0 To dgv.RowCount - 1
-                        posc.setItem(dgv.Rows(i).Cells("item").Value)
-                        Dim currentEndbal As Double = posc.returnEndingBalance()
-                        If CDbl(dgv.Rows(i).Cells("quantity").Value) > currentEndbal And posc.returnCategory() = "Coffee Shop" Then
-                            addStock = CDbl(dgv.Rows(i).Cells("quantity").Value) - currentEndbal
-                        End If
-                        If currentEndbal < addStock And posc.returnCategory() = "Coffee Shop" Then
+
+
+
+                        If cmbdisctype.Text <> "" Then
                             command.Parameters.Clear()
-                            command.CommandText = "insertCSItemsVersion2"
+                            command.CommandText = "insertSenior"
                             command.CommandType = CommandType.StoredProcedure
-                            command.Parameters.Add(New SqlParameter("@itemname", dgv.Rows(i).Cells("item").Value))
-                            command.Parameters.Add(New SqlParameter("@quantity", addStock))
-                            command.Parameters.Add(New SqlParameter("@date", dateParameter))
-                            command.Parameters.Add(New SqlParameter("@transnum", transactionNumber))
-                            command.Parameters.Add(New SqlParameter("@username", login2.username))
+                            command.Parameters.AddWithValue("@transnum", ordernum)
+                            command.Parameters.AddWithValue("@idno", senior.txtidno.Text)
+                            command.Parameters.AddWithValue("@name", senior.txtname.Text)
+                            command.Parameters.AddWithValue("@disctype", cmbdisctype.Text)
                             command.ExecuteNonQuery()
                         End If
-                    Next
-                End If
-                If login2.wrkgrp <> "Cashier" Then
-                    posc.datecreated = dateParameter
-                    Dim ordernum As Integer = posc.returnLatestOrderNumber()
-                    command.Parameters.Clear()
-                    command.CommandText = "INSERT INTO tbltransaction2 (ornum, ordernum, transdate, cashier, tendertype, servicetype, delcharge, subtotal, disctype, less, vatsales, vat, amtdue, tenderamt, change, refund, comment, remarks, customer, tinnum, tablenum, pax, createdby, datecreated, datemodified, status, status2, area, gctotal, typez, discamt) VALUES ('000',@ordernum,@transdate,@cashier,@tendertype,@servicetype,@delcharge,@subtotal,@disctype,@less,@vatsales,@vat,@amtdue,@tenderamt,@change,@refund,@comment,@remarks,@customer,@tinum,0,0,@createdby,@date,@date,1,'Unpaid','Sales',@gctotal,@type,@discamt);"
-                    command.CommandType = CommandType.Text
-                    command.Parameters.AddWithValue("@ordernum", ordernum)
-                    command.Parameters.AddWithValue("@transdate", dateParameter)
-                    command.Parameters.AddWithValue("@date", dateParameter)
-                    command.Parameters.AddWithValue("@cashier", login2.username)
-                    command.Parameters.AddWithValue("@tendertype", tendetype)
-                    command.Parameters.AddWithValue("@servicetype", "Take Out")
-                    command.Parameters.AddWithValue("@delcharge", 0)
-                    command.Parameters.AddWithValue("@subtotal", CDbl(lblsubtotalbefore.Text))
-                    command.Parameters.AddWithValue("@disctype", cmbdisctype.Text)
-                    command.Parameters.AddWithValue("@less", CDbl(lbldiscpercent.Text.Replace("%", "")))
-                    command.Parameters.AddWithValue("@vatsales", 0)
-                    command.Parameters.AddWithValue("@vat", 0)
-                    command.Parameters.AddWithValue("@amtdue", CDbl(lblamountpayable.Text))
-                    command.Parameters.AddWithValue("@tenderamt", CDbl(txtamounttendered.Text))
-                    command.Parameters.AddWithValue("@change", CDbl(lblchange.Text))
-                    command.Parameters.AddWithValue("@refund", 0)
-                    command.Parameters.AddWithValue("@comment", "")
-                    command.Parameters.AddWithValue("@remarks", "")
-                    command.Parameters.AddWithValue("@customer", txtname.Text)
-                    command.Parameters.AddWithValue("@tinum", "0")
-                    command.Parameters.AddWithValue("@createdby", login2.username)
-                    command.Parameters.AddWithValue("@gctotal", CDbl(lblgc.Text))
-                    command.Parameters.AddWithValue("@type", pos_dialog.ans)
-                    command.Parameters.AddWithValue("@discamt", CDbl(lbldiscamt.Text))
-                    command.ExecuteNonQuery()
-                    If cmbdisctype.Text <> "" Then
+
+
+                        For index As Integer = 0 To dgv.Rows.Count - 1
+
+                            Dim dscntprice As Double = CDbl(dgv.Rows(index).Cells("price").Value - ((dgv.Rows(index).Cells("discpercent").Value / 100) * dgv.Rows(index).Cells("price").Value))
+                            Dim ifree As Double = If(CBool(dgv.Rows(index).Cells("free").Value) = True, 1, 0)
+
+                            command.Parameters.Clear()
+
+                            command.CommandText = "insertOrderItems"
+                            command.CommandType = CommandType.StoredProcedure
+                            command.Parameters.AddWithValue("@ordernum", ordernum)
+                            command.Parameters.AddWithValue("@itemname", dgv.Rows(index).Cells("item").Value)
+                            command.Parameters.AddWithValue("@quantity", CDbl(dgv.Rows(index).Cells("quantity").Value))
+                            command.Parameters.AddWithValue("@price", CDbl(dgv.Rows(index).Cells("price").Value))
+                            command.Parameters.AddWithValue("@amount", CDbl(dgv.Rows(index).Cells("amount").Value))
+                            command.Parameters.AddWithValue("@dispercent", CDbl(dgv.Rows(index).Cells("discpercent").Value))
+                            command.Parameters.AddWithValue("@free", ifree)
+                            command.Parameters.AddWithValue("@status", 1)
+                            command.Parameters.AddWithValue("@disprice", dscntprice)
+                            command.Parameters.AddWithValue("@area", "Sales")
+                            command.Parameters.AddWithValue("@pricebefore", CDbl(dgv.Rows(index).Cells("pricebefore").Value))
+                            command.Parameters.AddWithValue("@discamt", CDbl(dgv.Rows(index).Cells("discamt").Value))
+                            command.ExecuteNonQuery()
+                        Next
+                    Else
                         command.Parameters.Clear()
-                        command.CommandText = "INSERT INTO tblsenior (transnum,idno,name,disctype,datedisc,status) VALUES (@transnum,@idno,@name,@disctype,@date,3)"
-                        command.Parameters.AddWithValue("@transnum", ordernum)
-                        command.Parameters.AddWithValue("@date", dateParameter)
-                        command.Parameters.AddWithValue("@idno", senior.txtidno.Text)
-                        command.Parameters.AddWithValue("@name", senior.txtname.Text)
+                        command.CommandText = "updateOrders"
+                        command.CommandType = CommandType.StoredProcedure
+                        command.Parameters.AddWithValue("@orderid", orderid)
+                        command.Parameters.AddWithValue("@cashier", login2.username)
+                        command.Parameters.AddWithValue("@tendertype", tendetype)
+                        command.Parameters.AddWithValue("@subtotal", CDbl(lblsubtotalbefore.Text))
                         command.Parameters.AddWithValue("@disctype", cmbdisctype.Text)
+                        command.Parameters.AddWithValue("@less", CDbl(lbldiscpercent.Text.Replace("%", "")))
+                        command.Parameters.AddWithValue("@amtdue", CDbl(lblamountpayable.Text))
+                        command.Parameters.AddWithValue("@tenderamt", CDbl(txtamounttendered.Text))
+                        command.Parameters.AddWithValue("@change", CDbl(lblchange.Text))
+                        command.Parameters.AddWithValue("@customer", txtname.Text)
+                        command.Parameters.AddWithValue("@gctotal", CDbl(lblgc.Text))
+                        command.Parameters.AddWithValue("@discamt", CDbl(lbldiscamt.Text))
                         command.ExecuteNonQuery()
-                    End If
 
-
-                    For index As Integer = 0 To dgv.Rows.Count - 1
-
-                        Dim dscntprice As Double = CDbl(dgv.Rows(index).Cells("price").Value - ((dgv.Rows(index).Cells("discpercent").Value / 100) * dgv.Rows(index).Cells("price").Value))
-                        Dim ifree As Double = If(CBool(dgv.Rows(index).Cells("free").Value) = True, 1, 0)
-
+                        Dim arRemarks As String = ""
+                        If rbcash.Checked = False Then
+                            ar_remarks.ShowDialog()
+                            arRemarks = ar_remarks.txtremarks.Text
+                        End If
                         command.Parameters.Clear()
-
-                        command.CommandText = "Insert into tblorder2 (ordernum, category, itemname, qty, price, totalprice, dscnt, free, request, status, discprice, disctrans,area,gc,less,deliver,datecreated,pricebefore,discamt)values(@ordernum,(SELECT category FROM tblitems WHERE itemname=@itemname),@itemname,@quantity,@price,@amount,@dispercent,@free,'',@status,@disprice,0,@area,0,0,0,@date,@pricebefore,@discamt)"
-                        command.CommandType = CommandType.Text
-                        command.Parameters.AddWithValue("@ordernum", ordernum)
-                        command.Parameters.AddWithValue("@itemname", dgv.Rows(index).Cells("item").Value)
-                        command.Parameters.AddWithValue("@quantity", CDbl(dgv.Rows(index).Cells("quantity").Value))
-                        command.Parameters.AddWithValue("@price", CDbl(dgv.Rows(index).Cells("price").Value))
-                        command.Parameters.AddWithValue("@amount", CDbl(dgv.Rows(index).Cells("amount").Value))
-                        command.Parameters.AddWithValue("@dispercent", CDbl(dgv.Rows(index).Cells("discpercent").Value))
-                        command.Parameters.AddWithValue("@free", ifree)
-                        command.Parameters.AddWithValue("@status", 1)
-                        command.Parameters.AddWithValue("@disprice", dscntprice)
-                        command.Parameters.AddWithValue("@area", "Sales")
-                        command.Parameters.AddWithValue("@date", dateParameter)
-                        command.Parameters.AddWithValue("@pricebefore", CDbl(dgv.Rows(index).Cells("pricebefore").Value))
-                        command.Parameters.AddWithValue("@discamt", CDbl(dgv.Rows(index).Cells("discamt").Value))
+                        command.CommandText = "insertTransactionVersion2"
+                        command.CommandType = CommandType.StoredProcedure
+                        command.Parameters.Add(New SqlParameter("@transnum", transnum))
+                        command.Parameters.Add(New SqlParameter("@username", login2.username))
+                        command.Parameters.Add(New SqlParameter("@tendertype", tendetype))
+                        command.Parameters.Add(New SqlParameter("@servicetype", "Take Out"))
+                        command.Parameters.Add(New SqlParameter("@subtotal", CDbl(lblsubtotalafter.Text)))
+                        command.Parameters.Add(New SqlParameter("@disctype", cmbdisctype.Text))
+                        command.Parameters.Add(New SqlParameter("@less", CDbl(lbldiscpercent.Text.Replace("%", ""))))
+                        command.Parameters.Add(New SqlParameter("@vatsales", 0))
+                        command.Parameters.Add(New SqlParameter("@vat", 0))
+                        command.Parameters.Add(New SqlParameter("@amtdue", CDbl(lblamountpayable.Text)))
+                        command.Parameters.Add(New SqlParameter("@gctotal", CDbl(lblgc.Text)))
+                        command.Parameters.Add(New SqlParameter("@tenderamt", CDbl(txtamounttendered.Text)))
+                        command.Parameters.Add(New SqlParameter("@change", CDbl(lblchange.Text)))
+                        command.Parameters.Add(New SqlParameter("@ar_remarks", arRemarks))
+                        command.Parameters.Add(New SqlParameter("@customer", txtname.Text))
+                        command.Parameters.Add(New SqlParameter("@createdby", login2.username))
+                        command.Parameters.Add(New SqlParameter("@status", 1))
+                        command.Parameters.Add(New SqlParameter("@area", "Sales"))
+                        command.Parameters.Add(New SqlParameter("@partialamt", 0))
+                        command.Parameters.Add(New SqlParameter("@typenum", "AR"))
+                        command.Parameters.Add(New SqlParameter("@sap_number", "To Follow"))
+                        command.Parameters.Add(New SqlParameter("@sap_remarks", ""))
+                        command.Parameters.Add(New SqlParameter("@typez", cashierPOSType))
+                        command.Parameters.Add(New SqlParameter("@discamt", CDbl(lbldiscamt.Text)))
+                        command.Parameters.Add(New SqlParameter("@salesname", salesname))
+                        command.Parameters.Add(New SqlParameter("@ar_amtdue", IIf(lbladvancepayment.Text <> "", CDbl(lblsubtotalafter.Text), CDbl(lblamountpayable.Text))))
+                        Dim ar_type As String = ""
+                        Select Case tendetype
+                            Case "Cash"
+                                ar_type = "AR Cash"
+                            Case "A.R Sales"
+                                ar_type = "AR Sales"
+                            Case "A.R Charge"
+                                ar_type = "AR Charge"
+                        End Select
+                        command.Parameters.Add(New SqlParameter("@ar_type", ar_type))
                         command.ExecuteNonQuery()
-                    Next
-                End If
-                transaction.Commit()
-                MessageBox.Show("Transaction Complete", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Information)
-            End Using
+
+                        If CDbl(lblgc.Text) > 0 Then
+                            If gcform.grdgc.Rows.Count > 0 Then
+                                For index As Integer = 0 To gcform.grdgc.Rows.Count - 1
+                                    command.Parameters.Clear()
+                                    command.CommandText = "insertGC"
+                                    command.CommandType = CommandType.StoredProcedure
+                                    command.Parameters.AddWithValue("@transnum", transnum)
+                                    command.Parameters.AddWithValue("@amt", CDbl(gcform.grdgc.Rows(index).Cells(0).Value))
+                                    command.Parameters.AddWithValue("@serial", gcform.grdgc.Rows(index).Cells(1).Value)
+                                    command.Parameters.AddWithValue("@customer", txtname.Text)
+                                    command.Parameters.AddWithValue("@remarks", "")
+                                    command.ExecuteNonQuery()
+                                Next
+                            End If
+                        End If
+
+                        For index As Integer = 0 To dgv.Rows.Count - 1
+
+                            Dim dscntprice As Double = CDbl(dgv.Rows(index).Cells("price").Value - ((dgv.Rows(index).Cells("discpercent").Value / 100) * dgv.Rows(index).Cells("price").Value))
+                            Dim ifree As Double = If(CBool(dgv.Rows(index).Cells("free").Value) = True, 1, 0)
+
+                            command.Parameters.Clear()
+
+                            If CInt(dgv.Rows(index).Cells("id").Value) > 0 Then
+                                command.Parameters.Clear()
+                                command.CommandText = "updateOrderItems"
+                                command.CommandType = CommandType.StoredProcedure
+                                command.Parameters.AddWithValue("@orderid", CInt(dgv.CurrentRow.Cells("id").Value))
+                                command.Parameters.AddWithValue("@itemname", dgv.Rows(index).Cells("item").Value)
+                                command.Parameters.AddWithValue("@quantity", CDbl(dgv.Rows(index).Cells("quantity").Value))
+                                command.Parameters.AddWithValue("@price", CDbl(dgv.Rows(index).Cells("price").Value))
+                                command.Parameters.AddWithValue("@amount", CDbl(dgv.Rows(index).Cells("amount").Value))
+                                command.Parameters.AddWithValue("@discpercent", CDbl(dgv.Rows(index).Cells("discpercent").Value))
+                                command.Parameters.AddWithValue("@free", ifree)
+                                command.Parameters.AddWithValue("@discprice", dscntprice)
+                                command.Parameters.AddWithValue("@pricebefore", CDbl(dgv.Rows(index).Cells("pricebefore").Value))
+                                command.Parameters.AddWithValue("@discamt", CDbl(dgv.Rows(index).Cells("discamt").Value))
+                                command.ExecuteNonQuery()
+
+                                command.Parameters.Clear()
+                                command.CommandText = "insertTransactionItems"
+                                command.CommandType = CommandType.StoredProcedure
+                                command.Parameters.AddWithValue("@transnum", transnum)
+                                command.Parameters.AddWithValue("@itemname", dgv.Rows(index).Cells("item").Value)
+                                command.Parameters.AddWithValue("@price", CDbl(dgv.Rows(index).Cells("price").Value))
+                                command.Parameters.AddWithValue("@amtdue", CDbl(dgv.Rows(index).Cells("amount").Value))
+                                command.Parameters.AddWithValue("@quantity", CDbl(dgv.Rows(index).Cells("quantity").Value))
+                                command.Parameters.AddWithValue("@discpercent", CDbl(dgv.Rows(index).Cells("discpercent").Value))
+                                command.Parameters.AddWithValue("@free", ifree)
+                                command.Parameters.AddWithValue("@discprice", CDbl(dgv.Rows(index).Cells("discamt").Value))
+                                command.Parameters.AddWithValue("@discamt", CDbl(dgv.Rows(index).Cells("discamt").Value))
+                                command.Parameters.AddWithValue("@pricebefore", CDbl(dgv.Rows(index).Cells("pricebefore").Value))
+                                command.Parameters.AddWithValue("@cashier", login2.username)
+                                command.Parameters.AddWithValue("@customer", txtname.Text)
+                                command.Parameters.AddWithValue("@area", ifree)
+                                command.Parameters.AddWithValue("@type", "AR")
+                                command.ExecuteNonQuery()
+
+                                Dim arVal As String = ""
+                                Select Case tendetype
+                                    Case "A.R Charge"
+                                        arVal = "archarge"
+                                    Case "Cash"
+                                        arVal = "ctrout"
+                                    Case "A.R Sales"
+                                        arVal = "arsales"
+                                End Select
+                                command.Parameters.Clear()
+                                command.CommandText = "Update tblinvitems Set " & arVal & "+=@quantity, endbal-=@quantity, variance+=@quantity where itemname=@item And invnum=(Select invnum FROM tblinvsum WHERE CAST(datecreated As Date) = (select cast(getdate()  As Date)));"
+                                command.CommandType = CommandType.Text
+                                command.Parameters.AddWithValue("@item", dgv.Rows(index).Cells("item").Value)
+                                command.Parameters.AddWithValue("@quantity", CDbl(dgv.Rows(index).Cells("quantity").Value))
+                                command.ExecuteNonQuery()
+
+                            End If
+                        Next
+                        'currentCashierRemoveOrderID = currentCashierRemoveOrderID.Substring(0, currentCashierRemoveOrderID.Length - 1)
+                        Dim words() As String = currentCashierRemoveOrderID.Split(New Char() {","c})
+                        Dim word As String
+                        For Each word In words
+                            command.Parameters.Clear()
+                            command.CommandText = "updateOrderItemsInActive"
+                            command.CommandType = CommandType.StoredProcedure
+                            command.Parameters.AddWithValue("@orderid", word)
+                            command.Parameters.AddWithValue("@orderid2", orderid)
+                            command.ExecuteNonQuery()
+                        Next
+                    End If
+                    transaction.Commit()
+                    If login2.wrkgrp = "Cashier" Then
+                        MessageBox.Show("Transaction Complete", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                        Me.Close()
+                    Else
+                        Dim frm As New form_printorder()
+                        frm.lblordernum.Text = ordernum
+                        frm.ShowDialog()
+                    End If
+                    clear()
+                End Using
+            End If
         Catch ex As Exception
             MessageBox.Show(ex.ToString)
             Try
@@ -701,6 +898,16 @@ Public Class mainmenu2
             End Try
         End Try
     End Sub
+
+    Public Function getSalesName() As String
+        Dim result As String = ""
+        cc.con.Open()
+        cc.cmd = New SqlCommand("Select cashier FROM tbltransaction2 WHERE orderid= " & orderid, cc.con)
+        result = cc.cmd.ExecuteScalar
+        cc.con.Close()
+        Return result
+    End Function
+
 
     Private Sub rbcharge_CheckedChanged(sender As Object, e As EventArgs) Handles rbcharge.CheckedChanged
         'check if user click cash
@@ -883,9 +1090,17 @@ Public Class mainmenu2
                 MessageBox.Show("'" & itemname & "' is not available", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
             Else
                 'get price of item
-                Dim itemPrice As Double = posc.getItemPrice()
-                Dim itemname As String = IIf(posc.checkInventoryStock() = False, sender.text.ToString.Substring(0, sender.text.length - 6), sender.text)
-                dgv.Rows.Add(itemname, 0, itemPrice.ToString("n2"), 0, "0.00", False, "0.00", "0.00")
+                Dim itemPrice As Double = posc.getItemPrice(), itemname As String = ""
+                'Dim itemname As String = IIf(posc.checkInventoryStock() = False, sender.text.ToString.Substring(0, sender.text.length - 6), sender.text)
+
+
+                If posc.checkInventoryStock() = False Then
+                    itemname = sender.text.ToString.Substring(0, sender.text.length - 6)
+                Else
+                    itemname = sender.text
+                End If
+
+                dgv.Rows.Add(itemname, 0, itemPrice.ToString("n2"), 0, "0.00", False, "0.00", "0.00", "", 0)
                 dgv.Rows(dgv.RowCount - 1).Cells("quantity").Selected = True
                 lblitemscount.Text = dgv.RowCount.ToString("N0")
                 computeTotal()

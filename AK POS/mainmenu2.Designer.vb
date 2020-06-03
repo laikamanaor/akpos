@@ -22,10 +22,11 @@ Partial Class mainmenu2
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(mainmenu2))
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.Panel2 = New System.Windows.Forms.Panel()
         Me.Panel3 = New System.Windows.Forms.Panel()
@@ -33,6 +34,7 @@ Partial Class mainmenu2
         Me.Panel5 = New System.Windows.Forms.Panel()
         Me.Panel7 = New System.Windows.Forms.Panel()
         Me.Panel6 = New System.Windows.Forms.Panel()
+        Me.lbltime = New System.Windows.Forms.Label()
         Me.Label11 = New System.Windows.Forms.Label()
         Me.dtdate = New System.Windows.Forms.DateTimePicker()
         Me.btnclose = New System.Windows.Forms.Button()
@@ -70,6 +72,16 @@ Partial Class mainmenu2
         Me.lblgrandtotal = New System.Windows.Forms.Label()
         Me.Label6 = New System.Windows.Forms.Label()
         Me.dgv = New System.Windows.Forms.DataGridView()
+        Me.item = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.quantity = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.price = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.discpercent = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.amount = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.free = New System.Windows.Forms.DataGridViewCheckBoxColumn()
+        Me.pricebefore = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.discamt = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.btnremove = New System.Windows.Forms.DataGridViewButtonColumn()
+        Me.id = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.btnpay = New System.Windows.Forms.Button()
         Me.Label16 = New System.Windows.Forms.Label()
@@ -89,15 +101,7 @@ Partial Class mainmenu2
         Me.rbcash = New System.Windows.Forms.RadioButton()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.lbladvancepayment = New System.Windows.Forms.Label()
-        Me.item = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.quantity = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.price = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.discpercent = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.amount = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.free = New System.Windows.Forms.DataGridViewCheckBoxColumn()
-        Me.pricebefore = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.discamt = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.btnremove = New System.Windows.Forms.DataGridViewButtonColumn()
+        Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
         Me.Panel6.SuspendLayout()
         Me.Panel10.SuspendLayout()
         Me.Panel11.SuspendLayout()
@@ -165,6 +169,7 @@ Partial Class mainmenu2
         'Panel6
         '
         Me.Panel6.BackColor = System.Drawing.Color.FromArgb(CType(CType(218, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(28, Byte), Integer))
+        Me.Panel6.Controls.Add(Me.lbltime)
         Me.Panel6.Controls.Add(Me.Label11)
         Me.Panel6.Controls.Add(Me.dtdate)
         Me.Panel6.Controls.Add(Me.btnclose)
@@ -173,6 +178,18 @@ Partial Class mainmenu2
         Me.Panel6.Name = "Panel6"
         Me.Panel6.Size = New System.Drawing.Size(1059, 37)
         Me.Panel6.TabIndex = 5
+        '
+        'lbltime
+        '
+        Me.lbltime.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.lbltime.AutoSize = True
+        Me.lbltime.Font = New System.Drawing.Font("Arial Unicode MS", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lbltime.ForeColor = System.Drawing.Color.White
+        Me.lbltime.Location = New System.Drawing.Point(461, 11)
+        Me.lbltime.Name = "lbltime"
+        Me.lbltime.Size = New System.Drawing.Size(60, 16)
+        Me.lbltime.TabIndex = 6
+        Me.lbltime.Text = "00:00 PM"
         '
         'Label11
         '
@@ -459,7 +476,7 @@ Partial Class mainmenu2
         '
         Me.txtamounttendered.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtamounttendered.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtamounttendered.Location = New System.Drawing.Point(349, 420)
+        Me.txtamounttendered.Location = New System.Drawing.Point(322, 420)
         Me.txtamounttendered.Name = "txtamounttendered"
         Me.txtamounttendered.Size = New System.Drawing.Size(165, 26)
         Me.txtamounttendered.TabIndex = 112
@@ -504,7 +521,7 @@ Partial Class mainmenu2
         Me.lblchange.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.lblchange.AutoSize = True
         Me.lblchange.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblchange.Location = New System.Drawing.Point(349, 448)
+        Me.lblchange.Location = New System.Drawing.Point(322, 448)
         Me.lblchange.Name = "lblchange"
         Me.lblchange.Size = New System.Drawing.Size(40, 19)
         Me.lblchange.TabIndex = 108
@@ -515,7 +532,7 @@ Partial Class mainmenu2
         Me.lblamountpayable.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.lblamountpayable.AutoSize = True
         Me.lblamountpayable.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblamountpayable.Location = New System.Drawing.Point(349, 393)
+        Me.lblamountpayable.Location = New System.Drawing.Point(322, 393)
         Me.lblamountpayable.Name = "lblamountpayable"
         Me.lblamountpayable.Size = New System.Drawing.Size(40, 19)
         Me.lblamountpayable.TabIndex = 106
@@ -526,10 +543,11 @@ Partial Class mainmenu2
         Me.btngcbrowse.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btngcbrowse.BackColor = System.Drawing.Color.FromArgb(CType(CType(244, Byte), Integer), CType(CType(244, Byte), Integer), CType(CType(244, Byte), Integer))
         Me.btngcbrowse.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btngcbrowse.Enabled = False
         Me.btngcbrowse.FlatAppearance.BorderSize = 0
         Me.btngcbrowse.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btngcbrowse.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btngcbrowse.Location = New System.Drawing.Point(187, 337)
+        Me.btngcbrowse.Location = New System.Drawing.Point(169, 339)
         Me.btngcbrowse.Name = "btngcbrowse"
         Me.btngcbrowse.Size = New System.Drawing.Size(75, 21)
         Me.btngcbrowse.TabIndex = 104
@@ -541,7 +559,7 @@ Partial Class mainmenu2
         Me.lblgc.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.lblgc.AutoSize = True
         Me.lblgc.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblgc.Location = New System.Drawing.Point(349, 337)
+        Me.lblgc.Location = New System.Drawing.Point(322, 337)
         Me.lblgc.Name = "lblgc"
         Me.lblgc.Size = New System.Drawing.Size(40, 19)
         Me.lblgc.TabIndex = 103
@@ -552,7 +570,7 @@ Partial Class mainmenu2
         Me.lblsubtotalafter.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.lblsubtotalafter.AutoSize = True
         Me.lblsubtotalafter.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblsubtotalafter.Location = New System.Drawing.Point(131, 423)
+        Me.lblsubtotalafter.Location = New System.Drawing.Point(128, 420)
         Me.lblsubtotalafter.Name = "lblsubtotalafter"
         Me.lblsubtotalafter.Size = New System.Drawing.Size(40, 19)
         Me.lblsubtotalafter.TabIndex = 102
@@ -592,9 +610,9 @@ Partial Class mainmenu2
         Me.cmbdisctype.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmbdisctype.ForeColor = System.Drawing.Color.White
         Me.cmbdisctype.FormattingEnabled = True
-        Me.cmbdisctype.Location = New System.Drawing.Point(135, 365)
+        Me.cmbdisctype.Location = New System.Drawing.Point(129, 363)
         Me.cmbdisctype.Name = "cmbdisctype"
-        Me.cmbdisctype.Size = New System.Drawing.Size(225, 27)
+        Me.cmbdisctype.Size = New System.Drawing.Size(233, 27)
         Me.cmbdisctype.TabIndex = 99
         '
         'lblsubtotalbefore
@@ -602,7 +620,7 @@ Partial Class mainmenu2
         Me.lblsubtotalbefore.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.lblsubtotalbefore.AutoSize = True
         Me.lblsubtotalbefore.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblsubtotalbefore.Location = New System.Drawing.Point(157, 339)
+        Me.lblsubtotalbefore.Location = New System.Drawing.Point(153, 339)
         Me.lblsubtotalbefore.Name = "lblsubtotalbefore"
         Me.lblsubtotalbefore.Size = New System.Drawing.Size(40, 19)
         Me.lblsubtotalbefore.TabIndex = 98
@@ -660,7 +678,7 @@ Partial Class mainmenu2
         Me.lblgrandtotal.AutoSize = True
         Me.lblgrandtotal.Font = New System.Drawing.Font("Arial", 18.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblgrandtotal.ForeColor = System.Drawing.Color.LimeGreen
-        Me.lblgrandtotal.Location = New System.Drawing.Point(193, 15)
+        Me.lblgrandtotal.Location = New System.Drawing.Point(133, 15)
         Me.lblgrandtotal.Name = "lblgrandtotal"
         Me.lblgrandtotal.Size = New System.Drawing.Size(59, 29)
         Me.lblgrandtotal.TabIndex = 98
@@ -693,24 +711,24 @@ Partial Class mainmenu2
         Me.dgv.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgv.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None
         Me.dgv.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None
-        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(CType(CType(218, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(28, Byte), Integer))
-        DataGridViewCellStyle1.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle1.ForeColor = System.Drawing.Color.White
-        DataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.dgv.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(CType(CType(218, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(28, Byte), Integer))
+        DataGridViewCellStyle4.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle4.ForeColor = System.Drawing.Color.White
+        DataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.dgv.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle4
         Me.dgv.ColumnHeadersHeight = 40
-        Me.dgv.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.item, Me.quantity, Me.price, Me.discpercent, Me.amount, Me.free, Me.pricebefore, Me.discamt, Me.btnremove})
-        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle3.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.dgv.DefaultCellStyle = DataGridViewCellStyle3
+        Me.dgv.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.item, Me.quantity, Me.price, Me.discpercent, Me.amount, Me.free, Me.pricebefore, Me.discamt, Me.btnremove, Me.id})
+        DataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle6.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.dgv.DefaultCellStyle = DataGridViewCellStyle6
         Me.dgv.EnableHeadersVisualStyles = False
         Me.dgv.GridColor = System.Drawing.Color.White
         Me.dgv.Location = New System.Drawing.Point(9, 183)
@@ -720,13 +738,91 @@ Partial Class mainmenu2
         Me.dgv.Size = New System.Drawing.Size(498, 140)
         Me.dgv.TabIndex = 95
         '
+        'item
+        '
+        Me.item.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+        Me.item.HeaderText = "Item"
+        Me.item.Name = "item"
+        Me.item.ReadOnly = True
+        Me.item.Width = 150
+        '
+        'quantity
+        '
+        Me.quantity.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
+        Me.quantity.HeaderText = "Qty."
+        Me.quantity.Name = "quantity"
+        '
+        'price
+        '
+        Me.price.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
+        Me.price.HeaderText = "Price"
+        Me.price.Name = "price"
+        Me.price.ReadOnly = True
+        '
+        'discpercent
+        '
+        Me.discpercent.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
+        Me.discpercent.HeaderText = "Disc. %"
+        Me.discpercent.Name = "discpercent"
+        '
+        'amount
+        '
+        Me.amount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
+        Me.amount.HeaderText = "Amount"
+        Me.amount.Name = "amount"
+        '
+        'free
+        '
+        Me.free.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
+        Me.free.HeaderText = "Free"
+        Me.free.Name = "free"
+        '
+        'pricebefore
+        '
+        Me.pricebefore.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
+        Me.pricebefore.HeaderText = "Price Before"
+        Me.pricebefore.Name = "pricebefore"
+        Me.pricebefore.ReadOnly = True
+        Me.pricebefore.Visible = False
+        '
+        'discamt
+        '
+        Me.discamt.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
+        Me.discamt.HeaderText = "Disc. Amt."
+        Me.discamt.Name = "discamt"
+        Me.discamt.ReadOnly = True
+        Me.discamt.Visible = False
+        '
+        'btnremove
+        '
+        DataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle5.BackColor = System.Drawing.Color.Red
+        DataGridViewCellStyle5.ForeColor = System.Drawing.Color.White
+        Me.btnremove.DefaultCellStyle = DataGridViewCellStyle5
+        Me.btnremove.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnremove.HeaderText = "Action"
+        Me.btnremove.Name = "btnremove"
+        Me.btnremove.ReadOnly = True
+        Me.btnremove.Text = "Remove"
+        Me.btnremove.ToolTipText = "Remove this item"
+        Me.btnremove.UseColumnTextForButtonValue = True
+        Me.btnremove.Width = 53
+        '
+        'id
+        '
+        Me.id.HeaderText = "ID"
+        Me.id.Name = "id"
+        Me.id.ReadOnly = True
+        Me.id.Visible = False
+        Me.id.Width = 46
+        '
         'Label1
         '
         Me.Label1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.Label1.AutoSize = True
         Me.Label1.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label1.ForeColor = System.Drawing.Color.DimGray
-        Me.Label1.Location = New System.Drawing.Point(8, 423)
+        Me.Label1.Location = New System.Drawing.Point(7, 420)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(126, 19)
         Me.Label1.TabIndex = 67
@@ -756,7 +852,7 @@ Partial Class mainmenu2
         Me.Label16.AutoSize = True
         Me.Label16.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label16.ForeColor = System.Drawing.Color.DimGray
-        Me.Label16.Location = New System.Drawing.Point(184, 448)
+        Me.Label16.Location = New System.Drawing.Point(157, 448)
         Me.Label16.Name = "Label16"
         Me.Label16.Size = New System.Drawing.Size(75, 19)
         Me.Label16.TabIndex = 33
@@ -768,7 +864,7 @@ Partial Class mainmenu2
         Me.Label8.AutoSize = True
         Me.Label8.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label8.ForeColor = System.Drawing.Color.DimGray
-        Me.Label8.Location = New System.Drawing.Point(184, 421)
+        Me.Label8.Location = New System.Drawing.Point(157, 421)
         Me.Label8.Name = "Label8"
         Me.Label8.Size = New System.Drawing.Size(151, 19)
         Me.Label8.TabIndex = 32
@@ -780,7 +876,7 @@ Partial Class mainmenu2
         Me.Label5.AutoSize = True
         Me.Label5.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label5.ForeColor = System.Drawing.Color.DimGray
-        Me.Label5.Location = New System.Drawing.Point(184, 393)
+        Me.Label5.Location = New System.Drawing.Point(157, 393)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(140, 19)
         Me.Label5.TabIndex = 31
@@ -791,7 +887,8 @@ Partial Class mainmenu2
         Me.Label14.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label14.AutoSize = True
         Me.Label14.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label14.Location = New System.Drawing.Point(185, 366)
+        Me.Label14.ForeColor = System.Drawing.Color.DimGray
+        Me.Label14.Location = New System.Drawing.Point(158, 366)
         Me.Label14.Name = "Label14"
         Me.Label14.Size = New System.Drawing.Size(153, 19)
         Me.Label14.TabIndex = 30
@@ -803,7 +900,7 @@ Partial Class mainmenu2
         Me.Label13.AutoSize = True
         Me.Label13.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label13.ForeColor = System.Drawing.Color.DimGray
-        Me.Label13.Location = New System.Drawing.Point(9, 393)
+        Me.Label13.Location = New System.Drawing.Point(6, 393)
         Me.Label13.Name = "Label13"
         Me.Label13.Size = New System.Drawing.Size(84, 19)
         Me.Label13.TabIndex = 29
@@ -815,7 +912,7 @@ Partial Class mainmenu2
         Me.Label4.AutoSize = True
         Me.Label4.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label4.ForeColor = System.Drawing.Color.DimGray
-        Me.Label4.Location = New System.Drawing.Point(9, 339)
+        Me.Label4.Location = New System.Drawing.Point(5, 339)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(142, 19)
         Me.Label4.TabIndex = 28
@@ -827,7 +924,7 @@ Partial Class mainmenu2
         Me.Label10.AutoSize = True
         Me.Label10.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label10.ForeColor = System.Drawing.Color.DimGray
-        Me.Label10.Location = New System.Drawing.Point(266, 339)
+        Me.Label10.Location = New System.Drawing.Point(239, 339)
         Me.Label10.Name = "Label10"
         Me.Label10.Size = New System.Drawing.Size(39, 19)
         Me.Label10.TabIndex = 27
@@ -839,7 +936,7 @@ Partial Class mainmenu2
         Me.Label9.AutoSize = True
         Me.Label9.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label9.ForeColor = System.Drawing.Color.DimGray
-        Me.Label9.Location = New System.Drawing.Point(9, 366)
+        Me.Label9.Location = New System.Drawing.Point(6, 366)
         Me.Label9.Name = "Label9"
         Me.Label9.Size = New System.Drawing.Size(125, 19)
         Me.Label9.TabIndex = 26
@@ -965,79 +1062,16 @@ Partial Class mainmenu2
         Me.lbladvancepayment.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.lbladvancepayment.AutoSize = True
         Me.lbladvancepayment.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lbladvancepayment.Location = New System.Drawing.Point(349, 366)
+        Me.lbladvancepayment.ForeColor = System.Drawing.Color.DimGray
+        Me.lbladvancepayment.Location = New System.Drawing.Point(322, 366)
         Me.lbladvancepayment.Name = "lbladvancepayment"
         Me.lbladvancepayment.Size = New System.Drawing.Size(36, 19)
         Me.lbladvancepayment.TabIndex = 105
         Me.lbladvancepayment.Text = "N/A"
         '
-        'item
+        'Timer1
         '
-        Me.item.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        Me.item.HeaderText = "Item"
-        Me.item.Name = "item"
-        Me.item.ReadOnly = True
-        Me.item.Width = 150
-        '
-        'quantity
-        '
-        Me.quantity.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
-        Me.quantity.HeaderText = "Qty."
-        Me.quantity.Name = "quantity"
-        '
-        'price
-        '
-        Me.price.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
-        Me.price.HeaderText = "Price"
-        Me.price.Name = "price"
-        Me.price.ReadOnly = True
-        '
-        'discpercent
-        '
-        Me.discpercent.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
-        Me.discpercent.HeaderText = "Disc. %"
-        Me.discpercent.Name = "discpercent"
-        '
-        'amount
-        '
-        Me.amount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
-        Me.amount.HeaderText = "Amount"
-        Me.amount.Name = "amount"
-        '
-        'free
-        '
-        Me.free.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
-        Me.free.HeaderText = "Free"
-        Me.free.Name = "free"
-        '
-        'pricebefore
-        '
-        Me.pricebefore.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
-        Me.pricebefore.HeaderText = "Price Before"
-        Me.pricebefore.Name = "pricebefore"
-        Me.pricebefore.ReadOnly = True
-        '
-        'discamt
-        '
-        Me.discamt.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
-        Me.discamt.HeaderText = "Disc. Amt."
-        Me.discamt.Name = "discamt"
-        Me.discamt.ReadOnly = True
-        '
-        'btnremove
-        '
-        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle2.BackColor = System.Drawing.Color.Red
-        DataGridViewCellStyle2.ForeColor = System.Drawing.Color.White
-        Me.btnremove.DefaultCellStyle = DataGridViewCellStyle2
-        Me.btnremove.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnremove.HeaderText = "Action"
-        Me.btnremove.Name = "btnremove"
-        Me.btnremove.ReadOnly = True
-        Me.btnremove.Text = "Remove"
-        Me.btnremove.ToolTipText = "Remove this item"
-        Me.btnremove.UseColumnTextForButtonValue = True
-        Me.btnremove.Width = 53
+        Me.Timer1.Enabled = True
         '
         'mainmenu2
         '
@@ -1134,7 +1168,6 @@ Partial Class mainmenu2
     Friend WithEvents cmbdisctype As ComboBox
     Friend WithEvents lbldiscamt As Label
     Friend WithEvents lbldiscpercent As Label
-    Friend WithEvents lbladvancepayment As Label
     Friend WithEvents btngcbrowse As Button
     Friend WithEvents lblgc As Label
     Friend WithEvents lblsubtotalafter As Label
@@ -1143,6 +1176,8 @@ Partial Class mainmenu2
     Friend WithEvents btncancel As Button
     Friend WithEvents btnlast10 As Button
     Friend WithEvents txtamounttendered As TextBox
+    Friend WithEvents lbltime As Label
+    Friend WithEvents Timer1 As Timer
     Friend WithEvents item As DataGridViewTextBoxColumn
     Friend WithEvents quantity As DataGridViewTextBoxColumn
     Friend WithEvents price As DataGridViewTextBoxColumn
@@ -1152,4 +1187,6 @@ Partial Class mainmenu2
     Friend WithEvents pricebefore As DataGridViewTextBoxColumn
     Friend WithEvents discamt As DataGridViewTextBoxColumn
     Friend WithEvents btnremove As DataGridViewButtonColumn
+    Friend WithEvents id As DataGridViewTextBoxColumn
+    Public WithEvents lbladvancepayment As Label
 End Class

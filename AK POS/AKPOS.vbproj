@@ -653,6 +653,12 @@
     <Compile Include="inv2.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="inventory3.Designer.vb">
+      <DependentUpon>inventory3.vb</DependentUpon>
+    </Compile>
+    <Compile Include="inventory3.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="inv_logs.Designer.vb">
       <DependentUpon>inv_logs.vb</DependentUpon>
     </Compile>
@@ -1755,6 +1761,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="inv2.resx">
       <DependentUpon>inv2.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="inventory3.resx">
+      <DependentUpon>inventory3.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="inv_logs.resx">
       <DependentUpon>inv_logs.vb</DependentUpon>

@@ -69,6 +69,7 @@ Public Class add_spice
             For Each word In words
                 If Not String.IsNullOrEmpty(word) Then
                     cashier.txtresult.Text &= word & ","
+                    cashier2.apdep &= word & ","
                 End If
             Next
             Me.Dispose()

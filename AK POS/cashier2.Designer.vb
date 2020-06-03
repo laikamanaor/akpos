@@ -22,7 +22,6 @@ Partial Class cashier2
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(cashier2))
         Dim DataGridViewCellStyle15 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle19 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle16 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
@@ -30,10 +29,15 @@ Partial Class cashier2
         Dim DataGridViewCellStyle18 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle20 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle21 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(cashier2))
         Me.Panel6 = New System.Windows.Forms.Panel()
         Me.Panel11 = New System.Windows.Forms.Panel()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.Panel12 = New System.Windows.Forms.Panel()
+        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+        Me.lblpendingorders = New System.Windows.Forms.Label()
+        Me.lblpendingamount = New System.Windows.Forms.Label()
         Me.btnrefresh = New System.Windows.Forms.Button()
         Me.Label4 = New System.Windows.Forms.Label()
         Me.Label3 = New System.Windows.Forms.Label()
@@ -81,8 +85,12 @@ Partial Class cashier2
         Me.Label7 = New System.Windows.Forms.Label()
         Me.Label6 = New System.Windows.Forms.Label()
         Me.Label5 = New System.Windows.Forms.Label()
+        Me.btnitemnxt = New System.Windows.Forms.Button()
+        Me.btnitemprev = New System.Windows.Forms.Button()
         Me.Panel6.SuspendLayout()
         Me.Panel1.SuspendLayout()
+        Me.Panel12.SuspendLayout()
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.dgvorders, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel2.SuspendLayout()
         CType(Me.dgvitems, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -125,6 +133,10 @@ Partial Class cashier2
         Me.Panel1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Panel1.Controls.Add(Me.btnitemnxt)
+        Me.Panel1.Controls.Add(Me.btnitemprev)
+        Me.Panel1.Controls.Add(Me.Panel12)
+        Me.Panel1.Controls.Add(Me.lblpendingamount)
         Me.Panel1.Controls.Add(Me.btnrefresh)
         Me.Panel1.Controls.Add(Me.Label4)
         Me.Panel1.Controls.Add(Me.Label3)
@@ -139,6 +151,51 @@ Partial Class cashier2
         Me.Panel1.Name = "Panel1"
         Me.Panel1.Size = New System.Drawing.Size(469, 488)
         Me.Panel1.TabIndex = 7
+        '
+        'Panel12
+        '
+        Me.Panel12.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Panel12.BackColor = System.Drawing.Color.FromArgb(CType(CType(218, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(28, Byte), Integer))
+        Me.Panel12.Controls.Add(Me.PictureBox1)
+        Me.Panel12.Controls.Add(Me.lblpendingorders)
+        Me.Panel12.Location = New System.Drawing.Point(3, 85)
+        Me.Panel12.Name = "Panel12"
+        Me.Panel12.Size = New System.Drawing.Size(463, 28)
+        Me.Panel12.TabIndex = 11
+        '
+        'PictureBox1
+        '
+        Me.PictureBox1.Image = CType(resources.GetObject("PictureBox1.Image"), System.Drawing.Image)
+        Me.PictureBox1.Location = New System.Drawing.Point(3, 3)
+        Me.PictureBox1.Name = "PictureBox1"
+        Me.PictureBox1.Size = New System.Drawing.Size(20, 20)
+        Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize
+        Me.PictureBox1.TabIndex = 9
+        Me.PictureBox1.TabStop = False
+        '
+        'lblpendingorders
+        '
+        Me.lblpendingorders.AutoSize = True
+        Me.lblpendingorders.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblpendingorders.ForeColor = System.Drawing.Color.White
+        Me.lblpendingorders.Location = New System.Drawing.Point(27, 8)
+        Me.lblpendingorders.Name = "lblpendingorders"
+        Me.lblpendingorders.Size = New System.Drawing.Size(79, 14)
+        Me.lblpendingorders.TabIndex = 8
+        Me.lblpendingorders.Text = "(0) Page: 0/0"
+        '
+        'lblpendingamount
+        '
+        Me.lblpendingamount.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.lblpendingamount.AutoSize = True
+        Me.lblpendingamount.Font = New System.Drawing.Font("Arial Unicode MS", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblpendingamount.ForeColor = System.Drawing.Color.ForestGreen
+        Me.lblpendingamount.Location = New System.Drawing.Point(3, 452)
+        Me.lblpendingamount.Name = "lblpendingamount"
+        Me.lblpendingamount.Size = New System.Drawing.Size(157, 18)
+        Me.lblpendingamount.TabIndex = 10
+        Me.lblpendingamount.Text = "Pending Amount: 0.00"
         '
         'btnrefresh
         '
@@ -198,11 +255,11 @@ Partial Class cashier2
         'cmbtype
         '
         Me.cmbtype.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.cmbtype.BackColor = System.Drawing.SystemColors.HotTrack
+        Me.cmbtype.BackColor = System.Drawing.Color.FromArgb(CType(CType(244, Byte), Integer), CType(CType(244, Byte), Integer), CType(CType(244, Byte), Integer))
         Me.cmbtype.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cmbtype.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.cmbtype.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cmbtype.ForeColor = System.Drawing.Color.White
+        Me.cmbtype.ForeColor = System.Drawing.Color.Black
         Me.cmbtype.FormattingEnabled = True
         Me.cmbtype.Items.AddRange(New Object() {"All", "Retail", "Wholesale", "Coffee Shop"})
         Me.cmbtype.Location = New System.Drawing.Point(335, 57)
@@ -213,11 +270,11 @@ Partial Class cashier2
         'cmbsales
         '
         Me.cmbsales.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.cmbsales.BackColor = System.Drawing.SystemColors.HotTrack
+        Me.cmbsales.BackColor = System.Drawing.Color.FromArgb(CType(CType(244, Byte), Integer), CType(CType(244, Byte), Integer), CType(CType(244, Byte), Integer))
         Me.cmbsales.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cmbsales.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.cmbsales.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cmbsales.ForeColor = System.Drawing.Color.White
+        Me.cmbsales.ForeColor = System.Drawing.Color.Black
         Me.cmbsales.FormattingEnabled = True
         Me.cmbsales.Items.AddRange(New Object() {"All"})
         Me.cmbsales.Location = New System.Drawing.Point(335, 30)
@@ -228,11 +285,11 @@ Partial Class cashier2
         'cmbtendertype
         '
         Me.cmbtendertype.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.cmbtendertype.BackColor = System.Drawing.SystemColors.HotTrack
+        Me.cmbtendertype.BackColor = System.Drawing.Color.FromArgb(CType(CType(244, Byte), Integer), CType(CType(244, Byte), Integer), CType(CType(244, Byte), Integer))
         Me.cmbtendertype.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cmbtendertype.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.cmbtendertype.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cmbtendertype.ForeColor = System.Drawing.Color.White
+        Me.cmbtendertype.ForeColor = System.Drawing.Color.Black
         Me.cmbtendertype.FormattingEnabled = True
         Me.cmbtendertype.Items.AddRange(New Object() {"All", "Cash", "A.R Sales", "A.R Charge"})
         Me.cmbtendertype.Location = New System.Drawing.Point(335, 3)
@@ -298,10 +355,10 @@ Partial Class cashier2
         Me.dgvorders.DefaultCellStyle = DataGridViewCellStyle19
         Me.dgvorders.EnableHeadersVisualStyles = False
         Me.dgvorders.GridColor = System.Drawing.Color.DimGray
-        Me.dgvorders.Location = New System.Drawing.Point(3, 84)
+        Me.dgvorders.Location = New System.Drawing.Point(3, 110)
         Me.dgvorders.Name = "dgvorders"
         Me.dgvorders.RowHeadersVisible = False
-        Me.dgvorders.Size = New System.Drawing.Size(463, 358)
+        Me.dgvorders.Size = New System.Drawing.Size(463, 332)
         Me.dgvorders.TabIndex = 0
         '
         'orderid
@@ -723,6 +780,44 @@ Partial Class cashier2
         Me.Label5.TabIndex = 0
         Me.Label5.Text = "BILLS"
         '
+        'btnitemnxt
+        '
+        Me.btnitemnxt.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnitemnxt.BackColor = System.Drawing.Color.FromArgb(CType(CType(41, Byte), Integer), CType(CType(91, Byte), Integer), CType(CType(232, Byte), Integer))
+        Me.btnitemnxt.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btnitemnxt.FlatAppearance.BorderSize = 0
+        Me.btnitemnxt.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnitemnxt.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnitemnxt.ForeColor = System.Drawing.Color.White
+        Me.btnitemnxt.Image = CType(resources.GetObject("btnitemnxt.Image"), System.Drawing.Image)
+        Me.btnitemnxt.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnitemnxt.Location = New System.Drawing.Point(278, 452)
+        Me.btnitemnxt.Name = "btnitemnxt"
+        Me.btnitemnxt.Size = New System.Drawing.Size(78, 23)
+        Me.btnitemnxt.TabIndex = 21
+        Me.btnitemnxt.Text = "Nxt."
+        Me.btnitemnxt.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnitemnxt.UseVisualStyleBackColor = False
+        '
+        'btnitemprev
+        '
+        Me.btnitemprev.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnitemprev.BackColor = System.Drawing.Color.FromArgb(CType(CType(70, Byte), Integer), CType(CType(117, Byte), Integer), CType(CType(242, Byte), Integer))
+        Me.btnitemprev.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btnitemprev.FlatAppearance.BorderSize = 0
+        Me.btnitemprev.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnitemprev.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnitemprev.ForeColor = System.Drawing.Color.White
+        Me.btnitemprev.Image = CType(resources.GetObject("btnitemprev.Image"), System.Drawing.Image)
+        Me.btnitemprev.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnitemprev.Location = New System.Drawing.Point(200, 452)
+        Me.btnitemprev.Name = "btnitemprev"
+        Me.btnitemprev.Size = New System.Drawing.Size(78, 23)
+        Me.btnitemprev.TabIndex = 20
+        Me.btnitemprev.Text = "Prev."
+        Me.btnitemprev.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnitemprev.UseVisualStyleBackColor = False
+        '
         'cashier2
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -741,6 +836,9 @@ Partial Class cashier2
         Me.Panel6.PerformLayout()
         Me.Panel1.ResumeLayout(False)
         Me.Panel1.PerformLayout()
+        Me.Panel12.ResumeLayout(False)
+        Me.Panel12.PerformLayout()
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.dgvorders, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Panel2.ResumeLayout(False)
         CType(Me.dgvitems, System.ComponentModel.ISupportInitialize).EndInit()
@@ -801,4 +899,10 @@ Partial Class cashier2
     Friend WithEvents free As DataGridViewCheckBoxColumn
     Friend WithEvents btnrefresh As Button
     Friend WithEvents Panel11 As Panel
+    Friend WithEvents lblpendingamount As Label
+    Friend WithEvents Panel12 As Panel
+    Friend WithEvents PictureBox1 As PictureBox
+    Friend WithEvents lblpendingorders As Label
+    Friend WithEvents btnitemnxt As Button
+    Friend WithEvents btnitemprev As Button
 End Class
