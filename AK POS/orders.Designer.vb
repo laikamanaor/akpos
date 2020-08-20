@@ -22,10 +22,10 @@ Partial Class orders
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle7 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle8 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(orders))
         Me.dgvorders = New System.Windows.Forms.DataGridView()
         Me.transnum = New System.Windows.Forms.DataGridViewTextBoxColumn()
@@ -60,6 +60,8 @@ Partial Class orders
         Me.Panel3 = New System.Windows.Forms.Panel()
         Me.Panel4 = New System.Windows.Forms.Panel()
         Me.Label5 = New System.Windows.Forms.Label()
+        Me.btncanceltransaction = New System.Windows.Forms.Button()
+        Me.btncancellogs = New System.Windows.Forms.Button()
         CType(Me.dgvorders, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.dgvitems, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel1.SuspendLayout()
@@ -80,24 +82,24 @@ Partial Class orders
         Me.dgvorders.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgvorders.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None
         Me.dgvorders.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None
-        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(CType(CType(218, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(28, Byte), Integer))
-        DataGridViewCellStyle1.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle1.ForeColor = System.Drawing.Color.White
-        DataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.dgvorders.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(CType(CType(218, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(28, Byte), Integer))
+        DataGridViewCellStyle5.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle5.ForeColor = System.Drawing.Color.White
+        DataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.dgvorders.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle5
         Me.dgvorders.ColumnHeadersHeight = 40
         Me.dgvorders.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.transnum, Me.amtdue, Me.tendertype, Me.servicetype})
-        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle2.BackColor = System.Drawing.Color.White
-        DataGridViewCellStyle2.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.dgvorders.DefaultCellStyle = DataGridViewCellStyle2
+        DataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle6.BackColor = System.Drawing.Color.White
+        DataGridViewCellStyle6.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.dgvorders.DefaultCellStyle = DataGridViewCellStyle6
         Me.dgvorders.EnableHeadersVisualStyles = False
         Me.dgvorders.GridColor = System.Drawing.Color.Black
         Me.dgvorders.Location = New System.Drawing.Point(60, 179)
@@ -144,24 +146,24 @@ Partial Class orders
         Me.dgvitems.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgvitems.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None
         Me.dgvitems.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None
-        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(CType(CType(218, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(28, Byte), Integer))
-        DataGridViewCellStyle3.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle3.ForeColor = System.Drawing.Color.White
-        DataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.dgvitems.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle3
+        DataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle7.BackColor = System.Drawing.Color.FromArgb(CType(CType(218, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(28, Byte), Integer))
+        DataGridViewCellStyle7.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle7.ForeColor = System.Drawing.Color.White
+        DataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.dgvitems.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle7
         Me.dgvitems.ColumnHeadersHeight = 40
         Me.dgvitems.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.description, Me.qty, Me.price, Me.discpercent, Me.amt, Me.request, Me.free})
-        DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle4.BackColor = System.Drawing.Color.White
-        DataGridViewCellStyle4.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.dgvitems.DefaultCellStyle = DataGridViewCellStyle4
+        DataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle8.BackColor = System.Drawing.Color.White
+        DataGridViewCellStyle8.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.dgvitems.DefaultCellStyle = DataGridViewCellStyle8
         Me.dgvitems.EnableHeadersVisualStyles = False
         Me.dgvitems.GridColor = System.Drawing.Color.Black
         Me.dgvitems.Location = New System.Drawing.Point(60, 418)
@@ -463,6 +465,44 @@ Partial Class orders
         Me.Label5.TabIndex = 21
         Me.Label5.Text = "ORDER LOGS"
         '
+        'btncanceltransaction
+        '
+        Me.btncanceltransaction.BackColor = System.Drawing.Color.OrangeRed
+        Me.btncanceltransaction.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btncanceltransaction.FlatAppearance.BorderSize = 0
+        Me.btncanceltransaction.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btncanceltransaction.Font = New System.Drawing.Font("Arial Rounded MT Bold", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btncanceltransaction.ForeColor = System.Drawing.Color.White
+        Me.btncanceltransaction.Image = CType(resources.GetObject("btncanceltransaction.Image"), System.Drawing.Image)
+        Me.btncanceltransaction.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btncanceltransaction.Location = New System.Drawing.Point(450, 66)
+        Me.btncanceltransaction.Name = "btncanceltransaction"
+        Me.btncanceltransaction.Size = New System.Drawing.Size(218, 31)
+        Me.btncanceltransaction.TabIndex = 21
+        Me.btncanceltransaction.Text = "CANCEL TRANSACTION"
+        Me.btncanceltransaction.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btncanceltransaction.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
+        Me.btncanceltransaction.UseVisualStyleBackColor = False
+        '
+        'btncancellogs
+        '
+        Me.btncancellogs.BackColor = System.Drawing.Color.DarkOrange
+        Me.btncancellogs.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btncancellogs.FlatAppearance.BorderSize = 0
+        Me.btncancellogs.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btncancellogs.Font = New System.Drawing.Font("Arial Rounded MT Bold", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btncancellogs.ForeColor = System.Drawing.Color.White
+        Me.btncancellogs.Image = CType(resources.GetObject("btncancellogs.Image"), System.Drawing.Image)
+        Me.btncancellogs.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btncancellogs.Location = New System.Drawing.Point(320, 66)
+        Me.btncancellogs.Name = "btncancellogs"
+        Me.btncancellogs.Size = New System.Drawing.Size(130, 31)
+        Me.btncancellogs.TabIndex = 22
+        Me.btncancellogs.Text = "CANCEL"
+        Me.btncancellogs.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btncancellogs.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
+        Me.btncancellogs.UseVisualStyleBackColor = False
+        '
         'orders
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -470,6 +510,8 @@ Partial Class orders
         Me.AutoScroll = True
         Me.BackColor = System.Drawing.Color.White
         Me.ClientSize = New System.Drawing.Size(1010, 508)
+        Me.Controls.Add(Me.btncancellogs)
+        Me.Controls.Add(Me.btncanceltransaction)
         Me.Controls.Add(Me.Panel3)
         Me.Controls.Add(Me.btnsearch)
         Me.Controls.Add(Me.txtsearch)
@@ -541,4 +583,6 @@ Partial Class orders
     Friend WithEvents Panel3 As Panel
     Friend WithEvents Label5 As Label
     Friend WithEvents Panel4 As Panel
+    Friend WithEvents btncanceltransaction As Button
+    Friend WithEvents btncancellogs As Button
 End Class

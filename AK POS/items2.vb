@@ -10,7 +10,7 @@ Public Class items2
     'confirm bool for confirm dialog form
     Public Shared cnfrm As Boolean = False
     'init to paginiation variables
-    Dim offset As Integer = 0, totalCount As Integer = 0, totalPage As Integer = 0, currentPage As Integer = 1, rowsFetch As Integer = 50
+    Dim offset As Integer = 0, totalCount As Integer = 0, totalPage As Integer = 0, currentPage As Integer = 1, rowsFetch As Integer = 30
     Private Sub btnadd_Click(sender As Object, e As EventArgs) Handles btnadd.Click
         'call add item form
         Dim frm As New additem()
@@ -31,7 +31,8 @@ Public Class items2
         'assign total page is equal to totalCount divided by rowFetch (ex: (100/30) * 1)
         totalPage = Math.Ceiling(totalCount / rowsFetch) * 1
         'call loaditems sub
-        loadItems()
+        Control.CheckForIllegalCrossThreadCalls = False
+        threadd()
     End Sub
     ''' <summary>
     ''' get categories data from items class
@@ -64,6 +65,13 @@ Public Class items2
             con.Close()
         End Try
     End Sub
+
+    Public Sub threadd()
+        Dim th1 As New Threading.Thread(AddressOf loadItems)
+        th1.Start()
+    End Sub
+
+
     ''' <summary>
     ''' get items data from item class
     ''' </summary>
@@ -85,12 +93,21 @@ Public Class items2
                 auto.Add(r0w("itemname"))
                 'add data to dgv
                 dgv.Rows.Add(r0w("itemid"), r0w("category"), r0w("itemcode"), r0w("itemname"), r0w("description"), CDbl(r0w("price")).ToString("n2"), r0w("deposit"), CDbl(r0w("deposit_price")).ToString("n2"))
+                spinner.Visible = True
+                Me.Refresh()
             Next
+            spinner.Visible = False
+            Me.Invoke(CType(Sub()
+                                'DataGridview Refreshment
+                                dgv.Enabled = True
+                                dgv.ScrollBars = ScrollBars.Both
+                                'MessageBox.Show("sa")
+                            End Sub, MethodInvoker))
             'assign txtsearch to autocomplete
-            txtsearch.AutoCompleteCustomSource = auto
+            'txtsearch.AutoCompleteCustomSource = auto
         Catch ex As Exception
             'error message
-            MessageBox.Show(ex.ToString)
+            'MessageBox.Show(ex.Message)
         Finally
             'close connection when dark error(s) comes
             con.Close()
@@ -149,8 +166,9 @@ Public Class items2
         'display current page / total page (ex: 3/10)
         lblcount.Text = "Page: " & currentPage & "/" & totalPage
         'call loaditems sub
-        loadItems()
+        threadd()
     End Sub
+
     Private Sub txtsearch_KeyDown(sender As Object, e As KeyEventArgs) Handles txtsearch.KeyDown
         'check if user press enter button
         If e.KeyCode = Keys.Enter Then
@@ -163,7 +181,7 @@ Public Class items2
         'check if user press f5 button
         If e.KeyCode = Keys.F5 Then
             'call loaditems sub
-            loadItems()
+            threadd()
             'check if user press ESC button
         ElseIf e.KeyCode = Keys.Escape Then
             'close form
@@ -232,7 +250,7 @@ Public Class items2
             'decreament currentPage to one
             currentPage -= 1
             'call loadItems sub
-            loadItems()
+            threadd()
             'get total count of items
             totalCount = countLoadItems()
             'assign total page into totalCount divided by rowFetch times 1
@@ -293,6 +311,18 @@ Public Class items2
                 'assign to false and call sub when edit item form is closed
                 chck.Checked = False
                 refreshh()
+            ElseIf e.ColumnIndex = 10 Then
+                Dim qrcode As New MessagingToolkit.QRCode.Codec.QRCodeEncoder
+                Dim pic1 As New PictureBox
+                Dim sfd As New SaveFileDialog
+                pic1.Image = qrcode.Encode(dgv.CurrentRow.Cells("itemname").Value)
+                sfd.Title = "Save QR Code"
+                sfd.FileName = dgv.CurrentRow.Cells("itemname").Value
+                sfd.Filter = "PNG (*.png) | *.png"
+                If sfd.ShowDialog = Windows.Forms.DialogResult.OK Then
+                    pic1.Image.Save(sfd.FileName)
+                    MessageBox.Show("Saved", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                End If
             End If
         End If
     End Sub
@@ -337,11 +367,18 @@ Public Class items2
                 dt.Columns.Add("HaveDeposit")
                 dt.Columns.Add("DepositPrice")
 
+                itemc.setDiscontinued(0)
+                itemc.setCategory("")
+                itemc.setICategory(0)
+                itemc.itemName = ""
+                Dim dtResult As New DataTable()
+                dtResult = itemc.loadItems(0, 10000)
                 'loop through
-                For index As Integer = 0 To dgv.RowCount - 1
-                    'add datatatble rows
-                    dt.Rows.Add(dgv.Rows(index).Cells("category").Value, dgv.Rows(index).Cells("itemcode").Value, dgv.Rows(index).Cells("itemname").Value, dgv.Rows(index).Cells("description").Value, dgv.Rows(index).Cells("price").Value, dgv.Rows(index).Cells("havedeposit").Value, dgv.Rows(index).Cells("depositprice").Value)
+                For Each r0w As DataRow In dtResult.Rows
+                    dt.Rows.Add(r0w("category"), r0w("itemcode"), r0w("itemname"), r0w("description"), CDbl(r0w("price")).ToString("n2"), r0w("deposit"), CDbl(r0w("deposit_price")).ToString("n2"))
+
                 Next
+
                 'loop through dt columns
                 For i As Integer = 0 To dt.Columns.Count - 1
                     'assign worksheet
@@ -415,7 +452,7 @@ Public Class items2
         'check offset less than or equal to totalCount
         If offset <= totalCount Then
             'call loadItems sub
-            loadItems()
+            threadd()
             'get total count of items
             totalCount = countLoadItems()
             'get totalpage equal to totalCount divided by rowFetch times 1

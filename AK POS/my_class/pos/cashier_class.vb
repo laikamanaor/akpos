@@ -218,12 +218,39 @@ Public Class cashier_class
         Dim word As String = "", result As Double = 0.00
         For Each word In words
             cc.con.Open()
-            cc.cmd = New SqlClient.SqlCommand("SELECT amount FROM tbladvancepayment WHERE apnum=@apnum;", cc.con)
+            cc.cmd = New SqlClient.SqlCommand("SELECT amount FROM tbladvancepayment WHERE apnum=@apnum AND type='Deposit';", cc.con)
             cc.cmd.Parameters.AddWithValue("@apnum", word)
             result += cc.cmd.ExecuteScalar
             cc.con.Close()
         Next
         Return result
     End Function
+
+    Public Function getReturnNum() As String
+        Dim selectcount_result As Integer = 0, result As String = ""
+        Dim get_area As String = "", temp As String = "0"
+        Dim area_format As String = ""
+        cc.con.Open()
+        cc.cmd = New SqlClient.SqlCommand("Select ISNULL(MAX(id),0) FROM tblreturns;", cc.con)
+        selectcount_result = cc.cmd.ExecuteScalar() + 1
+        cc.con.Close()
+
+        Dim branchcode As String = ""
+        cc.con.Open()
+        cc.cmd = New SqlClient.SqlCommand("SELECT branchcode FROM tblbranch WHERE main='1';", cc.con)
+        branchcode = cc.cmd.ExecuteScalar()
+        cc.con.Close()
+        area_format = "SALRETURN - " & branchcode & " - "
+        If selectcount_result < 1000000 Then
+            Dim cselectcount_result As String = CStr(selectcount_result)
+            For vv As Integer = 1 To 6 - cselectcount_result.Length
+                temp += "0"
+            Next
+            result = area_format & temp & selectcount_result
+        End If
+
+        Return result
+    End Function
+
 
 End Class

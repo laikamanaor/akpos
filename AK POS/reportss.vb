@@ -23,6 +23,10 @@ Public Class reportss
         Dim user As String = "admin"
         Dim pass As String = "abC@43212020"
         Dim servername As String = "192.168.30.6"
+
+        'Dim user As String = "admin"
+        'Dim pass As String = "admin"
+        'Dim servername As String = "DELL,1433"
         Dim dbName As String = "AKPOS"
 
         Dim databaseIndex As Integer = 0
@@ -40,7 +44,8 @@ Public Class reportss
         If e.RowIndex = databaseIndex And e.ColumnIndex = 2 Then
             Dim rptDoc As New CrystalDecisions.CrystalReports.Engine.ReportDocument
             'rptDoc = New AB_Coffee_Shop
-            Dim strReportPath As String = "\\192.168.30.6\Atlantic Inv\Reports\" & fileName & ".rpt"
+            'Dim strReportPath As String = "\\192.168.30.6\Atlantic Inv\Reports\" & fileName & ".rpt"
+            Dim strReportPath As String = My.Application.Info.DirectoryPath & "\" & fileName & ".rpt"
             rptDoc.Load(strReportPath)
             rptDoc.SetDatabaseLogon(user, pass, servername, dbName)
             'cform_coffeeshop.CrystalReportViewer1.ReportSource = Nothing

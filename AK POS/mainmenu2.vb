@@ -12,9 +12,9 @@ Public Class mainmenu2
     Private catoffset As Integer = 0, catrowFetch As Integer = 4, cattotalCount As Integer = 0, cattotalPage As Integer = 0, catcurrentPage As Integer = 1,
         itemoffset As Integer = 0, itemrowFetch As Integer = 30, itemtotalCount As Integer = 0, itemtotalPage As Integer = 0, itemcurrentPage As Integer = 1
 
-    Dim tendetype As String = "", cashierOrderNumber As Integer = 0, cashierPOSType As String = "", currentCashierRemoveOrderID As String = ""
+    Dim tendetype As String = "", cashierOrderNumber As Integer = 0, currentCashierRemoveOrderID As String = ""
 
-    Public apdep As Double = 0.00, orderid As Integer = 0, isConfirm As Boolean = False
+    Public apdep As Double = 0.00, orderid As Integer = 0, isConfirm As Boolean = False, cashierPOSType As String = ""
     Public Shared voidd As Boolean = False
     Private Sub mainmenu2_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         loadSelectedTransaction()
@@ -332,18 +332,29 @@ Public Class mainmenu2
                 If numbersValidation(dgv.CurrentRow.Cells("amount").Value, "amount") = True Then
                 ElseIf CDbl(dgv.CurrentRow.Cells("amount").Value) > (CDbl(dgv.CurrentRow.Cells("price").Value) * CDbl(dgv.CurrentRow.Cells("quantity").Value)) Then
                     Dim amount As Double = CDbl(dgv.CurrentRow.Cells("quantity").Value) * CDbl(dgv.CurrentRow.Cells("price").Value)
+
                     dgv.CurrentRow.Cells("amount").Value = amount.ToString("n2")
+
                     Dim discpercent As Double = ((amount - dgv.CurrentRow.Cells("amount").Value) / amount) * 100
+
                     Dim pricebefore As Double = CDbl(dgv.CurrentRow.Cells("pricebefore").Value)
+
                     dgv.CurrentRow.Cells("discpercent").Value = discpercent.ToString("n2")
+
                     dgv.CurrentRow.Cells("discamt").Value = CDbl((discpercent / 100) * pricebefore).ToString("n2")
+
                 Else
                     Dim amount As Double = CDbl(dgv.CurrentRow.Cells("quantity").Value) * CDbl(dgv.CurrentRow.Cells("price").Value)
-                    Dim discpercent As Double = ((amount - dgv.CurrentRow.Cells("amount").Value) / amount) * 100
-                    Dim pricebefore As Double = CDbl(dgv.CurrentRow.Cells("pricebefore").Value)
-                    dgv.CurrentRow.Cells("discpercent").Value = discpercent.ToString("n2")
-                    dgv.CurrentRow.Cells("discamt").Value = CDbl((discpercent / 100) * pricebefore).ToString("n2")
+
                     dgv.CurrentRow.Cells("amount").Value = CDbl(dgv.CurrentRow.Cells("amount").Value).ToString("n2")
+
+                    Dim discpercent As Double = ((amount - dgv.CurrentRow.Cells("amount").Value) / amount) * 100
+
+                    Dim pricebefore As Double = CDbl(dgv.CurrentRow.Cells("pricebefore").Value)
+
+                    dgv.CurrentRow.Cells("discpercent").Value = discpercent.ToString("n2")
+
+                    dgv.CurrentRow.Cells("discamt").Value = CDbl((discpercent / 100) * pricebefore).ToString("n2")
                 End If
             ElseIf e.ColumnIndex = 5 Then
                 If dgv.CurrentRow.Cells("free").Value = True Then
@@ -626,8 +637,8 @@ Public Class mainmenu2
             Dim a As String = MsgBox("Confirm Order?", MsgBoxStyle.Question + MsgBoxStyle.YesNo + MsgBoxStyle.DefaultButton2, "Atlantic Bakery")
             If a = vbYes Then
                 Using connection As New SqlConnection(cc.conString)
-                    Dim command As New SqlCommand(),
-                     addStock As Double = 0.00, seniorResult As Boolean = False, tayp As String = "", resultNo As Double = 0.00
+                    Dim command As New SqlCommand(), dr As SqlDataReader,
+                    addStock As Double = 0.00, seniorResult As Boolean = False, tayp As String = "", resultNo As Double = 0.00, returnnum As String = cashc.getReturnNum()
                     command.Connection = connection
 
                     recc.headerText = "Received from Production"
@@ -741,6 +752,7 @@ Public Class mainmenu2
                         command.Parameters.AddWithValue("@customer", txtname.Text)
                         command.Parameters.AddWithValue("@gctotal", CDbl(lblgc.Text))
                         command.Parameters.AddWithValue("@discamt", CDbl(lbldiscamt.Text))
+                        command.Parameters.AddWithValue("@transnum", transnum)
                         command.ExecuteNonQuery()
 
                         Dim arRemarks As String = ""
@@ -804,6 +816,40 @@ Public Class mainmenu2
                                 Next
                             End If
                         End If
+
+                        Dim deposits() As String = lbladvancepayment.Text.Split(New Char() {","c}), result As Boolean = False
+                        Dim deposit As String = "", totalDepositByTransnums As Double = 0.00
+                        For Each deposit In deposits
+                            command.Parameters.Clear()
+                            Dim amt As Double = 0.00, ap_id As Integer = 0
+                            command.CommandText = "SELECT ap_id,amount,type FROM tbladvancepayment WHERE apnum='" & deposit & "';"
+                            command.CommandType = CommandType.Text
+                            dr = command.ExecuteReader
+                            If dr.Read Then
+                                amt = CDbl(dr("amount"))
+                                tayp = CStr(dr("type"))
+                                ap_id = CInt(dr("ap_id"))
+                            End If
+                            dr.Close()
+
+                            command.CommandText = "INSERT INTO tblreturns (ap_id,returnum,transnum,status,byy,date) VALUES (@id,@returnum,@transnum,@status,@byy,(SELECT GETDATE()));"
+                            command.Parameters.Clear()
+                            command.CommandType = CommandType.Text
+                            command.Parameters.AddWithValue("@id", ap_id)
+                            command.Parameters.AddWithValue("@returnum", returnnum)
+                            command.Parameters.AddWithValue("@transnum", transnum)
+                            command.Parameters.AddWithValue("@status", "Active")
+                            command.Parameters.AddWithValue("@byy", login2.username)
+                            command.ExecuteNonQuery()
+                            'getReturnNum()
+
+                            command.Parameters.Clear()
+                            command.CommandText = "UPDATE tbladvancepayment SET status='Used',from_trans=@trans WHERE apnum=@id;"
+                            command.CommandType = CommandType.Text
+                            command.Parameters.AddWithValue("@id", deposit)
+                            command.Parameters.AddWithValue("@trans", transnum)
+                            command.ExecuteNonQuery()
+                        Next
 
                         For index As Integer = 0 To dgv.Rows.Count - 1
 
@@ -1126,8 +1172,8 @@ Public Class mainmenu2
         Next
         lblsubtotalbefore.Text = IIf(dgv.Rows.Count < 0, "0.00", pricebefore.ToString("n2"))
         lblsubtotalafter.Text = CDbl(pricebefore - CDbl(lbldiscamt.Text)).ToString("n2")
-
         If CDbl(lblsubtotalafter.Text) < (CDbl(lblgc.Text) + apdep) Then
+
             lblamountpayable.Text = "0.00"
             lblgrandtotal.Text = "0.00"
             lblchange.Text = "0.00"

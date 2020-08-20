@@ -71,13 +71,14 @@ Public Class confirm
                         importinv.importcnf = True
                         chargeform.chcnf = True
                         branch.brncnf = True
-                        version.compscnf = True
+
                         cancel_tr.cnfrm = True
                         adddrawer.cnfrm = True
                         inv2.cnfrm = True
                         transfer.cnfrm = True
                         items2.cnfrm = True
                         mainmenu2.voidd = True
+                        received_item2.cnfrm = True
                         Me.Close()
                         Exit Sub
                         'End If
@@ -122,13 +123,14 @@ Public Class confirm
         importinv.importcnf = False
         chargeform.chcnf = False
         branch.brncnf = False
-        version.compscnf = False
+
         adddrawer.cnfrm = False
         cancel_tr.cnfrm = False
         inv2.cnfrm = True
         transfer.cnfrm = False
         items2.cnfrm = False
         mainmenu2.voidd = False
+        received_item2.cnfrm = False
         Me.Close()
     End Sub
 

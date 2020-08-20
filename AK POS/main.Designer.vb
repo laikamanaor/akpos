@@ -25,14 +25,11 @@ Partial Class main
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(main))
         Me.Panel1 = New System.Windows.Forms.Panel()
-        Me.btnmessages = New System.Windows.Forms.Button()
         Me.panelsuborders = New System.Windows.Forms.Panel()
-        Me.btnreprintorders = New System.Windows.Forms.Button()
         Me.btnpendingorder = New System.Windows.Forms.Button()
         Me.btnorderhistory = New System.Windows.Forms.Button()
         Me.btnorders = New System.Windows.Forms.Button()
         Me.btnapdep = New System.Windows.Forms.Button()
-        Me.btnluckymoney = New System.Windows.Forms.Button()
         Me.btnpos = New System.Windows.Forms.Button()
         Me.panelsubusers = New System.Windows.Forms.Panel()
         Me.btnlogs = New System.Windows.Forms.Button()
@@ -46,45 +43,36 @@ Partial Class main
         Me.btnbranches = New System.Windows.Forms.Button()
         Me.btnsales = New System.Windows.Forms.Button()
         Me.panelsubinventorytransaction = New System.Windows.Forms.Panel()
-        Me.btnspo = New System.Windows.Forms.Button()
-        Me.btnadjustment = New System.Windows.Forms.Button()
-        Me.btnoverwriteshort = New System.Windows.Forms.Button()
+        Me.btnPullOut = New System.Windows.Forms.Button()
+        Me.btnRemarks = New System.Windows.Forms.Button()
         Me.btneditsap = New System.Windows.Forms.Button()
-        Me.btncancel = New System.Windows.Forms.Button()
-        Me.btnlaku = New System.Windows.Forms.Button()
+        Me.btnrectrans = New System.Windows.Forms.Button()
         Me.btnendingbalance = New System.Windows.Forms.Button()
-        Me.btninvsales = New System.Windows.Forms.Button()
-        Me.btnpendingsapsales = New System.Windows.Forms.Button()
+        Me.btninventory = New System.Windows.Forms.Button()
+        Me.btnpendingsap = New System.Windows.Forms.Button()
         Me.btnarsales = New System.Windows.Forms.Button()
         Me.bntarcharge = New System.Windows.Forms.Button()
-        Me.btnarreject = New System.Windows.Forms.Button()
-        Me.btnconvsales = New System.Windows.Forms.Button()
-        Me.btnadjoutsales = New System.Windows.Forms.Button()
-        Me.btnadjinsales = New System.Windows.Forms.Button()
+        Me.btnconversion = New System.Windows.Forms.Button()
+        Me.btnadjustmentout = New System.Windows.Forms.Button()
+        Me.btnadjustmentin = New System.Windows.Forms.Button()
         Me.btntransfer = New System.Windows.Forms.Button()
-        Me.btnrejects = New System.Windows.Forms.Button()
         Me.btnrecsup = New System.Windows.Forms.Button()
         Me.btnrecbranch = New System.Windows.Forms.Button()
         Me.btnrecprod = New System.Windows.Forms.Button()
+        Me.btnReceivedSAP = New System.Windows.Forms.Button()
         Me.btncreatenew = New System.Windows.Forms.Button()
         Me.btninvtrans = New System.Windows.Forms.Button()
-        Me.panelsubrequests = New System.Windows.Forms.Panel()
-        Me.btnrequests = New System.Windows.Forms.Button()
-        Me.btnrequestletter = New System.Windows.Forms.Button()
-        Me.btnrequest = New System.Windows.Forms.Button()
         Me.panelsubreports = New System.Windows.Forms.Panel()
         Me.btnsapupload = New System.Windows.Forms.Button()
-        Me.btnitemsummary = New System.Windows.Forms.Button()
         Me.btnprintreports = New System.Windows.Forms.Button()
-        Me.btnsalessum = New System.Windows.Forms.Button()
         Me.btnconvlogssales = New System.Windows.Forms.Button()
         Me.btninvlogssales = New System.Windows.Forms.Button()
         Me.btnreports = New System.Windows.Forms.Button()
         Me.panelsubitems = New System.Windows.Forms.Panel()
+        Me.btnCategory = New System.Windows.Forms.Button()
         Me.btncoffeeshop = New System.Windows.Forms.Button()
         Me.btnitemimage = New System.Windows.Forms.Button()
         Me.btnmanageitem = New System.Windows.Forms.Button()
-        Me.btncategory = New System.Windows.Forms.Button()
         Me.btnitems = New System.Windows.Forms.Button()
         Me.panelsubsettings = New System.Windows.Forms.Panel()
         Me.btncutoff = New System.Windows.Forms.Button()
@@ -100,13 +88,11 @@ Partial Class main
         Me.Timer2 = New System.Windows.Forms.Timer(Me.components)
         Me.panelchildform = New System.Windows.Forms.Panel()
         Me.SaveFileDialog1 = New System.Windows.Forms.SaveFileDialog()
-        Me.btnlock = New System.Windows.Forms.Button()
         Me.Panel1.SuspendLayout()
         Me.panelsuborders.SuspendLayout()
         Me.panelsubusers.SuspendLayout()
         Me.panelsubsales.SuspendLayout()
         Me.panelsubinventorytransaction.SuspendLayout()
-        Me.panelsubrequests.SuspendLayout()
         Me.panelsubreports.SuspendLayout()
         Me.panelsubitems.SuspendLayout()
         Me.panelsubsettings.SuspendLayout()
@@ -118,11 +104,9 @@ Partial Class main
         '
         Me.Panel1.AutoScroll = True
         Me.Panel1.BackColor = System.Drawing.Color.FromArgb(CType(CType(23, Byte), Integer), CType(CType(23, Byte), Integer), CType(CType(23, Byte), Integer))
-        Me.Panel1.Controls.Add(Me.btnmessages)
         Me.Panel1.Controls.Add(Me.panelsuborders)
         Me.Panel1.Controls.Add(Me.btnorders)
         Me.Panel1.Controls.Add(Me.btnapdep)
-        Me.Panel1.Controls.Add(Me.btnluckymoney)
         Me.Panel1.Controls.Add(Me.btnpos)
         Me.Panel1.Controls.Add(Me.panelsubusers)
         Me.Panel1.Controls.Add(Me.btnusers)
@@ -130,8 +114,6 @@ Partial Class main
         Me.Panel1.Controls.Add(Me.btnsales)
         Me.Panel1.Controls.Add(Me.panelsubinventorytransaction)
         Me.Panel1.Controls.Add(Me.btninvtrans)
-        Me.Panel1.Controls.Add(Me.panelsubrequests)
-        Me.Panel1.Controls.Add(Me.btnrequest)
         Me.Panel1.Controls.Add(Me.panelsubreports)
         Me.Panel1.Controls.Add(Me.btnreports)
         Me.Panel1.Controls.Add(Me.panelsubitems)
@@ -144,55 +126,17 @@ Partial Class main
         Me.Panel1.Size = New System.Drawing.Size(235, 334)
         Me.Panel1.TabIndex = 0
         '
-        'btnmessages
-        '
-        Me.btnmessages.BackColor = System.Drawing.Color.FromArgb(CType(CType(218, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(28, Byte), Integer))
-        Me.btnmessages.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.btnmessages.Dock = System.Windows.Forms.DockStyle.Top
-        Me.btnmessages.FlatAppearance.BorderSize = 0
-        Me.btnmessages.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Black
-        Me.btnmessages.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnmessages.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnmessages.ForeColor = System.Drawing.Color.White
-        Me.btnmessages.Location = New System.Drawing.Point(0, 2017)
-        Me.btnmessages.Name = "btnmessages"
-        Me.btnmessages.Padding = New System.Windows.Forms.Padding(10, 0, 0, 0)
-        Me.btnmessages.Size = New System.Drawing.Size(218, 51)
-        Me.btnmessages.TabIndex = 21
-        Me.btnmessages.Text = "MESSAGES"
-        Me.btnmessages.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnmessages.UseVisualStyleBackColor = False
-        '
         'panelsuborders
         '
         Me.panelsuborders.BackColor = System.Drawing.Color.White
-        Me.panelsuborders.Controls.Add(Me.btnreprintorders)
         Me.panelsuborders.Controls.Add(Me.btnpendingorder)
         Me.panelsuborders.Controls.Add(Me.btnorderhistory)
         Me.panelsuborders.Dock = System.Windows.Forms.DockStyle.Top
-        Me.panelsuborders.Location = New System.Drawing.Point(0, 1922)
+        Me.panelsuborders.Location = New System.Drawing.Point(0, 1565)
         Me.panelsuborders.Name = "panelsuborders"
-        Me.panelsuborders.Size = New System.Drawing.Size(218, 95)
+        Me.panelsuborders.Size = New System.Drawing.Size(218, 66)
         Me.panelsuborders.TabIndex = 20
         Me.panelsuborders.Visible = False
-        '
-        'btnreprintorders
-        '
-        Me.btnreprintorders.BackColor = System.Drawing.Color.White
-        Me.btnreprintorders.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.btnreprintorders.Dock = System.Windows.Forms.DockStyle.Top
-        Me.btnreprintorders.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(CType(CType(23, Byte), Integer), CType(CType(23, Byte), Integer), CType(CType(32, Byte), Integer))
-        Me.btnreprintorders.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnreprintorders.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnreprintorders.ForeColor = System.Drawing.Color.FromArgb(CType(CType(218, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(28, Byte), Integer))
-        Me.btnreprintorders.Location = New System.Drawing.Point(0, 62)
-        Me.btnreprintorders.Name = "btnreprintorders"
-        Me.btnreprintorders.Padding = New System.Windows.Forms.Padding(20, 0, 0, 0)
-        Me.btnreprintorders.Size = New System.Drawing.Size(218, 29)
-        Me.btnreprintorders.TabIndex = 3
-        Me.btnreprintorders.Text = "Reprint Order"
-        Me.btnreprintorders.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnreprintorders.UseVisualStyleBackColor = False
         '
         'btnpendingorder
         '
@@ -240,7 +184,7 @@ Partial Class main
         Me.btnorders.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnorders.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnorders.ForeColor = System.Drawing.Color.White
-        Me.btnorders.Location = New System.Drawing.Point(0, 1871)
+        Me.btnorders.Location = New System.Drawing.Point(0, 1514)
         Me.btnorders.Name = "btnorders"
         Me.btnorders.Padding = New System.Windows.Forms.Padding(10, 0, 0, 0)
         Me.btnorders.Size = New System.Drawing.Size(218, 51)
@@ -259,7 +203,7 @@ Partial Class main
         Me.btnapdep.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnapdep.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnapdep.ForeColor = System.Drawing.Color.White
-        Me.btnapdep.Location = New System.Drawing.Point(0, 1820)
+        Me.btnapdep.Location = New System.Drawing.Point(0, 1463)
         Me.btnapdep.Name = "btnapdep"
         Me.btnapdep.Padding = New System.Windows.Forms.Padding(10, 0, 0, 0)
         Me.btnapdep.Size = New System.Drawing.Size(218, 51)
@@ -267,25 +211,6 @@ Partial Class main
         Me.btnapdep.Text = "ADVANCE PAYMENT / DEPOSIT"
         Me.btnapdep.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.btnapdep.UseVisualStyleBackColor = False
-        '
-        'btnluckymoney
-        '
-        Me.btnluckymoney.BackColor = System.Drawing.Color.FromArgb(CType(CType(218, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(28, Byte), Integer))
-        Me.btnluckymoney.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.btnluckymoney.Dock = System.Windows.Forms.DockStyle.Top
-        Me.btnluckymoney.FlatAppearance.BorderSize = 0
-        Me.btnluckymoney.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Black
-        Me.btnluckymoney.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnluckymoney.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnluckymoney.ForeColor = System.Drawing.Color.White
-        Me.btnluckymoney.Location = New System.Drawing.Point(0, 1769)
-        Me.btnluckymoney.Name = "btnluckymoney"
-        Me.btnluckymoney.Padding = New System.Windows.Forms.Padding(10, 0, 0, 0)
-        Me.btnluckymoney.Size = New System.Drawing.Size(218, 51)
-        Me.btnluckymoney.TabIndex = 16
-        Me.btnluckymoney.Text = "CASHIER LOGS"
-        Me.btnluckymoney.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnluckymoney.UseVisualStyleBackColor = False
         '
         'btnpos
         '
@@ -297,7 +222,7 @@ Partial Class main
         Me.btnpos.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnpos.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnpos.ForeColor = System.Drawing.Color.White
-        Me.btnpos.Location = New System.Drawing.Point(0, 1718)
+        Me.btnpos.Location = New System.Drawing.Point(0, 1412)
         Me.btnpos.Name = "btnpos"
         Me.btnpos.Padding = New System.Windows.Forms.Padding(10, 0, 0, 0)
         Me.btnpos.Size = New System.Drawing.Size(218, 51)
@@ -312,7 +237,7 @@ Partial Class main
         Me.panelsubusers.Controls.Add(Me.btnlogs)
         Me.panelsubusers.Controls.Add(Me.btnmanusers)
         Me.panelsubusers.Dock = System.Windows.Forms.DockStyle.Top
-        Me.panelsubusers.Location = New System.Drawing.Point(0, 1653)
+        Me.panelsubusers.Location = New System.Drawing.Point(0, 1347)
         Me.panelsubusers.Name = "panelsubusers"
         Me.panelsubusers.Size = New System.Drawing.Size(218, 65)
         Me.panelsubusers.TabIndex = 13
@@ -364,7 +289,7 @@ Partial Class main
         Me.btnusers.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnusers.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnusers.ForeColor = System.Drawing.Color.White
-        Me.btnusers.Location = New System.Drawing.Point(0, 1602)
+        Me.btnusers.Location = New System.Drawing.Point(0, 1296)
         Me.btnusers.Name = "btnusers"
         Me.btnusers.Padding = New System.Windows.Forms.Padding(10, 0, 0, 0)
         Me.btnusers.Size = New System.Drawing.Size(218, 51)
@@ -382,7 +307,7 @@ Partial Class main
         Me.panelsubsales.Controls.Add(Me.btnmancustomers)
         Me.panelsubsales.Controls.Add(Me.btnbranches)
         Me.panelsubsales.Dock = System.Windows.Forms.DockStyle.Top
-        Me.panelsubsales.Location = New System.Drawing.Point(0, 1444)
+        Me.panelsubsales.Location = New System.Drawing.Point(0, 1138)
         Me.panelsubsales.Name = "panelsubsales"
         Me.panelsubsales.Size = New System.Drawing.Size(218, 158)
         Me.panelsubsales.TabIndex = 11
@@ -488,7 +413,7 @@ Partial Class main
         Me.btnsales.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnsales.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnsales.ForeColor = System.Drawing.Color.White
-        Me.btnsales.Location = New System.Drawing.Point(0, 1393)
+        Me.btnsales.Location = New System.Drawing.Point(0, 1087)
         Me.btnsales.Name = "btnsales"
         Me.btnsales.Padding = New System.Windows.Forms.Padding(10, 0, 0, 0)
         Me.btnsales.Size = New System.Drawing.Size(218, 51)
@@ -500,87 +425,66 @@ Partial Class main
         'panelsubinventorytransaction
         '
         Me.panelsubinventorytransaction.BackColor = System.Drawing.Color.White
-        Me.panelsubinventorytransaction.Controls.Add(Me.btnspo)
-        Me.panelsubinventorytransaction.Controls.Add(Me.btnadjustment)
-        Me.panelsubinventorytransaction.Controls.Add(Me.btnoverwriteshort)
+        Me.panelsubinventorytransaction.Controls.Add(Me.btnPullOut)
+        Me.panelsubinventorytransaction.Controls.Add(Me.btnRemarks)
         Me.panelsubinventorytransaction.Controls.Add(Me.btneditsap)
-        Me.panelsubinventorytransaction.Controls.Add(Me.btncancel)
-        Me.panelsubinventorytransaction.Controls.Add(Me.btnlaku)
+        Me.panelsubinventorytransaction.Controls.Add(Me.btnrectrans)
         Me.panelsubinventorytransaction.Controls.Add(Me.btnendingbalance)
-        Me.panelsubinventorytransaction.Controls.Add(Me.btninvsales)
-        Me.panelsubinventorytransaction.Controls.Add(Me.btnpendingsapsales)
+        Me.panelsubinventorytransaction.Controls.Add(Me.btninventory)
+        Me.panelsubinventorytransaction.Controls.Add(Me.btnpendingsap)
         Me.panelsubinventorytransaction.Controls.Add(Me.btnarsales)
         Me.panelsubinventorytransaction.Controls.Add(Me.bntarcharge)
-        Me.panelsubinventorytransaction.Controls.Add(Me.btnarreject)
-        Me.panelsubinventorytransaction.Controls.Add(Me.btnconvsales)
-        Me.panelsubinventorytransaction.Controls.Add(Me.btnadjoutsales)
-        Me.panelsubinventorytransaction.Controls.Add(Me.btnadjinsales)
+        Me.panelsubinventorytransaction.Controls.Add(Me.btnconversion)
+        Me.panelsubinventorytransaction.Controls.Add(Me.btnadjustmentout)
+        Me.panelsubinventorytransaction.Controls.Add(Me.btnadjustmentin)
         Me.panelsubinventorytransaction.Controls.Add(Me.btntransfer)
-        Me.panelsubinventorytransaction.Controls.Add(Me.btnrejects)
         Me.panelsubinventorytransaction.Controls.Add(Me.btnrecsup)
         Me.panelsubinventorytransaction.Controls.Add(Me.btnrecbranch)
         Me.panelsubinventorytransaction.Controls.Add(Me.btnrecprod)
+        Me.panelsubinventorytransaction.Controls.Add(Me.btnReceivedSAP)
         Me.panelsubinventorytransaction.Controls.Add(Me.btncreatenew)
         Me.panelsubinventorytransaction.Dock = System.Windows.Forms.DockStyle.Top
-        Me.panelsubinventorytransaction.Location = New System.Drawing.Point(0, 735)
+        Me.panelsubinventorytransaction.Location = New System.Drawing.Point(0, 525)
         Me.panelsubinventorytransaction.Name = "panelsubinventorytransaction"
-        Me.panelsubinventorytransaction.Size = New System.Drawing.Size(218, 658)
+        Me.panelsubinventorytransaction.Size = New System.Drawing.Size(218, 562)
         Me.panelsubinventorytransaction.TabIndex = 8
         Me.panelsubinventorytransaction.Visible = False
         '
-        'btnspo
+        'btnPullOut
         '
-        Me.btnspo.BackColor = System.Drawing.Color.White
-        Me.btnspo.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.btnspo.Dock = System.Windows.Forms.DockStyle.Top
-        Me.btnspo.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(CType(CType(23, Byte), Integer), CType(CType(23, Byte), Integer), CType(CType(32, Byte), Integer))
-        Me.btnspo.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnspo.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnspo.ForeColor = System.Drawing.Color.FromArgb(CType(CType(218, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(28, Byte), Integer))
-        Me.btnspo.Location = New System.Drawing.Point(0, 620)
-        Me.btnspo.Name = "btnspo"
-        Me.btnspo.Padding = New System.Windows.Forms.Padding(20, 0, 0, 0)
-        Me.btnspo.Size = New System.Drawing.Size(218, 31)
-        Me.btnspo.TabIndex = 71
-        Me.btnspo.Text = "Short to P.O"
-        Me.btnspo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnspo.UseVisualStyleBackColor = False
+        Me.btnPullOut.BackColor = System.Drawing.Color.White
+        Me.btnPullOut.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btnPullOut.Dock = System.Windows.Forms.DockStyle.Top
+        Me.btnPullOut.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(CType(CType(23, Byte), Integer), CType(CType(23, Byte), Integer), CType(CType(32, Byte), Integer))
+        Me.btnPullOut.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnPullOut.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnPullOut.ForeColor = System.Drawing.Color.FromArgb(CType(CType(218, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(28, Byte), Integer))
+        Me.btnPullOut.Location = New System.Drawing.Point(0, 527)
+        Me.btnPullOut.Name = "btnPullOut"
+        Me.btnPullOut.Padding = New System.Windows.Forms.Padding(20, 0, 0, 0)
+        Me.btnPullOut.Size = New System.Drawing.Size(218, 31)
+        Me.btnPullOut.TabIndex = 89
+        Me.btnPullOut.Text = "Pull Out"
+        Me.btnPullOut.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnPullOut.UseVisualStyleBackColor = False
         '
-        'btnadjustment
+        'btnRemarks
         '
-        Me.btnadjustment.BackColor = System.Drawing.Color.White
-        Me.btnadjustment.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.btnadjustment.Dock = System.Windows.Forms.DockStyle.Top
-        Me.btnadjustment.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(CType(CType(23, Byte), Integer), CType(CType(23, Byte), Integer), CType(CType(32, Byte), Integer))
-        Me.btnadjustment.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnadjustment.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnadjustment.ForeColor = System.Drawing.Color.FromArgb(CType(CType(218, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(28, Byte), Integer))
-        Me.btnadjustment.Location = New System.Drawing.Point(0, 589)
-        Me.btnadjustment.Name = "btnadjustment"
-        Me.btnadjustment.Padding = New System.Windows.Forms.Padding(20, 0, 0, 0)
-        Me.btnadjustment.Size = New System.Drawing.Size(218, 31)
-        Me.btnadjustment.TabIndex = 70
-        Me.btnadjustment.Text = "Adjustment"
-        Me.btnadjustment.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnadjustment.UseVisualStyleBackColor = False
-        '
-        'btnoverwriteshort
-        '
-        Me.btnoverwriteshort.BackColor = System.Drawing.Color.White
-        Me.btnoverwriteshort.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.btnoverwriteshort.Dock = System.Windows.Forms.DockStyle.Top
-        Me.btnoverwriteshort.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(CType(CType(23, Byte), Integer), CType(CType(23, Byte), Integer), CType(CType(32, Byte), Integer))
-        Me.btnoverwriteshort.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnoverwriteshort.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnoverwriteshort.ForeColor = System.Drawing.Color.FromArgb(CType(CType(218, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(28, Byte), Integer))
-        Me.btnoverwriteshort.Location = New System.Drawing.Point(0, 558)
-        Me.btnoverwriteshort.Name = "btnoverwriteshort"
-        Me.btnoverwriteshort.Padding = New System.Windows.Forms.Padding(20, 0, 0, 0)
-        Me.btnoverwriteshort.Size = New System.Drawing.Size(218, 31)
-        Me.btnoverwriteshort.TabIndex = 68
-        Me.btnoverwriteshort.Text = "Overwrite Short"
-        Me.btnoverwriteshort.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnoverwriteshort.UseVisualStyleBackColor = False
+        Me.btnRemarks.BackColor = System.Drawing.Color.White
+        Me.btnRemarks.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btnRemarks.Dock = System.Windows.Forms.DockStyle.Top
+        Me.btnRemarks.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(CType(CType(23, Byte), Integer), CType(CType(23, Byte), Integer), CType(CType(32, Byte), Integer))
+        Me.btnRemarks.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnRemarks.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnRemarks.ForeColor = System.Drawing.Color.FromArgb(CType(CType(218, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(28, Byte), Integer))
+        Me.btnRemarks.Location = New System.Drawing.Point(0, 496)
+        Me.btnRemarks.Name = "btnRemarks"
+        Me.btnRemarks.Padding = New System.Windows.Forms.Padding(20, 0, 0, 0)
+        Me.btnRemarks.Size = New System.Drawing.Size(218, 31)
+        Me.btnRemarks.TabIndex = 88
+        Me.btnRemarks.Text = "Edit Remarks"
+        Me.btnRemarks.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnRemarks.UseVisualStyleBackColor = False
         '
         'btneditsap
         '
@@ -591,50 +495,32 @@ Partial Class main
         Me.btneditsap.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btneditsap.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btneditsap.ForeColor = System.Drawing.Color.FromArgb(CType(CType(218, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(28, Byte), Integer))
-        Me.btneditsap.Location = New System.Drawing.Point(0, 527)
+        Me.btneditsap.Location = New System.Drawing.Point(0, 465)
         Me.btneditsap.Name = "btneditsap"
         Me.btneditsap.Padding = New System.Windows.Forms.Padding(20, 0, 0, 0)
         Me.btneditsap.Size = New System.Drawing.Size(218, 31)
-        Me.btneditsap.TabIndex = 67
+        Me.btneditsap.TabIndex = 87
         Me.btneditsap.Text = "Edit SAP #"
         Me.btneditsap.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.btneditsap.UseVisualStyleBackColor = False
         '
-        'btncancel
+        'btnrectrans
         '
-        Me.btncancel.BackColor = System.Drawing.Color.White
-        Me.btncancel.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.btncancel.Dock = System.Windows.Forms.DockStyle.Top
-        Me.btncancel.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(CType(CType(23, Byte), Integer), CType(CType(23, Byte), Integer), CType(CType(32, Byte), Integer))
-        Me.btncancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btncancel.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btncancel.ForeColor = System.Drawing.Color.FromArgb(CType(CType(218, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(28, Byte), Integer))
-        Me.btncancel.Location = New System.Drawing.Point(0, 496)
-        Me.btncancel.Name = "btncancel"
-        Me.btncancel.Padding = New System.Windows.Forms.Padding(20, 0, 0, 0)
-        Me.btncancel.Size = New System.Drawing.Size(218, 31)
-        Me.btncancel.TabIndex = 66
-        Me.btncancel.Text = "Cancel Rec/Trans"
-        Me.btncancel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btncancel.UseVisualStyleBackColor = False
-        '
-        'btnlaku
-        '
-        Me.btnlaku.BackColor = System.Drawing.Color.White
-        Me.btnlaku.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.btnlaku.Dock = System.Windows.Forms.DockStyle.Top
-        Me.btnlaku.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(CType(CType(23, Byte), Integer), CType(CType(23, Byte), Integer), CType(CType(32, Byte), Integer))
-        Me.btnlaku.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnlaku.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnlaku.ForeColor = System.Drawing.Color.FromArgb(CType(CType(218, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(28, Byte), Integer))
-        Me.btnlaku.Location = New System.Drawing.Point(0, 465)
-        Me.btnlaku.Name = "btnlaku"
-        Me.btnlaku.Padding = New System.Windows.Forms.Padding(20, 0, 0, 0)
-        Me.btnlaku.Size = New System.Drawing.Size(218, 31)
-        Me.btnlaku.TabIndex = 65
-        Me.btnlaku.Text = "Laku"
-        Me.btnlaku.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnlaku.UseVisualStyleBackColor = False
+        Me.btnrectrans.BackColor = System.Drawing.Color.White
+        Me.btnrectrans.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btnrectrans.Dock = System.Windows.Forms.DockStyle.Top
+        Me.btnrectrans.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(CType(CType(23, Byte), Integer), CType(CType(23, Byte), Integer), CType(CType(32, Byte), Integer))
+        Me.btnrectrans.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnrectrans.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnrectrans.ForeColor = System.Drawing.Color.FromArgb(CType(CType(218, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(28, Byte), Integer))
+        Me.btnrectrans.Location = New System.Drawing.Point(0, 434)
+        Me.btnrectrans.Name = "btnrectrans"
+        Me.btnrectrans.Padding = New System.Windows.Forms.Padding(20, 0, 0, 0)
+        Me.btnrectrans.Size = New System.Drawing.Size(218, 31)
+        Me.btnrectrans.TabIndex = 86
+        Me.btnrectrans.Text = "Cancel Rec/Trans"
+        Me.btnrectrans.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnrectrans.UseVisualStyleBackColor = False
         '
         'btnendingbalance
         '
@@ -645,50 +531,50 @@ Partial Class main
         Me.btnendingbalance.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnendingbalance.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnendingbalance.ForeColor = System.Drawing.Color.FromArgb(CType(CType(218, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(28, Byte), Integer))
-        Me.btnendingbalance.Location = New System.Drawing.Point(0, 434)
+        Me.btnendingbalance.Location = New System.Drawing.Point(0, 403)
         Me.btnendingbalance.Name = "btnendingbalance"
         Me.btnendingbalance.Padding = New System.Windows.Forms.Padding(20, 0, 0, 0)
         Me.btnendingbalance.Size = New System.Drawing.Size(218, 31)
-        Me.btnendingbalance.TabIndex = 63
+        Me.btnendingbalance.TabIndex = 85
         Me.btnendingbalance.Text = "Update Actual Ending Balance"
         Me.btnendingbalance.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.btnendingbalance.UseVisualStyleBackColor = False
         '
-        'btninvsales
+        'btninventory
         '
-        Me.btninvsales.BackColor = System.Drawing.Color.White
-        Me.btninvsales.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.btninvsales.Dock = System.Windows.Forms.DockStyle.Top
-        Me.btninvsales.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(CType(CType(23, Byte), Integer), CType(CType(23, Byte), Integer), CType(CType(32, Byte), Integer))
-        Me.btninvsales.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btninvsales.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btninvsales.ForeColor = System.Drawing.Color.FromArgb(CType(CType(218, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(28, Byte), Integer))
-        Me.btninvsales.Location = New System.Drawing.Point(0, 403)
-        Me.btninvsales.Name = "btninvsales"
-        Me.btninvsales.Padding = New System.Windows.Forms.Padding(20, 0, 0, 0)
-        Me.btninvsales.Size = New System.Drawing.Size(218, 31)
-        Me.btninvsales.TabIndex = 62
-        Me.btninvsales.Text = "Inventory"
-        Me.btninvsales.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btninvsales.UseVisualStyleBackColor = False
+        Me.btninventory.BackColor = System.Drawing.Color.White
+        Me.btninventory.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btninventory.Dock = System.Windows.Forms.DockStyle.Top
+        Me.btninventory.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(CType(CType(23, Byte), Integer), CType(CType(23, Byte), Integer), CType(CType(32, Byte), Integer))
+        Me.btninventory.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btninventory.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btninventory.ForeColor = System.Drawing.Color.FromArgb(CType(CType(218, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(28, Byte), Integer))
+        Me.btninventory.Location = New System.Drawing.Point(0, 372)
+        Me.btninventory.Name = "btninventory"
+        Me.btninventory.Padding = New System.Windows.Forms.Padding(20, 0, 0, 0)
+        Me.btninventory.Size = New System.Drawing.Size(218, 31)
+        Me.btninventory.TabIndex = 84
+        Me.btninventory.Text = "Inventory"
+        Me.btninventory.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btninventory.UseVisualStyleBackColor = False
         '
-        'btnpendingsapsales
+        'btnpendingsap
         '
-        Me.btnpendingsapsales.BackColor = System.Drawing.Color.White
-        Me.btnpendingsapsales.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.btnpendingsapsales.Dock = System.Windows.Forms.DockStyle.Top
-        Me.btnpendingsapsales.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(CType(CType(23, Byte), Integer), CType(CType(23, Byte), Integer), CType(CType(32, Byte), Integer))
-        Me.btnpendingsapsales.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnpendingsapsales.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnpendingsapsales.ForeColor = System.Drawing.Color.FromArgb(CType(CType(218, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(28, Byte), Integer))
-        Me.btnpendingsapsales.Location = New System.Drawing.Point(0, 372)
-        Me.btnpendingsapsales.Name = "btnpendingsapsales"
-        Me.btnpendingsapsales.Padding = New System.Windows.Forms.Padding(20, 0, 0, 0)
-        Me.btnpendingsapsales.Size = New System.Drawing.Size(218, 31)
-        Me.btnpendingsapsales.TabIndex = 60
-        Me.btnpendingsapsales.Text = "Pending SAP"
-        Me.btnpendingsapsales.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnpendingsapsales.UseVisualStyleBackColor = False
+        Me.btnpendingsap.BackColor = System.Drawing.Color.White
+        Me.btnpendingsap.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btnpendingsap.Dock = System.Windows.Forms.DockStyle.Top
+        Me.btnpendingsap.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(CType(CType(23, Byte), Integer), CType(CType(23, Byte), Integer), CType(CType(32, Byte), Integer))
+        Me.btnpendingsap.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnpendingsap.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnpendingsap.ForeColor = System.Drawing.Color.FromArgb(CType(CType(218, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(28, Byte), Integer))
+        Me.btnpendingsap.Location = New System.Drawing.Point(0, 341)
+        Me.btnpendingsap.Name = "btnpendingsap"
+        Me.btnpendingsap.Padding = New System.Windows.Forms.Padding(20, 0, 0, 0)
+        Me.btnpendingsap.Size = New System.Drawing.Size(218, 31)
+        Me.btnpendingsap.TabIndex = 83
+        Me.btnpendingsap.Text = "Pending SAP"
+        Me.btnpendingsap.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnpendingsap.UseVisualStyleBackColor = False
         '
         'btnarsales
         '
@@ -699,11 +585,11 @@ Partial Class main
         Me.btnarsales.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnarsales.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnarsales.ForeColor = System.Drawing.Color.FromArgb(CType(CType(218, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(28, Byte), Integer))
-        Me.btnarsales.Location = New System.Drawing.Point(0, 341)
+        Me.btnarsales.Location = New System.Drawing.Point(0, 310)
         Me.btnarsales.Name = "btnarsales"
         Me.btnarsales.Padding = New System.Windows.Forms.Padding(20, 0, 0, 0)
         Me.btnarsales.Size = New System.Drawing.Size(218, 31)
-        Me.btnarsales.TabIndex = 57
+        Me.btnarsales.TabIndex = 82
         Me.btnarsales.Text = "A.R Sales"
         Me.btnarsales.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.btnarsales.UseVisualStyleBackColor = False
@@ -717,86 +603,68 @@ Partial Class main
         Me.bntarcharge.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.bntarcharge.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.bntarcharge.ForeColor = System.Drawing.Color.FromArgb(CType(CType(218, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(28, Byte), Integer))
-        Me.bntarcharge.Location = New System.Drawing.Point(0, 310)
+        Me.bntarcharge.Location = New System.Drawing.Point(0, 279)
         Me.bntarcharge.Name = "bntarcharge"
         Me.bntarcharge.Padding = New System.Windows.Forms.Padding(20, 0, 0, 0)
         Me.bntarcharge.Size = New System.Drawing.Size(218, 31)
-        Me.bntarcharge.TabIndex = 56
+        Me.bntarcharge.TabIndex = 81
         Me.bntarcharge.Text = "A.R Charge"
         Me.bntarcharge.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.bntarcharge.UseVisualStyleBackColor = False
         '
-        'btnarreject
+        'btnconversion
         '
-        Me.btnarreject.BackColor = System.Drawing.Color.White
-        Me.btnarreject.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.btnarreject.Dock = System.Windows.Forms.DockStyle.Top
-        Me.btnarreject.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(CType(CType(23, Byte), Integer), CType(CType(23, Byte), Integer), CType(CType(32, Byte), Integer))
-        Me.btnarreject.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnarreject.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnarreject.ForeColor = System.Drawing.Color.FromArgb(CType(CType(218, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(28, Byte), Integer))
-        Me.btnarreject.Location = New System.Drawing.Point(0, 279)
-        Me.btnarreject.Name = "btnarreject"
-        Me.btnarreject.Padding = New System.Windows.Forms.Padding(20, 0, 0, 0)
-        Me.btnarreject.Size = New System.Drawing.Size(218, 31)
-        Me.btnarreject.TabIndex = 55
-        Me.btnarreject.Text = "A.R Reject"
-        Me.btnarreject.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnarreject.UseVisualStyleBackColor = False
+        Me.btnconversion.BackColor = System.Drawing.Color.White
+        Me.btnconversion.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btnconversion.Dock = System.Windows.Forms.DockStyle.Top
+        Me.btnconversion.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(CType(CType(23, Byte), Integer), CType(CType(23, Byte), Integer), CType(CType(32, Byte), Integer))
+        Me.btnconversion.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnconversion.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnconversion.ForeColor = System.Drawing.Color.FromArgb(CType(CType(218, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(28, Byte), Integer))
+        Me.btnconversion.Location = New System.Drawing.Point(0, 248)
+        Me.btnconversion.Name = "btnconversion"
+        Me.btnconversion.Padding = New System.Windows.Forms.Padding(20, 0, 0, 0)
+        Me.btnconversion.Size = New System.Drawing.Size(218, 31)
+        Me.btnconversion.TabIndex = 80
+        Me.btnconversion.Text = "Conversion"
+        Me.btnconversion.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnconversion.UseVisualStyleBackColor = False
         '
-        'btnconvsales
+        'btnadjustmentout
         '
-        Me.btnconvsales.BackColor = System.Drawing.Color.White
-        Me.btnconvsales.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.btnconvsales.Dock = System.Windows.Forms.DockStyle.Top
-        Me.btnconvsales.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(CType(CType(23, Byte), Integer), CType(CType(23, Byte), Integer), CType(CType(32, Byte), Integer))
-        Me.btnconvsales.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnconvsales.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnconvsales.ForeColor = System.Drawing.Color.FromArgb(CType(CType(218, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(28, Byte), Integer))
-        Me.btnconvsales.Location = New System.Drawing.Point(0, 248)
-        Me.btnconvsales.Name = "btnconvsales"
-        Me.btnconvsales.Padding = New System.Windows.Forms.Padding(20, 0, 0, 0)
-        Me.btnconvsales.Size = New System.Drawing.Size(218, 31)
-        Me.btnconvsales.TabIndex = 54
-        Me.btnconvsales.Text = "Conversion"
-        Me.btnconvsales.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnconvsales.UseVisualStyleBackColor = False
+        Me.btnadjustmentout.BackColor = System.Drawing.Color.White
+        Me.btnadjustmentout.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btnadjustmentout.Dock = System.Windows.Forms.DockStyle.Top
+        Me.btnadjustmentout.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(CType(CType(23, Byte), Integer), CType(CType(23, Byte), Integer), CType(CType(32, Byte), Integer))
+        Me.btnadjustmentout.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnadjustmentout.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnadjustmentout.ForeColor = System.Drawing.Color.FromArgb(CType(CType(218, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(28, Byte), Integer))
+        Me.btnadjustmentout.Location = New System.Drawing.Point(0, 217)
+        Me.btnadjustmentout.Name = "btnadjustmentout"
+        Me.btnadjustmentout.Padding = New System.Windows.Forms.Padding(20, 0, 0, 0)
+        Me.btnadjustmentout.Size = New System.Drawing.Size(218, 31)
+        Me.btnadjustmentout.TabIndex = 79
+        Me.btnadjustmentout.Text = "Adjustment Out"
+        Me.btnadjustmentout.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnadjustmentout.UseVisualStyleBackColor = False
         '
-        'btnadjoutsales
+        'btnadjustmentin
         '
-        Me.btnadjoutsales.BackColor = System.Drawing.Color.White
-        Me.btnadjoutsales.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.btnadjoutsales.Dock = System.Windows.Forms.DockStyle.Top
-        Me.btnadjoutsales.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(CType(CType(23, Byte), Integer), CType(CType(23, Byte), Integer), CType(CType(32, Byte), Integer))
-        Me.btnadjoutsales.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnadjoutsales.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnadjoutsales.ForeColor = System.Drawing.Color.FromArgb(CType(CType(218, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(28, Byte), Integer))
-        Me.btnadjoutsales.Location = New System.Drawing.Point(0, 217)
-        Me.btnadjoutsales.Name = "btnadjoutsales"
-        Me.btnadjoutsales.Padding = New System.Windows.Forms.Padding(20, 0, 0, 0)
-        Me.btnadjoutsales.Size = New System.Drawing.Size(218, 31)
-        Me.btnadjoutsales.TabIndex = 41
-        Me.btnadjoutsales.Text = "Adjustment Out"
-        Me.btnadjoutsales.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnadjoutsales.UseVisualStyleBackColor = False
-        '
-        'btnadjinsales
-        '
-        Me.btnadjinsales.BackColor = System.Drawing.Color.White
-        Me.btnadjinsales.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.btnadjinsales.Dock = System.Windows.Forms.DockStyle.Top
-        Me.btnadjinsales.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(CType(CType(23, Byte), Integer), CType(CType(23, Byte), Integer), CType(CType(32, Byte), Integer))
-        Me.btnadjinsales.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnadjinsales.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnadjinsales.ForeColor = System.Drawing.Color.FromArgb(CType(CType(218, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(28, Byte), Integer))
-        Me.btnadjinsales.Location = New System.Drawing.Point(0, 186)
-        Me.btnadjinsales.Name = "btnadjinsales"
-        Me.btnadjinsales.Padding = New System.Windows.Forms.Padding(20, 0, 0, 0)
-        Me.btnadjinsales.Size = New System.Drawing.Size(218, 31)
-        Me.btnadjinsales.TabIndex = 39
-        Me.btnadjinsales.Text = "Adjustment In"
-        Me.btnadjinsales.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnadjinsales.UseVisualStyleBackColor = False
+        Me.btnadjustmentin.BackColor = System.Drawing.Color.White
+        Me.btnadjustmentin.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btnadjustmentin.Dock = System.Windows.Forms.DockStyle.Top
+        Me.btnadjustmentin.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(CType(CType(23, Byte), Integer), CType(CType(23, Byte), Integer), CType(CType(32, Byte), Integer))
+        Me.btnadjustmentin.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnadjustmentin.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnadjustmentin.ForeColor = System.Drawing.Color.FromArgb(CType(CType(218, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(28, Byte), Integer))
+        Me.btnadjustmentin.Location = New System.Drawing.Point(0, 186)
+        Me.btnadjustmentin.Name = "btnadjustmentin"
+        Me.btnadjustmentin.Padding = New System.Windows.Forms.Padding(20, 0, 0, 0)
+        Me.btnadjustmentin.Size = New System.Drawing.Size(218, 31)
+        Me.btnadjustmentin.TabIndex = 78
+        Me.btnadjustmentin.Text = "Adjustment In"
+        Me.btnadjustmentin.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnadjustmentin.UseVisualStyleBackColor = False
         '
         'btntransfer
         '
@@ -811,28 +679,10 @@ Partial Class main
         Me.btntransfer.Name = "btntransfer"
         Me.btntransfer.Padding = New System.Windows.Forms.Padding(20, 0, 0, 0)
         Me.btntransfer.Size = New System.Drawing.Size(218, 31)
-        Me.btntransfer.TabIndex = 37
+        Me.btntransfer.TabIndex = 77
         Me.btntransfer.Text = "Transfer Out"
         Me.btntransfer.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.btntransfer.UseVisualStyleBackColor = False
-        '
-        'btnrejects
-        '
-        Me.btnrejects.BackColor = System.Drawing.Color.White
-        Me.btnrejects.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.btnrejects.Dock = System.Windows.Forms.DockStyle.Top
-        Me.btnrejects.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(CType(CType(23, Byte), Integer), CType(CType(23, Byte), Integer), CType(CType(32, Byte), Integer))
-        Me.btnrejects.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnrejects.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnrejects.ForeColor = System.Drawing.Color.FromArgb(CType(CType(218, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(28, Byte), Integer))
-        Me.btnrejects.Location = New System.Drawing.Point(0, 124)
-        Me.btnrejects.Name = "btnrejects"
-        Me.btnrejects.Padding = New System.Windows.Forms.Padding(20, 0, 0, 0)
-        Me.btnrejects.Size = New System.Drawing.Size(218, 31)
-        Me.btnrejects.TabIndex = 36
-        Me.btnrejects.Text = "Rejects"
-        Me.btnrejects.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnrejects.UseVisualStyleBackColor = False
         '
         'btnrecsup
         '
@@ -843,11 +693,11 @@ Partial Class main
         Me.btnrecsup.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnrecsup.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnrecsup.ForeColor = System.Drawing.Color.FromArgb(CType(CType(218, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(28, Byte), Integer))
-        Me.btnrecsup.Location = New System.Drawing.Point(0, 93)
+        Me.btnrecsup.Location = New System.Drawing.Point(0, 124)
         Me.btnrecsup.Name = "btnrecsup"
         Me.btnrecsup.Padding = New System.Windows.Forms.Padding(20, 0, 0, 0)
         Me.btnrecsup.Size = New System.Drawing.Size(218, 31)
-        Me.btnrecsup.TabIndex = 35
+        Me.btnrecsup.TabIndex = 76
         Me.btnrecsup.Text = "Received From Direct Supplier"
         Me.btnrecsup.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.btnrecsup.UseVisualStyleBackColor = False
@@ -861,11 +711,11 @@ Partial Class main
         Me.btnrecbranch.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnrecbranch.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnrecbranch.ForeColor = System.Drawing.Color.FromArgb(CType(CType(218, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(28, Byte), Integer))
-        Me.btnrecbranch.Location = New System.Drawing.Point(0, 62)
+        Me.btnrecbranch.Location = New System.Drawing.Point(0, 93)
         Me.btnrecbranch.Name = "btnrecbranch"
         Me.btnrecbranch.Padding = New System.Windows.Forms.Padding(20, 0, 0, 0)
         Me.btnrecbranch.Size = New System.Drawing.Size(218, 31)
-        Me.btnrecbranch.TabIndex = 34
+        Me.btnrecbranch.TabIndex = 75
         Me.btnrecbranch.Text = "Received From Other Branch"
         Me.btnrecbranch.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.btnrecbranch.UseVisualStyleBackColor = False
@@ -879,14 +729,32 @@ Partial Class main
         Me.btnrecprod.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnrecprod.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnrecprod.ForeColor = System.Drawing.Color.FromArgb(CType(CType(218, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(28, Byte), Integer))
-        Me.btnrecprod.Location = New System.Drawing.Point(0, 31)
+        Me.btnrecprod.Location = New System.Drawing.Point(0, 62)
         Me.btnrecprod.Name = "btnrecprod"
         Me.btnrecprod.Padding = New System.Windows.Forms.Padding(20, 0, 0, 0)
         Me.btnrecprod.Size = New System.Drawing.Size(218, 31)
-        Me.btnrecprod.TabIndex = 33
+        Me.btnrecprod.TabIndex = 74
         Me.btnrecprod.Text = "Received From Production"
         Me.btnrecprod.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.btnrecprod.UseVisualStyleBackColor = False
+        '
+        'btnReceivedSAP
+        '
+        Me.btnReceivedSAP.BackColor = System.Drawing.Color.White
+        Me.btnReceivedSAP.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btnReceivedSAP.Dock = System.Windows.Forms.DockStyle.Top
+        Me.btnReceivedSAP.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(CType(CType(23, Byte), Integer), CType(CType(23, Byte), Integer), CType(CType(32, Byte), Integer))
+        Me.btnReceivedSAP.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnReceivedSAP.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnReceivedSAP.ForeColor = System.Drawing.Color.FromArgb(CType(CType(218, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(28, Byte), Integer))
+        Me.btnReceivedSAP.Location = New System.Drawing.Point(0, 31)
+        Me.btnReceivedSAP.Name = "btnReceivedSAP"
+        Me.btnReceivedSAP.Padding = New System.Windows.Forms.Padding(20, 0, 0, 0)
+        Me.btnReceivedSAP.Size = New System.Drawing.Size(218, 31)
+        Me.btnReceivedSAP.TabIndex = 73
+        Me.btnReceivedSAP.Text = "Received From SAP"
+        Me.btnReceivedSAP.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnReceivedSAP.UseVisualStyleBackColor = False
         '
         'btncreatenew
         '
@@ -916,7 +784,7 @@ Partial Class main
         Me.btninvtrans.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btninvtrans.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btninvtrans.ForeColor = System.Drawing.Color.White
-        Me.btninvtrans.Location = New System.Drawing.Point(0, 684)
+        Me.btninvtrans.Location = New System.Drawing.Point(0, 474)
         Me.btninvtrans.Name = "btninvtrans"
         Me.btninvtrans.Padding = New System.Windows.Forms.Padding(10, 0, 0, 0)
         Me.btninvtrans.Size = New System.Drawing.Size(218, 51)
@@ -925,86 +793,17 @@ Partial Class main
         Me.btninvtrans.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.btninvtrans.UseVisualStyleBackColor = False
         '
-        'panelsubrequests
-        '
-        Me.panelsubrequests.BackColor = System.Drawing.Color.White
-        Me.panelsubrequests.Controls.Add(Me.btnrequests)
-        Me.panelsubrequests.Controls.Add(Me.btnrequestletter)
-        Me.panelsubrequests.Dock = System.Windows.Forms.DockStyle.Top
-        Me.panelsubrequests.Location = New System.Drawing.Point(0, 618)
-        Me.panelsubrequests.Name = "panelsubrequests"
-        Me.panelsubrequests.Size = New System.Drawing.Size(218, 66)
-        Me.panelsubrequests.TabIndex = 6
-        Me.panelsubrequests.Visible = False
-        '
-        'btnrequests
-        '
-        Me.btnrequests.BackColor = System.Drawing.Color.White
-        Me.btnrequests.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.btnrequests.Dock = System.Windows.Forms.DockStyle.Top
-        Me.btnrequests.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(CType(CType(23, Byte), Integer), CType(CType(23, Byte), Integer), CType(CType(32, Byte), Integer))
-        Me.btnrequests.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnrequests.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnrequests.ForeColor = System.Drawing.Color.FromArgb(CType(CType(218, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(28, Byte), Integer))
-        Me.btnrequests.Location = New System.Drawing.Point(0, 31)
-        Me.btnrequests.Name = "btnrequests"
-        Me.btnrequests.Padding = New System.Windows.Forms.Padding(20, 0, 0, 0)
-        Me.btnrequests.Size = New System.Drawing.Size(218, 32)
-        Me.btnrequests.TabIndex = 2
-        Me.btnrequests.Text = "Requests"
-        Me.btnrequests.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnrequests.UseVisualStyleBackColor = False
-        '
-        'btnrequestletter
-        '
-        Me.btnrequestletter.BackColor = System.Drawing.Color.White
-        Me.btnrequestletter.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.btnrequestletter.Dock = System.Windows.Forms.DockStyle.Top
-        Me.btnrequestletter.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(CType(CType(23, Byte), Integer), CType(CType(23, Byte), Integer), CType(CType(32, Byte), Integer))
-        Me.btnrequestletter.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnrequestletter.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnrequestletter.ForeColor = System.Drawing.Color.FromArgb(CType(CType(218, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(28, Byte), Integer))
-        Me.btnrequestletter.Location = New System.Drawing.Point(0, 0)
-        Me.btnrequestletter.Name = "btnrequestletter"
-        Me.btnrequestletter.Padding = New System.Windows.Forms.Padding(20, 0, 0, 0)
-        Me.btnrequestletter.Size = New System.Drawing.Size(218, 31)
-        Me.btnrequestletter.TabIndex = 1
-        Me.btnrequestletter.Text = "Request Letter"
-        Me.btnrequestletter.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnrequestletter.UseVisualStyleBackColor = False
-        '
-        'btnrequest
-        '
-        Me.btnrequest.BackColor = System.Drawing.Color.FromArgb(CType(CType(218, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(28, Byte), Integer))
-        Me.btnrequest.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.btnrequest.Dock = System.Windows.Forms.DockStyle.Top
-        Me.btnrequest.FlatAppearance.BorderSize = 0
-        Me.btnrequest.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Black
-        Me.btnrequest.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnrequest.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnrequest.ForeColor = System.Drawing.Color.White
-        Me.btnrequest.Location = New System.Drawing.Point(0, 567)
-        Me.btnrequest.Name = "btnrequest"
-        Me.btnrequest.Padding = New System.Windows.Forms.Padding(10, 0, 0, 0)
-        Me.btnrequest.Size = New System.Drawing.Size(218, 51)
-        Me.btnrequest.TabIndex = 7
-        Me.btnrequest.Text = "REQUEST"
-        Me.btnrequest.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnrequest.UseVisualStyleBackColor = False
-        '
         'panelsubreports
         '
         Me.panelsubreports.BackColor = System.Drawing.Color.White
         Me.panelsubreports.Controls.Add(Me.btnsapupload)
-        Me.panelsubreports.Controls.Add(Me.btnitemsummary)
         Me.panelsubreports.Controls.Add(Me.btnprintreports)
-        Me.panelsubreports.Controls.Add(Me.btnsalessum)
         Me.panelsubreports.Controls.Add(Me.btnconvlogssales)
         Me.panelsubreports.Controls.Add(Me.btninvlogssales)
         Me.panelsubreports.Dock = System.Windows.Forms.DockStyle.Top
-        Me.panelsubreports.Location = New System.Drawing.Point(0, 378)
+        Me.panelsubreports.Location = New System.Drawing.Point(0, 346)
         Me.panelsubreports.Name = "panelsubreports"
-        Me.panelsubreports.Size = New System.Drawing.Size(218, 189)
+        Me.panelsubreports.Size = New System.Drawing.Size(218, 128)
         Me.panelsubreports.TabIndex = 4
         Me.panelsubreports.Visible = False
         '
@@ -1017,7 +816,7 @@ Partial Class main
         Me.btnsapupload.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnsapupload.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnsapupload.ForeColor = System.Drawing.Color.FromArgb(CType(CType(218, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(28, Byte), Integer))
-        Me.btnsapupload.Location = New System.Drawing.Point(0, 155)
+        Me.btnsapupload.Location = New System.Drawing.Point(0, 93)
         Me.btnsapupload.Name = "btnsapupload"
         Me.btnsapupload.Padding = New System.Windows.Forms.Padding(20, 0, 0, 0)
         Me.btnsapupload.Size = New System.Drawing.Size(218, 31)
@@ -1025,24 +824,6 @@ Partial Class main
         Me.btnsapupload.Text = "SAP Uploading"
         Me.btnsapupload.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.btnsapupload.UseVisualStyleBackColor = False
-        '
-        'btnitemsummary
-        '
-        Me.btnitemsummary.BackColor = System.Drawing.Color.White
-        Me.btnitemsummary.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.btnitemsummary.Dock = System.Windows.Forms.DockStyle.Top
-        Me.btnitemsummary.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(CType(CType(23, Byte), Integer), CType(CType(23, Byte), Integer), CType(CType(32, Byte), Integer))
-        Me.btnitemsummary.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnitemsummary.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnitemsummary.ForeColor = System.Drawing.Color.FromArgb(CType(CType(218, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(28, Byte), Integer))
-        Me.btnitemsummary.Location = New System.Drawing.Point(0, 124)
-        Me.btnitemsummary.Name = "btnitemsummary"
-        Me.btnitemsummary.Padding = New System.Windows.Forms.Padding(20, 0, 0, 0)
-        Me.btnitemsummary.Size = New System.Drawing.Size(218, 31)
-        Me.btnitemsummary.TabIndex = 67
-        Me.btnitemsummary.Text = "Files"
-        Me.btnitemsummary.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnitemsummary.UseVisualStyleBackColor = False
         '
         'btnprintreports
         '
@@ -1053,7 +834,7 @@ Partial Class main
         Me.btnprintreports.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnprintreports.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnprintreports.ForeColor = System.Drawing.Color.FromArgb(CType(CType(218, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(28, Byte), Integer))
-        Me.btnprintreports.Location = New System.Drawing.Point(0, 93)
+        Me.btnprintreports.Location = New System.Drawing.Point(0, 62)
         Me.btnprintreports.Name = "btnprintreports"
         Me.btnprintreports.Padding = New System.Windows.Forms.Padding(20, 0, 0, 0)
         Me.btnprintreports.Size = New System.Drawing.Size(218, 31)
@@ -1061,24 +842,6 @@ Partial Class main
         Me.btnprintreports.Text = "Print Reports"
         Me.btnprintreports.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.btnprintreports.UseVisualStyleBackColor = False
-        '
-        'btnsalessum
-        '
-        Me.btnsalessum.BackColor = System.Drawing.Color.White
-        Me.btnsalessum.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.btnsalessum.Dock = System.Windows.Forms.DockStyle.Top
-        Me.btnsalessum.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(CType(CType(23, Byte), Integer), CType(CType(23, Byte), Integer), CType(CType(32, Byte), Integer))
-        Me.btnsalessum.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnsalessum.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnsalessum.ForeColor = System.Drawing.Color.FromArgb(CType(CType(218, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(28, Byte), Integer))
-        Me.btnsalessum.Location = New System.Drawing.Point(0, 62)
-        Me.btnsalessum.Name = "btnsalessum"
-        Me.btnsalessum.Padding = New System.Windows.Forms.Padding(20, 0, 0, 0)
-        Me.btnsalessum.Size = New System.Drawing.Size(218, 31)
-        Me.btnsalessum.TabIndex = 8
-        Me.btnsalessum.Text = "Sales Summary GRAPH"
-        Me.btnsalessum.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnsalessum.UseVisualStyleBackColor = False
         '
         'btnconvlogssales
         '
@@ -1126,7 +889,7 @@ Partial Class main
         Me.btnreports.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnreports.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnreports.ForeColor = System.Drawing.Color.White
-        Me.btnreports.Location = New System.Drawing.Point(0, 327)
+        Me.btnreports.Location = New System.Drawing.Point(0, 295)
         Me.btnreports.Name = "btnreports"
         Me.btnreports.Padding = New System.Windows.Forms.Padding(10, 0, 0, 0)
         Me.btnreports.Size = New System.Drawing.Size(218, 51)
@@ -1138,16 +901,34 @@ Partial Class main
         'panelsubitems
         '
         Me.panelsubitems.BackColor = System.Drawing.Color.White
+        Me.panelsubitems.Controls.Add(Me.btnCategory)
         Me.panelsubitems.Controls.Add(Me.btncoffeeshop)
         Me.panelsubitems.Controls.Add(Me.btnitemimage)
         Me.panelsubitems.Controls.Add(Me.btnmanageitem)
-        Me.panelsubitems.Controls.Add(Me.btncategory)
         Me.panelsubitems.Dock = System.Windows.Forms.DockStyle.Top
-        Me.panelsubitems.Location = New System.Drawing.Point(0, 200)
+        Me.panelsubitems.Location = New System.Drawing.Point(0, 168)
         Me.panelsubitems.Name = "panelsubitems"
         Me.panelsubitems.Size = New System.Drawing.Size(218, 127)
         Me.panelsubitems.TabIndex = 2
         Me.panelsubitems.Visible = False
+        '
+        'btnCategory
+        '
+        Me.btnCategory.BackColor = System.Drawing.Color.White
+        Me.btnCategory.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btnCategory.Dock = System.Windows.Forms.DockStyle.Top
+        Me.btnCategory.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(CType(CType(23, Byte), Integer), CType(CType(23, Byte), Integer), CType(CType(32, Byte), Integer))
+        Me.btnCategory.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnCategory.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnCategory.ForeColor = System.Drawing.Color.FromArgb(CType(CType(218, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(28, Byte), Integer))
+        Me.btnCategory.Location = New System.Drawing.Point(0, 93)
+        Me.btnCategory.Name = "btnCategory"
+        Me.btnCategory.Padding = New System.Windows.Forms.Padding(20, 0, 0, 0)
+        Me.btnCategory.Size = New System.Drawing.Size(218, 31)
+        Me.btnCategory.TabIndex = 5
+        Me.btnCategory.Text = "Categories"
+        Me.btnCategory.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnCategory.UseVisualStyleBackColor = False
         '
         'btncoffeeshop
         '
@@ -1158,7 +939,7 @@ Partial Class main
         Me.btncoffeeshop.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btncoffeeshop.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btncoffeeshop.ForeColor = System.Drawing.Color.FromArgb(CType(CType(218, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(28, Byte), Integer))
-        Me.btncoffeeshop.Location = New System.Drawing.Point(0, 93)
+        Me.btncoffeeshop.Location = New System.Drawing.Point(0, 62)
         Me.btncoffeeshop.Name = "btncoffeeshop"
         Me.btncoffeeshop.Padding = New System.Windows.Forms.Padding(20, 0, 0, 0)
         Me.btncoffeeshop.Size = New System.Drawing.Size(218, 31)
@@ -1176,7 +957,7 @@ Partial Class main
         Me.btnitemimage.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnitemimage.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnitemimage.ForeColor = System.Drawing.Color.FromArgb(CType(CType(218, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(28, Byte), Integer))
-        Me.btnitemimage.Location = New System.Drawing.Point(0, 62)
+        Me.btnitemimage.Location = New System.Drawing.Point(0, 31)
         Me.btnitemimage.Name = "btnitemimage"
         Me.btnitemimage.Padding = New System.Windows.Forms.Padding(20, 0, 0, 0)
         Me.btnitemimage.Size = New System.Drawing.Size(218, 31)
@@ -1194,7 +975,7 @@ Partial Class main
         Me.btnmanageitem.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnmanageitem.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnmanageitem.ForeColor = System.Drawing.Color.FromArgb(CType(CType(218, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(28, Byte), Integer))
-        Me.btnmanageitem.Location = New System.Drawing.Point(0, 31)
+        Me.btnmanageitem.Location = New System.Drawing.Point(0, 0)
         Me.btnmanageitem.Name = "btnmanageitem"
         Me.btnmanageitem.Padding = New System.Windows.Forms.Padding(20, 0, 0, 0)
         Me.btnmanageitem.Size = New System.Drawing.Size(218, 31)
@@ -1202,24 +983,6 @@ Partial Class main
         Me.btnmanageitem.Text = "Manage Item"
         Me.btnmanageitem.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.btnmanageitem.UseVisualStyleBackColor = False
-        '
-        'btncategory
-        '
-        Me.btncategory.BackColor = System.Drawing.Color.White
-        Me.btncategory.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.btncategory.Dock = System.Windows.Forms.DockStyle.Top
-        Me.btncategory.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(CType(CType(23, Byte), Integer), CType(CType(23, Byte), Integer), CType(CType(32, Byte), Integer))
-        Me.btncategory.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btncategory.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btncategory.ForeColor = System.Drawing.Color.FromArgb(CType(CType(218, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(28, Byte), Integer))
-        Me.btncategory.Location = New System.Drawing.Point(0, 0)
-        Me.btncategory.Name = "btncategory"
-        Me.btncategory.Padding = New System.Windows.Forms.Padding(20, 0, 0, 0)
-        Me.btncategory.Size = New System.Drawing.Size(218, 31)
-        Me.btncategory.TabIndex = 1
-        Me.btncategory.Text = "Category"
-        Me.btncategory.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btncategory.UseVisualStyleBackColor = False
         '
         'btnitems
         '
@@ -1231,7 +994,7 @@ Partial Class main
         Me.btnitems.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnitems.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnitems.ForeColor = System.Drawing.Color.White
-        Me.btnitems.Location = New System.Drawing.Point(0, 149)
+        Me.btnitems.Location = New System.Drawing.Point(0, 117)
         Me.btnitems.Name = "btnitems"
         Me.btnitems.Padding = New System.Windows.Forms.Padding(10, 0, 0, 0)
         Me.btnitems.Size = New System.Drawing.Size(218, 51)
@@ -1243,13 +1006,12 @@ Partial Class main
         'panelsubsettings
         '
         Me.panelsubsettings.BackColor = System.Drawing.Color.White
-        Me.panelsubsettings.Controls.Add(Me.btnlock)
         Me.panelsubsettings.Controls.Add(Me.btncutoff)
         Me.panelsubsettings.Controls.Add(Me.btnlogout)
         Me.panelsubsettings.Dock = System.Windows.Forms.DockStyle.Top
         Me.panelsubsettings.Location = New System.Drawing.Point(0, 51)
         Me.panelsubsettings.Name = "panelsubsettings"
-        Me.panelsubsettings.Size = New System.Drawing.Size(218, 98)
+        Me.panelsubsettings.Size = New System.Drawing.Size(218, 66)
         Me.panelsubsettings.TabIndex = 1
         Me.panelsubsettings.Visible = False
         '
@@ -1407,23 +1169,6 @@ Partial Class main
         Me.panelchildform.Size = New System.Drawing.Size(564, 305)
         Me.panelchildform.TabIndex = 2
         '
-        'btnlock
-        '
-        Me.btnlock.BackColor = System.Drawing.Color.White
-        Me.btnlock.Dock = System.Windows.Forms.DockStyle.Top
-        Me.btnlock.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(CType(CType(23, Byte), Integer), CType(CType(23, Byte), Integer), CType(CType(32, Byte), Integer))
-        Me.btnlock.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnlock.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnlock.ForeColor = System.Drawing.Color.FromArgb(CType(CType(218, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(28, Byte), Integer))
-        Me.btnlock.Location = New System.Drawing.Point(0, 62)
-        Me.btnlock.Name = "btnlock"
-        Me.btnlock.Padding = New System.Windows.Forms.Padding(20, 0, 0, 0)
-        Me.btnlock.Size = New System.Drawing.Size(218, 31)
-        Me.btnlock.TabIndex = 3
-        Me.btnlock.Text = "Lock"
-        Me.btnlock.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnlock.UseVisualStyleBackColor = False
-        '
         'main
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1438,12 +1183,12 @@ Partial Class main
         Me.Name = "main"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Atlantic Bakery"
+        Me.WindowState = System.Windows.Forms.FormWindowState.Maximized
         Me.Panel1.ResumeLayout(False)
         Me.panelsuborders.ResumeLayout(False)
         Me.panelsubusers.ResumeLayout(False)
         Me.panelsubsales.ResumeLayout(False)
         Me.panelsubinventorytransaction.ResumeLayout(False)
-        Me.panelsubrequests.ResumeLayout(False)
         Me.panelsubreports.ResumeLayout(False)
         Me.panelsubitems.ResumeLayout(False)
         Me.panelsubsettings.ResumeLayout(False)
@@ -1462,14 +1207,9 @@ Partial Class main
     Friend WithEvents panelsubitems As Panel
     Friend WithEvents btnitemimage As Button
     Friend WithEvents btnmanageitem As Button
-    Friend WithEvents btncategory As Button
     Friend WithEvents btnitems As Button
     Friend WithEvents panelsubreports As Panel
     Friend WithEvents btnreports As Button
-    Friend WithEvents panelsubrequests As Panel
-    Friend WithEvents btnrequests As Button
-    Friend WithEvents btnrequestletter As Button
-    Friend WithEvents btnrequest As Button
     Friend WithEvents panelsubinventorytransaction As Panel
     Friend WithEvents btncreatenew As Button
     Friend WithEvents btninvtrans As Button
@@ -1479,56 +1219,48 @@ Partial Class main
     Friend WithEvents Panel2 As Panel
     Friend WithEvents panelchildform As Panel
     Friend WithEvents lblheader As Label
-    Friend WithEvents btnadjoutsales As Button
-    Friend WithEvents btnadjinsales As Button
-    Friend WithEvents btntransfer As Button
-    Friend WithEvents btnrejects As Button
-    Friend WithEvents btnrecsup As Button
-    Friend WithEvents btnrecbranch As Button
-    Friend WithEvents btnrecprod As Button
     Friend WithEvents btnusers As Button
     Friend WithEvents panelsubusers As Panel
     Friend WithEvents btnmanusers As Button
     Friend WithEvents btnpos As Button
-    Friend WithEvents btnluckymoney As Button
     Friend WithEvents btnapdep As Button
     Friend WithEvents btninvlogssales As Button
     Friend WithEvents btnconvlogssales As Button
-    Friend WithEvents btnsalessum As Button
     Friend WithEvents lbldatetime As Label
     Friend WithEvents btnlogs As Button
-    Friend WithEvents btnconvsales As Button
-    Friend WithEvents btnendingbalance As Button
-    Friend WithEvents btninvsales As Button
-    Friend WithEvents btnpendingsapsales As Button
-    Friend WithEvents btnarsales As Button
-    Friend WithEvents bntarcharge As Button
-    Friend WithEvents btnarreject As Button
     Friend WithEvents btnorders As Button
     Friend WithEvents panelsuborders As Panel
-    Friend WithEvents btnreprintorders As Button
     Friend WithEvents btnpendingorder As Button
     Friend WithEvents btnorderhistory As Button
-    Friend WithEvents btnmessages As Button
-    Friend WithEvents btnlaku As Button
     Friend WithEvents btnmancustomers As Button
     Friend WithEvents btndischarge As Button
     Friend WithEvents btnitemprice As Button
     Friend WithEvents btnordertrans As Button
     Friend WithEvents Timer2 As Timer
     Friend WithEvents btnprintreports As Button
-    Friend WithEvents btncancel As Button
     Friend WithEvents btncoffeeshop As Button
-    Friend WithEvents btnitemsummary As Button
     Friend WithEvents btnsapupload As Button
     Friend WithEvents SaveFileDialog1 As SaveFileDialog
-    Friend WithEvents btneditsap As Button
     Friend WithEvents Panel3 As Panel
     Friend WithEvents Panel4 As Panel
     Friend WithEvents maximize As PictureBox
-    Friend WithEvents btnoverwriteshort As Button
     Friend WithEvents btnminimize As Button
-    Friend WithEvents btnadjustment As Button
-    Friend WithEvents btnspo As Button
-    Friend WithEvents btnlock As Button
+    Friend WithEvents btnReceivedSAP As Button
+    Friend WithEvents btnCategory As Button
+    Friend WithEvents btnRemarks As Button
+    Friend WithEvents btneditsap As Button
+    Friend WithEvents btnrectrans As Button
+    Friend WithEvents btnendingbalance As Button
+    Friend WithEvents btninventory As Button
+    Friend WithEvents btnpendingsap As Button
+    Friend WithEvents btnarsales As Button
+    Friend WithEvents bntarcharge As Button
+    Friend WithEvents btnconversion As Button
+    Friend WithEvents btnadjustmentout As Button
+    Friend WithEvents btnadjustmentin As Button
+    Friend WithEvents btntransfer As Button
+    Friend WithEvents btnrecsup As Button
+    Friend WithEvents btnrecbranch As Button
+    Friend WithEvents btnrecprod As Button
+    Friend WithEvents btnPullOut As Button
 End Class

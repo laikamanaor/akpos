@@ -2,6 +2,7 @@
 Public Class receivedItem_add
     Dim uic As New ui_class()
     Public Shared isSuccess As Boolean = False
+    Public Shared rectrans As Boolean = False
     Private Sub btnclose_Click(sender As Object, e As EventArgs) Handles btnclose.Click
         isSuccess = False
         Me.Hide()

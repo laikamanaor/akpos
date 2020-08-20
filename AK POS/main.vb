@@ -9,19 +9,19 @@ Imports System.Xml.XPath
 Imports AK_POS.connection_class
 Public Class main
     Dim cc As New connection_class
+    Dim invc As New inventory_class
+
     Public con As New SqlConnection(cc.Decrypt(System.IO.File.ReadAllText("connectionstring.txt")))
     Dim cmd As SqlCommand
     Dim rdr As SqlDataReader
     Dim adptr As New SqlDataAdapter
-
-    Dim invsum As String
 
     Dim drag As Boolean
     Dim mousex As Integer
     Dim mousey As Integer
 
 
-    Dim toggle_max As Boolean = True
+    Dim toggle_max As Boolean = False
     Dim transaction As SqlTransaction
     Public Function decryptConString() As String
         Dim base64encoded As String = File.ReadAllText("connectionstring.txt")
@@ -74,14 +74,6 @@ Public Class main
         hideShow(panelsubreports)
     End Sub
 
-    Private Sub btnrequest_Click(sender As Object, e As EventArgs) Handles btnrequest.Click
-        If login2.wrkgrp = "Cashier" Then
-            MessageBox.Show("Access Denied", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
-        Else
-            hideShow(panelsubrequests)
-        End If
-    End Sub
-
     Private Sub Button11_Click_1(sender As Object, e As EventArgs) Handles btninvtrans.Click
         hideShow(panelsubinventorytransaction)
     End Sub
@@ -101,8 +93,8 @@ Public Class main
             f.Show()
         End If
     End Sub
-    Private Sub btncategory_Click(sender As Object, e As EventArgs) Handles btncategory.Click
-        If login2.wrkgrp = "Administrator" Or login2.wrkgrp = "Manager" Or login2.wrkgrp = "LC Accounting" Then
+    Private Sub btncategory_Click(sender As Object, e As EventArgs)
+        If login2.wrkgrp = "Administrator" Or login2.wrkgrp = "LC Accounting" Then
             hideShow(panelsubitems)
             Dim f As New categories()
             panelchildform.Controls.Clear()
@@ -132,7 +124,7 @@ Public Class main
     End Sub
 
     Private Sub btnitemimage_Click(sender As Object, e As EventArgs) Handles btnitemimage.Click
-        If login2.wrkgrp = "Administrator" Or login2.wrkgrp = "LC Accounting" Or login2.wrkgrp = "Manager" Then
+        If login2.wrkgrp = "Administrator" Or login2.wrkgrp = "LC Accounting" Then
             hideShow(panelsubitems)
             Dim f As New saveimg()
             f.TopLevel = False
@@ -162,71 +154,13 @@ Public Class main
         End If
     End Sub
 
-
-    Private Sub btnsalessum_Click(sender As Object, e As EventArgs) Handles btnsalessum.Click
-        hideShow(panelsubreports)
-        Dim f As New dashboard2()
-        panelchildform.Controls.Clear()
-        f.TopLevel = False
-        f.Dock = DockStyle.Fill
-        panelchildform.Controls.Add(f)
-        f.BringToFront()
-        f.Show()
-        'MessageBox.Show("Under Development", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
-    End Sub
-
-    Private Sub btnrequestletter_Click(sender As Object, e As EventArgs) Handles btnrequestletter.Click
-        If login2.wrkgrp = "LC Accounting" Then
-            MessageBox.Show("Access Denied", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
-            Exit Sub
-        Else
-            hideShow(panelsubrequests)
-            Dim f As New request()
-            panelchildform.Controls.Clear()
-            f.TopLevel = False
-            f.Dock = DockStyle.Fill
-            panelchildform.Controls.Add(f)
-            f.BringToFront()
-            f.Show()
-        End If
-    End Sub
-
-    Private Sub btnrequests_Click(sender As Object, e As EventArgs) Handles btnrequests.Click
-        hideShow(panelsubrequests)
-        Try
-            If login2.wrkgrp = "LC Accounting" Then
-                Dim serverDate As String = getSystemDate()
-                con.Open()
-                cmd = New SqlCommand("UPDATE tblrequests SET dateseen='" & serverDate & "' WHERE status='Pending';", con)
-                cmd.ExecuteNonQuery()
-                con.Close()
-            End If
-            Dim f As New pendingrequests()
-            panelchildform.Controls.Clear()
-            f.TopLevel = False
-            f.Dock = DockStyle.Fill
-            panelchildform.Controls.Add(f)
-            f.BringToFront()
-            f.Show()
-        Catch ex As SqlException
-            If ex.Number = -2 Then
-                MessageBox.Show("Timeout Occured", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
-            End If
-        Catch ex As Exception
-            MessageBox.Show(ex.ToString)
-        End Try
-    End Sub
-    Private Sub btnrejects_Click(sender As Object, e As EventArgs) Handles btnrejects.Click
-        MessageBox.Show("Under Development", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
-    End Sub
-
     Private Sub btntransfer_Click(sender As Object, e As EventArgs) Handles btntransfer.Click
         If login2.wrkgrp = "LC Accounting" Or login2.wrkgrp = "Production" Then
             MessageBox.Show("Access Denied", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
             Exit Sub
         End If
 
-        If checkCutOff("") Then
+        If checkCutOff() Then
             MessageBox.Show("Your account is already cut off", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
             Exit Sub
         End If
@@ -239,46 +173,6 @@ Public Class main
         panelchildform.Controls.Add(frm)
         frm.BringToFront()
         frm.Show()
-    End Sub
-
-    Private Sub btnar_Click(sender As Object, e As EventArgs) Handles btnarreject.Click
-        If login2.wrkgrp = "Production" Or login2.wrkgrp = "Manager" Then
-            hideShow(panelsubinventorytransaction)
-
-            Dim f As New ars()
-            f.TopLevel = False
-            f.Dock = DockStyle.Fill
-            panelchildform.Controls.Add(f)
-            f.BringToFront()
-
-            f.tayp = "AR Reject"
-            f.lcacc = "Production"
-            f.GroupBox1.Visible = False
-            f.dgvArs2.Rows.Clear()
-            f.btnunpaid.ForeColor = Color.Wheat
-            f.btnpaid.ForeColor = Color.Black
-            f.btnSubmit.Visible = False
-            f.dgvARS.Columns("action").Visible = False
-            f.dgvARS.Columns("action").ReadOnly = True
-            f.Panel1.Visible = False
-            f.lblSAPNo.Text = ""
-            f.lblRemarks.Text = ""
-            f.btnpaid.Text = "Reject History"
-            f.btneditar.Visible = False
-            f.Text = "AR Reject"
-            f.btnpaid.PerformClick()
-
-            If login2.wrkgrp = "Manager" Then
-                f.btnpaid.ForeColor = Color.Black
-                f.dgvARS.Columns("action").Visible = False
-                f.btnSubmit.Visible = False
-                f.GroupBox1.Visible = False
-            End If
-            f.Show()
-        Else
-            MessageBox.Show("Access Denied", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
-            Exit Sub
-        End If
     End Sub
 
     Private Sub bntarcharge_Click(sender As Object, e As EventArgs) Handles bntarcharge.Click
@@ -324,11 +218,6 @@ Public Class main
     End Sub
 
     Private Sub btnarsales_Click(sender As Object, e As EventArgs) Handles btnarsales.Click
-        'If login2.wrkgrp = "Sales" Then
-        '    MessageBox.Show("Access Denied", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
-        '    Exit Sub
-        'End If
-
         hideShow(panelsubinventorytransaction)
 
         Dim f As New ars()
@@ -364,37 +253,21 @@ Public Class main
         f.btnpaid.PerformClick()
         f.Show()
     End Sub
-    Public Sub connect()
-        If con.State <> ConnectionState.Open Then
-            con.Open()
-        End If
-    End Sub
-    Public Sub disconnect()
-        If con.State = ConnectionState.Open Then
-            con.Close()
-        End If
-    End Sub
-    Public Function checkCutOff(ByVal s As String) As Boolean
+    Public Function checkCutOff() As Boolean
+        Dim result As Boolean = False, date_from As New DateTime(), status As String = "", serverDate As New DateTime()
+        serverDate = cc.getSystemDate
         Try
-            Dim status As String = "", date_from As New DateTime(), query As String = ""
+            cc.con.Open()
+            cc.cmd = New SqlCommand("SELECT TOP 1 a.date,a.status FROM tblcutoff a INNER JOIN tblusers b ON a.userid = b.systemid WHERE CAST(a.date AS date)=(SELECT TOP 1 CAST(datecreated AS date) FROM tblinvsum WHERE verify=0 AND b.workgroup NOT IN ('Administrator','LC Accounting') ORDER BY invsumid ASC)", cc.con)
+            cc.rdr = cc.cmd.ExecuteReader
+            If cc.rdr.Read Then
+                date_from = CDate(cc.rdr("date"))
+                status = cc.rdr("status")
+            End If
+            cc.con.Close()
 
-            If login2.wrkgrp = "LC Accounting" Or login2.wrkgrp = "Manager" Then
-                query = "Select tblcutoff.status,tblcutoff.date FROM tblcutoff JOIN tblusers ON tblcutoff.userid = tblusers.systemid ORDER BY cid DESC;"
-            Else
-                query = "SELECT status,date FROM tblcutoff ORDER BY cid DESC;"
-            End If
-            con.Open()
-            cmd = New SqlCommand(query, con)
-            rdr = cmd.ExecuteReader
-            If rdr.Read Then
-                status = rdr("status")
-                date_from = CDate(rdr("date"))
-            End If
-            con.Close()
-            If status = "In Active" And date_from.ToString("MM/dd/yyyy") = getSystemDate.ToString("MM/dd/yyyy") Then
-                Return True
-            Else
-                Return False
+            If status = "In Active" And date_from.ToString("MM/dd/yyyy") = serverDate.ToString("MM/dd/yyyy") Then
+                result = True
             End If
         Catch ex As SqlException
             If ex.Number = -2 Then
@@ -402,67 +275,28 @@ Public Class main
             End If
         Catch ex As Exception
             MessageBox.Show(ex.ToString)
-        End Try
-    End Function
-    Public Sub loadinvnum()
-        Try
-            Dim selectcount_result As Integer = 0, temp As String = "0"
-            Dim area_format As String = ""
-            con.Open()
-            cmd = New SqlCommand("Select COUNT(*)  from tblinvsum WHERE area='" & "Sales" & "'", con)
-            selectcount_result = cmd.ExecuteScalar() + 1
-            con.Close()
-
-
-            Dim branchcode As String = ""
-            con.Open()
-            cmd = New SqlCommand("SELECT branchcode FROM tblbranch WHERE main='1';", con)
-            rdr = cmd.ExecuteReader
-            If rdr.Read Then
-                branchcode = rdr("branchcode")
-            End If
-            con.Close()
-
-
-            area_format = "SAL" & "INV - " & branchcode.ToUpper() & " - "
-            If selectcount_result < 1000000 Then
-                Dim cselectcount_result As String = CStr(selectcount_result)
-                For vv As Integer = 1 To 6 - cselectcount_result.Length
-                    temp += "0"
-                Next
-            End If
-            invsum = area_format & temp & selectcount_result
-        Catch ex As SqlException
-            If ex.Number = -2 Then
-                MessageBox.Show("Timeout Occurred", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
-            End If
-        Catch ex As System.InvalidOperationException
-            Me.Cursor = Cursors.Default
-            MsgBox(ex.Message, MsgBoxStyle.Critical, "")
-        Catch ex As Exception
-            Me.Cursor = Cursors.Default
-            MsgBox(ex.ToString, MsgBoxStyle.Information, "")
         Finally
-            con.Close()
+            cc.con.Close()
         End Try
-    End Sub
+        Return result
+    End Function
     Public Sub createNewInventory()
         Dim a As String = MsgBox("Are you sure you want to create new inventory?", MsgBoxStyle.Question + MsgBoxStyle.YesNo + MsgBoxStyle.DefaultButton2, "")
         If a <> vbYes Then
             Me.Cursor = Cursors.Default
             Exit Sub
         End If
-        loadinvnum()
-
+        Dim invNum As String = invc.getInvNum()
         Dim items As New List(Of Integer)
-        con.Open()
-        cmd = New SqlCommand("SELECT itemid FROM tblitems WHERE discontinued=0", con)
-        rdr = cmd.ExecuteReader
-        While rdr.Read
-            items.Add(rdr("itemid"))
+        cc.con.Open()
+        cc.cmd = New SqlCommand("SELECT itemid FROM tblitems WHERE discontinued=0", cc.con)
+        cc.rdr = cc.cmd.ExecuteReader
+        While cc.rdr.Read
+            items.Add(cc.rdr("itemid"))
         End While
-        con.Close()
+        cc.con.Close()
         Try
+            Me.Cursor = Cursors.WaitCursor
             Using connection As New SqlConnection(cc.conString)
                 Dim cmdd As New SqlCommand(), rdrr As SqlDataReader
                 cmdd.Connection = connection
@@ -470,7 +304,7 @@ Public Class main
                 transaction = connection.BeginTransaction()
                 cmdd.Transaction = transaction
 
-                cmdd.CommandText = "Insert into tblinvsum (invnum, invdate, cashier, shift, verify, datecreated, datemodified, modifiedby, status,area) values('" & invsum & "',(select cast(getdate() as date)), '" & login.cashier & "', '', 0, (SELECT GETDATE()),(SELECT GETDATE()), '" & login.cashier & "', 1,'" & "Sales" & "')"
+                cmdd.CommandText = "Insert into tblinvsum (invnum, invdate, cashier, shift, verify, datecreated, datemodified, modifiedby, status,area) values('" + invNum + "',(select cast(getdate() as date)), '" & login.cashier & "', '', 0, (SELECT GETDATE()),(SELECT GETDATE()), '" & login.cashier & "', 1,'" & "Sales" & "')"
                 cmdd.ExecuteNonQuery()
                 For Each itemid As Integer In items
                     Dim begbal As Double = 0.00, variance As Double = 0.00, itemname As String = "", itemcode As String = ""
@@ -485,10 +319,12 @@ Public Class main
                     End If
                     rdrr.Close()
 
-                    cmdd.CommandText = "Insert into tblinvitems (invnum, itemcode, itemname, begbal,produce,good,reject,charge,productionin, itemin, totalav, ctrout, pullout, endbal, actualendbal, variance, shortover, status,convin,archarge,arsales,convout,transfer,area,arreject,supin,adjustmentin,reject_convin,reject_convout,reject_archarge,reject_transfer,reject_totalav,cancelin) values('" & invsum & "','" & itemcode & "','" & itemname & "'," & begbal & ",0,0,0,0,0,0," & begbal & ",0,0," & begbal & ",0," & variance & ",'',1,0,0,0,0,0,'Sales',0,0,0,0,0,0,0,0,0)"
+                    cmdd.CommandText = "Insert into tblinvitems (invnum, itemcode, itemname, begbal,produce,good,reject,charge,productionin, itemin, totalav, ctrout, pullout, endbal, actualendbal, variance, shortover, status,convin,archarge,arsales,convout,transfer,area,arreject,supin,adjustmentin,reject_convin,reject_convout,reject_archarge,reject_transfer,reject_totalav,cancelin,pullout2) values('" + invNum + "','" & itemcode & "','" & itemname & "'," & begbal & ",0,0,0,0,0,0," & begbal & ",0,0," & begbal & ",0," & variance & ",'',1,0,0,0,0,0,'Sales',0,0,0,0,0,0,0,0,0,0)"
                     cmdd.ExecuteNonQuery()
                 Next
                 transaction.Commit()
+                connection.Close()
+                Me.Cursor = Cursors.Default
                 MessageBox.Show("Inventory Created", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Information)
             End Using
         Catch ex As Exception
@@ -501,45 +337,41 @@ Public Class main
         End Try
     End Sub
     Private Sub btncreatenew_Click(sender As Object, e As EventArgs) Handles btncreatenew.Click
-        If checkCutOff("") Then
+        If checkCutOff() Then
             MessageBox.Show("Your account is already cut off", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
-            Exit Sub
-        End If
-
-        If login2.wrkgrp = "Cashier" Then
+        ElseIf login2.wrkgrp = "Cashier" Then
             MessageBox.Show("Access Denied", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
-            Exit Sub
-        End If
-
-        hideShow(panelsubinventorytransaction)
-
-        loadinvnum()
-        con.Open()
-        cmd = New SqlCommand("Select TOP 1 * from tblinvsum WHERE area='" & "Sales" & "' order by invsumid DESC", con)
-        Dim dt As New DataTable()
-        adptr.SelectCommand = cmd
-        adptr.Fill(dt)
-        con.Close()
-        If dt.Rows.Count = 0 Then
-            createNewInventory()
-            Exit Sub
-        End If
-        For Each row As DataRow In dt.Rows
-            If row("verify") = 1 Then
-                If row("invdate") = getSystemDate.ToString("MM/dd/yyyy") Then
-                    MsgBox("Creating new inventory failed! Inventory end for this day.", MsgBoxStyle.Critical, "")
-                    Me.Cursor = Cursors.Default
-                    Exit Sub
-                Else
-                    createNewInventory()
-                End If
+        Else
+            hideShow(panelsubinventorytransaction)
+            cc.con.Open()
+            cc.cmd = New SqlCommand("Select TOP 1 verify,invdate from tblinvsum WHERE area='Sales' order by invsumid DESC", cc.con)
+            Dim dt As New DataTable()
+            adptr.SelectCommand = cc.cmd
+            adptr.Fill(dt)
+            cc.con.Close()
+            If dt.Rows.Count = 0 Then
+                Control.CheckForIllegalCrossThreadCalls = False
+                Dim th As New Threading.Thread(AddressOf createNewInventory)
+                th.Start()
             Else
-                MessageBox.Show("Verify first", "", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                For Each row As DataRow In dt.Rows
+                    If row("verify") = 1 Then
+                        If row("invdate") = cc.getSystemDate.ToString("MM/dd/yyyy") Then
+                            MsgBox("Creating new inventory failed! Inventory end for this day.", MsgBoxStyle.Critical, "")
+                        Else
+                            Control.CheckForIllegalCrossThreadCalls = False
+                            Dim th As New Threading.Thread(AddressOf createNewInventory)
+                            th.Start()
+                        End If
+                    Else
+                        MessageBox.Show("Verify first", "", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                    End If
+                Next
             End If
-        Next
+        End If
     End Sub
 
-    Private Sub btnpendingsap_Click(sender As Object, e As EventArgs)
+    Private Sub btnpendingsap_Click(sender As Object, e As EventArgs) Handles btnpendingsap.Click
         If login2.wrkgrp = "Production" Or login2.wrkgrp = "Manager" Or login2.wrkgrp = "LC Accounting" Then
 
             hideShow(panelsubinventorytransaction)
@@ -578,7 +410,7 @@ Public Class main
         End If
     End Sub
 
-    Private Sub btninvsales_Click(sender As Object, e As EventArgs) Handles btninvsales.Click
+    Private Sub btninvsales_Click(sender As Object, e As EventArgs) Handles btninventory.Click
         If login2.wrkgrp = "Manager" Or login2.wrkgrp = "LC Accounting" Or login2.wrkgrp = "Cashier" Or login2.wrkgrp = "Administrator" Or login2.wrkgrp = "Sales" Then
 
             hideShow(panelsubinventorytransaction)
@@ -596,7 +428,7 @@ Public Class main
         End If
     End Sub
 
-    Private Sub btnadjinsales_Click(sender As Object, e As EventArgs) Handles btnadjinsales.Click
+    Private Sub btnadjinsales_Click(sender As Object, e As EventArgs) Handles btnadjustmentin.Click
         Try
             If login2.wrkgrp = "LC Accounting" Then
                 hideShow(panelsubinventorytransaction)
@@ -620,7 +452,7 @@ Public Class main
     Private Sub btnadjinprod_Click(sender As Object, e As EventArgs)
         If login2.wrkgrp = "LC Accounting" Then
 
-            If checkCutOff("Production") Then
+            If checkCutOff() Then
                 MessageBox.Show("Production account is already cut off", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
                 Exit Sub
             End If
@@ -647,7 +479,7 @@ Public Class main
     Private Sub btnadjoutprod_Click(sender As Object, e As EventArgs)
         If login2.wrkgrp = "LC Accounting" Then
 
-            If checkCutOff("Production") Then
+            If checkCutOff() Then
                 MessageBox.Show("Production account is already cut off", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
                 Exit Sub
             End If
@@ -678,7 +510,7 @@ Public Class main
         End If
     End Sub
 
-    Private Sub btnadjoutsales_Click(sender As Object, e As EventArgs) Handles btnadjoutsales.Click
+    Private Sub btnadjoutsales_Click(sender As Object, e As EventArgs) Handles btnadjustmentout.Click
         If login2.wrkgrp = "LC Accounting" Then
 
             'If checkCutOff("Sales") Then
@@ -722,28 +554,26 @@ Public Class main
         'End If
     End Sub
     Public Function getSystemDate() As DateTime
+        Dim dt As New DateTime()
         Try
-            Dim dt As New DateTime()
-            connect()
+            con.Open()
             cmd = New SqlCommand("SELECT GETDATE()", con)
             rdr = cmd.ExecuteReader()
-            While rdr.Read
+            If rdr.Read Then
                 dt = CDate(rdr(0).ToString)
-            End While
-            disconnect()
-            Return dt
+            End If
+            con.Close()
         Catch ex As SqlException
             If ex.Number = -2 Then
                 MessageBox.Show("Timeout Occurred", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
             End If
         Catch ex As Exception
             MessageBox.Show(ex.ToString)
-        Finally
-            disconnect()
         End Try
+        Return dt
     End Function
     Private Sub btnbranches_Click(sender As Object, e As EventArgs) Handles btnbranches.Click
-        If login2.wrkgrp = "Administrator" Then
+        If login2.wrkgrp = "Administrator" Or login2.wrkgrp = "LC Accounting" Then
             hideShow(panelsubsales)
 
             Dim f As New branches()
@@ -806,7 +636,7 @@ Public Class main
             Exit Sub
         End If
 
-        If checkCutOff("") Then
+        If checkCutOff() Then
             MessageBox.Show("Your account is already cut off", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
             Exit Sub
         End If
@@ -827,7 +657,7 @@ Public Class main
             Exit Sub
         End If
 
-        If checkCutOff("") Then
+        If checkCutOff() Then
             MessageBox.Show("Your account is already cut off", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
             Exit Sub
         End If
@@ -848,7 +678,7 @@ Public Class main
             Exit Sub
         End If
 
-        If checkCutOff("") Then
+        If checkCutOff() Then
             MessageBox.Show("Your account is already cut off", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
             Exit Sub
         End If
@@ -879,7 +709,7 @@ Public Class main
     End Sub
 
     Private Sub btnmancustomers_Click(sender As Object, e As EventArgs) Handles btnmancustomers.Click
-        If login2.wrkgrp = "Administrator" Then
+        If login2.wrkgrp = "Administrator" Or login2.wrkgrp = "LC Accounting" Then
             hideShow(panelsubsales)
 
             Dim f As New customers()
@@ -901,7 +731,7 @@ Public Class main
     Private Sub btnpos_Click(sender As Object, e As EventArgs) Handles btnpos.Click
 
         If login2.wrkgrp = "Sales" Or login2.wrkgrp = "Manager" Or login2.wrkgrp = "LC Accounting" Or login2.wrkgrp = "Administrator" Then
-            If checkCutOff("") Then
+            If checkCutOff() Then
                 MessageBox.Show("Your account is already cut off", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
                 Exit Sub
             End If
@@ -918,35 +748,16 @@ Public Class main
                         Me.Cursor = Cursors.Default
                         Exit Sub
                     Else
-                        Dim f As New mainmenu2()
-                        'f.cas = "Sales"
+                        Dim f As New mainmenu()
+                        f.cas = "Sales"
                         f.Show()
                     End If
                 Else
-                    Dim f As New mainmenu2()
-                    'f.cas = "Sales"
+                    Dim f As New mainmenu()
+                    f.cas = "Sales"
                     f.Show()
                 End If
             Next
-        Else
-            MessageBox.Show("Access Denied", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
-            Exit Sub
-        End If
-    End Sub
-
-    Private Sub btnluckymoney_Click(sender As Object, e As EventArgs) Handles btnluckymoney.Click
-        If login2.wrkgrp = "Manager" Or login2.wrkgrp = "Cashier" Then
-            Dim f As New drawerr()
-            If login2.wrkgrp = "Manager" Then
-                f.manager = "Manager"
-            Else
-                f.manager = login2.wrkgrp
-            End If
-            f.TopLevel = False
-            f.Dock = DockStyle.Fill
-            panelchildform.Controls.Add(f)
-            f.BringToFront()
-            f.Show()
         Else
             MessageBox.Show("Access Denied", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
             Exit Sub
@@ -1011,17 +822,17 @@ Public Class main
         End If
     End Sub
 
-    Private Sub btnpendingsapsales_Click(sender As Object, e As EventArgs) Handles btnpendingsapsales.Click
+    Private Sub btnpendingsapsales_Click(sender As Object, e As EventArgs)
         If login2.wrkgrp = "Sales" Or login2.wrkgrp = "Manager" Or login2.wrkgrp = "LC Accounting" Or login2.wrkgrp = "Administrator" Then
 
             hideShow(panelsubinventorytransaction)
 
-            Dim f As New pendingsap3
+            Dim f As New pendingsap2
             f.TopLevel = False
             f.Dock = DockStyle.Fill
             panelchildform.Controls.Add(f)
             f.BringToFront()
-            'f.manager = "Sales"
+            f.manager = "Sales"
             'f.loadTypes()
             f.Show()
         Else
@@ -1032,7 +843,7 @@ Public Class main
 
     Private Sub btnendingbalance_Click(sender As Object, e As EventArgs) Handles btnendingbalance.Click
         If login2.wrkgrp <> "Administrator" Or login2.wrkgrp <> "LC Accounting" Then
-            If checkCutOff("Sales") = False Then
+            If checkCutOff() = False Then
                 MessageBox.Show("Cut off first", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
                 Exit Sub
             End If
@@ -1053,14 +864,15 @@ Public Class main
     Public Function getID() As String
         Dim id As String = ""
         Dim date_ As New DateTime()
-        connect()
+        con.Open()
         cmd = New SqlCommand("Select TOP 1 invnum,datecreated from tblinvsum WHERE area='" & login2.wrkgrp & "' order by invsumid DESC", con)
         rdr = cmd.ExecuteReader()
         If rdr.Read() Then
             id = rdr("invnum")
             date_ = CDate(rdr("datecreated"))
         End If
-        disconnect()
+        con.Close()
+
         If date_.ToString("MM/dd/yyyy") = getSystemDate.ToString("MM/dd/yyyy") Then
             Return id
         Else
@@ -1088,7 +900,7 @@ Public Class main
             MessageBox.Show("Access Denied", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
         Else
 
-            If checkCutOff("Production") Then
+            If checkCutOff() Then
                 MessageBox.Show("Production account is already cut off", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
                 Exit Sub
             End If
@@ -1127,13 +939,13 @@ Public Class main
         End If
     End Sub
 
-    Private Sub btnconvsales_Click(sender As Object, e As EventArgs) Handles btnconvsales.Click
+    Private Sub btnconvsales_Click(sender As Object, e As EventArgs) Handles btnconversion.Click
         If login2.wrkgrp = "LC Accounting" Or login2.wrkgrp = "Production" Then
             MessageBox.Show("Access Denied", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
             Exit Sub
         End If
 
-        If checkCutOff("") Then
+        If checkCutOff() Then
             MessageBox.Show("Your account is already cut off", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
             Exit Sub
         End If
@@ -1152,29 +964,14 @@ Public Class main
         hideShow(panelsuborders)
     End Sub
 
-    Private Sub btnreprintorders_Click(sender As Object, e As EventArgs) Handles btnreprintorders.Click
-        If login2.wrkgrp = "Sales" Then
-            hideShow(panelsuborders)
-            Dim f As New reprintorder()
-            f.TopLevel = False
-            f.Dock = DockStyle.Fill
-            panelchildform.Controls.Add(f)
-            f.BringToFront()
-            f.Show()
-        Else
-            MessageBox.Show("Access Denied", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
-            Exit Sub
-        End If
-    End Sub
-
     Private Sub btnpendingorder_Click(sender As Object, e As EventArgs) Handles btnpendingorder.Click
         If login2.wrkgrp = "Cashier" Or login2.wrkgrp = "LC Accounting" Or login2.wrkgrp = "Administrator" Then
             hideShow(panelsuborders)
-            cashier2.TopLevel = False
-            cashier2.Dock = DockStyle.Fill
-            panelchildform.Controls.Add(cashier2)
-            cashier2.BringToFront()
-            cashier2.Show()
+            cashier.TopLevel = False
+            cashier.Dock = DockStyle.Fill
+            panelchildform.Controls.Add(cashier)
+            cashier.BringToFront()
+            cashier.Show()
         Else
             MessageBox.Show("Access Denied", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
             Exit Sub
@@ -1188,90 +985,6 @@ Public Class main
         panelchildform.Controls.Add(orders)
         orders.BringToFront()
         orders.Show()
-    End Sub
-
-    Private Sub btnmessages_Click(sender As Object, e As EventArgs) Handles btnmessages.Click
-        Try
-
-            connect()
-            Dim count As Integer = 0
-            cmd = New SqlCommand("select dateseen,messageid from tblmessages WHERE toid=(SELECT systemid FROM tblusers WHERE username='" & login2.username & "')", con)
-            adptr.SelectCommand = cmd
-            Dim dt As New DataTable()
-            adptr.Fill(dt)
-            disconnect()
-
-            For Each r0w As DataRow In dt.Rows
-                If IsDBNull(r0w("dateseen")) Then
-
-                    Dim serverDate As String = getSystemDate()
-
-                    con.Open()
-                    cmd = New SqlCommand("UPDATE tblmessages SET dateseen=@dateseen WHERE toid=(SELECT systemid FROM tblusers WHERE username='" & login2.username & "') AND messageid=@id", con)
-                    cmd.Parameters.AddWithValue("@dateseen", serverDate)
-                    cmd.Parameters.AddWithValue("@id", r0w("messageid"))
-                    cmd.ExecuteNonQuery()
-                    con.Close()
-                End If
-            Next
-
-            Dim f As New newsfeed()
-            f.manager = login2.wrkgrp
-            f.TopLevel = False
-            f.Dock = DockStyle.Fill
-            panelchildform.Controls.Add(f)
-            f.BringToFront()
-            f.Show()
-        Catch ex As SqlException
-            If ex.Number = -2 Then
-                MessageBox.Show("Timeout Occurred", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
-            End If
-        Catch ex As Exception
-            MessageBox.Show(ex.ToString)
-        End Try
-    End Sub
-
-    Public Sub loadNotifMessages()
-        Try
-            If login2.wrkgrp = "Manager" Then
-            Else
-                Dim count As Integer = 0
-                connect()
-                cmd = New SqlCommand("select dateseen from tblmessages WHERE toid=(SELECT systemid FROM tblusers WHERE username='" & login2.username & "')", con)
-                rdr = cmd.ExecuteReader
-                While rdr.Read
-                    If IsDBNull(rdr("dateseen")) Then
-                        count += 1
-                    End If
-                End While
-                disconnect()
-                If count <> 0 Then
-                    btnmessages.Text = "MESSAGES (" & count & ")"
-                Else
-                    btnmessages.Text = "MESSAGES"
-                End If
-            End If
-        Catch ex As SqlException
-            If ex.Number = -2 Then
-                MessageBox.Show("Timeout Occurred", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
-            End If
-        Catch ex As Exception
-            MessageBox.Show(ex.ToString)
-        End Try
-    End Sub
-
-    Private Sub btnendbalgraph_Click(sender As Object, e As EventArgs)
-        hideShow(panelsubinventorytransaction)
-        Dim frm As New dashboard_endbal()
-        frm.TopLevel = False
-        frm.Dock = DockStyle.Fill
-        panelchildform.Controls.Add(frm)
-        frm.BringToFront()
-        frm.Show()
-    End Sub
-
-    Private Sub btnlaku_Click(sender As Object, e As EventArgs) Handles btnlaku.Click
-        MessageBox.Show("Under Development", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
     End Sub
 
     Private Sub main_Activated(sender As Object, e As EventArgs) Handles MyBase.Activated
@@ -1301,7 +1014,7 @@ Public Class main
     End Sub
 
     Private Sub btndischarge_Click(sender As Object, e As EventArgs) Handles btndischarge.Click
-        If login2.wrkgrp = "Manager" Or login2.wrkgrp = "Administrator" Then
+        If login2.wrkgrp = "Administrator" Or login2.wrkgrp = "LC Accounting" Then
             hideShow(panelsubsales)
             Dim f As New discount()
 
@@ -1317,23 +1030,21 @@ Public Class main
     End Sub
 
     Private Sub Timer2_Tick(sender As Object, e As EventArgs) Handles Timer2.Tick
-        lbldatetime.Text = "Date: " & getSystemDate().ToString("MM/dd/yyyy") & " Time: " & getSystemDate.ToString("hh:mm:tt")
+        lbldatetime.Text = "Date: " & DateTime.Now.ToString("MM/dd/yyyy") & " Time: " & DateTime.Now.ToString("hh:mm tt")
     End Sub
 
     Private Sub btnprintreports_Click(sender As Object, e As EventArgs) Handles btnprintreports.Click
-        If login2.wrkgrp = "Administrator" Then
-            hideShow(panelsubreports)
-            Dim f As New reportss
-            f.TopLevel = False
-            f.Dock = DockStyle.Fill
-            panelchildform.Controls.Add(f)
-            f.BringToFront()
-            f.Show()
-        End If
+        hideShow(panelsubreports)
+        Dim f As New reportss
+        f.TopLevel = False
+        f.Dock = DockStyle.Fill
+        panelchildform.Controls.Add(f)
+        f.BringToFront()
+        f.Show()
     End Sub
 
-    Private Sub btncancel_Click(sender As Object, e As EventArgs) Handles btncancel.Click
-        If login2.wrkgrp = "LC Accounting" Then
+    Private Sub btncancel_Click(sender As Object, e As EventArgs) Handles btnrectrans.Click
+        If login2.wrkgrp = "LC Accounting" Or login2.wrkgrp = "Administrator" Then
             hideShow(panelsubreports)
             Dim f As New cancel_rectrans
             f.TopLevel = False
@@ -1347,32 +1058,26 @@ Public Class main
     End Sub
 
     Private Sub btncoffeeshop_Click(sender As Object, e As EventArgs) Handles btncoffeeshop.Click
-        hideShow(panelsubitems)
-        Dim f As New coffee_shop
-        f.TopLevel = False
-        f.Dock = DockStyle.Fill
-        panelchildform.Controls.Add(f)
-        f.BringToFront()
-        f.Show()
-    End Sub
-
-    Private Sub btnitemsummary_Click(sender As Object, e As EventArgs) Handles btnitemsummary.Click
-        If login2.wrkgrp = "Administrator" Then
-            hideShow(panelsubreports)
-            Dim f As New downloadss
+        If login2.wrkgrp = "LC Accounting" Or login2.wrkgrp = "Administrator" Then
+            hideShow(panelsubitems)
+            Dim f As New coffee_shop
             f.TopLevel = False
             f.Dock = DockStyle.Fill
             panelchildform.Controls.Add(f)
             f.BringToFront()
             f.Show()
+        Else
+            MessageBox.Show("Access Denied", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End If
     End Sub
 
     Private Sub btnsapupload_Click(sender As Object, e As EventArgs) Handles btnsapupload.Click
-        If login2.wrkgrp = "Administrator" Then
+        If login2.wrkgrp = "Administrator" Or login2.wrkgrp = "LC Accounting" Then
             Dim frm As New sap_uploading()
             frm.ShowDialog()
             hideShow(panelsubreports)
+        Else
+            MessageBox.Show("Access Denied", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End If
     End Sub
 
@@ -1420,7 +1125,7 @@ Public Class main
         panelchildform.Dock = DockStyle.Fill
     End Sub
 
-    Private Sub btnoverwriteshort_Click(sender As Object, e As EventArgs) Handles btnoverwriteshort.Click
+    Private Sub btnoverwriteshort_Click(sender As Object, e As EventArgs)
         If login2.wrkgrp = "Administrator" Then
             select_date.ShowDialog()
 
@@ -1454,16 +1159,61 @@ Public Class main
         Me.WindowState = FormWindowState.Minimized
     End Sub
 
-    Private Sub btnadjustment_Click(sender As Object, e As EventArgs) Handles btnadjustment.Click
-        If login2.wrkgrp = "Administrator" Then
-            Dim frm As New adjustment
-            frm.ShowDialog()
+    Private Sub btnRemarks_Click(sender As Object, e As EventArgs) Handles btnRemarks.Click
+        If login2.wrkgrp = "LC Accounting" Then
+            hideShow(panelsubreports)
+            Dim f As New EditRemarks
+            f.TopLevel = False
+            f.Dock = DockStyle.Fill
+            panelchildform.Controls.Add(f)
+            f.BringToFront()
+            f.Show()
         Else
             MessageBox.Show("Access Denied", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End If
     End Sub
 
-    Private Sub btnlock_Click(sender As Object, e As EventArgs) Handles btnlock.Click
-        panelchildform.Enabled = IIf(panelchildform.Enabled = True, False, True)
+    Private Sub btnReceivedSAP_Click(sender As Object, e As EventArgs) Handles btnReceivedSAP.Click
+        If login2.wrkgrp <> "Cashier" Or login2.wrkgrp <> "LC Accounting" Then
+            hideShow(panelsubreports)
+            Dim f As New receivedFromSAP
+            f.TopLevel = False
+            f.Dock = DockStyle.Fill
+            panelchildform.Controls.Add(f)
+            f.BringToFront()
+            f.Show()
+        Else
+            MessageBox.Show("Access Denied", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End If
+    End Sub
+
+    Private Sub btnCategory_Click_1(sender As Object, e As EventArgs) Handles btnCategory.Click
+        If login2.wrkgrp = "Administrator" Then
+            hideShow(panelsubitems)
+            Dim f As New categories()
+            panelchildform.Controls.Clear()
+            f.TopLevel = False
+            f.Dock = DockStyle.Fill
+            panelchildform.Controls.Add(f)
+            f.BringToFront()
+            f.Show()
+        Else
+            MessageBox.Show("Access Denied", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End If
+    End Sub
+
+    Private Sub btnPullOut_Click(sender As Object, e As EventArgs) Handles btnPullOut.Click
+        If login2.wrkgrp <> "Cashier" Then
+            hideShow(panelsubitems)
+            Dim f As New pullOut()
+            panelchildform.Controls.Clear()
+            f.TopLevel = False
+            f.Dock = DockStyle.Fill
+            panelchildform.Controls.Add(f)
+            f.BringToFront()
+            f.Show()
+        Else
+            MessageBox.Show("Access Denied", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End If
     End Sub
 End Class

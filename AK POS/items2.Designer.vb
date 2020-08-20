@@ -26,10 +26,22 @@ Partial Class items2
         Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(items2))
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.Panel7 = New System.Windows.Forms.Panel()
         Me.Label16 = New System.Windows.Forms.Label()
         Me.dgv = New System.Windows.Forms.DataGridView()
+        Me.itemid = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.category = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.itemcode = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.itemname = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.description = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.price = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.havedeposit = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.depositprice = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.btndis = New System.Windows.Forms.DataGridViewButtonColumn()
+        Me.btnedit = New System.Windows.Forms.DataGridViewButtonColumn()
+        Me.btnGenerateQRCode = New System.Windows.Forms.DataGridViewButtonColumn()
         Me.cmbcategory = New System.Windows.Forms.ComboBox()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.txtsearch = New System.Windows.Forms.TextBox()
@@ -45,19 +57,11 @@ Partial Class items2
         Me.btnnext = New System.Windows.Forms.Button()
         Me.btnprev = New System.Windows.Forms.Button()
         Me.Panel2 = New System.Windows.Forms.Panel()
-        Me.itemid = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.category = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.itemcode = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.itemname = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.description = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.price = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.havedeposit = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.depositprice = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.btndis = New System.Windows.Forms.DataGridViewButtonColumn()
-        Me.btnedit = New System.Windows.Forms.DataGridViewButtonColumn()
+        Me.spinner = New System.Windows.Forms.PictureBox()
         Me.Panel1.SuspendLayout()
         CType(Me.dgv, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel2.SuspendLayout()
+        CType(Me.spinner, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'Panel1
@@ -113,7 +117,7 @@ Partial Class items2
         DataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
         Me.dgv.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle1
         Me.dgv.ColumnHeadersHeight = 40
-        Me.dgv.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.itemid, Me.category, Me.itemcode, Me.itemname, Me.description, Me.price, Me.havedeposit, Me.depositprice, Me.btndis, Me.btnedit})
+        Me.dgv.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.itemid, Me.category, Me.itemcode, Me.itemname, Me.description, Me.price, Me.havedeposit, Me.depositprice, Me.btndis, Me.btnedit, Me.btnGenerateQRCode})
         DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
         DataGridViewCellStyle4.BackColor = System.Drawing.Color.White
         DataGridViewCellStyle4.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -129,6 +133,95 @@ Partial Class items2
         Me.dgv.RowHeadersVisible = False
         Me.dgv.Size = New System.Drawing.Size(992, 324)
         Me.dgv.TabIndex = 1
+        '
+        'itemid
+        '
+        Me.itemid.HeaderText = "ID"
+        Me.itemid.Name = "itemid"
+        Me.itemid.ReadOnly = True
+        Me.itemid.Visible = False
+        '
+        'category
+        '
+        Me.category.HeaderText = "Category"
+        Me.category.Name = "category"
+        Me.category.ReadOnly = True
+        '
+        'itemcode
+        '
+        Me.itemcode.HeaderText = "Code"
+        Me.itemcode.Name = "itemcode"
+        Me.itemcode.ReadOnly = True
+        '
+        'itemname
+        '
+        Me.itemname.HeaderText = "Item"
+        Me.itemname.Name = "itemname"
+        Me.itemname.ReadOnly = True
+        '
+        'description
+        '
+        Me.description.HeaderText = "Description"
+        Me.description.Name = "description"
+        Me.description.ReadOnly = True
+        '
+        'price
+        '
+        Me.price.HeaderText = "Price"
+        Me.price.Name = "price"
+        Me.price.ReadOnly = True
+        '
+        'havedeposit
+        '
+        Me.havedeposit.HeaderText = "Have Deposit"
+        Me.havedeposit.Name = "havedeposit"
+        Me.havedeposit.ReadOnly = True
+        Me.havedeposit.Visible = False
+        '
+        'depositprice
+        '
+        Me.depositprice.HeaderText = "Deposit Price"
+        Me.depositprice.Name = "depositprice"
+        Me.depositprice.ReadOnly = True
+        Me.depositprice.Visible = False
+        '
+        'btndis
+        '
+        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle2.BackColor = System.Drawing.Color.OrangeRed
+        DataGridViewCellStyle2.ForeColor = System.Drawing.Color.White
+        Me.btndis.DefaultCellStyle = DataGridViewCellStyle2
+        Me.btndis.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btndis.HeaderText = "Action"
+        Me.btndis.Name = "btndis"
+        Me.btndis.ReadOnly = True
+        Me.btndis.Text = "Continue/Discontinue"
+        Me.btndis.UseColumnTextForButtonValue = True
+        '
+        'btnedit
+        '
+        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(192, Byte), Integer))
+        DataGridViewCellStyle3.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle3.ForeColor = System.Drawing.Color.White
+        Me.btnedit.DefaultCellStyle = DataGridViewCellStyle3
+        Me.btnedit.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnedit.HeaderText = "Action"
+        Me.btnedit.Name = "btnedit"
+        Me.btnedit.ReadOnly = True
+        Me.btnedit.Text = "Edit"
+        Me.btnedit.UseColumnTextForButtonValue = True
+        '
+        'btnGenerateQRCode
+        '
+        Me.btnGenerateQRCode.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnGenerateQRCode.HeaderText = "Action"
+        Me.btnGenerateQRCode.Name = "btnGenerateQRCode"
+        Me.btnGenerateQRCode.ReadOnly = True
+        Me.btnGenerateQRCode.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic
+        Me.btnGenerateQRCode.Text = "QR Code"
+        Me.btnGenerateQRCode.ToolTipText = "Generate QR Code"
+        Me.btnGenerateQRCode.UseColumnTextForButtonValue = True
         '
         'cmbcategory
         '
@@ -318,83 +411,17 @@ Partial Class items2
         Me.Panel2.Size = New System.Drawing.Size(992, 25)
         Me.Panel2.TabIndex = 15
         '
-        'itemid
+        'spinner
         '
-        Me.itemid.HeaderText = "ID"
-        Me.itemid.Name = "itemid"
-        Me.itemid.ReadOnly = True
-        Me.itemid.Visible = False
-        '
-        'category
-        '
-        Me.category.HeaderText = "Category"
-        Me.category.Name = "category"
-        Me.category.ReadOnly = True
-        '
-        'itemcode
-        '
-        Me.itemcode.HeaderText = "Code"
-        Me.itemcode.Name = "itemcode"
-        Me.itemcode.ReadOnly = True
-        '
-        'itemname
-        '
-        Me.itemname.HeaderText = "Item"
-        Me.itemname.Name = "itemname"
-        Me.itemname.ReadOnly = True
-        '
-        'description
-        '
-        Me.description.HeaderText = "Description"
-        Me.description.Name = "description"
-        Me.description.ReadOnly = True
-        '
-        'price
-        '
-        Me.price.HeaderText = "Price"
-        Me.price.Name = "price"
-        Me.price.ReadOnly = True
-        '
-        'havedeposit
-        '
-        Me.havedeposit.HeaderText = "Have Deposit"
-        Me.havedeposit.Name = "havedeposit"
-        Me.havedeposit.ReadOnly = True
-        Me.havedeposit.Visible = False
-        '
-        'depositprice
-        '
-        Me.depositprice.HeaderText = "Deposit Price"
-        Me.depositprice.Name = "depositprice"
-        Me.depositprice.ReadOnly = True
-        Me.depositprice.Visible = False
-        '
-        'btndis
-        '
-        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle2.BackColor = System.Drawing.Color.OrangeRed
-        DataGridViewCellStyle2.ForeColor = System.Drawing.Color.White
-        Me.btndis.DefaultCellStyle = DataGridViewCellStyle2
-        Me.btndis.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btndis.HeaderText = "Action"
-        Me.btndis.Name = "btndis"
-        Me.btndis.ReadOnly = True
-        Me.btndis.Text = "Continue/Discontinue"
-        Me.btndis.UseColumnTextForButtonValue = True
-        '
-        'btnedit
-        '
-        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(192, Byte), Integer))
-        DataGridViewCellStyle3.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle3.ForeColor = System.Drawing.Color.White
-        Me.btnedit.DefaultCellStyle = DataGridViewCellStyle3
-        Me.btnedit.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnedit.HeaderText = "Action"
-        Me.btnedit.Name = "btnedit"
-        Me.btnedit.ReadOnly = True
-        Me.btnedit.Text = "Edit"
-        Me.btnedit.UseColumnTextForButtonValue = True
+        Me.spinner.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.spinner.Image = CType(resources.GetObject("spinner.Image"), System.Drawing.Image)
+        Me.spinner.Location = New System.Drawing.Point(502, 67)
+        Me.spinner.Name = "spinner"
+        Me.spinner.Size = New System.Drawing.Size(140, 89)
+        Me.spinner.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.spinner.TabIndex = 17
+        Me.spinner.TabStop = False
         '
         'items2
         '
@@ -402,6 +429,7 @@ Partial Class items2
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.White
         Me.ClientSize = New System.Drawing.Size(1107, 639)
+        Me.Controls.Add(Me.spinner)
         Me.Controls.Add(Me.Panel2)
         Me.Controls.Add(Me.btnnext)
         Me.Controls.Add(Me.btnprev)
@@ -431,6 +459,7 @@ Partial Class items2
         CType(Me.dgv, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Panel2.ResumeLayout(False)
         Me.Panel2.PerformLayout()
+        CType(Me.spinner, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -465,4 +494,6 @@ Partial Class items2
     Friend WithEvents depositprice As DataGridViewTextBoxColumn
     Friend WithEvents btndis As DataGridViewButtonColumn
     Friend WithEvents btnedit As DataGridViewButtonColumn
+    Friend WithEvents btnGenerateQRCode As DataGridViewButtonColumn
+    Friend WithEvents spinner As PictureBox
 End Class

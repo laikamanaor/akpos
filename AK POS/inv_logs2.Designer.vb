@@ -22,16 +22,16 @@ Partial Class inv_logs2
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle9 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle10 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle11 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle12 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.Panel2 = New System.Windows.Forms.Panel()
         Me.Panel3 = New System.Windows.Forms.Panel()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.btnadjin = New System.Windows.Forms.Button()
         Me.btnActualEndingBalance = New System.Windows.Forms.Button()
-        Me.btnPullOut = New System.Windows.Forms.Button()
+        Me.btnAdjustmentOut = New System.Windows.Forms.Button()
         Me.btnTransfer = New System.Windows.Forms.Button()
         Me.btnreceived = New System.Windows.Forms.Button()
         Me.btnSearch = New System.Windows.Forms.Button()
@@ -58,6 +58,7 @@ Partial Class inv_logs2
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.Panel4 = New System.Windows.Forms.Panel()
         Me.lblitemscount = New System.Windows.Forms.Label()
+        Me.btnPullOut = New System.Windows.Forms.Button()
         Me.Panel2.SuspendLayout()
         CType(Me.dgvtrans, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.dgvitems, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -128,21 +129,21 @@ Partial Class inv_logs2
         Me.btnActualEndingBalance.Text = "Actual Ending Balance"
         Me.btnActualEndingBalance.UseVisualStyleBackColor = False
         '
-        'btnPullOut
+        'btnAdjustmentOut
         '
-        Me.btnPullOut.BackColor = System.Drawing.Color.Firebrick
-        Me.btnPullOut.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.btnPullOut.FlatAppearance.BorderColor = System.Drawing.Color.IndianRed
-        Me.btnPullOut.FlatAppearance.BorderSize = 0
-        Me.btnPullOut.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnPullOut.Font = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnPullOut.ForeColor = System.Drawing.Color.White
-        Me.btnPullOut.Location = New System.Drawing.Point(717, 57)
-        Me.btnPullOut.Name = "btnPullOut"
-        Me.btnPullOut.Size = New System.Drawing.Size(193, 29)
-        Me.btnPullOut.TabIndex = 28
-        Me.btnPullOut.Text = "Adjustment Out Item"
-        Me.btnPullOut.UseVisualStyleBackColor = False
+        Me.btnAdjustmentOut.BackColor = System.Drawing.Color.Firebrick
+        Me.btnAdjustmentOut.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btnAdjustmentOut.FlatAppearance.BorderColor = System.Drawing.Color.IndianRed
+        Me.btnAdjustmentOut.FlatAppearance.BorderSize = 0
+        Me.btnAdjustmentOut.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnAdjustmentOut.Font = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnAdjustmentOut.ForeColor = System.Drawing.Color.White
+        Me.btnAdjustmentOut.Location = New System.Drawing.Point(717, 57)
+        Me.btnAdjustmentOut.Name = "btnAdjustmentOut"
+        Me.btnAdjustmentOut.Size = New System.Drawing.Size(193, 29)
+        Me.btnAdjustmentOut.TabIndex = 28
+        Me.btnAdjustmentOut.Text = "Adjustment Out Item"
+        Me.btnAdjustmentOut.UseVisualStyleBackColor = False
         '
         'btnTransfer
         '
@@ -213,24 +214,24 @@ Partial Class inv_logs2
         Me.dgvtrans.BackgroundColor = System.Drawing.Color.White
         Me.dgvtrans.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgvtrans.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.[Single]
-        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(CType(CType(218, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(28, Byte), Integer))
-        DataGridViewCellStyle1.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle1.ForeColor = System.Drawing.Color.White
-        DataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.dgvtrans.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle9.BackColor = System.Drawing.Color.FromArgb(CType(CType(218, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(28, Byte), Integer))
+        DataGridViewCellStyle9.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle9.ForeColor = System.Drawing.Color.White
+        DataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.dgvtrans.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle9
         Me.dgvtrans.ColumnHeadersHeight = 40
         Me.dgvtrans.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.transnum, Me.fromreceived, Me.toreceived, Me.processedby, Me.time})
-        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle2.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.dgvtrans.DefaultCellStyle = DataGridViewCellStyle2
+        DataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle10.BackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle10.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle10.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle10.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.dgvtrans.DefaultCellStyle = DataGridViewCellStyle10
         Me.dgvtrans.EnableHeadersVisualStyles = False
         Me.dgvtrans.GridColor = System.Drawing.Color.Black
         Me.dgvtrans.Location = New System.Drawing.Point(22, 191)
@@ -339,24 +340,24 @@ Partial Class inv_logs2
         Me.dgvitems.BackgroundColor = System.Drawing.Color.White
         Me.dgvitems.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgvitems.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.[Single]
-        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(CType(CType(218, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(28, Byte), Integer))
-        DataGridViewCellStyle3.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle3.ForeColor = System.Drawing.Color.White
-        DataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.dgvitems.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle3
+        DataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle11.BackColor = System.Drawing.Color.FromArgb(CType(CType(218, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(28, Byte), Integer))
+        DataGridViewCellStyle11.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle11.ForeColor = System.Drawing.Color.White
+        DataGridViewCellStyle11.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle11.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.dgvitems.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle11
         Me.dgvitems.ColumnHeadersHeight = 40
         Me.dgvitems.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.itemname, Me.category, Me.quantity})
-        DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle4.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.dgvitems.DefaultCellStyle = DataGridViewCellStyle4
+        DataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle12.BackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle12.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle12.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle12.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle12.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle12.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.dgvitems.DefaultCellStyle = DataGridViewCellStyle12
         Me.dgvitems.EnableHeadersVisualStyles = False
         Me.dgvitems.GridColor = System.Drawing.Color.Black
         Me.dgvitems.Location = New System.Drawing.Point(564, 191)
@@ -479,12 +480,29 @@ Partial Class inv_logs2
         Me.lblitemscount.TabIndex = 45
         Me.lblitemscount.Text = "Items(0)"
         '
+        'btnPullOut
+        '
+        Me.btnPullOut.BackColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer))
+        Me.btnPullOut.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btnPullOut.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(128, Byte), Integer))
+        Me.btnPullOut.FlatAppearance.BorderSize = 0
+        Me.btnPullOut.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnPullOut.Font = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnPullOut.ForeColor = System.Drawing.Color.White
+        Me.btnPullOut.Location = New System.Drawing.Point(22, 89)
+        Me.btnPullOut.Name = "btnPullOut"
+        Me.btnPullOut.Size = New System.Drawing.Size(147, 29)
+        Me.btnPullOut.TabIndex = 47
+        Me.btnPullOut.Text = "Pull Out"
+        Me.btnPullOut.UseVisualStyleBackColor = False
+        '
         'inv_logs2
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.White
         Me.ClientSize = New System.Drawing.Size(934, 524)
+        Me.Controls.Add(Me.btnPullOut)
         Me.Controls.Add(Me.Panel4)
         Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.btnprev)
@@ -502,7 +520,7 @@ Partial Class inv_logs2
         Me.Controls.Add(Me.btnadjin)
         Me.Controls.Add(Me.btnActualEndingBalance)
         Me.Controls.Add(Me.Panel2)
-        Me.Controls.Add(Me.btnPullOut)
+        Me.Controls.Add(Me.btnAdjustmentOut)
         Me.Controls.Add(Me.btnreceived)
         Me.Controls.Add(Me.btnTransfer)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
@@ -527,7 +545,7 @@ Partial Class inv_logs2
     Friend WithEvents Label1 As Label
     Friend WithEvents btnadjin As Button
     Friend WithEvents btnActualEndingBalance As Button
-    Friend WithEvents btnPullOut As Button
+    Friend WithEvents btnAdjustmentOut As Button
     Friend WithEvents btnTransfer As Button
     Friend WithEvents btnreceived As Button
     Friend WithEvents btnSearch As Button
@@ -554,4 +572,5 @@ Partial Class inv_logs2
     Friend WithEvents Panel1 As Panel
     Friend WithEvents Panel4 As Panel
     Friend WithEvents lblitemscount As Label
+    Friend WithEvents btnPullOut As Button
 End Class

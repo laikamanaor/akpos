@@ -24,10 +24,15 @@ Partial Class cancel_rectrans
     Private Sub InitializeComponent()
         Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.dgvtrans = New System.Windows.Forms.DataGridView()
+        Me.invnum = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.transnum = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.typez = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.processed_by = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.btncancel = New System.Windows.Forms.DataGridViewButtonColumn()
         Me.dgvitems = New System.Windows.Forms.DataGridView()
         Me.itemname = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Category = New System.Windows.Forms.DataGridViewTextBoxColumn()
@@ -50,12 +55,6 @@ Partial Class cancel_rectrans
         Me.Label2 = New System.Windows.Forms.Label()
         Me.btnprev = New System.Windows.Forms.Button()
         Me.btnnext = New System.Windows.Forms.Button()
-        Me.TextBox1 = New System.Windows.Forms.TextBox()
-        Me.invnum = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.transnum = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.typez = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.processed_by = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.btncancel = New System.Windows.Forms.DataGridViewButtonColumn()
         CType(Me.dgvtrans, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.dgvitems, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel1.SuspendLayout()
@@ -102,6 +101,45 @@ Partial Class cancel_rectrans
         Me.dgvtrans.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
         Me.dgvtrans.Size = New System.Drawing.Size(789, 205)
         Me.dgvtrans.TabIndex = 0
+        '
+        'invnum
+        '
+        Me.invnum.HeaderText = "Inv. #"
+        Me.invnum.Name = "invnum"
+        Me.invnum.ReadOnly = True
+        '
+        'transnum
+        '
+        Me.transnum.HeaderText = "Reference #"
+        Me.transnum.Name = "transnum"
+        Me.transnum.ReadOnly = True
+        '
+        'typez
+        '
+        Me.typez.HeaderText = "Type"
+        Me.typez.Name = "typez"
+        Me.typez.ReadOnly = True
+        '
+        'processed_by
+        '
+        Me.processed_by.HeaderText = "Processed By"
+        Me.processed_by.Name = "processed_by"
+        Me.processed_by.ReadOnly = True
+        '
+        'btncancel
+        '
+        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle2.BackColor = System.Drawing.Color.Firebrick
+        DataGridViewCellStyle2.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle2.ForeColor = System.Drawing.Color.White
+        Me.btncancel.DefaultCellStyle = DataGridViewCellStyle2
+        Me.btncancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btncancel.HeaderText = "Action"
+        Me.btncancel.Name = "btncancel"
+        Me.btncancel.ReadOnly = True
+        Me.btncancel.Text = "Cancel"
+        Me.btncancel.ToolTipText = "Cancel this transaction"
+        Me.btncancel.UseColumnTextForButtonValue = True
         '
         'dgvitems
         '
@@ -379,59 +417,12 @@ Partial Class cancel_rectrans
         Me.btnnext.Text = "Next"
         Me.btnnext.UseVisualStyleBackColor = False
         '
-        'TextBox1
-        '
-        Me.TextBox1.Location = New System.Drawing.Point(411, 68)
-        Me.TextBox1.Name = "TextBox1"
-        Me.TextBox1.Size = New System.Drawing.Size(95, 20)
-        Me.TextBox1.TabIndex = 29
-        '
-        'invnum
-        '
-        Me.invnum.HeaderText = "Inv. #"
-        Me.invnum.Name = "invnum"
-        Me.invnum.ReadOnly = True
-        '
-        'transnum
-        '
-        Me.transnum.HeaderText = "Reference #"
-        Me.transnum.Name = "transnum"
-        Me.transnum.ReadOnly = True
-        '
-        'typez
-        '
-        Me.typez.HeaderText = "Type"
-        Me.typez.Name = "typez"
-        Me.typez.ReadOnly = True
-        '
-        'processed_by
-        '
-        Me.processed_by.HeaderText = "Processed By"
-        Me.processed_by.Name = "processed_by"
-        Me.processed_by.ReadOnly = True
-        '
-        'btncancel
-        '
-        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle2.BackColor = System.Drawing.Color.Firebrick
-        DataGridViewCellStyle2.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle2.ForeColor = System.Drawing.Color.White
-        Me.btncancel.DefaultCellStyle = DataGridViewCellStyle2
-        Me.btncancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btncancel.HeaderText = "Action"
-        Me.btncancel.Name = "btncancel"
-        Me.btncancel.ReadOnly = True
-        Me.btncancel.Text = "Cancel"
-        Me.btncancel.ToolTipText = "Cancel this transaction"
-        Me.btncancel.UseColumnTextForButtonValue = True
-        '
         'cancel_rectrans
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.White
         Me.ClientSize = New System.Drawing.Size(866, 528)
-        Me.Controls.Add(Me.TextBox1)
         Me.Controls.Add(Me.btnprev)
         Me.Controls.Add(Me.btnnext)
         Me.Controls.Add(Me.Panel3)
@@ -491,7 +482,6 @@ Partial Class cancel_rectrans
     Friend WithEvents Label2 As Label
     Friend WithEvents btnprev As Button
     Friend WithEvents btnnext As Button
-    Friend WithEvents TextBox1 As TextBox
     Friend WithEvents invnum As DataGridViewTextBoxColumn
     Friend WithEvents transnum As DataGridViewTextBoxColumn
     Friend WithEvents typez As DataGridViewTextBoxColumn

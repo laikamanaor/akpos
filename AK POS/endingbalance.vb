@@ -605,12 +605,11 @@ Public Class endingbalance
     End Function
     Public Sub getARNum(ByVal typee As String, ByVal formatsu As String)
         Try
-            Dim temp As String = "1", area_format As String = "", selectcount_result As Integer = 0
+            Dim temp As String = "0", area_format As String = "", selectcount_result As Integer = 0
             con.Open()
-
-            cmd = New SqlCommand("Select COUNT(*)  from tblars1 WHERE area='Sales' AND type=@type;", con)
+            cmd = New SqlCommand("SELECT ISNULL(MAX(CAST(REPLACE(transnum,SUBSTRING(transnum,1,20),'') AS INT)),0)+1 FROM tblars1 WHERE name ='Short' AND type=@type;", con)
             cmd.Parameters.AddWithValue("@type", typee)
-            selectcount_result = cmd.ExecuteScalar() + 1
+            selectcount_result = cmd.ExecuteScalar()
             con.Close()
 
             Dim branchcode As String = ""
@@ -621,7 +620,6 @@ Public Class endingbalance
                 branchcode = rdr("branchcode")
             End If
             con.Close()
-
 
             Dim format As String = "SALAR" & formatsu & " - "
             area_format = format & branchcode & " - "

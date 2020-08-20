@@ -12,7 +12,7 @@ Public Class cashier
     Dim adpay As Integer = 0
     Dim servicetypeName As String = ""
     Dim servicetypeVal As Boolean = False
-    Dim rowcountnames As Integer = 0, ap_result
+    Dim rowcountnames As Integer = 0, ap_result As Double = 0.0
     Dim type_holder As String = ""
     Public Function decryptConString() As String
         Dim base64encoded As String = File.ReadAllText("connectionstring.txt")
@@ -143,7 +143,7 @@ Public Class cashier
         For Each wordd In wordz
             If Not String.IsNullOrEmpty(wordd) Then
                 con.Open()
-                cmd = New SqlCommand("SELECT amount FROM tbladvancepayment WHERE apnum=@apnum AND type='Advance Payment' AND status='Active';", con)
+                cmd = New SqlCommand("SELECT amount FROM tbladvancepayment WHERE apnum=@apnum AND type='Deposit' AND status='Active';", con)
                 cmd.Parameters.AddWithValue("@apnum", wordd)
                 rdr = cmd.ExecuteReader
                 While rdr.Read
@@ -418,20 +418,6 @@ Public Class cashier
         lblchange.Text = "0.00"
     End Sub
 
-    Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button2.Click
-        If checkCutOff() Then
-            MessageBox.Show("Your account is already cut off", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
-        Else
-
-            If lblordernum.Text = "N/A" Then
-                MessageBox.Show("Select order number first", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                Exit Sub
-            End If
-
-            submit("")
-        End If
-    End Sub
-
 
     Private Sub chckboxadvancepayment_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chckboxadvancepayment.CheckedChanged
         If chckboxadvancepayment.Checked Then
@@ -661,18 +647,6 @@ Public Class cashier
     End Sub
 
     Private Sub cmbtypee_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbtypee.SelectedIndexChanged
-        load_orders()
-    End Sub
-
-    Private Sub btncancel_Click(sender As Object, e As EventArgs) Handles btncancel.Click
-
-        'If checkCutOff() Then
-        '    MessageBox.Show("Your account is already cut off", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
-        '    Exit Sub
-        'End If
-
-        Dim frm As New cancel_tr()
-        frm.ShowDialog()
         load_orders()
     End Sub
 

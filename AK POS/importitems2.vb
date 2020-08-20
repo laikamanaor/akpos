@@ -3,8 +3,8 @@ Imports System.Data.OleDb
 Imports System.Data.SqlClient
 Imports Excel = Microsoft.Office.Interop.Excel
 Public Class importitems2
-
-    Dim strconn As String = login.ss
+    Dim cc As New connection_class()
+    Dim strconn As String = cc.conString
     Dim conn As New SqlConnection(strconn)
     Dim cmdd As SqlCommand
     Dim rdrr As SqlDataReader

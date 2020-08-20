@@ -30,14 +30,15 @@ Partial Class cutoff
         Me.btnclose = New System.Windows.Forms.Button()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.dgvusers = New System.Windows.Forms.DataGridView()
-        Me.workgroup = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.btncutoff = New System.Windows.Forms.DataGridViewButtonColumn()
         Me.Panel2 = New System.Windows.Forms.Panel()
         Me.Panel3 = New System.Windows.Forms.Panel()
         Me.Panel4 = New System.Windows.Forms.Panel()
         Me.lblerror = New System.Windows.Forms.Label()
         Me.cmbstat = New System.Windows.Forms.ComboBox()
         Me.btnremove = New System.Windows.Forms.Button()
+        Me.workgroup = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.datee = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.btncutoff = New System.Windows.Forms.DataGridViewButtonColumn()
         Me.Panel1.SuspendLayout()
         CType(Me.dgvusers, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -112,7 +113,7 @@ Partial Class cutoff
         DataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
         Me.dgvusers.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle1
         Me.dgvusers.ColumnHeadersHeight = 40
-        Me.dgvusers.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.workgroup, Me.btncutoff})
+        Me.dgvusers.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.workgroup, Me.datee, Me.btncutoff})
         DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
         DataGridViewCellStyle3.BackColor = System.Drawing.Color.White
         DataGridViewCellStyle3.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -128,26 +129,6 @@ Partial Class cutoff
         Me.dgvusers.RowHeadersVisible = False
         Me.dgvusers.Size = New System.Drawing.Size(534, 250)
         Me.dgvusers.TabIndex = 1
-        '
-        'workgroup
-        '
-        Me.workgroup.HeaderText = "Workgroup"
-        Me.workgroup.Name = "workgroup"
-        Me.workgroup.ReadOnly = True
-        '
-        'btncutoff
-        '
-        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(0, Byte), Integer))
-        DataGridViewCellStyle2.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle2.ForeColor = System.Drawing.Color.White
-        Me.btncutoff.DefaultCellStyle = DataGridViewCellStyle2
-        Me.btncutoff.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btncutoff.HeaderText = "Action"
-        Me.btncutoff.Name = "btncutoff"
-        Me.btncutoff.ReadOnly = True
-        Me.btncutoff.Text = "Cut Off"
-        Me.btncutoff.UseColumnTextForButtonValue = True
         '
         'Panel2
         '
@@ -219,7 +200,34 @@ Partial Class cutoff
         Me.btnremove.Size = New System.Drawing.Size(133, 23)
         Me.btnremove.TabIndex = 9
         Me.btnremove.Text = "Remove Cut Off"
-        Me.btnremove.UseVisualStyleBackColor = False
+        Me.btnremove.UseVisualStyleBackColor = True
+        '
+        'workgroup
+        '
+        Me.workgroup.HeaderText = "Workgroup"
+        Me.workgroup.Name = "workgroup"
+        Me.workgroup.ReadOnly = True
+        '
+        'datee
+        '
+        Me.datee.HeaderText = "Date"
+        Me.datee.Name = "datee"
+        Me.datee.ReadOnly = True
+        Me.datee.Visible = False
+        '
+        'btncutoff
+        '
+        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(0, Byte), Integer))
+        DataGridViewCellStyle2.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle2.ForeColor = System.Drawing.Color.White
+        Me.btncutoff.DefaultCellStyle = DataGridViewCellStyle2
+        Me.btncutoff.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btncutoff.HeaderText = "Action"
+        Me.btncutoff.Name = "btncutoff"
+        Me.btncutoff.ReadOnly = True
+        Me.btncutoff.Text = "Cut Off"
+        Me.btncutoff.UseColumnTextForButtonValue = True
         '
         'cutoff
         '
@@ -259,8 +267,9 @@ Partial Class cutoff
     Friend WithEvents Panel4 As Panel
     Friend WithEvents lblerror As Label
     Friend WithEvents cmbstat As ComboBox
-    Friend WithEvents workgroup As DataGridViewTextBoxColumn
-    Friend WithEvents btncutoff As DataGridViewButtonColumn
     Friend WithEvents btnremove As Button
     Friend WithEvents Panel5 As Panel
+    Friend WithEvents workgroup As DataGridViewTextBoxColumn
+    Friend WithEvents datee As DataGridViewTextBoxColumn
+    Friend WithEvents btncutoff As DataGridViewButtonColumn
 End Class

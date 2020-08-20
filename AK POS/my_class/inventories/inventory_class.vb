@@ -121,7 +121,6 @@ Public Class inventory_class
         Dim result As Integer = 0, rdr As SqlClient.SqlDataReader
         cc.con.Open()
         cc.cmd = New SqlClient.SqlCommand("SELECT DISTINCT transaction_number FROM vInventoryLogs WHERE transaction_number LIKE '% " & vtransnum & "%' AND CAST(date AS date)=@date AND type=@type AND status='Completed'", cc.con)
-        'cc.cmd.Parameters.AddWithValue("@transnum", vtransnum)
         cc.cmd.Parameters.AddWithValue("@date", vdatecreated)
         cc.cmd.Parameters.AddWithValue("@type", vtype)
         rdr = cc.cmd.ExecuteReader
@@ -153,6 +152,20 @@ Public Class inventory_class
         adptr.SelectCommand = cc.cmd
         adptr.Fill(result)
         cc.con.Close()
+        Return result
+    End Function
+
+    Public Function getInvNum() As String
+        Dim result As String = ""
+        Try
+            cc.con.Open()
+            cc.cmd = New SqlClient.SqlCommand("SELECT dbo.returnInvNum()", cc.con)
+            result = cc.cmd.ExecuteScalar
+            cc.con.Close()
+        Catch ex As Exception
+            MessageBox.Show(ex.ToString)
+        End Try
+        result = IIf(String.IsNullOrEmpty(result), "N/A", result)
         Return result
     End Function
 

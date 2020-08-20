@@ -39,7 +39,14 @@ Public Class orders
 
     Public Sub loadTrans()
         Try
-            Dim query As String = "SELECT ISNULL(ordernum,0) [ordernum],ISNULL(amtdue,0) [amtdue],ISNULL(tendertype,'') [tendertype],ISNULL(servicetype, '') [servicetype] FROM tbltransaction2 WHERE area='Sales' AND status2=@status2 AND CAST(datecreated as date)=@datee", status2 As String = IIf(btnlogs.ForeColor = Color.Black, "Paid", "Void")
+            Dim query As String = "SELECT ISNULL(ordernum,0) [ordernum],ISNULL(amtdue,0) [amtdue],ISNULL(tendertype,'') [tendertype],ISNULL(servicetype, '') [servicetype] FROM tbltransaction2 WHERE area='Sales' AND status2=@status2 AND CAST(datecreated as date)=@datee", status2 As String = ""
+            If btnlogs.ForeColor = Color.Black Then
+                status2 = "Paid"
+            ElseIf btnvoids.ForeColor = Color.Black Then
+                status2 = "Void"
+            ElseIf btncancellogs.ForeColor = Color.Black Then
+                status2 = "Cancel"
+            End If
 
             dgvorders.Rows.Clear()
             dgvitems.Rows.Clear()
@@ -88,6 +95,7 @@ Public Class orders
         lbldate.Text = "TIME_NOT_FOUND"
         btnlogs.ForeColor = Color.Black
         btnvoids.ForeColor = Color.White
+        btncancellogs.ForeColor = Color.White
         loadTrans()
     End Sub
 
@@ -95,6 +103,7 @@ Public Class orders
         lbldate.Text = "TIME_NOT_FOUND"
         btnvoids.ForeColor = Color.Black
         btnlogs.ForeColor = Color.White
+        btncancellogs.ForeColor = Color.White
         loadTrans()
     End Sub
 
@@ -168,5 +177,19 @@ Public Class orders
         End While
         con.Close()
         lblitemscount.Text = "ITEMS (" & dgvitems.RowCount.ToString & ")"
+    End Sub
+
+    Private Sub btncanceltransaction_Click(sender As Object, e As EventArgs) Handles btncanceltransaction.Click
+        Dim frm As New cancel_tr()
+        frm.ShowDialog()
+        loadTrans()
+    End Sub
+
+    Private Sub btncancellogs_Click(sender As Object, e As EventArgs) Handles btncancellogs.Click
+        lbldate.Text = "TIME_NOT_FOUND"
+        btnvoids.ForeColor = Color.White
+        btnlogs.ForeColor = Color.White
+        btncancellogs.ForeColor = Color.Black
+        loadTrans()
     End Sub
 End Class

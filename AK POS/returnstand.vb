@@ -148,23 +148,6 @@ Public Class returnstand
         End If
     End Sub
 
-    Private Sub returnstand_FormClosing(ByVal sender As System.Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
-        Dim a As String = MsgBox("Are you sure you want to close Form?", MsgBoxStyle.Question + MsgBoxStyle.YesNo, "")
-        If a = vbYes Then
-            If mainmenu.counters = True Then
-                mainmenu.counters = False
-                mainmenu.Show()
-                Me.Dispose()
-                Me.Cursor = Cursors.Default
-                Exit Sub
-            End If
-            'mdiform.Show()
-            Me.Dispose()
-        Else
-            e.Cancel = True
-        End If
-    End Sub
-
     Private Sub btnreturns_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnreturns.Click
         loadItems("Used", "Active")
 
@@ -330,6 +313,9 @@ Public Class returnstand
             ElseIf tamount.Text = "" Then
                 MessageBox.Show("Amount is empty", "", MessageBoxButtons.OK, MessageBoxIcon.Error)
                 Exit Sub
+            ElseIf Not IsNumeric(tamount.Text) Then
+                MessageBox.Show("Amount must be a number", "", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                Exit Sub
             ElseIf tname.Text.Length < 2 Then
                 MessageBox.Show("Name is too short", "", MessageBoxButtons.OK, MessageBoxIcon.Error)
                 Exit Sub
@@ -367,20 +353,8 @@ Public Class returnstand
             con.Close()
         End Try
     End Sub
-    Public Sub amt_txtchanged(ByVal tamount As TextBox)
-        Try
-            Dim am As Double = CDbl(tamount.Text)
-            tamount.Text = am.ToString("n2")
-        Catch ex As Exception
-
-        End Try
-    End Sub
     Private Sub btnadd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnadd.Click
         add(txtboxname, txtboxamount, lblap, cmbstatus, dgv, lblerror)
-    End Sub
-
-    Private Sub txtboxamount_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtboxamount.TextChanged
-        amt_txtchanged(txtboxamount)
     End Sub
     Public Sub cmbstatus_selectedindexchanged(ByVal cmstatus As ComboBox, ByVal grd As DataGridView, ByVal columnNameReprint As String, ByVal err As Label, ByVal tname As TextBox, ByVal lbltype As Label, ByVal columnNameCancel As String)
 
@@ -474,10 +448,6 @@ Public Class returnstand
 
     Private Sub txtname_Leave(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtname.Leave
         txtname_leave(txtname)
-    End Sub
-
-    Private Sub txtamount_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtamount.TextChanged
-        amt_txtchanged(txtamount)
     End Sub
 
     Private Sub cmbtype2_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
@@ -606,6 +576,8 @@ Public Class returnstand
             btnadd2.Visible = False
             dgv2.Columns("reprint2").Visible = False
         End If
+        dtReturn.MaxDate = getSystemDate()
+        dtReturn.Value = getSystemDate()
     End Sub
     Public Sub connect()
         If con.State <> ConnectionState.Open Then
@@ -669,6 +641,24 @@ Public Class returnstand
             TabPage1.Text = "Return Item (" & return_result & ")"
         Else
             TabPage1.Text = "Return Item"
+        End If
+    End Sub
+
+    Private Sub dtReturn_ValueChanged(sender As Object, e As EventArgs) Handles dtReturn.ValueChanged
+        Dim status As String = IIf(btnreturns.ForeColor = Color.Black, "Active", "Used")
+        Dim status2 As String = IIf(btnhistory.ForeColor = Color.Black, "Active", "Used")
+        loadItems(status, status2)
+    End Sub
+
+    Private Sub txtname_KeyDown(sender As Object, e As KeyEventArgs) Handles txtname.KeyDown, txtamount.KeyDown
+        If e.KeyCode = Keys.Enter Then
+            btnadd2.PerformClick()
+        End If
+    End Sub
+
+    Private Sub txtboxname_KeyDown(sender As Object, e As KeyEventArgs) Handles txtboxname.KeyDown, txtboxamount.KeyDown
+        If e.KeyCode = Keys.Enter Then
+            btnadd.PerformClick()
         End If
     End Sub
 

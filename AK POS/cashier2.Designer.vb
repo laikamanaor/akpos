@@ -22,18 +22,24 @@ Partial Class cashier2
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim DataGridViewCellStyle15 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle19 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle16 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle17 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle18 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle20 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle21 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(cashier2))
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle7 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.Panel6 = New System.Windows.Forms.Panel()
         Me.Panel11 = New System.Windows.Forms.Panel()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.Panel13 = New System.Windows.Forms.Panel()
+        Me.txtresult = New System.Windows.Forms.TextBox()
+        Me.btnadd = New System.Windows.Forms.Button()
+        Me.Label18 = New System.Windows.Forms.Label()
+        Me.btnitemnxt = New System.Windows.Forms.Button()
+        Me.btnitemprev = New System.Windows.Forms.Button()
         Me.Panel12 = New System.Windows.Forms.Panel()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.lblpendingorders = New System.Windows.Forms.Label()
@@ -85,10 +91,9 @@ Partial Class cashier2
         Me.Label7 = New System.Windows.Forms.Label()
         Me.Label6 = New System.Windows.Forms.Label()
         Me.Label5 = New System.Windows.Forms.Label()
-        Me.btnitemnxt = New System.Windows.Forms.Button()
-        Me.btnitemprev = New System.Windows.Forms.Button()
         Me.Panel6.SuspendLayout()
         Me.Panel1.SuspendLayout()
+        Me.Panel13.SuspendLayout()
         Me.Panel12.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.dgvorders, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -133,6 +138,7 @@ Partial Class cashier2
         Me.Panel1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Panel1.Controls.Add(Me.Panel13)
         Me.Panel1.Controls.Add(Me.btnitemnxt)
         Me.Panel1.Controls.Add(Me.btnitemprev)
         Me.Panel1.Controls.Add(Me.Panel12)
@@ -151,6 +157,97 @@ Partial Class cashier2
         Me.Panel1.Name = "Panel1"
         Me.Panel1.Size = New System.Drawing.Size(469, 488)
         Me.Panel1.TabIndex = 7
+        '
+        'Panel13
+        '
+        Me.Panel13.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Panel13.BackColor = System.Drawing.Color.White
+        Me.Panel13.Controls.Add(Me.txtresult)
+        Me.Panel13.Controls.Add(Me.btnadd)
+        Me.Panel13.Controls.Add(Me.Label18)
+        Me.Panel13.Location = New System.Drawing.Point(163, 366)
+        Me.Panel13.Name = "Panel13"
+        Me.Panel13.Size = New System.Drawing.Size(303, 113)
+        Me.Panel13.TabIndex = 50
+        '
+        'txtresult
+        '
+        Me.txtresult.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.txtresult.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtresult.Location = New System.Drawing.Point(34, 33)
+        Me.txtresult.Multiline = True
+        Me.txtresult.Name = "txtresult"
+        Me.txtresult.ReadOnly = True
+        Me.txtresult.ScrollBars = System.Windows.Forms.ScrollBars.Horizontal
+        Me.txtresult.Size = New System.Drawing.Size(250, 25)
+        Me.txtresult.TabIndex = 47
+        '
+        'btnadd
+        '
+        Me.btnadd.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnadd.BackColor = System.Drawing.Color.ForestGreen
+        Me.btnadd.FlatAppearance.BorderSize = 0
+        Me.btnadd.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnadd.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnadd.ForeColor = System.Drawing.Color.White
+        Me.btnadd.Location = New System.Drawing.Point(211, 73)
+        Me.btnadd.Name = "btnadd"
+        Me.btnadd.Size = New System.Drawing.Size(75, 25)
+        Me.btnadd.TabIndex = 46
+        Me.btnadd.Text = "ADD"
+        Me.btnadd.UseVisualStyleBackColor = False
+        '
+        'Label18
+        '
+        Me.Label18.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.Label18.AutoSize = True
+        Me.Label18.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label18.ForeColor = System.Drawing.Color.DimGray
+        Me.Label18.Location = New System.Drawing.Point(31, 14)
+        Me.Label18.Name = "Label18"
+        Me.Label18.Size = New System.Drawing.Size(260, 15)
+        Me.Label18.TabIndex = 48
+        Me.Label18.Text = "ADD DEPOSIT OR ADVANCE PAYMENT:"
+        '
+        'btnitemnxt
+        '
+        Me.btnitemnxt.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnitemnxt.BackColor = System.Drawing.Color.FromArgb(CType(CType(41, Byte), Integer), CType(CType(91, Byte), Integer), CType(CType(232, Byte), Integer))
+        Me.btnitemnxt.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btnitemnxt.FlatAppearance.BorderSize = 0
+        Me.btnitemnxt.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnitemnxt.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnitemnxt.ForeColor = System.Drawing.Color.White
+        Me.btnitemnxt.Image = CType(resources.GetObject("btnitemnxt.Image"), System.Drawing.Image)
+        Me.btnitemnxt.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnitemnxt.Location = New System.Drawing.Point(278, 336)
+        Me.btnitemnxt.Name = "btnitemnxt"
+        Me.btnitemnxt.Size = New System.Drawing.Size(78, 23)
+        Me.btnitemnxt.TabIndex = 21
+        Me.btnitemnxt.Text = "Nxt."
+        Me.btnitemnxt.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnitemnxt.UseVisualStyleBackColor = False
+        '
+        'btnitemprev
+        '
+        Me.btnitemprev.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnitemprev.BackColor = System.Drawing.Color.FromArgb(CType(CType(70, Byte), Integer), CType(CType(117, Byte), Integer), CType(CType(242, Byte), Integer))
+        Me.btnitemprev.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btnitemprev.FlatAppearance.BorderSize = 0
+        Me.btnitemprev.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnitemprev.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnitemprev.ForeColor = System.Drawing.Color.White
+        Me.btnitemprev.Image = CType(resources.GetObject("btnitemprev.Image"), System.Drawing.Image)
+        Me.btnitemprev.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnitemprev.Location = New System.Drawing.Point(200, 336)
+        Me.btnitemprev.Name = "btnitemprev"
+        Me.btnitemprev.Size = New System.Drawing.Size(78, 23)
+        Me.btnitemprev.TabIndex = 20
+        Me.btnitemprev.Text = "Prev."
+        Me.btnitemprev.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnitemprev.UseVisualStyleBackColor = False
         '
         'Panel12
         '
@@ -191,7 +288,7 @@ Partial Class cashier2
         Me.lblpendingamount.AutoSize = True
         Me.lblpendingamount.Font = New System.Drawing.Font("Arial Unicode MS", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblpendingamount.ForeColor = System.Drawing.Color.ForestGreen
-        Me.lblpendingamount.Location = New System.Drawing.Point(3, 452)
+        Me.lblpendingamount.Location = New System.Drawing.Point(3, 338)
         Me.lblpendingamount.Name = "lblpendingamount"
         Me.lblpendingamount.Size = New System.Drawing.Size(157, 18)
         Me.lblpendingamount.TabIndex = 10
@@ -208,7 +305,7 @@ Partial Class cashier2
         Me.btnrefresh.ForeColor = System.Drawing.Color.White
         Me.btnrefresh.Image = CType(resources.GetObject("btnrefresh.Image"), System.Drawing.Image)
         Me.btnrefresh.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnrefresh.Location = New System.Drawing.Point(362, 448)
+        Me.btnrefresh.Location = New System.Drawing.Point(362, 332)
         Me.btnrefresh.Name = "btnrefresh"
         Me.btnrefresh.Size = New System.Drawing.Size(104, 31)
         Me.btnrefresh.TabIndex = 9
@@ -335,30 +432,30 @@ Partial Class cashier2
         Me.dgvorders.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgvorders.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
         Me.dgvorders.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None
-        DataGridViewCellStyle15.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle15.BackColor = System.Drawing.Color.FromArgb(CType(CType(218, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(28, Byte), Integer))
-        DataGridViewCellStyle15.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle15.ForeColor = System.Drawing.Color.White
-        DataGridViewCellStyle15.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle15.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle15.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.dgvorders.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle15
+        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(CType(CType(218, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(28, Byte), Integer))
+        DataGridViewCellStyle1.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle1.ForeColor = System.Drawing.Color.White
+        DataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.dgvorders.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle1
         Me.dgvorders.ColumnHeadersHeight = 40
         Me.dgvorders.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.orderid, Me.ordernum, Me.amount, Me.tendertype, Me.counter, Me.postype, Me.btnvoid, Me.btnmodify, Me.btnconfirm})
-        DataGridViewCellStyle19.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle19.BackColor = System.Drawing.Color.White
-        DataGridViewCellStyle19.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle19.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle19.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle19.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle19.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.dgvorders.DefaultCellStyle = DataGridViewCellStyle19
+        DataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle5.BackColor = System.Drawing.Color.White
+        DataGridViewCellStyle5.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.dgvorders.DefaultCellStyle = DataGridViewCellStyle5
         Me.dgvorders.EnableHeadersVisualStyles = False
         Me.dgvorders.GridColor = System.Drawing.Color.DimGray
         Me.dgvorders.Location = New System.Drawing.Point(3, 110)
         Me.dgvorders.Name = "dgvorders"
         Me.dgvorders.RowHeadersVisible = False
-        Me.dgvorders.Size = New System.Drawing.Size(463, 332)
+        Me.dgvorders.Size = New System.Drawing.Size(463, 216)
         Me.dgvorders.TabIndex = 0
         '
         'orderid
@@ -400,10 +497,10 @@ Partial Class cashier2
         '
         'btnvoid
         '
-        DataGridViewCellStyle16.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle16.BackColor = System.Drawing.Color.Firebrick
-        DataGridViewCellStyle16.ForeColor = System.Drawing.Color.White
-        Me.btnvoid.DefaultCellStyle = DataGridViewCellStyle16
+        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle2.BackColor = System.Drawing.Color.Firebrick
+        DataGridViewCellStyle2.ForeColor = System.Drawing.Color.White
+        Me.btnvoid.DefaultCellStyle = DataGridViewCellStyle2
         Me.btnvoid.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnvoid.HeaderText = "Action"
         Me.btnvoid.Name = "btnvoid"
@@ -414,10 +511,10 @@ Partial Class cashier2
         '
         'btnmodify
         '
-        DataGridViewCellStyle17.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle17.BackColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(192, Byte), Integer))
-        DataGridViewCellStyle17.ForeColor = System.Drawing.Color.White
-        Me.btnmodify.DefaultCellStyle = DataGridViewCellStyle17
+        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(192, Byte), Integer))
+        DataGridViewCellStyle3.ForeColor = System.Drawing.Color.White
+        Me.btnmodify.DefaultCellStyle = DataGridViewCellStyle3
         Me.btnmodify.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnmodify.HeaderText = "Action"
         Me.btnmodify.Name = "btnmodify"
@@ -428,10 +525,10 @@ Partial Class cashier2
         '
         'btnconfirm
         '
-        DataGridViewCellStyle18.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle18.BackColor = System.Drawing.Color.ForestGreen
-        DataGridViewCellStyle18.ForeColor = System.Drawing.Color.White
-        Me.btnconfirm.DefaultCellStyle = DataGridViewCellStyle18
+        DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle4.BackColor = System.Drawing.Color.ForestGreen
+        DataGridViewCellStyle4.ForeColor = System.Drawing.Color.White
+        Me.btnconfirm.DefaultCellStyle = DataGridViewCellStyle4
         Me.btnconfirm.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnconfirm.HeaderText = "Action"
         Me.btnconfirm.Name = "btnconfirm"
@@ -462,24 +559,24 @@ Partial Class cashier2
         Me.dgvitems.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgvitems.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
         Me.dgvitems.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None
-        DataGridViewCellStyle20.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle20.BackColor = System.Drawing.Color.FromArgb(CType(CType(218, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(28, Byte), Integer))
-        DataGridViewCellStyle20.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle20.ForeColor = System.Drawing.Color.White
-        DataGridViewCellStyle20.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle20.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle20.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.dgvitems.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle20
+        DataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle6.BackColor = System.Drawing.Color.FromArgb(CType(CType(218, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(28, Byte), Integer))
+        DataGridViewCellStyle6.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle6.ForeColor = System.Drawing.Color.White
+        DataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.dgvitems.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle6
         Me.dgvitems.ColumnHeadersHeight = 40
         Me.dgvitems.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.item, Me.quantity, Me.price, Me.discpercent, Me.totalprice, Me.free})
-        DataGridViewCellStyle21.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle21.BackColor = System.Drawing.Color.White
-        DataGridViewCellStyle21.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle21.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle21.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle21.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle21.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.dgvitems.DefaultCellStyle = DataGridViewCellStyle21
+        DataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle7.BackColor = System.Drawing.Color.White
+        DataGridViewCellStyle7.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.dgvitems.DefaultCellStyle = DataGridViewCellStyle7
         Me.dgvitems.EnableHeadersVisualStyles = False
         Me.dgvitems.GridColor = System.Drawing.Color.DimGray
         Me.dgvitems.Location = New System.Drawing.Point(3, 5)
@@ -780,44 +877,6 @@ Partial Class cashier2
         Me.Label5.TabIndex = 0
         Me.Label5.Text = "BILLS"
         '
-        'btnitemnxt
-        '
-        Me.btnitemnxt.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnitemnxt.BackColor = System.Drawing.Color.FromArgb(CType(CType(41, Byte), Integer), CType(CType(91, Byte), Integer), CType(CType(232, Byte), Integer))
-        Me.btnitemnxt.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.btnitemnxt.FlatAppearance.BorderSize = 0
-        Me.btnitemnxt.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnitemnxt.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnitemnxt.ForeColor = System.Drawing.Color.White
-        Me.btnitemnxt.Image = CType(resources.GetObject("btnitemnxt.Image"), System.Drawing.Image)
-        Me.btnitemnxt.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnitemnxt.Location = New System.Drawing.Point(278, 452)
-        Me.btnitemnxt.Name = "btnitemnxt"
-        Me.btnitemnxt.Size = New System.Drawing.Size(78, 23)
-        Me.btnitemnxt.TabIndex = 21
-        Me.btnitemnxt.Text = "Nxt."
-        Me.btnitemnxt.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnitemnxt.UseVisualStyleBackColor = False
-        '
-        'btnitemprev
-        '
-        Me.btnitemprev.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnitemprev.BackColor = System.Drawing.Color.FromArgb(CType(CType(70, Byte), Integer), CType(CType(117, Byte), Integer), CType(CType(242, Byte), Integer))
-        Me.btnitemprev.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.btnitemprev.FlatAppearance.BorderSize = 0
-        Me.btnitemprev.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnitemprev.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnitemprev.ForeColor = System.Drawing.Color.White
-        Me.btnitemprev.Image = CType(resources.GetObject("btnitemprev.Image"), System.Drawing.Image)
-        Me.btnitemprev.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnitemprev.Location = New System.Drawing.Point(200, 452)
-        Me.btnitemprev.Name = "btnitemprev"
-        Me.btnitemprev.Size = New System.Drawing.Size(78, 23)
-        Me.btnitemprev.TabIndex = 20
-        Me.btnitemprev.Text = "Prev."
-        Me.btnitemprev.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnitemprev.UseVisualStyleBackColor = False
-        '
         'cashier2
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -836,6 +895,8 @@ Partial Class cashier2
         Me.Panel6.PerformLayout()
         Me.Panel1.ResumeLayout(False)
         Me.Panel1.PerformLayout()
+        Me.Panel13.ResumeLayout(False)
+        Me.Panel13.PerformLayout()
         Me.Panel12.ResumeLayout(False)
         Me.Panel12.PerformLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
@@ -905,4 +966,8 @@ Partial Class cashier2
     Friend WithEvents lblpendingorders As Label
     Friend WithEvents btnitemnxt As Button
     Friend WithEvents btnitemprev As Button
+    Friend WithEvents Panel13 As Panel
+    Friend WithEvents txtresult As TextBox
+    Friend WithEvents btnadd As Button
+    Friend WithEvents Label18 As Label
 End Class

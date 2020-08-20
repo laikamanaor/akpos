@@ -1,9 +1,9 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class inv2
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -20,38 +20,10 @@ Partial Class inv2
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.dgv = New System.Windows.Forms.DataGridView()
-        Me.id = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.itemcode = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.itemname = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.category = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.begbal = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.produce = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.good = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.charge = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.productionin = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.branchin = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.supin = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.adjustmentin = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.convin = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.totalav = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.transfer = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.ctrout = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.archarge = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.arsales = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.convout = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.adjustmentout = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.endbal = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.actualendbal = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.variance = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.shortover = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.overamt = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.ctrout_amt = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.archarge_amt = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.arsales_amt = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.cmbcategory = New System.Windows.Forms.ComboBox()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Label2 = New System.Windows.Forms.Label()
@@ -83,9 +55,37 @@ Partial Class inv2
         Me.Panel2 = New System.Windows.Forms.Panel()
         Me.Panel3 = New System.Windows.Forms.Panel()
         Me.Label3 = New System.Windows.Forms.Label()
-        Me.TextBox1 = New System.Windows.Forms.TextBox()
         Me.Panel4 = New System.Windows.Forms.Panel()
         Me.lblcount = New System.Windows.Forms.Label()
+        Me.id = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.itemcode = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.itemname = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.category = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.begbal = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.produce = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.good = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.charge = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.productionin = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.branchin = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.supin = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.adjustmentin = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.convin = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.totalav = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.transfer = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.pullout2 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.ctrout = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.archarge = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.arsales = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.convout = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.adjustmentout = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.endbal = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.actualendbal = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.variance = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.shortover = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.overamt = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.ctrout_amt = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.archarge_amt = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.arsales_amt = New System.Windows.Forms.DataGridViewTextBoxColumn()
         CType(Me.dgv, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox1.SuspendLayout()
         Me.Panel1.SuspendLayout()
@@ -104,16 +104,16 @@ Partial Class inv2
         Me.dgv.BackgroundColor = System.Drawing.Color.White
         Me.dgv.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgv.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None
-        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(218, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(28, Byte), Integer))
-        DataGridViewCellStyle2.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle2.ForeColor = System.Drawing.Color.White
-        DataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.dgv.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle2
+        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(CType(CType(218, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(28, Byte), Integer))
+        DataGridViewCellStyle1.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle1.ForeColor = System.Drawing.Color.White
+        DataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.dgv.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle1
         Me.dgv.ColumnHeadersHeight = 40
-        Me.dgv.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.id, Me.itemcode, Me.itemname, Me.category, Me.begbal, Me.produce, Me.good, Me.charge, Me.productionin, Me.branchin, Me.supin, Me.adjustmentin, Me.convin, Me.totalav, Me.transfer, Me.ctrout, Me.archarge, Me.arsales, Me.convout, Me.adjustmentout, Me.endbal, Me.actualendbal, Me.variance, Me.shortover, Me.overamt, Me.ctrout_amt, Me.archarge_amt, Me.arsales_amt})
+        Me.dgv.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.id, Me.itemcode, Me.itemname, Me.category, Me.begbal, Me.produce, Me.good, Me.charge, Me.productionin, Me.branchin, Me.supin, Me.adjustmentin, Me.convin, Me.totalav, Me.transfer, Me.pullout2, Me.ctrout, Me.archarge, Me.arsales, Me.convout, Me.adjustmentout, Me.endbal, Me.actualendbal, Me.variance, Me.shortover, Me.overamt, Me.ctrout_amt, Me.archarge_amt, Me.arsales_amt})
         Me.dgv.EnableHeadersVisualStyles = False
         Me.dgv.GridColor = System.Drawing.Color.Black
         Me.dgv.Location = New System.Drawing.Point(24, 213)
@@ -122,184 +122,6 @@ Partial Class inv2
         Me.dgv.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
         Me.dgv.Size = New System.Drawing.Size(893, 133)
         Me.dgv.TabIndex = 0
-        '
-        'id
-        '
-        Me.id.Frozen = True
-        Me.id.HeaderText = "ID"
-        Me.id.Name = "id"
-        Me.id.ReadOnly = True
-        Me.id.Visible = False
-        '
-        'itemcode
-        '
-        Me.itemcode.Frozen = True
-        Me.itemcode.HeaderText = "Item Code"
-        Me.itemcode.Name = "itemcode"
-        Me.itemcode.ReadOnly = True
-        Me.itemcode.Width = 150
-        '
-        'itemname
-        '
-        Me.itemname.Frozen = True
-        Me.itemname.HeaderText = "Item Name"
-        Me.itemname.Name = "itemname"
-        Me.itemname.ReadOnly = True
-        Me.itemname.Width = 150
-        '
-        'category
-        '
-        Me.category.HeaderText = "Category"
-        Me.category.Name = "category"
-        Me.category.ReadOnly = True
-        Me.category.Visible = False
-        '
-        'begbal
-        '
-        Me.begbal.HeaderText = "Beg Bal"
-        Me.begbal.Name = "begbal"
-        Me.begbal.ReadOnly = True
-        '
-        'produce
-        '
-        Me.produce.HeaderText = "Produce"
-        Me.produce.Name = "produce"
-        Me.produce.ReadOnly = True
-        Me.produce.Visible = False
-        '
-        'good
-        '
-        Me.good.HeaderText = "Good"
-        Me.good.Name = "good"
-        Me.good.ReadOnly = True
-        Me.good.Visible = False
-        '
-        'charge
-        '
-        Me.charge.HeaderText = "Charge"
-        Me.charge.Name = "charge"
-        Me.charge.ReadOnly = True
-        '
-        'productionin
-        '
-        Me.productionin.HeaderText = "Production In"
-        Me.productionin.Name = "productionin"
-        Me.productionin.ReadOnly = True
-        '
-        'branchin
-        '
-        Me.branchin.HeaderText = "Branch In"
-        Me.branchin.Name = "branchin"
-        Me.branchin.ReadOnly = True
-        '
-        'supin
-        '
-        Me.supin.HeaderText = "Supplier In"
-        Me.supin.Name = "supin"
-        Me.supin.ReadOnly = True
-        '
-        'adjustmentin
-        '
-        Me.adjustmentin.HeaderText = "Adjustment In"
-        Me.adjustmentin.Name = "adjustmentin"
-        Me.adjustmentin.ReadOnly = True
-        '
-        'convin
-        '
-        Me.convin.HeaderText = "Conv. In"
-        Me.convin.Name = "convin"
-        Me.convin.ReadOnly = True
-        '
-        'totalav
-        '
-        Me.totalav.HeaderText = "Total Qty. Available"
-        Me.totalav.Name = "totalav"
-        Me.totalav.ReadOnly = True
-        '
-        'transfer
-        '
-        Me.transfer.HeaderText = "Transfer"
-        Me.transfer.Name = "transfer"
-        Me.transfer.ReadOnly = True
-        '
-        'ctrout
-        '
-        Me.ctrout.HeaderText = "Counter Out"
-        Me.ctrout.Name = "ctrout"
-        Me.ctrout.ReadOnly = True
-        '
-        'archarge
-        '
-        Me.archarge.HeaderText = "A.R Charge"
-        Me.archarge.Name = "archarge"
-        Me.archarge.ReadOnly = True
-        '
-        'arsales
-        '
-        Me.arsales.HeaderText = "A.R Sales"
-        Me.arsales.Name = "arsales"
-        Me.arsales.ReadOnly = True
-        '
-        'convout
-        '
-        Me.convout.HeaderText = "Conv. Out"
-        Me.convout.Name = "convout"
-        Me.convout.ReadOnly = True
-        '
-        'adjustmentout
-        '
-        Me.adjustmentout.HeaderText = "Adjustment Out"
-        Me.adjustmentout.Name = "adjustmentout"
-        Me.adjustmentout.ReadOnly = True
-        '
-        'endbal
-        '
-        Me.endbal.HeaderText = "End Bal"
-        Me.endbal.Name = "endbal"
-        Me.endbal.ReadOnly = True
-        '
-        'actualendbal
-        '
-        Me.actualendbal.HeaderText = "Actual End Bal"
-        Me.actualendbal.Name = "actualendbal"
-        Me.actualendbal.ReadOnly = True
-        '
-        'variance
-        '
-        Me.variance.HeaderText = "Variance"
-        Me.variance.Name = "variance"
-        Me.variance.ReadOnly = True
-        '
-        'shortover
-        '
-        Me.shortover.HeaderText = "Short/Over"
-        Me.shortover.Name = "shortover"
-        Me.shortover.ReadOnly = True
-        Me.shortover.Visible = False
-        '
-        'overamt
-        '
-        Me.overamt.HeaderText = "Over Amt."
-        Me.overamt.Name = "overamt"
-        Me.overamt.ReadOnly = True
-        '
-        'ctrout_amt
-        '
-        Me.ctrout_amt.HeaderText = "Counter Out Amt."
-        Me.ctrout_amt.Name = "ctrout_amt"
-        Me.ctrout_amt.ReadOnly = True
-        '
-        'archarge_amt
-        '
-        Me.archarge_amt.HeaderText = "A.R Charge Amt."
-        Me.archarge_amt.Name = "archarge_amt"
-        Me.archarge_amt.ReadOnly = True
-        '
-        'arsales_amt
-        '
-        Me.arsales_amt.HeaderText = "A.R Sales Amt."
-        Me.arsales_amt.Name = "arsales_amt"
-        Me.arsales_amt.ReadOnly = True
         '
         'cmbcategory
         '
@@ -684,14 +506,6 @@ Partial Class inv2
         Me.Label3.TabIndex = 91
         Me.Label3.Text = "INVENTORY"
         '
-        'TextBox1
-        '
-        Me.TextBox1.Location = New System.Drawing.Point(625, 93)
-        Me.TextBox1.Name = "TextBox1"
-        Me.TextBox1.Size = New System.Drawing.Size(100, 20)
-        Me.TextBox1.TabIndex = 91
-        Me.TextBox1.Visible = False
-        '
         'Panel4
         '
         Me.Panel4.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
@@ -714,6 +528,190 @@ Partial Class inv2
         Me.lblcount.TabIndex = 82
         Me.lblcount.Text = "N/A"
         '
+        'id
+        '
+        Me.id.Frozen = True
+        Me.id.HeaderText = "ID"
+        Me.id.Name = "id"
+        Me.id.ReadOnly = True
+        Me.id.Visible = False
+        '
+        'itemcode
+        '
+        Me.itemcode.Frozen = True
+        Me.itemcode.HeaderText = "Item Code"
+        Me.itemcode.Name = "itemcode"
+        Me.itemcode.ReadOnly = True
+        Me.itemcode.Width = 150
+        '
+        'itemname
+        '
+        Me.itemname.Frozen = True
+        Me.itemname.HeaderText = "Item Name"
+        Me.itemname.Name = "itemname"
+        Me.itemname.ReadOnly = True
+        Me.itemname.Width = 150
+        '
+        'category
+        '
+        Me.category.HeaderText = "Category"
+        Me.category.Name = "category"
+        Me.category.ReadOnly = True
+        Me.category.Visible = False
+        '
+        'begbal
+        '
+        Me.begbal.HeaderText = "Beg Bal"
+        Me.begbal.Name = "begbal"
+        Me.begbal.ReadOnly = True
+        '
+        'produce
+        '
+        Me.produce.HeaderText = "Produce"
+        Me.produce.Name = "produce"
+        Me.produce.ReadOnly = True
+        Me.produce.Visible = False
+        '
+        'good
+        '
+        Me.good.HeaderText = "Good"
+        Me.good.Name = "good"
+        Me.good.ReadOnly = True
+        Me.good.Visible = False
+        '
+        'charge
+        '
+        Me.charge.HeaderText = "Charge"
+        Me.charge.Name = "charge"
+        Me.charge.ReadOnly = True
+        '
+        'productionin
+        '
+        Me.productionin.HeaderText = "Production In"
+        Me.productionin.Name = "productionin"
+        Me.productionin.ReadOnly = True
+        '
+        'branchin
+        '
+        Me.branchin.HeaderText = "Branch In"
+        Me.branchin.Name = "branchin"
+        Me.branchin.ReadOnly = True
+        '
+        'supin
+        '
+        Me.supin.HeaderText = "Supplier In"
+        Me.supin.Name = "supin"
+        Me.supin.ReadOnly = True
+        '
+        'adjustmentin
+        '
+        Me.adjustmentin.HeaderText = "Adjustment In"
+        Me.adjustmentin.Name = "adjustmentin"
+        Me.adjustmentin.ReadOnly = True
+        '
+        'convin
+        '
+        Me.convin.HeaderText = "Conv. In"
+        Me.convin.Name = "convin"
+        Me.convin.ReadOnly = True
+        '
+        'totalav
+        '
+        Me.totalav.HeaderText = "Total Qty. Available"
+        Me.totalav.Name = "totalav"
+        Me.totalav.ReadOnly = True
+        '
+        'transfer
+        '
+        Me.transfer.HeaderText = "Transfer"
+        Me.transfer.Name = "transfer"
+        Me.transfer.ReadOnly = True
+        '
+        'pullout2
+        '
+        Me.pullout2.HeaderText = "Pull Out"
+        Me.pullout2.Name = "pullout2"
+        Me.pullout2.ReadOnly = True
+        '
+        'ctrout
+        '
+        Me.ctrout.HeaderText = "Counter Out"
+        Me.ctrout.Name = "ctrout"
+        Me.ctrout.ReadOnly = True
+        '
+        'archarge
+        '
+        Me.archarge.HeaderText = "A.R Charge"
+        Me.archarge.Name = "archarge"
+        Me.archarge.ReadOnly = True
+        '
+        'arsales
+        '
+        Me.arsales.HeaderText = "A.R Sales"
+        Me.arsales.Name = "arsales"
+        Me.arsales.ReadOnly = True
+        '
+        'convout
+        '
+        Me.convout.HeaderText = "Conv. Out"
+        Me.convout.Name = "convout"
+        Me.convout.ReadOnly = True
+        '
+        'adjustmentout
+        '
+        Me.adjustmentout.HeaderText = "Adjustment Out"
+        Me.adjustmentout.Name = "adjustmentout"
+        Me.adjustmentout.ReadOnly = True
+        '
+        'endbal
+        '
+        Me.endbal.HeaderText = "End Bal"
+        Me.endbal.Name = "endbal"
+        Me.endbal.ReadOnly = True
+        '
+        'actualendbal
+        '
+        Me.actualendbal.HeaderText = "Actual End Bal"
+        Me.actualendbal.Name = "actualendbal"
+        Me.actualendbal.ReadOnly = True
+        '
+        'variance
+        '
+        Me.variance.HeaderText = "Variance"
+        Me.variance.Name = "variance"
+        Me.variance.ReadOnly = True
+        '
+        'shortover
+        '
+        Me.shortover.HeaderText = "Short/Over"
+        Me.shortover.Name = "shortover"
+        Me.shortover.ReadOnly = True
+        Me.shortover.Visible = False
+        '
+        'overamt
+        '
+        Me.overamt.HeaderText = "Over Amt."
+        Me.overamt.Name = "overamt"
+        Me.overamt.ReadOnly = True
+        '
+        'ctrout_amt
+        '
+        Me.ctrout_amt.HeaderText = "Counter Out Amt."
+        Me.ctrout_amt.Name = "ctrout_amt"
+        Me.ctrout_amt.ReadOnly = True
+        '
+        'archarge_amt
+        '
+        Me.archarge_amt.HeaderText = "A.R Charge Amt."
+        Me.archarge_amt.Name = "archarge_amt"
+        Me.archarge_amt.ReadOnly = True
+        '
+        'arsales_amt
+        '
+        Me.arsales_amt.HeaderText = "A.R Sales Amt."
+        Me.arsales_amt.Name = "arsales_amt"
+        Me.arsales_amt.ReadOnly = True
+        '
         'inv2
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -721,7 +719,6 @@ Partial Class inv2
         Me.BackColor = System.Drawing.Color.White
         Me.ClientSize = New System.Drawing.Size(942, 489)
         Me.Controls.Add(Me.Panel4)
-        Me.Controls.Add(Me.TextBox1)
         Me.Controls.Add(Me.Panel2)
         Me.Controls.Add(Me.Button1)
         Me.Controls.Add(Me.lblnodata)
@@ -771,34 +768,6 @@ Partial Class inv2
     Friend WithEvents btnrefresh As Button
     Friend WithEvents Panel1 As Panel
     Friend WithEvents lblnodata As Label
-    Friend WithEvents id As DataGridViewTextBoxColumn
-    Friend WithEvents itemcode As DataGridViewTextBoxColumn
-    Friend WithEvents itemname As DataGridViewTextBoxColumn
-    Friend WithEvents category As DataGridViewTextBoxColumn
-    Friend WithEvents begbal As DataGridViewTextBoxColumn
-    Friend WithEvents produce As DataGridViewTextBoxColumn
-    Friend WithEvents good As DataGridViewTextBoxColumn
-    Friend WithEvents charge As DataGridViewTextBoxColumn
-    Friend WithEvents productionin As DataGridViewTextBoxColumn
-    Friend WithEvents branchin As DataGridViewTextBoxColumn
-    Friend WithEvents supin As DataGridViewTextBoxColumn
-    Friend WithEvents adjustmentin As DataGridViewTextBoxColumn
-    Friend WithEvents convin As DataGridViewTextBoxColumn
-    Friend WithEvents totalav As DataGridViewTextBoxColumn
-    Friend WithEvents transfer As DataGridViewTextBoxColumn
-    Friend WithEvents ctrout As DataGridViewTextBoxColumn
-    Friend WithEvents archarge As DataGridViewTextBoxColumn
-    Friend WithEvents arsales As DataGridViewTextBoxColumn
-    Friend WithEvents convout As DataGridViewTextBoxColumn
-    Friend WithEvents adjustmentout As DataGridViewTextBoxColumn
-    Friend WithEvents endbal As DataGridViewTextBoxColumn
-    Friend WithEvents actualendbal As DataGridViewTextBoxColumn
-    Friend WithEvents variance As DataGridViewTextBoxColumn
-    Friend WithEvents shortover As DataGridViewTextBoxColumn
-    Friend WithEvents overamt As DataGridViewTextBoxColumn
-    Friend WithEvents ctrout_amt As DataGridViewTextBoxColumn
-    Friend WithEvents archarge_amt As DataGridViewTextBoxColumn
-    Friend WithEvents arsales_amt As DataGridViewTextBoxColumn
     Friend WithEvents Label15 As Label
     Friend WithEvents lbltotal As Label
     Friend WithEvents Label17 As Label
@@ -815,8 +784,36 @@ Partial Class inv2
     Friend WithEvents Panel2 As Panel
     Friend WithEvents Panel3 As Panel
     Friend WithEvents Label3 As Label
-    Friend WithEvents TextBox1 As TextBox
     Friend WithEvents txtsearch As TextBox
     Friend WithEvents Panel4 As Panel
     Friend WithEvents lblcount As Label
+    Friend WithEvents id As DataGridViewTextBoxColumn
+    Friend WithEvents itemcode As DataGridViewTextBoxColumn
+    Friend WithEvents itemname As DataGridViewTextBoxColumn
+    Friend WithEvents category As DataGridViewTextBoxColumn
+    Friend WithEvents begbal As DataGridViewTextBoxColumn
+    Friend WithEvents produce As DataGridViewTextBoxColumn
+    Friend WithEvents good As DataGridViewTextBoxColumn
+    Friend WithEvents charge As DataGridViewTextBoxColumn
+    Friend WithEvents productionin As DataGridViewTextBoxColumn
+    Friend WithEvents branchin As DataGridViewTextBoxColumn
+    Friend WithEvents supin As DataGridViewTextBoxColumn
+    Friend WithEvents adjustmentin As DataGridViewTextBoxColumn
+    Friend WithEvents convin As DataGridViewTextBoxColumn
+    Friend WithEvents totalav As DataGridViewTextBoxColumn
+    Friend WithEvents transfer As DataGridViewTextBoxColumn
+    Friend WithEvents pullout2 As DataGridViewTextBoxColumn
+    Friend WithEvents ctrout As DataGridViewTextBoxColumn
+    Friend WithEvents archarge As DataGridViewTextBoxColumn
+    Friend WithEvents arsales As DataGridViewTextBoxColumn
+    Friend WithEvents convout As DataGridViewTextBoxColumn
+    Friend WithEvents adjustmentout As DataGridViewTextBoxColumn
+    Friend WithEvents endbal As DataGridViewTextBoxColumn
+    Friend WithEvents actualendbal As DataGridViewTextBoxColumn
+    Friend WithEvents variance As DataGridViewTextBoxColumn
+    Friend WithEvents shortover As DataGridViewTextBoxColumn
+    Friend WithEvents overamt As DataGridViewTextBoxColumn
+    Friend WithEvents ctrout_amt As DataGridViewTextBoxColumn
+    Friend WithEvents archarge_amt As DataGridViewTextBoxColumn
+    Friend WithEvents arsales_amt As DataGridViewTextBoxColumn
 End Class

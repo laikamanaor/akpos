@@ -12,9 +12,14 @@ Public Class inv_logs2
         btnTransfer.ForeColor = Color.White
         btnActualEndingBalance.ForeColor = Color.White
         btnadjin.ForeColor = Color.White
+        btnAdjustmentOut.ForeColor = Color.White
         btnPullOut.ForeColor = Color.White
         dgvtrans.Columns("fromreceived").Visible = True
         dgvtrans.Columns("toreceived").Visible = True
+
+        dgvtrans.Columns("fromreceived").HeaderText = "Received To"
+        dgvtrans.Columns("toreceived").HeaderText = "Received From"
+
         dgvtrans.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None
     End Sub
 
@@ -26,9 +31,14 @@ Public Class inv_logs2
         btnTransfer.ForeColor = Color.Black
         btnActualEndingBalance.ForeColor = Color.White
         btnadjin.ForeColor = Color.White
+        btnAdjustmentOut.ForeColor = Color.White
         btnPullOut.ForeColor = Color.White
         dgvtrans.Columns("fromreceived").Visible = True
         dgvtrans.Columns("toreceived").Visible = True
+
+        dgvtrans.Columns("fromreceived").HeaderText = "Transfer From"
+        dgvtrans.Columns("toreceived").HeaderText = "Transfer To"
+
         dgvtrans.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None
     End Sub
 
@@ -39,10 +49,12 @@ Public Class inv_logs2
         btnreceived.ForeColor = Color.White
         btnTransfer.ForeColor = Color.White
         btnadjin.ForeColor = Color.White
+        btnAdjustmentOut.ForeColor = Color.White
         btnPullOut.ForeColor = Color.White
         btnActualEndingBalance.ForeColor = Color.Black
         dgvtrans.Columns("fromreceived").Visible = False
         dgvtrans.Columns("toreceived").Visible = False
+
         dgvtrans.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
     End Sub
 
@@ -133,7 +145,7 @@ Public Class inv_logs2
         End If
     End Sub
 
-    Private Sub btnPullOut_Click(sender As Object, e As EventArgs) Handles btnPullOut.Click
+    Private Sub btnPullOut_Click(sender As Object, e As EventArgs) Handles btnAdjustmentOut.Click
         typee = "Adjustment Out Item"
         refreshh()
         dgvitems.Rows.Clear()
@@ -141,7 +153,8 @@ Public Class inv_logs2
         btnTransfer.ForeColor = Color.White
         btnActualEndingBalance.ForeColor = Color.White
         btnadjin.ForeColor = Color.White
-        btnPullOut.ForeColor = Color.Black
+        btnAdjustmentOut.ForeColor = Color.Black
+        btnPullOut.ForeColor = Color.White
         dgvtrans.Columns("fromreceived").Visible = False
         dgvtrans.Columns("toreceived").Visible = False
         dgvtrans.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
@@ -155,10 +168,23 @@ Public Class inv_logs2
         btnTransfer.ForeColor = Color.White
         btnActualEndingBalance.ForeColor = Color.White
         btnadjin.ForeColor = Color.Black
+        btnAdjustmentOut.ForeColor = Color.White
         btnPullOut.ForeColor = Color.White
         dgvtrans.Columns("fromreceived").Visible = False
         dgvtrans.Columns("toreceived").Visible = False
         dgvtrans.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
+    End Sub
+
+    Private Sub btnPullOut_Click_1(sender As Object, e As EventArgs) Handles btnPullOut.Click
+        typee = "Pull Out"
+        refreshh()
+        dgvitems.Rows.Clear()
+        btnreceived.ForeColor = Color.White
+        btnTransfer.ForeColor = Color.White
+        btnActualEndingBalance.ForeColor = Color.White
+        btnadjin.ForeColor = Color.White
+        btnAdjustmentOut.ForeColor = Color.Wheat
+        btnPullOut.ForeColor = Color.Black
     End Sub
 
     Private Sub btnsearch2_Click(sender As Object, e As EventArgs) Handles btnsearch2.Click
@@ -221,6 +247,7 @@ Public Class inv_logs2
         totalCount = invc.countTransaction()
         totalPage = Math.Ceiling(totalCount / rowsFetch) * 1
         lblcount.Text = "Page: " & currentPage & "/" & totalPage
+        lblitemscount.Text = "ITEMS (0)"
         loadTransaction()
     End Sub
 End Class

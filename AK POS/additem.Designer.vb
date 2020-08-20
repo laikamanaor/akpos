@@ -105,6 +105,7 @@ Partial Class additem
         '
         'lblclose
         '
+        Me.lblclose.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.lblclose.AutoSize = True
         Me.lblclose.Cursor = System.Windows.Forms.Cursors.Hand
         Me.lblclose.Font = New System.Drawing.Font("Arial Rounded MT Bold", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))

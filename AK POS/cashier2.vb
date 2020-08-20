@@ -5,6 +5,8 @@ Public Class cashier2
 
     Public apdep As String = "", adpdep_amt As Double = 0.00
     Public Sub refreshSub()
+        apdep = ""
+        adpdep_amt = 0
         loadSalesAgent()
         cmbtendertype.SelectedIndex = 0
         cmbsales.SelectedIndex = 0
@@ -168,6 +170,13 @@ Public Class cashier2
         End If
     End Sub
 
+    Private Sub btnadd_Click(sender As Object, e As EventArgs) Handles btnadd.Click
+        apdep = ""
+        adpdep_amt = 0.00
+        Dim frm As New add_spice()
+        frm.ShowDialog()
+    End Sub
+
     Private Sub btnitemnxt_Click(sender As Object, e As EventArgs) Handles btnitemnxt.Click
         offset += rowFetch
         currentPage += 1
@@ -189,6 +198,10 @@ Public Class cashier2
         End If
     End Sub
 
+    Private Sub Panel6_Paint(sender As Object, e As PaintEventArgs) Handles Panel6.Paint
+
+    End Sub
+
     Private Sub btnrefresh_Click(sender As Object, e As EventArgs) Handles btnrefresh.Click
         refreshSub()
     End Sub
@@ -207,27 +220,9 @@ Public Class cashier2
                 frm.ShowDialog()
                 refreshSub()
             ElseIf e.ColumnIndex = 7 Then
-                cashc.orderid = CInt(dgvorders.CurrentRow.Cells("orderid").Value)
-                If cashc.haveDepositItem.Rows.Count > 0 Then
-                    deposit()
-                Else
-                    Dim frm As New mainmenu2
-                    frm.orderid = dgvorders.CurrentRow.Cells("orderid").Value
-                    frm.isConfirm = False
-                    frm.ShowDialog()
-                    refreshSub()
-                End If
+                modifyConfirm(False)
             ElseIf e.ColumnIndex = 8 Then
-                cashc.orderid = CInt(dgvorders.CurrentRow.Cells("orderid").Value)
-                If cashc.haveDepositItem.Rows.Count > 0 Then
-                    deposit()
-                Else
-                    Dim frm As New mainmenu2
-                    frm.orderid = dgvorders.CurrentRow.Cells("orderid").Value
-                    frm.isConfirm = True
-                    frm.ShowDialog()
-                    refreshSub()
-                End If
+                modifyConfirm(True)
             Else
                 loadItems()
                 loadBills()
@@ -235,40 +230,35 @@ Public Class cashier2
         End If
     End Sub
 
-    Public Sub deposit()
-        Dim msg As String = "Below item have deposit" & Environment.NewLine
-        Dim depositTotalAmount As Double = 0.00
-        For Each r0w As DataRow In cashc.haveDepositItem.Rows
-            msg &= r0w("itemname") & " (" & CDbl(r0w("price")) * CDbl(r0w("quantity")) & ")" & Environment.NewLine
-            depositTotalAmount += CDbl(r0w("price")) * CDbl(r0w("quantity"))
-        Next
-        MessageBox.Show(msg & "Total Deposit Amount: " & depositTotalAmount.ToString("n2"), "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
+    Public Sub modifyConfirm(ByVal isConfirm As Boolean)
+        cashc.orderid = dgvorders.CurrentRow.Cells("orderid").Value
+        Dim dtDepositItems As New DataTable
+        dtDepositItems = cashc.haveDepositItem()
 
-        apdep = ""
-        adpdep_amt = 0.00
-        Dim f As New add_spice()
-        f.ShowDialog()
-        If apdep <> "" Then
+        Dim totalDeposit As Double = 0.00, msgError As String = "Below item have deposit" & Environment.NewLine
 
-            apdep = apdep.Substring(0, apdep.Length - 1)
-
-
-            If cashc.checkDepositTransnum(apdep, depositTotalAmount) Then
-                adpdep_amt = cashc.returnDepositTransnumAmounts(apdep)
-                Dim frm As New mainmenu2
-                frm.orderid = dgvorders.CurrentRow.Cells("orderid").Value
-                frm.apdep = adpdep_amt
-                frm.lbladvancepayment.Text = apdep
-                frm.isConfirm = False
-                frm.ShowDialog()
-                refreshSub()
-            Else
-                MessageBox.Show("Insufficient deposit", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
-            End If
-
+        If dtDepositItems.Rows.Count > 0 Then
+            For Each r0w As DataRow In dtDepositItems.Rows
+                msgError &= r0w("itemname") & "(" & (CDbl(r0w("price")) * CDbl(r0w("quantity"))).ToString("n2") & ")" & Environment.NewLine
+                totalDeposit += CDbl(r0w("price")) * CDbl(r0w("quantity"))
+            Next
+        End If
+        Dim selectedDeposit As Double = cashc.returnDepositTransnumAmounts(apdep)
+        If msgError <> "Below item have deposit" & Environment.NewLine And apdep = "" Then
+            MessageBox.Show(msgError & "Total Amount: " & totalDeposit.ToString("n2"), "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        ElseIf totalDeposit > selectedDeposit Then
+            MessageBox.Show("Insufficent Deposit", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        Else
+            Dim frm As New mainmenu2
+            frm.orderid = dgvorders.CurrentRow.Cells("orderid").Value
+            frm.cashierPOSType = dgvorders.CurrentRow.Cells("postype").Value
+            frm.lbladvancepayment.Text = IIf(apdep <> "", apdep, "N/A")
+            frm.apdep = adpdep_amt
+            frm.isConfirm = isConfirm
+            frm.ShowDialog()
+            refreshSub()
         End If
     End Sub
-
     Private Sub cashier2_Shown(sender As Object, e As EventArgs) Handles MyBase.Shown
         refreshSub()
     End Sub

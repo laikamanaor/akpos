@@ -19,12 +19,15 @@ Public Class inv2
             result = invc.loadInventory(rb1.Checked)
             dgv.Rows.Clear()
             For Each r0w As DataRow In result.Rows
-                Dim over_amt As Double = 0.00
+                Dim over_amt As Double = 0.00, ctr_amt As Double = 0.00
                 If Not IsDBNull(r0w("over_amt")) Then
                     over_amt = CDbl(r0w("over_amt"))
-                End If
 
-                dgv.Rows.Add(r0w("invid"), r0w("itemcode"), r0w("itemname"), r0w("category"), CInt(r0w("begbal")).ToString("N0"), CInt(r0w("produce")).ToString("N0"), r0w("good"), r0w("charge"), CInt(r0w("productionin")).ToString("N0"), CInt(r0w("itemin")).ToString("N0"), CInt(r0w("supin")).ToString("N0"), CInt(r0w("adjustmentin")).ToString("N0"), CInt(r0w("convin")).ToString("N0"), CInt(r0w("totalav")).ToString("N0"), CInt(r0w("transfer")).ToString("N0"), CInt(r0w("ctrout")).ToString("N0"), CInt(r0w("archarge")).ToString("N0"), CInt(r0w("arsales")).ToString("N0"), CInt(r0w("convout")).ToString("N0"), CInt(r0w("pullout")).ToString("N0"), CInt(r0w("endbal")).ToString("N0"), CInt(r0w("actualendbal")).ToString("N0"), CInt(r0w("variance")).ToString("N0"), r0w("shortover"), over_amt, CDbl(r0w("ctrout_amt")).ToString("n2"), CDbl(r0w("archarge_amt")).ToString("n2"), CDbl(r0w("arsales_amt")).ToString("n2"))
+                End If
+                If Not IsDBNull(r0w("ctrout_amt")) Then
+                    ctr_amt = CDbl(r0w("ctrout_amt"))
+                End If
+                dgv.Rows.Add(r0w("invid"), r0w("itemcode"), r0w("itemname"), r0w("category"), CInt(r0w("begbal")).ToString("N0"), CInt(r0w("produce")).ToString("N0"), r0w("good"), r0w("charge"), CInt(r0w("productionin")).ToString("N0"), CInt(r0w("itemin")).ToString("N0"), CInt(r0w("supin")).ToString("N0"), CInt(r0w("adjustmentin")).ToString("N0"), CInt(r0w("convin")).ToString("N0"), CInt(r0w("totalav")).ToString("N0"), CInt(r0w("transfer")).ToString("N0"), CInt(r0w("pullout2")).ToString("N0"), CInt(r0w("ctrout")).ToString("N0"), CInt(r0w("archarge")).ToString("N0"), CInt(r0w("arsales")).ToString("N0"), CInt(r0w("convout")).ToString("N0"), CInt(r0w("pullout")).ToString("N0"), CInt(r0w("endbal")).ToString("N0"), CInt(r0w("actualendbal")).ToString("N0"), CInt(r0w("variance")).ToString("N0"), r0w("shortover"), over_amt, ctr_amt, CDbl(r0w("archarge_amt")).ToString("n2"), CDbl(r0w("arsales_amt")).ToString("n2"))
                 colors()
             Next
             lblcount.Text = "ITEMS (" & dgv.RowCount & ")"
@@ -217,6 +220,10 @@ Public Class inv2
         cmbcategory.SelectedIndex = 0
     End Sub
 
+    Private Sub inv2_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+
+    End Sub
+
     Private Sub inv2_Shown(sender As Object, e As EventArgs) Handles MyBase.Shown
         Try
             dgv.Columns("itemcode").HeaderCell.Style.BackColor = Color.ForestGreen
@@ -264,9 +271,5 @@ Public Class inv2
         Catch ex As Exception
             MessageBox.Show(ex.ToString)
         End Try
-    End Sub
-
-    Private Sub inv2_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-
     End Sub
 End Class

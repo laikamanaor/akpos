@@ -76,6 +76,8 @@ Partial Class returnstand
         Me.txtname = New System.Windows.Forms.TextBox()
         Me.btnadd2 = New System.Windows.Forms.Button()
         Me.TabPage1 = New System.Windows.Forms.TabPage()
+        Me.Label9 = New System.Windows.Forms.Label()
+        Me.dtReturn = New System.Windows.Forms.DateTimePicker()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
         Me.lblap = New System.Windows.Forms.Label()
         Me.panelapreason = New System.Windows.Forms.Panel()
@@ -599,6 +601,8 @@ Partial Class returnstand
         '
         'TabPage1
         '
+        Me.TabPage1.Controls.Add(Me.Label9)
+        Me.TabPage1.Controls.Add(Me.dtReturn)
         Me.TabPage1.Controls.Add(Me.dgvlists)
         Me.TabPage1.Controls.Add(Me.btnhistory)
         Me.TabPage1.Controls.Add(Me.btnreturns)
@@ -609,6 +613,27 @@ Partial Class returnstand
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "Return Item"
         Me.TabPage1.UseVisualStyleBackColor = True
+        '
+        'Label9
+        '
+        Me.Label9.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label9.AutoSize = True
+        Me.Label9.Location = New System.Drawing.Point(568, 32)
+        Me.Label9.Name = "Label9"
+        Me.Label9.Size = New System.Drawing.Size(42, 15)
+        Me.Label9.TabIndex = 4
+        Me.Label9.Text = "Date:"
+        '
+        'dtReturn
+        '
+        Me.dtReturn.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.dtReturn.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.dtReturn.CustomFormat = "MM/dd/yyyy"
+        Me.dtReturn.Format = System.Windows.Forms.DateTimePickerFormat.Custom
+        Me.dtReturn.Location = New System.Drawing.Point(616, 26)
+        Me.dtReturn.Name = "dtReturn"
+        Me.dtReturn.Size = New System.Drawing.Size(124, 23)
+        Me.dtReturn.TabIndex = 3
         '
         'TabPage2
         '
@@ -781,7 +806,7 @@ Partial Class returnstand
         Me.dgv.ReadOnly = True
         Me.dgv.RowHeadersVisible = False
         Me.dgv.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.dgv.Size = New System.Drawing.Size(696, 194)
+        Me.dgv.Size = New System.Drawing.Size(734, 194)
         Me.dgv.TabIndex = 22
         '
         'apid
@@ -984,6 +1009,7 @@ Partial Class returnstand
         Me.paneldepreason.PerformLayout()
         CType(Me.dgv2, System.ComponentModel.ISupportInitialize).EndInit()
         Me.TabPage1.ResumeLayout(False)
+        Me.TabPage1.PerformLayout()
         Me.TabPage2.ResumeLayout(False)
         Me.TabPage2.PerformLayout()
         Me.panelapreason.ResumeLayout(False)
@@ -1068,4 +1094,6 @@ Partial Class returnstand
     Friend WithEvents Panel1 As Panel
     Friend WithEvents Panel2 As Panel
     Friend WithEvents Label8 As Label
+    Friend WithEvents dtReturn As DateTimePicker
+    Friend WithEvents Label9 As Label
 End Class

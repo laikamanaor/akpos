@@ -32,7 +32,7 @@ Public Class received_item2
     ''' </summary>
     Public Sub loadBranchesCustomers()
         Dim query As String = "", result As New DataTable(),
-            otherBranchQuery As String = "SELECT branchcode AS result FROM vLoadBranches WHERE status=1",
+            otherBranchQuery As String = "SELECT branchcode AS result FROM vLoadBranches WHERE status=1 AND main !=1",
                 directSupplierQuery As String = "SELECT name  AS result FROM tblcustomers WHERE type='Supplier' AND status=1"
         If received_type = "Received from Other Branch" Or received_type = "Transfer Out" Then
             query = otherBranchQuery
@@ -163,13 +163,13 @@ Public Class received_item2
 
     Private Sub dgvSelectedItem_CellClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvSelectedItem.CellClick
         If dgvSelectedItem.RowCount <> 0 Then
-            If e.ColumnIndex = 4 And panelSAP.Visible = False Then
+            If e.ColumnIndex = 2 And panelSAP.Visible = False Then
                 Dim itemcode As String = dgvSelectedItem.CurrentRow.Cells("itemcodee").Value,
                  itemname As String = dgvSelectedItem.CurrentRow.Cells("itemnamee").Value,
                   category As String = dgvSelectedItem.CurrentRow.Cells("categoryy").Value,
-                  quantity As String = dgvSelectedItem.CurrentRow.Cells("quantityy").Value
+                  quantity As String = dgvSelectedItem.CurrentRow.Cells("quantity").Value
                 addEdit(dgvSelectedItem, itemcode, itemname, category, quantity, "EDIT")
-            ElseIf e.ColumnIndex = 5 And panelSAP.Visible = False Then
+            ElseIf e.ColumnIndex = 3 And panelSAP.Visible = False Then
                 Dim a As String = MsgBox("Are you sure you want to remove?", MsgBoxStyle.Question + MsgBoxStyle.YesNo + MessageBoxDefaultButton.Button2, "Atlantic Bakery")
                 If a = vbYes Then
                     dgvSelectedItem.Rows.RemoveAt(e.RowIndex)
@@ -261,7 +261,7 @@ Public Class received_item2
         Else
             If lblheader.Text = "Transfer Out" Then
                 confirm.ShowDialog()
-                If cnfrm = False Then
+                If cnfrm Then
                     addInventory()
                     loadListItems()
                 End If

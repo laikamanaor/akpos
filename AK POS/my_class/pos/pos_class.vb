@@ -109,4 +109,57 @@ Public Class pos_class
         Return result
     End Function
 
+
+    Public Function advancePaymentTotal(ByVal value As String) As Double
+        Dim wordz() As String = value.Split(New Char() {","c})
+        Dim wordd As String = "", apamt As Double = 0.00
+        Try
+            For Each wordd In wordz
+                If Not String.IsNullOrEmpty(wordd) Then
+                    cc.con.Open()
+                    cc.cmd = New SqlCommand("SELECT amount FROM tbladvancepayment WHERE apnum=@apnum AND type='Advance Payment' AND status='Active';", cc.con)
+                    cc.cmd.Parameters.AddWithValue("@apnum", wordd)
+                    cc.rdr = cc.cmd.ExecuteReader
+                    While cc.rdr.Read
+                        apamt += CDbl(cc.rdr("amount"))
+                    End While
+                    cc.con.Close()
+                End If
+            Next
+        Catch ex As Exception
+            MessageBox.Show(ex.ToString)
+        End Try
+        Return apamt
+    End Function
+
+    Public Function itemsDepositPrice(ByVal dataItems As DataTable) As Double
+        Dim result As Double = 0.00
+        Try
+            For Each r0w As DataRow In dataItems.Rows
+                cc.con.Open()
+                cc.cmd = New SqlCommand("SELECT ISNULL(SUM(" & CDbl(r0w("quantity")) & " * price),0) [depositPrice] FROM tbldepositprice WHERE itemid=(SELECT itemid FROM tblitems WHERE itemname=@itemname) AND status=1;", cc.con)
+                cc.cmd.Parameters.AddWithValue("@itemname", r0w("itemname"))
+                result += cc.cmd.ExecuteScalar
+                cc.con.Close()
+            Next
+        Catch ex As Exception
+            MessageBox.Show(ex.ToString)
+        End Try
+        Return result
+    End Function
+
+    Public Function returnAPDEP(ByVal columnName As String, ByVal paramater As String) As String
+        Dim result As String = ""
+        Try
+            cc.con.Open()
+            cc.cmd = New SqlCommand("SELECT " & columnName & " FROM tbladvancepayment WHERE apnum=@type;", cc.con)
+            cc.cmd.Parameters.AddWithValue("@type", paramater)
+            result = cc.cmd.ExecuteScalar
+            cc.con.Close()
+        Catch ex As Exception
+            MessageBox.Show(ex.ToString)
+        End Try
+        Return result
+    End Function
+
 End Class

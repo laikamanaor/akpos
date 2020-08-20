@@ -121,7 +121,6 @@ Public Class pull_out
         rdr = cmd.ExecuteReader()
         While rdr.Read()
             dgvListItem.Rows.Add(rdr("itemcode").ToString(), rdr("itemname").ToString(), rdr("category").ToString(), "")
-            auto.Add(rdr("itemcode"))
             auto.Add(rdr("itemname"))
         End While
         con.Close()
@@ -135,7 +134,6 @@ Public Class pull_out
     Public Sub load_selecteditems()
         Dim auto As New AutoCompleteStringCollection()
         For i As Integer = 0 To dgvSelectedItem.Rows.Count - 1
-            auto.Add(dgvSelectedItem.Rows(i).Cells(0).Value)
             auto.Add(dgvSelectedItem.Rows(i).Cells(1).Value)
         Next
         txtboxSelectedItem.AutoCompleteCustomSource = auto
@@ -307,14 +305,19 @@ Public Class pull_out
         End If
     End Sub
 
+    Public Sub updateQuantity()
+        lblQuantityItemCode.Text = "Item Code: " & dgvSelectedItem.CurrentRow.Cells(0).Value.ToString
+        lblQuantityItemName.Text = "Item Name: " & dgvSelectedItem.CurrentRow.Cells(1).Value.ToString
+        panelQuantity.Visible = True
+        panelQuantity.BringToFront()
+        selectedQuantity = "Update Quantity"
+        txtboxQuantity.Text = dgvSelectedItem.CurrentRow.Cells(3).Value
+        txtboxQuantity.Focus()
+    End Sub
+
     Private Sub dgvSelectedItem_CellContentClick(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvSelectedItem.CellContentClick
         If e.ColumnIndex = 4 Then
-            lblQuantityItemCode.Text = "Item Code: " & dgvSelectedItem.CurrentRow.Cells(0).Value.ToString
-            lblQuantityItemName.Text = "Item Name: " & dgvSelectedItem.CurrentRow.Cells(1).Value.ToString
-            panelQuantity.Visible = True
-            panelQuantity.BringToFront()
-            selectedQuantity = "Update Quantity"
-            txtboxQuantity.Text = dgvSelectedItem.CurrentRow.Cells(3).Value
+            updateQuantity()
         ElseIf e.ColumnIndex = 5 Then
             Dim a As String = MsgBox("Are you sure you want to delete?", MsgBoxStyle.Question + MsgBoxStyle.YesNo, "")
             If a = vbYes Then
@@ -410,7 +413,7 @@ Public Class pull_out
 
     Private Sub txtboxListItemSearch_KeyDown(sender As Object, e As KeyEventArgs) Handles txtboxListItemSearch.KeyDown
         If e.KeyCode = Keys.Enter Then
-            addquantity()
+            btnSearchListItem.PerformClick()
         End If
     End Sub
 
@@ -435,6 +438,12 @@ Public Class pull_out
         loadd()
     End Sub
 
+    Private Sub txtboxSelectedItem_KeyDown(sender As Object, e As KeyEventArgs) Handles txtboxSelectedItem.KeyDown
+        If e.KeyCode = Keys.Enter Then
+            Button2.PerformClick()
+        End If
+    End Sub
+
     Private Sub lblremarksclose_Click(sender As Object, e As EventArgs) Handles lblremarksclose.Click
         panelRemarks.Visible = False
         txtremarks.Text = ""
@@ -452,10 +461,13 @@ Public Class pull_out
                 If dgvSelectedItem.Rows(i).Cells(1).Value = rdr("itemname") Then
                     dgvSelectedItem.Rows(i).Selected = True
                     dgvSelectedItem.CurrentCell = dgvSelectedItem.Rows(i).Cells(1)
+                    updateQuantity()
                 Else
                     dgvSelectedItem.Rows(i).Selected = False
                 End If
             Next
+        Else
+            dgvSelectedItem.CurrentRow.Selected = False
         End If
 
         con.Close()

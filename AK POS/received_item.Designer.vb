@@ -961,8 +961,8 @@ Partial Class received_item
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.White
         Me.ClientSize = New System.Drawing.Size(1344, 701)
-        Me.Controls.Add(Me.PanelProduction)
         Me.Controls.Add(Me.panelQuantity)
+        Me.Controls.Add(Me.PanelProduction)
         Me.Controls.Add(Me.Label7)
         Me.Controls.Add(Me.dtdate)
         Me.Controls.Add(Me.Panel3)

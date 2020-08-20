@@ -148,85 +148,91 @@ Public Class cancel_tr
                         If cnfrm = False Then
                             Exit Sub
                         End If
-                    End If
 
-                    Dim serverDate As String = getSystemDate.ToString("MM/dd/yyyy")
 
-                    getID()
-                    GetTransID()
+                        Dim serverDate As String = getSystemDate.ToString("MM/dd/yyyy")
 
-                    con.Open()
-                    cmd = New SqlCommand("SELECT itemname,qty,category FROM tblorder WHERE transnum=@transnum2;", con)
-                    cmd.Parameters.AddWithValue("@transnum2", dgvtrans.CurrentRow.Cells("transnum").Value)
-                    Dim dt As New DataTable()
-                    adptr.SelectCommand = cmd
-                    adptr.Fill(dt)
-                    con.Close()
-                    Dim iout As String = ""
-                    If dgvtrans.CurrentRow.Cells("tendertype").Value = "Cash" Then
-                        iout = "ctrout"
-                    ElseIf dgvtrans.CurrentRow.Cells("tendertype").Value = "A.R Sales" Then
-                        iout = "arsales"
-                    ElseIf dgvtrans.CurrentRow.Cells("tendertype").Value = "A.R Charge" Then
-                        iout = "archarge"
-                    End If
-                    Using connection As New SqlConnection(login.ss)
-                        Dim cmdd As New SqlCommand()
-                        cmdd.Connection = connection
-                        connection.Open()
-                        transaction = connection.BeginTransaction()
-                        cmdd.Transaction = transaction
-                        Try
-                            For Each r0w As DataRow In dt.Rows
-                                Dim query As String = ""
-                                If r0w("category") <> "Coffee Shop" Then
-                                    cmdd.Parameters.Clear()
-                                    query = "UPDATE tblinvitems SET " & iout & "-=@qty, endbal+=@qty,variance-=@qty WHERE itemname=@itemname AND invnum=(SELECT invnum FROM tblinvsum WHERE CAST(datecreated AS date)='" & dtdate.Value.ToString("MM/dd/yyyy") & "');"
-                                    cmdd.CommandText = query
-                                    cmdd.Parameters.AddWithValue("@qty", r0w("qty"))
-                                    cmdd.Parameters.AddWithValue("@itemname", r0w("itemname"))
-                                    cmdd.ExecuteNonQuery()
-                                Else
-                                    cmdd.Parameters.Clear()
-                                    query = "UPDATE tblinvitems Set " & iout & "-=@qty,productionin-=@qty,totalav-=@qty,endbal+=@qty,variance-=@qty WHERE itemname=@itemname And invnum=@invnum;"
-                                    cmdd.CommandText = query
-                                    cmdd.Parameters.AddWithValue("@qty", r0w("qty"))
-                                    cmdd.Parameters.AddWithValue("@itemname", r0w("itemname"))
-                                    cmdd.Parameters.AddWithValue("@invnum", inv_id)
-                                    cmdd.ExecuteNonQuery()
-                                End If
-                            Next
-                            cmdd.Parameters.Clear()
-                            cmdd.CommandText = "UPDATE tbltransaction SET status='0' WHERE transnum=@transnum AND CAST(datecreated AS date)='" & dtdate.Text & "';"
-                            cmdd.Parameters.AddWithValue("@transnum", dgvtrans.CurrentRow.Cells("transnum").Value)
-                            cmdd.ExecuteNonQuery()
+                        getID()
+                        GetTransID()
 
-                            cmdd.Parameters.Clear()
-                            cmdd.CommandText = "DELETE FROM tblars1 WHERE transnum=@transnum;"
-                            cmdd.Parameters.AddWithValue("@transnum", dgvtrans.CurrentRow.Cells("transnum").Value)
-                            cmdd.ExecuteNonQuery()
-
-                            cmdd.Parameters.Clear()
-                            cmdd.CommandText = "DELETE FROM tblars2 WHERE transnum=@transnum;"
-                            cmdd.Parameters.AddWithValue("@transnum", dgvtrans.CurrentRow.Cells("transnum").Value)
-                            cmdd.ExecuteNonQuery()
-
-                            cmdd.Parameters.Clear()
-                            cmdd.CommandText = "UPDATE tblgctrans Set status=0 WHERE transnum=@transnum;"
-                            cmdd.Parameters.AddWithValue("@transnum", dgvtrans.CurrentRow.Cells("transnum").Value)
-                            cmdd.ExecuteNonQuery()
-                            transaction.Commit()
-                        Catch ex As Exception
-                            MessageBox.Show(ex.ToString)
+                        con.Open()
+                        cmd = New SqlCommand("SELECT itemname,qty,category FROM tblorder WHERE transnum=@transnum2;", con)
+                        cmd.Parameters.AddWithValue("@transnum2", dgvtrans.CurrentRow.Cells("transnum").Value)
+                        Dim dt As New DataTable()
+                        adptr.SelectCommand = cmd
+                        adptr.Fill(dt)
+                        con.Close()
+                        Dim iout As String = ""
+                        If dgvtrans.CurrentRow.Cells("tendertype").Value = "Cash" Then
+                            iout = "ctrout"
+                        ElseIf dgvtrans.CurrentRow.Cells("tendertype").Value = "A.R Sales" Then
+                            iout = "arsales"
+                        ElseIf dgvtrans.CurrentRow.Cells("tendertype").Value = "A.R Charge" Then
+                            iout = "archarge"
+                        End If
+                        Using connection As New SqlConnection(cc.conString)
+                            Dim cmdd As New SqlCommand()
+                            cmdd.Connection = connection
+                            connection.Open()
+                            transaction = connection.BeginTransaction()
+                            cmdd.Transaction = transaction
                             Try
-                                transaction.Rollback()
-                            Catch ex2 As Exception
-                                MessageBox.Show(ex2.ToString)
+                                For Each r0w As DataRow In dt.Rows
+                                    Dim query As String = ""
+                                    If r0w("category") <> "Coffee Shop" Then
+                                        cmdd.Parameters.Clear()
+                                        query = "UPDATE tblinvitems SET " & iout & "-=@qty, endbal+=@qty,variance-=@qty WHERE itemname=@itemname AND invnum=(SELECT invnum FROM tblinvsum WHERE CAST(datecreated AS date)='" & dtdate.Value.ToString("MM/dd/yyyy") & "');"
+                                        cmdd.CommandText = query
+                                        cmdd.Parameters.AddWithValue("@qty", r0w("qty"))
+                                        cmdd.Parameters.AddWithValue("@itemname", r0w("itemname"))
+                                        cmdd.ExecuteNonQuery()
+                                    Else
+                                        cmdd.Parameters.Clear()
+                                        query = "UPDATE tblinvitems Set " & iout & "-=@qty,productionin-=@qty,totalav-=@qty,endbal+=@qty,variance-=@qty WHERE itemname=@itemname And invnum=@invnum;"
+                                        cmdd.CommandText = query
+                                        cmdd.Parameters.AddWithValue("@qty", r0w("qty"))
+                                        cmdd.Parameters.AddWithValue("@itemname", r0w("itemname"))
+                                        cmdd.Parameters.AddWithValue("@invnum", inv_id)
+                                        cmdd.ExecuteNonQuery()
+                                    End If
+                                Next
+                                cmdd.Parameters.Clear()
+                                cmdd.CommandText = "UPDATE tbltransaction SET status='0' WHERE transnum=@transnum AND CAST(datecreated AS date)='" & dtdate.Text & "';"
+                                cmdd.Parameters.AddWithValue("@transnum", dgvtrans.CurrentRow.Cells("transnum").Value)
+                                cmdd.ExecuteNonQuery()
+
+                                cmdd.Parameters.Clear()
+                                cmdd.CommandText = "UPDATE tbltransaction2 SET status=0, status2='Cancel' WHERE transnum=@transnum AND CAST(datecreated AS date)='" & dtdate.Text & "';"
+                                cmdd.Parameters.AddWithValue("@transnum", dgvtrans.CurrentRow.Cells("transnum").Value)
+                                cmdd.ExecuteNonQuery()
+
+                                cmdd.Parameters.Clear()
+                                cmdd.CommandText = "DELETE FROM tblars1 WHERE transnum=@transnum;"
+                                cmdd.Parameters.AddWithValue("@transnum", dgvtrans.CurrentRow.Cells("transnum").Value)
+                                cmdd.ExecuteNonQuery()
+
+                                cmdd.Parameters.Clear()
+                                cmdd.CommandText = "DELETE FROM tblars2 WHERE transnum=@transnum;"
+                                cmdd.Parameters.AddWithValue("@transnum", dgvtrans.CurrentRow.Cells("transnum").Value)
+                                cmdd.ExecuteNonQuery()
+
+                                cmdd.Parameters.Clear()
+                                cmdd.CommandText = "UPDATE tblgctrans Set status=0 WHERE transnum=@transnum;"
+                                cmdd.Parameters.AddWithValue("@transnum", dgvtrans.CurrentRow.Cells("transnum").Value)
+                                cmdd.ExecuteNonQuery()
+                                transaction.Commit()
+                            Catch ex As Exception
+                                MessageBox.Show(ex.Message)
+                                Try
+                                    transaction.Rollback()
+                                Catch ex2 As Exception
+                                    MessageBox.Show(ex2.Message)
+                                End Try
                             End Try
-                        End Try
-                        MessageBox.Show("Cancelled", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Information)
-                        loadTrans()
-                    End Using
+                            MessageBox.Show("Cancelled", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                            loadTrans()
+                        End Using
+                    End If
                 End If
             End If
         Catch ex As Exception

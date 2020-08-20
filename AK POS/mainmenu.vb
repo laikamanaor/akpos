@@ -226,56 +226,10 @@ Public Class mainmenu
                 Panel5.Visible = False
                 Return
             End If
-            'If cas = "Cashier" Then
-            '    ''chack if inventory is new
-            '    'sql = "Select TOP 1 * from tblinvsum WHERE area='" & "Sales" & "' order by invsumid DESC"
-            '    'conn.Open()
-            '    'cmd = New SqlCommand(sql, conn)
-            '    'dr = cmd.ExecuteReader
-            '    'If dr.Read Then
-            '    '    If dr("verify") = 1 Then
-            '    '        MsgBox("Create new inventory of items first to continue.", MsgBoxStyle.Exclamation, "")
-            '    '        Panel4.Enabled = False
-            '    '        Panel5.Enabled = False
-            '    '        Panel8.Enabled = False
-            '    '        Panel9.Enabled = False
-            '    '        Panel17.Enabled = False
-            '    '        Me.Cursor = Cursors.Default
-            '    '        conn.Close()
-            '    '        Exit Sub
-            '    '    Else
-            '    '        If dr("invdate") <> getSystemDate.ToString("MM/dd/yyyy") Then
-            '    '            MsgBox("Verify the previous inventory first, then, create new inventory of items to continue.", MsgBoxStyle.Exclamation, "")
-            '    '            Panel4.Enabled = False
-            '    '            Panel5.Enabled = False
-            '    '            Panel8.Enabled = False
-            '    '            Panel9.Enabled = False
-            '    '            Panel17.Enabled = False
-            '    '            Me.Cursor = Cursors.Default
-            '    '            conn.Close()
-            '    '            Exit Sub
-            '    '        End If
-            '    '        Panel4.Enabled = True
-            '    '        Panel5.Enabled = True
-            '    '        Panel8.Enabled = True
-            '    '        Panel9.Enabled = True
-            '    '        Panel17.Enabled = True
-            '    '    End If
-            '    'Else
-            '    '    MsgBox("Create new inventory of items first to continue.", MsgBoxStyle.Exclamation, "")
-            '    '    Panel4.Enabled = False
-            '    '    Panel5.Enabled = False
-            '    '    Panel8.Enabled = False
-            '    '    Panel9.Enabled = False
-            '    '    Panel17.Enabled = False
-            '    '    conn.Close()
-            '    '    Exit Sub
-            '    'End If
-            '    'conn.Close()
-            'End If
 
+            Dim posType As String = userc.returnPOSType()
 
-            If pos_dialog.ans = "Coffee Shop" Or pos_dialog.ans = "Wholesale" Then
+            If posType = "Coffee Shop" Or posType = "Wholesale" Then
                 grd.Columns("discountpercent").ReadOnly = False
             Else
                 grd.Columns("discountpercent").ReadOnly = True
@@ -319,8 +273,8 @@ Public Class mainmenu
         Try
             Dim btncat(100) As Button
             Dim ctr As Integer = 0
-
-            If pos_dialog.ans = "Coffee Shop" Then
+            Dim posType As String = userc.returnPOSType()
+            If posType = "Coffee Shop" Then
                 sql = "Select * from tblcat where status='1' AND category='Coffee Shop' OR category='Beverages' or category='Breads' order by category"
             Else
                 sql = "Select * from tblcat where status='1' AND Not category='Coffee Shop' order by category"
@@ -415,8 +369,8 @@ Public Class mainmenu
         Dim aut As New AutoCompleteStringCollection()
 
         Dim query As String = "Select a.itemcode,a.itemname from tblitems a INNER JOIN tblcat b ON a.category = b.category where  a.discontinued='0' AND b.status=1"
-
-        If pos_dialog.ans = "Coffee Shop" Then
+        Dim posType As String = userc.returnPOSType()
+        If posType = "Coffee Shop" Then
             query &= " AND a.category ='Coffee Shop'"
         Else
             query &= " AND a.category !='Coffee Shop'"
@@ -534,6 +488,7 @@ Public Class mainmenu
 
     Public Sub ItemClicked(ByVal sender As Object, ByVal e As EventArgs)
         Try
+            Dim posType As String = userc.returnPOSType()
             Dim totalav As Double = 0.00
             If Microsoft.VisualBasic.Right(sender.text.ToString, 6) = " - N/A" Then
                 Dim iname As String = sender.text.ToString.Substring(0, sender.text.ToString.Length - 6)
@@ -549,7 +504,7 @@ Public Class mainmenu
                 conn.Close()
             End If
 
-            If totalav = 0 And Microsoft.VisualBasic.Right(sender.text.ToString, 6) = " - N/A" And pos_dialog.ans <> "Coffee Shop" Then
+            If totalav = 0 And Microsoft.VisualBasic.Right(sender.text.ToString, 6) = " - N/A" And posType <> "Coffee Shop" Then
                 MsgBox("The Item is Not Available", MsgBoxStyle.Exclamation, "")
                 Me.Cursor = Cursors.Default
                 Exit Sub
@@ -634,6 +589,7 @@ Public Class mainmenu
 
     Private Sub grd_CellEndEdit(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles grd.CellEndEdit
         Try
+            Dim posType As String = userc.returnPOSType()
             getID()
             If e.ColumnIndex = 1 Then
 
@@ -678,7 +634,7 @@ Public Class mainmenu
                     End If
                     conn.Close()
 
-                    If endbal < CDbl(grd.CurrentRow.Cells("quantity").Value) And pos_dialog.ans <> "Coffee Shop" Then
+                    If endbal < CDbl(grd.CurrentRow.Cells("quantity").Value) And posType <> "Coffee Shop" Then
                         MessageBox.Show("Available stock only is " & endbal, "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
                         'grd.CurrentRow.Cells(1).Value = endbal
 
@@ -773,7 +729,7 @@ Public Class mainmenu
                 If Not CBool(grd.CurrentRow.Cells("free").Value) = False And grd.RowCount <> 0 Then
                     Dim checkCell As DataGridViewCheckBoxCell = CType(grd.Rows(e.RowIndex).Cells(6), DataGridViewCheckBoxCell)
                     If checkCell.Value = True Then
-                        If grd.CurrentRow.Cells("cat").Value <> "Packaging" And pos_dialog.ans <> "Coffee Shop" Then
+                        If grd.CurrentRow.Cells("cat").Value <> "Packaging" And posType <> "Coffee Shop" Then
                             confirm.ShowDialog()
                         Else
                             grd.Rows(grd.CurrentRow.Index).Cells(2).Value = "0.00"
@@ -788,7 +744,7 @@ Public Class mainmenu
                             grd.Rows(grd.CurrentRow.Index).Cells(4).Value = "0.00"
                             grd.CurrentRow.Cells("discamt").Value = "0.00"
                         Else
-                            If grd.CurrentRow.Cells("cat").Value <> "Packaging" And pos_dialog.ans <> "Coffee Shop" Then
+                            If grd.CurrentRow.Cells("cat").Value <> "Packaging" And posType <> "Coffee Shop" Then
                                 checkCell.Value = False
                             End If
                         End If
@@ -828,6 +784,7 @@ Public Class mainmenu
 
     Public Sub cellendedit()
         Try
+            Dim posType As String = userc.returnPOSType()
             If grd.CurrentCell.ColumnIndex = 1 Then
                 If Panel12.Visible = False And IsNumeric((grd.Rows(grd.CurrentRow.Index).Cells(1).Value)) Then
                     If grd.Rows(grd.CurrentRow.Index).Cells(1).Value.ToString IsNot Nothing And (grd.Rows(grd.CurrentRow.Index).Cells(1).Value) = 0 Then
@@ -855,7 +812,7 @@ Public Class mainmenu
 
                             If dr.Read Then
                                 If Val(dr("endbal")) - Val(grd.Rows(grd.CurrentRow.Index).Cells(1).Value) < 0 Then
-                                    If pos_dialog.ans <> "Coffee Shop" And sales_ans <> "Coffee Shop" Then
+                                    If posType <> "Coffee Shop" And sales_ans <> "Coffee Shop" Then
                                         MsgBox("Insufficient Supply.", MsgBoxStyle.Exclamation, "")
                                         grd.Rows(grd.CurrentRow.Index).Cells(1).Value = ""
                                         amount()
@@ -917,67 +874,6 @@ Public Class mainmenu
         End Try
     End Sub
 
-    Public Sub checksupply()
-        Try
-            For Each row As DataGridViewRow In grd.Rows
-                Dim name As String = grd.Rows(row.Index).Cells(0).Value
-
-                If name = "" Then
-                    Exit Sub
-                End If
-
-                If Not list1.Items.Contains(name) Then
-                    list1.Items.Add(name)
-                End If
-            Next
-
-            conn.Open()
-            For i = 0 To list1.Items.Count - 1
-                list1.SelectedIndex = i
-                Dim name As String = list1.SelectedItem
-                Dim temp As Integer = 0
-                '//// MsgBox(name)
-                For Each row As DataGridViewRow In grd.Rows
-                    If grd.Rows(row.Index).Cells(0).Value = name Then
-                        temp += Val(grd.Rows(row.Index).Cells(1).Value)
-                    End If
-                    sql = "Select Top 1 endbal from tblinvitems where itemname='" & name & "' AND area='" & "Sales" & "' AND invnum='" & inv_id & "' order by invid DESC"
-                    conn.Open()
-                    cmd = New SqlCommand(sql, conn)
-                    dr = cmd.ExecuteReader
-
-                    If dr.Read Then
-                        If Val(dr("endbal")) - temp < 0 Then
-                            If pos_dialog.ans = "Coffee Shop" And cas = "Cashier" Then
-                                grd.Rows(row.Index).Cells(1).Value = "0.00"
-                                amount()
-                                Exit Sub
-                            ElseIf pos_dialog.ans <> "Coffee Shop" And cas = "Sales" Then
-                                grd.Rows(row.Index).Cells(1).Value = "0.00"
-                                amount()
-                                Exit Sub
-                            ElseIf pos_dialog.ans <> "Coffee Shop" And cas = "Cashier" Then
-                                grd.Rows(row.Index).Cells(1).Value = "0.00"
-                                amount()
-                                Exit Sub
-                            End If
-                        End If
-                    End If
-                    conn.Close()
-                Next
-                '/// MsgBox(temp)
-            Next
-
-
-        Catch ex As System.InvalidOperationException
-            Me.Cursor = Cursors.Default
-            MsgBox(ex.ToString, MsgBoxStyle.Critical, "")
-        Catch ex As Exception
-            Me.Cursor = Cursors.Default
-            MsgBox(ex.ToString, MsgBoxStyle.Information)
-        End Try
-    End Sub
-
     Public Sub amount()
         Try
             Dim checkCell As DataGridViewCheckBoxCell = CType(grd.Rows(grd.CurrentRow.Index).Cells(6), DataGridViewCheckBoxCell)
@@ -988,24 +884,6 @@ Public Class mainmenu
                     Dim isnm As Boolean = IsNumeric(bd)
                     Dim isnm1 As Boolean = IsNumeric(db)
                     If isnm = True And isnm1 = True Then
-
-                        ''discount
-                        'Dim discount As Double = 0.00, hasDiscount As Boolean = False
-                        'connect()
-                        'cmd = New SqlCommand("SELECT discount FROM tbldiscount_items WHERE itemid=(SELECT itemid FROM tblitems WHERE itemname=@itemname);", conn)
-                        'cmd.Parameters.AddWithValue("@itemname", grd.CurrentRow.Cells("description").Value)
-                        'dr = cmd.ExecuteReader
-                        'If dr.Read Then
-                        '    discount = CDbl(dr("discount"))
-                        '    hasDiscount = True
-                        'End If
-                        'disconnect()
-                        'If discount <> 0 Then
-                        '    discount = 100 - discount
-                        '    discount = discount / 100
-                        'End If
-                        'grd.Rows(grd.CurrentRow.Index).Cells(1).Value = Val(grd.Rows(grd.CurrentRow.Index).Cells(1).Value)
-                        'grd.Rows(grd.CurrentRow.Index).Cells(3).Value = Val(grd.Rows(grd.CurrentRow.Index).Cells(3).Value)
                         Dim q As Double = CDbl(grd.Rows(grd.CurrentRow.Index).Cells(1).Value)
                         Dim p As Double
                         sql = "Select price from tblitems where itemname='" & grd.Rows(grd.CurrentRow.Index).Cells(0).Value.ToString & "'"
@@ -1016,28 +894,11 @@ Public Class mainmenu
                             p = CDbl(dr("price"))
                         End If
                         conn.Close()
-                        'If grd.CurrentRow.Cells("cat").Value = "Coffee Shop" Then
-                        '    If hasDiscount Then
-                        '        Dim holderPrice As Double = p * discount
-                        '        p = holderPrice
-                        '    End If
-                        'End If
-
-                        '////Dim p As Double = CDbl(grd.Rows(grd.CurrentRow.Index).Cells(2).Value)
-                        'Dim d As Double = (q * p) * (CDbl(grd.Rows(grd.CurrentRow.Index).Cells(3).Value / 100))
-                        'Dim amt As Double = (q * p) - d
                         grd.Rows(grd.CurrentRow.Index).Cells(2).Value = p.ToString("n2")
                         Dim d As Double = (q * p) * (CDbl(grd.Rows(grd.CurrentRow.Index).Cells(3).Value / 100))
                         Dim amt As Double = (q * p) - d
-
-                        'grd.Rows(grd.CurrentRow.Index).Cells(4).Value = amt.ToString("n2")
-
-                        'If pos_dialog.ans = "Wholesale" Or sales_ans = "Wholesale" Or pos_dialog.ans = "Coffee Shop" Or sales_ans = "Coffee Shop" Then
-                        '    grd.Rows(grd.CurrentRow.Index).Cells(4).Value = CDbl(grd.Rows(grd.CurrentRow.Index).Cells(4).Value).ToString("n2")
-                        'Else
-                        '    grd.Rows(grd.CurrentRow.Index).Cells(4).Value = amt
-                        'End If
-                        If pos_dialog.ans = "Coffee Shop" Or sales_ans = "Coffee Shop" Then
+                        Dim posType As String = userc.returnPOSType()
+                        If posType = "Coffee Shop" Or sales_ans = "Coffee Shop" Then
 
                             Dim dgv As DataGridViewTextBoxCell = CType(grd.CurrentRow.Cells("quantity"), DataGridViewTextBoxCell)
                             If dgv.ColumnIndex = 1 Then
@@ -1055,30 +916,6 @@ Public Class mainmenu
                             End If
 
                         End If
-
-
-                        'Dim holderamt As Double = grd.CurrentRow.Cells(4).Value
-                        'If pos_dialog.ans = "Coffee Shop" Or sales_ans = "Coffee Shop" Then
-                        '    Dim quantity As Double = CDbl(grd.CurrentRow.Cells("quantity").Value)
-                        '    Dim price As Double = CDbl(grd.CurrentRow.Cells("price").Value)
-                        '    Dim origPrice As Double = quantity * price
-
-                        '    grd.Rows(grd.CurrentRow.Index).Cells(4).Value = amt
-                        '    If origPrice > holderamt Then
-                        '        grd.Rows(grd.CurrentRow.Index).Cells(4).Value = holderamt
-                        '        Dim disc As Double = ((origPrice - grd.CurrentRow.Cells("amtdue").Value) / origPrice) * 100
-                        '        If disc <= 100 Then
-                        '            grd.CurrentRow.Cells("discountpercent").Value = disc
-                        '        Else
-                        '            grd.CurrentRow.Cells("discountpercent").Value = 0.00
-                        '        End If
-                        '    Else
-                        '        grd.Rows(grd.CurrentRow.Index).Cells(4).Value = origPrice
-                        '        grd.CurrentRow.Cells("discountpercent").Value = 0.00
-                        '    End If
-                        'End If
-
-
                         grd.Columns(1).DefaultCellStyle.Format = "n2"
                         grd.Columns(2).DefaultCellStyle.Format = "n2"
                         grd.Columns(3).DefaultCellStyle.Format = "n2"
@@ -1104,77 +941,6 @@ Public Class mainmenu
     Private Sub grd_CellEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles grd.CellEnter
         grd.Focus()
     End Sub
-
-    'Private Sub grd_CellValueChanged(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles grd.CellValueChanged
-    '    Try
-
-    '        If grd.Columns(e.ColumnIndex).HeaderText = "Free" And grd.RowCount <> 0 Then
-    '            Dim checkCell As DataGridViewCheckBoxCell = CType(grd.Rows(e.RowIndex).Cells(6), DataGridViewCheckBoxCell)
-    '            If checkCell.Value = True Then
-    '                'MsgBox("true")
-    '                voidd = False
-
-    '                'If pos_dialog.ans = "Coffee Shop" Then
-    '                '    MessageBox.Show("whaaat")
-    '                '    Dim words As String = ""
-    '                '    For index As Integer = 0 To grd.RowCount - 1
-    '                '        conn.Open()
-    '                '        cmd = New SqlCommand("SELECT b.itemname FROM tblcsitems a JOIN tblitems b ON a.itemid = b.itemid WHERE b.itemname=@itemname;", conn)
-    '                '        cmd.Parameters.AddWithValue("@itemname", grd.Rows(index).Cells("itemname").Value)
-    '                '        dr = cmd.ExecuteReader
-    '                '        While dr.Read
-    '                '            words &= dr("itemname") & ","
-    '                '        End While
-    '                '        conn.Close()
-    '                '    Next
-
-    '                'words.Substring(0, words.Length - 1)
-    '                '    MessageBox.Show(words)
-    '                'End If
-
-
-    '                If grd.CurrentRow.Cells("cat").Value <> "Packaging" And pos_dialog.ans <> "Coffee Shop" Then
-    '                    confirm.ShowDialog()
-    '                End If
-
-    '                If voidd = True Then
-    '                    grd.Rows(grd.CurrentRow.Index).Cells(2).Value = "0.00"
-    '                    grd.Rows(grd.CurrentRow.Index).Cells(3).Value = "0.00"
-    '                    grd.Rows(grd.CurrentRow.Index).Cells(4).Value = "0.00"
-    '                Else
-    '                    If grd.CurrentRow.Cells("cat").Value <> "Packaging" And pos_dialog.ans <> "Coffee Shop" Then
-    '                        checkCell.Value = False
-    '                    End If
-    '                End If
-    '                voidd = False
-    '            Else
-    '                'MsgBox("false")
-    '                If grd.RowCount <> 0 Then
-    '                    If (grd.Rows(grd.CurrentRow.Index).Cells(1).Value.ToString IsNot Nothing) And (grd.Rows(grd.CurrentRow.Index).Cells(2).Value.ToString IsNot Nothing) And IsNumeric(grd.Rows(grd.CurrentRow.Index).Cells(1).Value) = True And IsNumeric(grd.Rows(grd.CurrentRow.Index).Cells(2).Value) = True Then
-    '                        grd.Rows(grd.CurrentRow.Index).Cells(1).Value = Val(grd.Rows(grd.CurrentRow.Index).Cells(1).Value)
-    '                        grd.Rows(grd.CurrentRow.Index).Cells(3).Value = Val(grd.Rows(grd.CurrentRow.Index).Cells(3).Value)
-    '                        Dim q As Double = CDbl(grd.Rows(grd.CurrentRow.Index).Cells(1).Value)
-    '                        Dim p As Double = CDbl(grd.Rows(grd.CurrentRow.Index).Cells(2).Value)
-    '                        Dim d As Double = CDbl(grd.Rows(grd.CurrentRow.Index).Cells(3).Value)
-    '                        Dim amt As Double = (q * p) - d
-    '                        grd.Rows(grd.CurrentRow.Index).Cells(4).Value = amt
-    '                        grd.Columns(1).DefaultCellStyle.Format = "n2"
-    '                        grd.Columns(3).DefaultCellStyle.Format = "n2"
-    '                        grd.Columns(4).DefaultCellStyle.Format = "n2"
-    '                    End If
-    '                    computetotal()
-    '                End If
-    '            End If
-    '            grd.Invalidate()
-    '            amount()
-    '        End If
-    '    Catch ex As Exception
-    '        Me.Cursor = Cursors.Default
-    '        'MessageBox.Show(ex.Message, MsgBoxStyle.Information)
-    '    End Try
-    'End Sub
-
-
     Public Sub computetotal()
         Try
             Dim total As Double, temptotal As Double
@@ -1245,19 +1011,19 @@ Public Class mainmenu
                     Else
                         er = 0
                     End If
-                    Dim amtpayable As Double = 0.00, change As Double = 0.00
-                    If apdepamt <> 0 Then
-                        If apdepamt > er Then
+                    Dim amtpayable As Double = 0.00, change As Double = 0.00, advancePayment As Double = posc.advancePaymentTotal(txtadvancepayment.Text)
+                    If advancePayment <> 0 Then
+                        If advancePayment > er Then
                             amtpayable = 0
                         Else
-                            amtpayable = er - apdepamt
+                            amtpayable = er - advancePayment
                         End If
                     Else
                         amtpayable = er
                     End If
                     Dim amttendered As Double = CDbl(txttendered.Text)
                     txtboxamountpayable.Text = amtpayable.ToString("n2")
-                    change = amttendered + apdepamt - er
+                    change = amttendered + advancePayment - er
                     If change > 0 Then
                         txtchange.Text = change.ToString("n2")
                     Else
@@ -1909,6 +1675,7 @@ Public Class mainmenu
         Return form
     End Function
     Private Sub btnok_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnok.Click
+        Dim posType As String = userc.returnPOSType()
         getID()
         If userc.checkCutOff() Then
             MessageBox.Show("POS already cut off", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
@@ -1934,8 +1701,8 @@ Public Class mainmenu
         ElseIf posc.checkCustomer(txtname.Text, cmbtype.Text) = False And rbcash.Checked = False Then
             MessageBox.Show("Name '" & txtname.Text & "' not found", "", MessageBoxButtons.OK, MessageBoxIcon.Error)
             txtname.Focus()
-        ElseIf checkCoffeeShopItem(pos_dialog.ans).ToLower <> "Below item Is invalid for ".ToLower & pos_dialog.ans.ToLower & Environment.NewLine Then
-            MessageBox.Show(checkCoffeeShopItem(pos_dialog.ans), "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        ElseIf checkCoffeeShopItem(posType).ToLower <> "Below item Is invalid for ".ToLower & posType.ToLower & Environment.NewLine Then
+            MessageBox.Show(checkCoffeeShopItem(posType), "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
         ElseIf Trim(txttendered.Text) = "" Or Val(txttendered.Text) = 0 And login2.wrkgrp = "Cashier" And rbcash.Checked Then
             If String.IsNullOrEmpty(txtchange.Text) And rbcash.Checked Then
                 amount()
@@ -1968,20 +1735,42 @@ Public Class mainmenu
             End If
         End If
     End Sub
+
+    Public Function returnedItemNameQuantity() As DataTable
+        Dim dataTableItems As New DataTable()
+        dataTableItems.Columns.Add("itemname")
+        dataTableItems.Columns.Add("quantity")
+
+        For i As Integer = 0 To grd.Rows.Count - 1
+            If Not CBool(grd.Rows(i).Cells("free").Value) Then
+                dataTableItems.Rows.Add(grd.Rows(i).Cells("description").Value, grd.Rows(i).Cells("quantity").Value)
+            End If
+        Next
+        Return dataTableItems
+    End Function
+
     Public Sub final()
         Dim a As String = MsgBox("Confirmed Order?", MsgBoxStyle.Question + MsgBoxStyle.YesNo + MsgBoxStyle.DefaultButton2, "Atlantic Bakery")
         If a = vbYes Then
-            If cas = "Cashier" And CDbl(txtboxamountpayable.Text) < apdepamt Then
-                apdep_ans = "No"
-            End If
+            'Dim advancePaymentTotal As Double = apdepamt - posc.advancePaymentTotal(txtadvancepayment.Text),
+            '    depositsPrice As Double = posc.itemsDepositPrice(returnedItemNameQuantity)
+            'If cas = "Cashier" And depositsPrice < advancePaymentTotal Then
+            '    Dim za As String = MsgBox("Are you want to Cash Out your Advance Payment?", MsgBoxStyle.Question + MsgBoxStyle.YesNo + MsgBoxStyle.DefaultButton2, "Atlantic Bakery")
+            '    If za = vbYes Then
+            '        apdep_ans = "Yes"
+            '    Else
+            '        apdep_ans = "No"
+            '    End If
+            'End If
             savetransaction()
         End If
     End Sub
     Public Function checkCoffeeShopItem(posdialog As String) As String
+        Dim posType As String = userc.returnPOSType()
         Dim errorCategory As String = "Below item is invalid for " & posdialog & Environment.NewLine
         For index As Integer = 0 To grd.RowCount - 1
             Dim chckCategory As String = ""
-            If pos_dialog.ans = posdialog Then
+            If posType = posdialog Then
                 conn.Open()
                 cmd = New SqlCommand("Select category FROM tblitems WHERE itemname=@iname;", conn)
                 cmd.Parameters.AddWithValue("@iname", grd.Rows(index).Cells("description").Value)
@@ -1998,7 +1787,7 @@ Public Class mainmenu
                         errorCategory &= grd.Rows(index).Cells("description").Value & Environment.NewLine
                     End If
                 Else
-                    If pos_dialog.ans <> posdialog Then
+                    If posType <> posdialog Then
                         errorCategory &= grd.Rows(index).Cells("description").Value & Environment.NewLine
                     End If
                 End If
@@ -2008,43 +1797,6 @@ Public Class mainmenu
             Return errorCategory
         End If
     End Function
-
-    Public Sub getARNum(ByVal typee As String, ByVal formatsu As String)
-        Try
-            Dim temp As String = "0", area_format As String = "", selectcount_result As Integer = 0
-            conn.Open()
-
-            cmd = New SqlCommand("Select COUNT(*)  from tblars1 WHERE area='Sales' AND type=@type;", conn)
-            cmd.Parameters.AddWithValue("@type", typee)
-            selectcount_result = cmd.ExecuteScalar() + 1
-            conn.Close()
-
-            Dim branchcode As String = ""
-            conn.Open()
-            cmd = New SqlCommand("SELECT branchcode FROM tblbranch WHERE main='1';", conn)
-            dr = cmd.ExecuteReader
-            If dr.Read Then
-                branchcode = dr("branchcode")
-            End If
-            conn.Close()
-
-            area_format = formatsu & " - " & branchcode & " - "
-
-            If selectcount_result < 1000000 Then
-                Dim cselectcount_result As String = CStr(selectcount_result)
-                For vv As Integer = 1 To 6 - cselectcount_result.Length
-                    temp += "0"
-                Next
-                ar_number = area_format & temp & selectcount_result
-            End If
-        Catch ex As System.InvalidOperationException
-            Me.Cursor = Cursors.Default
-            MsgBox(ex.Message, MsgBoxStyle.Critical, "")
-        Catch ex As Exception
-            Me.Cursor = Cursors.Default
-            MsgBox(ex.ToString, MsgBoxStyle.Information, "")
-        End Try
-    End Sub
 
     Public Function getSalesName() As String
         Dim zz As String = getSystemDate.ToString("MM/dd/yyyy")
@@ -2084,6 +1836,7 @@ Public Class mainmenu
     ''' 
     Public Sub savetransaction()
         Try
+            Dim posType As String = userc.returnPOSType()
             getID()
             loadtransnum()
             loadordernum()
@@ -2133,7 +1886,7 @@ Public Class mainmenu
                 If login2.wrkgrp = "Cashier" Then
 
                     Dim arRemarks As String = ""
-                    If rbAR.Checked Then
+                    If rbAR.Checked Or rbARCharge.Checked Then
                         ar_remarks.ShowDialog()
                         arRemarks = ar_remarks.txtremarks.Text
                     End If
@@ -2156,7 +1909,6 @@ Public Class mainmenu
                     cmdd.Parameters.Add(New SqlParameter("@amtdue", CDbl(txtboxamountpayable.Text)))
                     cmdd.Parameters.Add(New SqlParameter("@gctotal", CDbl(txtgc.Text)))
                     cmdd.Parameters.Add(New SqlParameter("@tenderamt", CDbl(txttendered.Text)))
-                    cmdd.Parameters.Add(New SqlParameter("@ar_amtdue", IIf(apdep_ans <> "", CDbl(txtsub.Text), CDbl(txtboxamountpayable.Text))))
                     cmdd.Parameters.Add(New SqlParameter("@change", CDbl(txtchange.Text)))
                     cmdd.Parameters.Add(New SqlParameter("@refund", 0))
                     cmdd.Parameters.Add(New SqlParameter("@comment", ""))
@@ -2259,23 +2011,6 @@ Public Class mainmenu
                             _less = 0
                         End If
 
-                        'Dim endbal As Double = 0.00, endbal_variance As Double = 0.00
-                        'cmd = New SqlCommand("SELECT endbal FROM tblinvitems WHERE invnum=@invnum AND itemname=@itemname;", connection)
-                        'cmd.Parameters.AddWithValue("@invnum", inv_id)
-                        'cmd.Parameters.AddWithValue("@itemname", Trim(grd.Rows(index).Cells("description").Value))
-                        'dr = cmd.ExecuteReader
-                        'If dr.Read Then
-                        '    endbal = CDbl(dr("endbal"))
-                        'End If
-
-                        'If endbal < CDbl(grd.Rows(index).Cells("quantity").Value) Then
-                        '    If endbal > 0 Then
-                        '        endbal_variance = endbal - CDbl(grd.Rows(index).Cells("quantity").Value)
-                        '    Else
-                        '        endbal_variance = 0 - CDbl(grd.Rows(index).Cells("quantity").Value)
-                        '    End If
-                        'End If
-
                         Dim ff As String = ""
                         If cmbtype.Text = "Customer" Then
                             ff = "A.R Sales"
@@ -2315,6 +2050,39 @@ Public Class mainmenu
                         cmdd.CommandText = "Update tblinvitems set " & arVal & "+=" & CDbl(grd.Rows(index).Cells("quantity").Value) & ", endbal-=" & CDbl(grd.Rows(index).Cells("quantity").Value) & ", variance+=" & CDbl(grd.Rows(index).Cells("quantity").Value) & " where itemname='" & grd.Rows(index).Cells("description").Value & "' AND invnum='" & inv_id & "';"
                         cmdd.ExecuteNonQuery()
                     Next
+
+                    'deposits
+                    If txtadvancepayment.Text <> "0.00" Or txtadvancepayment.Text <> "" Then
+                        Dim words() As String = txtadvancepayment.Text.Split(New Char() {","c})
+                        Dim word As String
+                        For Each word In words
+                            If Not String.IsNullOrEmpty(word) Then
+                                Dim typee As String = posc.returnAPDEP("type", word)
+                                Dim amount As Double = posc.returnAPDEP("amount", word)
+                                cmdd.Parameters.Clear()
+                                cmdd.CommandText = "UPDATE tbladvancepayment Set status='Used',from_trans=@trans WHERE apnum=@id;"
+                                cmdd.Parameters.AddWithValue("@id", word)
+                                cmdd.Parameters.AddWithValue("@trans", lbltrnum.Text)
+                                cmdd.ExecuteNonQuery()
+
+                                cmdd.CommandText = "INSERT INTO tblreturns (ap_id,returnum,transnum,status,byy) VALUES ((Select TOP 1 ap_id FROM tbladvancepayment WHERE apnum=@apnum),@returnum,@transnum,@status,@byy);"
+                                cmdd.Parameters.Clear()
+                                cmdd.Parameters.AddWithValue("@apnum", word)
+                                cmdd.Parameters.AddWithValue("@returnum", returnnum)
+                                cmdd.Parameters.AddWithValue("@transnum", lbltrnum.Text)
+                                cmdd.Parameters.AddWithValue("@status", "Active")
+                                cmdd.Parameters.AddWithValue("@byy", login2.username)
+                                cmdd.ExecuteNonQuery()
+
+                                If typee = "Advance Payment" Then
+                                    cmdd.Parameters.Clear()
+                                    cmdd.CommandText = "Insert into tbltransaction (ornum, transnum, transdate, cashier, tendertype, servicetype, delcharge, subtotal, disctype, less, vatsales, vat, amtdue, gctotal, tenderamt, change, refund, comment, remarks, customer, tinnum, tablenum, pax, datecreated, datemodified, status,area,invnum,partialamt,typez,salesname) values ('" & "0" & "', '" & lbltrnum.Text & "',(select cast(getdate() as date)),'" & login2.username & "', '" & "Advance Payment" & "', '" & "Advance Payment" & "', '" & "0" & "', '" & "0" & "', '" & "N/A" & "', '" & "0" & "', '" & "0" & "', '" & "0" & "', " & amount & ", '" & "0" & "', '" & "0" & "', '" & "0" & "', '0', '', '', '" & txtname.Text & "', '" & "0" & "', '" & "0" & "', '" & "0" & "',(SELECT GETDATE()),(SELECT GETDATE()), '1','" & "Sales" & "','" & inv_id & "','0','" & sales_ans & "',(SELECT cashier FROM tbltransaction2 WHERE CAST(datecreated AS date)=(select cast(getdate() as date)) AND ordernum='" & ornum & "'))"
+                                    cmdd.ExecuteNonQuery()
+                                End If
+                            End If
+                        Next
+                    End If
+
                 Else
                     Dim zz As String = getSystemDate.ToString("yyyy-MM-dd")
                     Dim zzz As String = getSystemDate()
@@ -2342,7 +2110,7 @@ Public Class mainmenu
                     cmdd.Parameters.AddWithValue("@tinum", txttin.Text)
                     cmdd.Parameters.AddWithValue("@createdby", login2.username)
                     cmdd.Parameters.AddWithValue("@gctotal", CDbl(txtgc.Text))
-                    cmdd.Parameters.AddWithValue("@type", pos_dialog.ans)
+                    cmdd.Parameters.AddWithValue("@type", posType)
                     cmdd.Parameters.AddWithValue("@discamt", CDbl(txtdiscamt.Text))
                     cmdd.ExecuteNonQuery()
                     If cmbdis.Text <> "" Then
@@ -2352,6 +2120,7 @@ Public Class mainmenu
                         cmdd.Parameters.AddWithValue("@idno", senior.txtidno.Text)
                         cmdd.Parameters.AddWithValue("@name", senior.txtname.Text)
                         cmdd.Parameters.AddWithValue("@disctype", cmbdis.Text)
+                        cmdd.Parameters.AddWithValue("@zz", zzz)
                         cmdd.ExecuteNonQuery()
                     End If
 
@@ -2360,85 +2129,6 @@ Public Class mainmenu
                         Dim ifree As Double = If(CBool(grd.Rows(index).Cells("free").Value) = True, 1, 0)
                         cmdd.CommandText = "Insert into tblorder2 (ordernum, category, itemname, qty, price, totalprice, dscnt, free, request, status, discprice, disctrans,area,gc,less,deliver,datecreated,pricebefore,discamt)values('" & lblordernumber.Text & "','" & grd.Rows(index).Cells("cat").Value & "','" & grd.Rows(index).Cells("description").Value & "','" & CDbl(grd.Rows(index).Cells("quantity").Value) & "','" & CDbl(grd.Rows(index).Cells("price").Value) & "','" & CDbl(grd.Rows(index).Cells("amtdue").Value) & "','" & CDbl(grd.Rows(index).Cells("discountpercent").Value) & "','" & ifree & "','" & grd.Rows(index).Cells("request").Value & "',1,'" & dscntprice & "','" & "0" & "','" & "Sales" & "','" & "0" & "','" & "0" & "','" & "0" & "','" & zzz & "', '" & CDbl(grd.Rows(index).Cells("pricebefore").Value) & "','" & CDbl(grd.Rows(index).Cells("discamt").Value) & "')"
                         cmdd.ExecuteNonQuery()
-                    Next
-
-                End If
-                If txtadvancepayment.Text <> "0.00" Or txtadvancepayment.Text <> "" Then
-                    Dim words() As String = txtadvancepayment.Text.Split(New Char() {","c})
-                    Dim word As String
-                    For Each word In words
-                        Dim zzz As String = getSystemDate()
-                        If Not String.IsNullOrEmpty(word) Then
-                            Dim amt As Double = 0.00, ap_id As Integer = 0
-                            cmdd.CommandText = "SELECT ap_id,amount,type FROM tbladvancepayment WHERE apnum='" & word & "';"
-                            dr = cmdd.ExecuteReader
-                            If dr.Read Then
-                                amt = CDbl(dr("amount"))
-                                tayp = CStr(dr("type"))
-                                ap_id = CInt(dr("ap_id"))
-                            End If
-                            dr.Close()
-
-                            If tayp = "Deposit" Then
-                                cmdd.CommandText = "INSERT INTO tblreturns (ap_id,returnum,transnum,status,byy,date) VALUES (@id,@returnum,@transnum,@status,@byy,@zz);"
-                                cmdd.Parameters.Clear()
-                                cmdd.Parameters.AddWithValue("@id", ap_id)
-                                cmdd.Parameters.AddWithValue("@returnum", returnnum)
-                                cmdd.Parameters.AddWithValue("@transnum", lbltrnum.Text)
-                                cmdd.Parameters.AddWithValue("@status", "Active")
-                                cmdd.Parameters.AddWithValue("@byy", login2.username)
-                                cmdd.Parameters.AddWithValue("@zz", zzz)
-                                cmdd.ExecuteNonQuery()
-                                'getReturnNum()
-
-                                cmdd.Parameters.Clear()
-                                cmdd.CommandText = "UPDATE tbladvancepayment SET status='Used',from_trans=@trans WHERE apnum=@id;"
-                                cmdd.Parameters.AddWithValue("@id", word)
-                                cmdd.Parameters.AddWithValue("@trans", lbltrnum.Text)
-                                cmdd.ExecuteNonQuery()
-                            ElseIf tayp = "Advance Payment" Then
-                                Dim zz As String = getSystemDate.ToString("MM/dd/yyyy")
-                                cmdd.Parameters.Clear()
-                                cmdd.CommandText = "Insert into tbltransaction (ornum, transnum, transdate, cashier, tendertype, servicetype, delcharge, subtotal, disctype, less, vatsales, vat, amtdue, gctotal, tenderamt, change, refund, comment, remarks, customer, tinnum, tablenum, pax, datecreated, datemodified, status,area,invnum,partialamt,typenum,sap_number,sap_remarks,typez,salesname) values ('" & txtor.Text & "', '" & lbltrnum.Text & "',(select cast(getdate() as date)),'" & login2.username & "', '" & "Advance Payment" & "', '" & "Advance Payment" & "', '" & CDbl(txtdeliver.Text) & "', '" & CDbl(txtsub.Text) & "', '" & cmbdis.SelectedItem & "', '" & CDbl(txtless.Text) & "', '" & CDbl(txtvatsales.Text) & "', '" & CDbl(txtvatamt.Text) & "', '" & IIf(CDbl(txtsub.Text) < CDbl(amt), CDbl(txtsub.Text), amt) & "', '" & CDbl(txtgc.Text) & "', '" & CDbl(txttendered.Text) & "', '" & CDbl(txtchange.Text) & "', '0', '', '', '" & txtname.Text & "', '" & "N/A" & "', '" & "0" & "', '" & "0" & "','" & zzz & "','" & zzz & "', '1','" & "Sales" & "','" & inv_id & "','0','','','','" & sales_ans & "',(SELECT cashier FROM tbltransaction2 WHERE CAST(datecreated AS date)='" & zz & "' And ordernum='" & ornum & "'))"
-                                cmdd.ExecuteNonQuery()
-                                If CDbl(txtboxamountpayable.Text) < amt Then
-                                    resultNo = amt - CDbl(txtsub.Text)
-                                End If
-
-                                If apdep_ans = "Yes" Then
-                                    cmdd.CommandText = "Insert into tbltransaction (ornum, transnum, transdate, cashier, tendertype, servicetype, delcharge, subtotal, disctype, less, vatsales, vat, amtdue, gctotal, tenderamt, change, refund, comment, remarks, customer, tinnum, tablenum, pax, datecreated, datemodified, status,area,invnum,partialamt,typez,salesname) values ('" & "0" & "', '" & lbltrnum.Text & "',(select cast(getdate() as date)),'" & login2.username & "', '" & "Cash Out" & "', '" & "Cash Out" & "', '" & "0" & "', '" & "0" & "', '" & "N/A" & "', '" & "0" & "', '" & "0" & "', '" & "0" & "', '" & resultNo & "', '" & "0" & "', '" & "0" & "', '" & "0" & "', '0', '', '', '" & txtname.Text & "', '" & "0" & "', '" & "0" & "', '" & "0" & "','" & zzz & "','" & zzz & "', '1','" & "Sales" & "','" & inv_id & "','0','" & sales_ans & "',(SELECT cashier FROM tbltransaction2 WHERE CAST(datecreated AS date)=(select cast(getdate() as date)) AND ordernum='" & ornum & "'))"
-                                    cmdd.ExecuteNonQuery()
-
-                                    cmdd.Parameters.Clear()
-                                    cmdd.CommandText = "UPDATE tbladvancepayment SET status='Used',from_trans=@trans WHERE apnum=@id;"
-                                    cmdd.Parameters.AddWithValue("@id", word)
-                                    cmdd.Parameters.AddWithValue("@trans", lbltrnum.Text)
-                                    cmdd.ExecuteNonQuery()
-                                ElseIf apdep_ans = "No" Then
-                                    If resultNo = 0 Then
-
-                                        cmdd.Parameters.Clear()
-                                        cmdd.CommandText = "UPDATE tbladvancepayment SET status='Used',from_trans=@trans WHERE apnum=@id;"
-                                        cmdd.Parameters.AddWithValue("@id", word)
-                                        cmdd.Parameters.AddWithValue("@trans", lbltrnum.Text)
-                                        cmdd.ExecuteNonQuery()
-                                    Else
-
-                                        cmdd.Parameters.Clear()
-                                        cmdd.CommandText = "UPDATE tbladvancepayment SET amount=@amount,from_trans=@trans WHERE apnum=@id;"
-                                        cmdd.Parameters.AddWithValue("@id", word)
-                                        cmdd.Parameters.AddWithValue("@amount", resultNo)
-                                        cmdd.Parameters.AddWithValue("@trans", lbltrnum.Text)
-                                        cmdd.ExecuteNonQuery()
-                                    End If
-                                ElseIf apdep_ans = "" Then
-                                    cmdd.CommandText = "UPDATE tbladvancepayment SET status='Used',from_trans=@trans WHERE apnum=@id;"
-                                    cmdd.Parameters.AddWithValue("@id", word)
-                                    cmdd.Parameters.AddWithValue("@trans", lbltrnum.Text)
-                                    cmdd.ExecuteNonQuery()
-                                End If
-                            End If
-                        End If
                     Next
                 End If
                 transaction.Commit()
@@ -2490,8 +2180,7 @@ Public Class mainmenu
             Dim get_area As String = "", temp As String = "0"
             Dim area_format As String = ""
             conn.Open()
-            cmd = New SqlCommand("Select COUNT(id) FROM tblreturns;", conn)
-            cmd.Parameters.AddWithValue("@type", cmbtype.Text)
+            cmd = New SqlCommand("Select ISNULL(MAX(id),0) FROM tblreturns;", conn)
             selectcount_result = cmd.ExecuteScalar() + 1
             conn.Close()
 
@@ -2947,7 +2636,6 @@ Public Class mainmenu
             If result = False Then
                 confirm.ShowDialog()
                 If voidd = True Then
-                    pos_dialog.ans = "Coffee Shop"
                     grd.Columns("amtdue").ReadOnly = False
 
                     Panel5.Controls.Clear()
@@ -2958,7 +2646,6 @@ Public Class mainmenu
                     grd.Rows.Clear()
                 End If
             Else
-                pos_dialog.ans = "Coffee Shop"
                 grd.Columns("amtdue").ReadOnly = False
 
                 Panel5.Controls.Clear()
@@ -2994,7 +2681,6 @@ Public Class mainmenu
             If result = False Then
                 confirm.ShowDialog()
                 If voidd = True Then
-                    pos_dialog.ans = "Retail"
                     grd.Columns("amtdue").ReadOnly = False
                     Panel5.Controls.Clear()
                     Panel14.Controls.Clear()
@@ -3005,7 +2691,6 @@ Public Class mainmenu
                     grd.Rows.Clear()
                 End If
             Else
-                pos_dialog.ans = "Retail"
                 grd.Columns("amtdue").ReadOnly = False
                 Panel5.Controls.Clear()
                 Panel14.Controls.Clear()
@@ -3041,7 +2726,6 @@ Public Class mainmenu
             If result = False Then
                 confirm.ShowDialog()
                 If voidd = True Then
-                    pos_dialog.ans = "Wholesale"
                     grd.Columns("amtdue").ReadOnly = False
 
                     Panel5.Controls.Clear()
@@ -3052,7 +2736,6 @@ Public Class mainmenu
                     grd.Rows.Clear()
                 End If
             Else
-                pos_dialog.ans = "Wholesale"
                 grd.Columns("amtdue").ReadOnly = False
 
                 Panel5.Controls.Clear()
@@ -3194,11 +2877,6 @@ Public Class mainmenu
         txtchange.Text = "0.00"
         txttendered.BackColor = Color.WhiteSmoke
         txttendered.ReadOnly = True
-        If cmbtype.Text = "Customer" Then
-            getARNum("AR Sales", "SLS")
-        ElseIf cmbtype.Text = "Employee" Then
-            getARNum("AR Charge", "CH")
-        End If
         tendertype = "A.R Sales"
     End Sub
 
@@ -3268,11 +2946,6 @@ Public Class mainmenu
         Else
             cmbtype.Enabled = False
         End If
-        If cmbtype.Text = "Customer" Then
-            getARNum("AR Sales", "SALARSLS")
-        ElseIf cmbtype.Text = "Employee" Then
-            getARNum("AR Charge", "SALARCH")
-        End If
     End Sub
 
     Private Sub cmbdis_SelectedValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmbdis.SelectedValueChanged
@@ -3324,11 +2997,6 @@ Public Class mainmenu
         txtchange.Text = "0.00"
         txttendered.BackColor = Color.WhiteSmoke
         txttendered.ReadOnly = True
-        If cmbtype.SelectedIndex = 0 Then
-            getARNum("AR Sales", "SLS")
-        ElseIf cmbtype.SelectedIndex = 1 Then
-            getARNum("AR Charge", "CH")
-        End If
         tendertype = "A.R Charge"
     End Sub
 End Class

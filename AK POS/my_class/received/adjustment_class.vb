@@ -141,7 +141,6 @@ Public Class adjustment_class
                 command.Parameters.AddWithValue("@transnum", vtransnum)
                 command.CommandType = CommandType.StoredProcedure
                 command.ExecuteNonQuery()
-
                 If dtItems.Rows.Count > 0 Then
                     For Each r0w As DataRow In dtItems.Rows
                         command.Parameters.Clear()

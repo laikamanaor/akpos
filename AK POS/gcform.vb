@@ -4,6 +4,7 @@ Imports System.Data.SqlClient
 Imports AK_POS.connection_class
 Public Class gcform
     Dim cc As New connection_class
+    Dim uic As New ui_class
     Dim strconn = cc.conString
     Dim conn As SqlConnection
     Dim cmd As SqlCommand
@@ -261,5 +262,17 @@ Public Class gcform
         If e.KeyCode = Keys.Escape Then
             btncancel.PerformClick()
         End If
+    End Sub
+
+    Private Sub Panel5_MouseDown(sender As Object, e As MouseEventArgs) Handles Panel5.MouseDown, MyBase.MouseDown, Label4.MouseDown, Label2.MouseDown, Label1.MouseDown
+        uic.mouse_down(Me)
+    End Sub
+
+    Private Sub Panel5_MouseMove(sender As Object, e As MouseEventArgs) Handles Panel5.MouseMove, MyBase.MouseMove, Label4.MouseMove, Label2.MouseMove, Label1.MouseMove
+        uic.mouse_move(Me)
+    End Sub
+
+    Private Sub Panel5_MouseUp(sender As Object, e As MouseEventArgs) Handles Panel5.MouseUp, MyBase.MouseUp, Label4.MouseUp, Label2.MouseUp, Label1.MouseUp
+        uic.mouse_up()
     End Sub
 End Class

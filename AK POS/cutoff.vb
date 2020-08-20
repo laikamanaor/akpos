@@ -20,10 +20,10 @@ Public Class cutoff
         Try
             dgvusers.Rows.Clear()
             con.Open()
-            cmd = New SqlCommand("SELECT TOP 1 tblusers.workgroup  FROM tblcutoff JOIN tblusers ON tblcutoff.userid = tblusers.systemid WHERE tblcutoff.status='" & cmbstat.SelectedItem & "' AND tblcutoff.cid=(SELECT TOP 1 cid FROM tblcutoff WHERE CAST(date AS date)=(select cast(getdate() as date)) ORDER BY cid ASC);", con)
+            cmd = New SqlCommand("SELECT DISTINCT b.workgroup,CAST(a.date AS date)[date]  FROM tblcutoff a INNER JOIN tblusers b ON a.userid = b.systemid WHERE CAST(a.date AS date)=(SELECT TOP 1 CAST(datecreated AS date) FROM tblinvsum WHERE verify=0 AND b.workgroup='Sales' AND a.status='Active' ORDER BY invsumid ASC);", con)
             rdr = cmd.ExecuteReader
             While rdr.Read
-                dgvusers.Rows.Add(rdr("workgroup"))
+                dgvusers.Rows.Add(rdr("workgroup"), rdr("date"))
             End While
             con.Close()
 
@@ -82,7 +82,7 @@ Public Class cutoff
 
     Private Sub dgvusers_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvusers.CellContentClick
         Try
-            If e.ColumnIndex = 1 And dgvusers.RowCount <> 0 Then
+            If e.ColumnIndex = 2 And dgvusers.RowCount <> 0 Then
 
                 If checkPendingOrders() <> 0 Then
                     MessageBox.Show("Confirm all pending orders before cutt off", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
@@ -90,31 +90,14 @@ Public Class cutoff
                 End If
                 Dim a As String = MsgBox("Are you sure you want to cutoff?", MsgBoxStyle.Question + MsgBoxStyle.YesNo + MsgBoxStyle.DefaultButton2, "")
                 If a = vbYes Then
-                    con.Open()
-                    cmd = New SqlCommand("SELECT tblcutoff.userid,tblusers.username FROM tblusers JOIN tblcutoff ON tblcutoff.userid = tblusers.systemid;", con)
-                    Dim adptr As New SqlDataAdapter()
-                    adptr.SelectCommand = cmd
-                    Dim dt As New DataTable()
-                    adptr.Fill(dt)
-                    con.Close()
-
-                    For Each r0w As DataRow In dt.Rows
-                        Dim cid As Integer = 0, date_created As New DateTime
-                        con.Open()
-                        cmd = New SqlCommand("SELECT date FROM tblcutoff WHERE userid='" & r0w("userid") & "' AND status='Active' ORDER BY userid DESC;", con)
-                        rdr = cmd.ExecuteReader
-                        If rdr.Read Then
-                            date_created = CDate(rdr("date"))
-                        End If
-                        con.Close()
-
+                    For i As Integer = 0 To dgvusers.Rows.Count - 1
                         con.Open()
                         cmd = New SqlCommand("UPDATE tblcutoff SET date_cutoff=(SELECT GETDATE()), status='In Active' WHERE CAST(date AS date)=@date", con)
-                        cmd.Parameters.AddWithValue("@date", date_created.ToString("MM/dd/yyyy"))
+                        cmd.Parameters.AddWithValue("@date", dgvusers.Rows(i).Cells("datee").Value)
                         cmd.ExecuteNonQuery()
                         con.Close()
                     Next
-                    MessageBox.Show("Transaction Completed", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                    MessageBox.Show("Your request has been granted", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Information)
                     loadData()
                 End If
             End If
@@ -124,7 +107,7 @@ Public Class cutoff
     End Sub
 
     Private Sub cutoff_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        If login.wrkgrp = "LC Accounting" Or login.wrkgrp = "Administrator" Then
+        If login2.wrkgrp = "LC Accounting" Or login2.wrkgrp = "Administrator" Then
             btnremove.Visible = True
         Else
             btnremove.Visible = False

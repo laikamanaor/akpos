@@ -3,6 +3,7 @@ Imports AK_POS.login_class
 Public Class login2
     Dim uic As New ui_class, loginc As New login_class
     Public Shared wrkgrp As String = "", username As String = ""
+    Public Shared posVersionID As Integer = 0
     Private Sub btnminimize_Click(sender As Object, e As EventArgs) Handles btnminimize.Click
         Me.WindowState = FormWindowState.Minimized
     End Sub
@@ -61,6 +62,11 @@ Public Class login2
         txtusername.Focus()
     End Sub
 
+    Private Sub lblupdateversion_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles lblupdateversion.LinkClicked
+        Dim frm As New version
+        frm.ShowDialog()
+    End Sub
+
     Private Sub checkseepass_CheckedChanged(sender As Object, e As EventArgs) Handles checkseepass.CheckedChanged
         txtpass.PasswordChar = IIf(checkseepass.Checked, "", "*")
         txtpass.Font = IIf(checkseepass.Checked, New Font("Arial", 12, FontStyle.Bold), New Font("Arial", 18, FontStyle.Bold))
@@ -82,12 +88,12 @@ Public Class login2
             txtpass.Text = ""
             txtpass.Focus()
         Else
-            username = txtusername.Text
             Dim sa As New pos_dialog()
             sa.ShowDialog()
             loginc.setUsername(txtusername.Text)
             loginc.insertCutOff()
             loginc.insertLogs()
+            username = txtusername.Text
             wrkgrp = loginc.getWorkgroup()
             Me.Hide()
             Dim frm As New main()

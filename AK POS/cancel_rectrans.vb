@@ -96,7 +96,7 @@ Public Class cancel_rectrans
                 columnName = "itemin"
             Case "Received From Production".ToLower
                 columnName = "productionin"
-            Case "Transfer Item".ToLower
+            Case "Transfer".ToLower
                 columnName = "transfer"
         End Select
         Dim result As New DataTable()
@@ -104,8 +104,6 @@ Public Class cancel_rectrans
         result = adjc.loadItems()
         adjc.cancelTransaction(result, columnName)
         loadData()
-
-        TextBox1.Text = "UPDATE tblinvitems SET " & columnName & "-=@quantity,charge-=@charge,archarge-=@charge" & IIf(columnName = "transfer", "", ",totalav-=@quantity") & ",endbal" & IIf(columnName = "transfer", "+", "-") & "=@quantity,variance" & IIf(columnName = "transfer", "-", "+") & "=@quantity WHERE invnum=@invnum AND itemname=@itemname;"
 
     End Sub
 

@@ -171,4 +171,26 @@
         5y4AAAAASUVORK5CYII=
 </value>
   </data>
+  <data name="btncanceltransaction.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAABGdBTUEAALGPC/xhBQAAAXpJREFUOE+t
+        1M8rBHEcxvHdM0khkgsXSkltju6cXLi4KBflivUvIJS4UHJyUYgrB6VEKFJCKSVRFDfKj/F+2s93jDHM
+        7OapV77zmZlnZ8zspoLxPO8ehSZrNV9hqMJjjORhCsqvhfO2mSgcX642kitkkTGl8Av5u4uHGN34UejS
+        gWDhuYYx6UVk4Rqq8W+Fo7YOFtaiPkYJEhe2ocuxmUr8GfShiQvPtMPFZtnclp+8brkR7g3I2KwqOIPK
+        Cr/CYBg1QKU1aEW726FEFQ7A/0ZoprBuxhGCWUGlO0CJKlzAhmOzJrzgDkPQg5nBG65Q/FfhMg4cm+3j
+        FhW2XYQtvOMDkxqqfcIOeMSc1uEw1yuiDNq23sEdvKIT67jWjm2o6ALKHpZCxtACRbf5rcw+QL86z1rU
+        YRNPUPFlhEPo9dCtTSNcloYu5ETbicMJi1Cp9NhY82EofTZKFk4og65YD0D/s1noZ05ZRdoOTR5O0pMd
+        xw30QE/RD8pSqU/KAyLCBNTxbAAAAABJRU5ErkJggg==
+</value>
+  </data>
+  <data name="btncancellogs.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAABGdBTUEAALGPC/xhBQAAAPFJREFUOE+1
+        lb0KwjAUhQtSKIjYwW6FgktBVx/CyVGcHXwWXdzFR3ETBPH3CZwdfANRruc0cVBoUpt64CM3gXxDb7j1
+        RKQLjuAOyoZ396BD4Y4nFWVL4VPVleRBIXMFB0fokLdw5jmGDor+K8RaBxtwKcgaBCZhW21/SpwrZFCP
+        wKQgQ30tX1g2dFD0IcSaqq2MQUuV1qQmYQSmoAfYINY2IpMwBivQB01d28hvCtYE8NUPQKhrG4lJSAm7
+        x28Z6NpGaBJW3hQf8HE3QE3XNvxvIcfXnIcuoQNk44sD9gaWYFES3qUjG7D8BZyBa04i0nkBzECKh2IL
+        5y4AAAAASUVORK5CYII=
+</value>
+  </data>
 </root>

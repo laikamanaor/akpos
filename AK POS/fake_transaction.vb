@@ -138,7 +138,7 @@ Public Class fake_transaction
                 query &= " AND tbltransaction.salesname='" & cmbsales.Text & "' AND tbltransaction.typez='" & cmbtype.Text & "'"
             End If
 
-            query &= " ORDER BY 1 OFFSET " & offset & " ROWS FETCH Next 30 ROWS ONLY"
+            query &= " AND tbltransaction.customer !='Short' ORDER BY 1 OFFSET " & offset & " ROWS FETCH Next 30 ROWS ONLY"
             TextBox2.Text = query
             Dim s As String = query
             con.Open()
@@ -528,7 +528,7 @@ Public Class fake_transaction
                 If rdr.Read Then
                     Me.Cursor = Cursors.WaitCursor
                     lbltransnum.Text = rdr("transnum")
-                    lblcashier.Text = rdr("cashier")
+                    lblcashier.Text = rdr("salesname")
                     lbldate.Text = Format(rdr("datecreated"), "HH:mm   MM/dd/yyyy")
                     lblsub.Text = Val(rdr("subtotal")).ToString("n2")
                     lbldel.Text = Val(rdr("delcharge")).ToString("n2")

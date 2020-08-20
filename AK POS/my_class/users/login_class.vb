@@ -43,14 +43,8 @@ Public Class login_class
 
     Public Sub insertCutOff()
         Try
-            Dim lm As Boolean = False, status As String = "", date_from As New DateTime(), dateNow As String = cc.getSystemDate.ToString("MM/dd/yyyy"), result As Integer = 0
-
+            Dim lm As Boolean = False, status As String = "", date_from As New DateTime(), dateNow As String = cc.getSystemDate.ToString("MM/dd/yyyy")
             cc.con.Open()
-            cc.cmd = New SqlClient.SqlCommand("SELECT ISNULL(COUNT(cid),0) FROM tblcutoff WHERE CAST(date AS date)='" & dateNow & "' AND status='Active';", cc.con)
-            result = cc.cmd.ExecuteScalar
-            cc.con.Close()
-            If result = 0 Then
-                cc.con.Open()
                 cc.cmd = New SqlClient.SqlCommand("SELECT status,date FROM tblcutoff WHERE userid=(SELECT systemid FROM tblusers WHERE username=@username) ORDER BY cid DESC;", cc.con)
                 cc.cmd.Parameters.AddWithValue("@username", username)
                 cc.rdr = cc.cmd.ExecuteReader
@@ -62,24 +56,23 @@ Public Class login_class
                     lm = False
                 End If
                 cc.con.Close()
-                If lm Then
-                    If status = "In Active" And date_from.ToString("MM/dd/yyyy") = cc.getSystemDate.ToString("MM/dd/yyyy") Then
-                    ElseIf status = "In Active" And date_from.ToString("MM/dd/yyyy") <> cc.getSystemDate().ToString("MM/dd/yyyy") Then
-                        cc.con.Open()
-                        cc.cmd = New SqlClient.SqlCommand("INSERT INTO tblcutoff (userid,status,date) VALUES ((SELECT systemid FROM tblusers WHERE username=@username2), 'Active',GETDATE());", cc.con)
-                        cc.cmd.Parameters.AddWithValue("@username2", username)
-                        cc.cmd.ExecuteNonQuery()
-                        cc.con.Close()
-                    ElseIf status = "Active" And date_from.ToString("MM/dd/yyyy") <> cc.getSystemDate().ToString("MM/dd/yyyy") Then
-                    ElseIf status = "Active" And date_from.ToString("MM/dd/yyyy") = cc.getSystemDate().ToString("MM/dd/yyyy") Then
-                    End If
-                Else
+            If lm Then
+                If status = "In Active" And date_from.ToString("MM/dd/yyyy") = cc.getSystemDate.ToString("MM/dd/yyyy") Then
+                ElseIf status = "In Active" And date_from.ToString("MM/dd/yyyy") <> cc.getSystemDate().ToString("MM/dd/yyyy") Then
                     cc.con.Open()
                     cc.cmd = New SqlClient.SqlCommand("INSERT INTO tblcutoff (userid,status,date) VALUES ((SELECT systemid FROM tblusers WHERE username=@username2), 'Active',GETDATE());", cc.con)
                     cc.cmd.Parameters.AddWithValue("@username2", username)
                     cc.cmd.ExecuteNonQuery()
                     cc.con.Close()
+                ElseIf status = "Active" And date_from.ToString("MM/dd/yyyy") <> cc.getSystemDate().ToString("MM/dd/yyyy") Then
+                ElseIf status = "Active" And date_from.ToString("MM/dd/yyyy") = cc.getSystemDate().ToString("MM/dd/yyyy") Then
                 End If
+            Else
+                cc.con.Open()
+                cc.cmd = New SqlClient.SqlCommand("INSERT INTO tblcutoff (userid,status,date) VALUES ((SELECT systemid FROM tblusers WHERE username=@username2), 'Active',GETDATE());", cc.con)
+                cc.cmd.Parameters.AddWithValue("@username2", username)
+                cc.cmd.ExecuteNonQuery()
+                cc.con.Close()
             End If
         Catch ex As Exception
             MessageBox.Show(ex.ToString)

@@ -2,7 +2,7 @@
 Imports AK_POS.connection_class
 Public Class received_class
     Dim cc As New connection_class(), transaction As SqlTransaction
-    Private sap_number As String = "", datecreated As String, itemname As String = "", category As String = "", vheaderText As String, vinventorynum As String = "", vtableName As String = "", vtransactionNumber As String, vsapNumber As Integer = 0, vsapDoc As String = "", vremarks As String = "", vfromBranch As String = "", vconvnum As String = ""
+    Private sap_number As String = "", datecreated As String, itemname As String = "", category As String = "", vheaderText As String, vinventorynum As String = "", vtableName As String = "", vtransactionNumber As String, vsapNumber As Integer = 0, vsapDoc As String = "", vremarks As String = "", vfromBranch As String = "", vconvnum As String = "", vtype, vtype2
     Public Sub setSAPNumber(ByVal value As String)
         sap_number = value
     End Sub
@@ -107,6 +107,25 @@ Public Class received_class
             Return vconvnum
         End Get
     End Property
+
+    Public Property type As String
+        Set(value As String)
+            vtype = value
+        End Set
+        Get
+            Return vtype
+        End Get
+    End Property
+
+    Public Property type2 As String
+        Set(value As String)
+            vtype2 = value
+        End Set
+        Get
+            Return vtype2
+        End Get
+    End Property
+
     ''' <summary>
     ''' Check SAP Number if exist
     ''' </summary>
@@ -147,7 +166,7 @@ Public Class received_class
         Return result
     End Function
 
-    Public Function loadAvailableItems(ByVal rectrans As String)
+    Public Function loadAvailableItems(ByVal rectrans As String) As DataTable
         Dim result As New DataTable(), adptr As New SqlDataAdapter(),
             rec As String = "SELECT * FROM funcLoadInventoryItems(@datecreated,@itemname,@category)",
             trans As String = "SELECT * FROM funcLoadStockItems(@datecreated,@itemname,@category)"
@@ -172,6 +191,8 @@ Public Class received_class
             taypz = "Parent"
         ElseIf headerText = "Conversion In" Then
             taypz = "Child"
+        ElseIf headerText = "Pull Out" Then
+            taypz = "Pull Out"
         Else
             taypz = "Received Item"
         End If
@@ -207,6 +228,8 @@ Public Class received_class
                 template = "CONVOUT - "
             Case "Conversion In"
                 template = "CONVIN - "
+            Case "Pull Out"
+                template = "PO - "
         End Select
 
         If result < 1000000 Then
@@ -294,7 +317,7 @@ Public Class received_class
                         cmdd.Parameters.AddWithValue("@processed_by", login2.username)
                         cmdd.Parameters.AddWithValue("@type", taypz)
                         cmdd.Parameters.AddWithValue("@typenum", vsapDoc)
-                        cmdd.Parameters.AddWithValue("@type2", vheaderText)
+                        cmdd.Parameters.AddWithValue("@type2", IIf(vheaderText.Equals("Transfer Out"), "Transfer", vheaderText))
                         cmdd.Parameters.AddWithValue("@from", fromBranch)
                         cmdd.Parameters.AddWithValue("@to", toBranch)
                         cmdd.ExecuteNonQuery()
@@ -319,6 +342,57 @@ Public Class received_class
                         cmdd.ExecuteNonQuery()
                     Next
                 End If
+                transaction.Commit()
+                Dim frm As New show_trans()
+                frm.lbltr.Text = vtransactionNumber
+                frm.ShowDialog()
+            End Using
+        Catch ex As Exception
+            MessageBox.Show(ex.ToString)
+            Try
+                transaction.Rollback()
+            Catch ex2 As Exception
+                MessageBox.Show(ex2.ToString)
+            End Try
+        End Try
+    End Sub
+
+    Public Sub updatePullOut(ByVal dt As DataTable)
+        Try
+            Dim getMainBranch As String = returnBranchCode()
+            Using connection As New SqlConnection(cc.conString)
+                Dim cmdd As New SqlCommand()
+                cmdd.Connection = connection
+                connection.Open()
+                transaction = connection.BeginTransaction()
+                cmdd.Transaction = transaction
+
+                For Each r0w As DataRow In dt.Rows
+                    cmdd.Parameters.Clear()
+                    cmdd.CommandText = "UPDATE tblinvitems Set " & vtableName & "+=@quantity, endbal-=@quantity, variance+=@quantity WHERE itemname=@itemname And invnum=@invnum And area='Sales';"
+                    cmdd.Parameters.AddWithValue("@quantity", CDbl(r0w("quantity")))
+                    cmdd.Parameters.AddWithValue("@itemname", r0w("item"))
+                    cmdd.Parameters.AddWithValue("@invnum", vinventorynum)
+                    cmdd.ExecuteNonQuery()
+
+                    MessageBox.Show(vtype)
+
+                    cmdd.Parameters.Clear()
+                    cmdd.CommandText = "INSERT INTO tblproduction (transaction_number,inv_id,item_code,item_name,category,quantity,reject,charge,sap_number,remarks,date,processed_by,type,area,status,transfer_from,transfer_to,typenum,type2) VALUES (@trans_id,@id,(SELECT itemcode FROM tblitems WHERE itemname=@name),@name,(SELECT category FROM tblitems WHERE itemname=@name),@quantity,0,0,@sap,@remarks,(SELECT GETDATE()),@processed_by,@type,'Sales','Completed',@from,@to,@typenum,@type2);"
+                    cmdd.Parameters.AddWithValue("@trans_id", vtransactionNumber)
+                    cmdd.Parameters.AddWithValue("@id", vinventorynum)
+                    cmdd.Parameters.AddWithValue("@name", r0w("item"))
+                    cmdd.Parameters.AddWithValue("@quantity", CDbl(r0w("quantity")))
+                    cmdd.Parameters.AddWithValue("@sap", IIf(vsapNumber = 0, "To Follow", vsapNumber))
+                    cmdd.Parameters.AddWithValue("@remarks", vremarks)
+                    cmdd.Parameters.AddWithValue("@processed_by", login2.username)
+                    cmdd.Parameters.AddWithValue("@type", vtype)
+                    cmdd.Parameters.AddWithValue("@typenum", vsapDoc)
+                    cmdd.Parameters.AddWithValue("@type2", vtype2)
+                    cmdd.Parameters.AddWithValue("@from", getMainBranch)
+                    cmdd.Parameters.AddWithValue("@to", vfromBranch)
+                    cmdd.ExecuteNonQuery()
+                Next
                 transaction.Commit()
                 Dim frm As New show_trans()
                 frm.lbltr.Text = vtransactionNumber
