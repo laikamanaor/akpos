@@ -196,7 +196,7 @@ Public Class discount
                 Me.Cursor = Cursors.Default
                 confirm.ShowDialog()
                 If disc = True Then
-                    sql = "Insert into tbldiscount (disname, amount, datecreated, createdby, datemodified, modifiedby, status) values('" & Trim(txtdis.Text) & "','" & Trim(txtamt.Text) & "',(SELECT GETDATE()),'" & login.cashier & "',(SELECT GETDATE()),'" & login.cashier & "','1')"
+                    sql = "Insert into tbldiscount (disname, amount, datecreated, createdby, datemodified, modifiedby, status) values('" & Trim(txtdis.Text) & "','" & Trim(txtamt.Text) & "',(SELECT GETDATE()),'" & login2.username & "',(SELECT GETDATE()),'" & login2.username & "','1')"
                     connect()
                     cmd = New SqlCommand(sql, conn)
                     cmd.ExecuteNonQuery()
@@ -270,7 +270,7 @@ Public Class discount
 
                     confirm.ShowDialog()
                     If disc = True Then
-                        sql = "Update tbldiscount set disname='" & Trim(txtdis.Text) & "', amount='" & Trim(txtamt.Text) & "', datemodified=(SELECT GETDATE()), modifiedby='" & login.cashier & "' where disid='" & lbldisid.Text & "'"
+                        sql = "Update tbldiscount set disname='" & Trim(txtdis.Text) & "', amount='" & Trim(txtamt.Text) & "', datemodified=(SELECT GETDATE()), modifiedby='" & login2.username & "' where disid='" & lbldisid.Text & "'"
                         connect()
                         cmd = New SqlCommand(sql, conn)
                         cmd.ExecuteNonQuery()
@@ -330,7 +330,7 @@ Public Class discount
 
                     confirm.ShowDialog()
                     If disc = True Then
-                        sql = "Update tbldiscount set status='0', datemodified=(SELECT GETDATE()), modifiedby='" & login.cashier & "' where disid='" & lbldisid.Text & "'"
+                        sql = "Update tbldiscount set status='0', datemodified=(SELECT GETDATE()), modifiedby='" & login2.username & "' where disid='" & lbldisid.Text & "'"
                         connect()
                         cmd = New SqlCommand(sql, conn)
                         cmd.ExecuteNonQuery()
@@ -345,7 +345,7 @@ Public Class discount
 
                     confirm.ShowDialog()
                     If disc = True Then
-                        sql = "Update tbldiscount set status='1', datemodified=(SELECT GETDATE()), modifiedby='" & login.cashier & "' where disid='" & lbldisid.Text & "'"
+                        sql = "Update tbldiscount set status='1', datemodified=(SELECT GETDATE()), modifiedby='" & login2.username & "' where disid='" & lbldisid.Text & "'"
                         connect()
                         cmd = New SqlCommand(sql, conn)
                         cmd.ExecuteNonQuery()
@@ -438,7 +438,7 @@ Public Class discount
 
                     confirm.ShowDialog()
                     If disc = True Then
-                        sql = "Update tbldeliverych set range='" & Trim(txtrange.Text) & "',charge='" & Trim(txtdel.Text) & "', datemodified=(SELECT GETDATE())', modifiedby='" & login.cashier & "' where delid='" & Val(lbldelid.Text) & "'"
+                        sql = "Update tbldeliverych set range='" & Trim(txtrange.Text) & "',charge='" & Trim(txtdel.Text) & "', datemodified=(SELECT GETDATE())', modifiedby='" & login2.username & "' where delid='" & Val(lbldelid.Text) & "'"
                         connect()
                         cmd = New SqlCommand(sql, conn)
                         cmd.ExecuteNonQuery()
@@ -634,7 +634,7 @@ Public Class discount
                 confirm.ShowDialog()
                 If disc = True Then
                     'insert
-                    sql = "Insert into tbldeliverych (range, charge, datecreated, createdby, datemodified, modifiedby, status) values ('" & Trim(txtrange.Text) & "','" & Val(txtdel.Text) & "',(SELECT GETDATE()), '" & login.cashier & "',(SELECT GETDATE()), '" & login.cashier & "','1')"
+                    sql = "Insert into tbldeliverych (range, charge, datecreated, createdby, datemodified, modifiedby, status) values ('" & Trim(txtrange.Text) & "','" & Val(txtdel.Text) & "',(SELECT GETDATE()), '" & login2.username & "',(SELECT GETDATE()), '" & login2.username & "','1')"
                     connect()
                     cmd = New SqlCommand(sql, conn)
                     cmd.ExecuteNonQuery()
@@ -710,7 +710,7 @@ Public Class discount
                 If btndeacdel.Text = "Deactivate" Then
                     confirm.ShowDialog()
                     If disc = True Then
-                        sql = "Update tbldeliverych set status='0', datemodified=(SELECT GETDATE()), modifiedby='" & login.cashier & "' where delid='" & lbldelid.Text & "'"
+                        sql = "Update tbldeliverych set status='0', datemodified=(SELECT GETDATE()), modifiedby='" & login2.username & "' where delid='" & lbldelid.Text & "'"
                         connect()
                         cmd = New SqlCommand(sql, conn)
                         cmd.ExecuteNonQuery()
@@ -724,7 +724,7 @@ Public Class discount
                 Else
                     confirm.ShowDialog()
                     If disc = True Then
-                        sql = "Update tbldeliverych set status='1', datemodified=(SELECT GETDATE()), modifiedby='" & login.cashier & "' where delid='" & lbldelid.Text & "'"
+                        sql = "Update tbldeliverych set status='1', datemodified=(SELECT GETDATE()), modifiedby='" & login2.username & "' where delid='" & lbldelid.Text & "'"
                         connect()
                         cmd = New SqlCommand(sql, conn)
                         cmd.ExecuteNonQuery()

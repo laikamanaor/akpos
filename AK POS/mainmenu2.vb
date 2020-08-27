@@ -7,7 +7,7 @@ Imports AK_POS.received_class
 Imports AK_POS.cashier_class
 Imports System.Data.SqlClient
 Public Class mainmenu2
-    Dim posc As New pos2_class, uc As New user_class(), custc As New customer_class(), discc As New discount_class(), cc As New connection_class, transaction As SqlTransaction, recc As New received_class(), cashc As New cashier_class()
+    Dim posc As New pos2_class, uc As New user_class(), custc As New customer_class(), discc As New discount_class(), cc As New connection_class, transaction As SqlTransaction, recc As New received_class(), cashc As New cashier_class(), loginc As New login_class
 
     Private catoffset As Integer = 0, catrowFetch As Integer = 4, cattotalCount As Integer = 0, cattotalPage As Integer = 0, catcurrentPage As Integer = 1,
         itemoffset As Integer = 0, itemrowFetch As Integer = 30, itemtotalCount As Integer = 0, itemtotalPage As Integer = 0, itemcurrentPage As Integer = 1
@@ -546,7 +546,7 @@ Public Class mainmenu2
     End Sub
 
     Private Sub btnpay_Click(sender As Object, e As EventArgs) Handles btnpay.Click
-        If uc.checkCutOff() Then
+        If loginc.checkCutOff() Then
             MessageBox.Show("POS already cut off", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
 
         ElseIf posc.checkQuantity(dgv) <> "" Then

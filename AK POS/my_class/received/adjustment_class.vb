@@ -1,5 +1,5 @@
-﻿Imports AK_POS.connection_class
-Imports System.Data.SqlClient
+﻿Imports System.Data.SqlClient
+Imports AK_POS.connection_class
 Public Class adjustment_class
     Dim cc As New connection_class(), transaction As SqlTransaction
     Private vdatecreated As String = "", vstatus As String = "", vtransnum As String = "", vtype As String = "", vitemname As String = "", vinvnum As String = ""
@@ -141,11 +141,13 @@ Public Class adjustment_class
                 command.Parameters.AddWithValue("@transnum", vtransnum)
                 command.CommandType = CommandType.StoredProcedure
                 command.ExecuteNonQuery()
+
+
                 If dtItems.Rows.Count > 0 Then
                     For Each r0w As DataRow In dtItems.Rows
                         command.Parameters.Clear()
                         command.CommandType = CommandType.Text
-                        command.CommandText = "UPDATE tblinvitems SET " & columName & "-=@quantity,charge-=@charge,archarge-=@charge" & IIf(columName = "transfer", "", ",totalav-=@quantity") & ",endbal" & IIf(columName = "transfer", "+", "-") & "=@quantity,variance" & IIf(columName = "transfer", "-", "+") & "=@quantity WHERE invnum=@invnum AND itemname=@itemname;"
+                        command.CommandText = "UPDATE tblinvitems SET " & columName & "-=@quantity,charge-=@charge,archarge-=@charge" & IIf(columName = "transfer" Or columName = "pullout2", "", ",totalav-=@quantity") & ",endbal" & IIf(columName = "transfer" Or columName = "pullout2", "+", "-") & "=@quantity,variance" & IIf(columName = "transfer" Or columName = "pullout2", "-", "+") & "=@quantity WHERE invnum=@invnum AND itemname=@itemname;"
                         command.Parameters.AddWithValue("@charge", CDbl(r0w("charge")))
                         command.Parameters.AddWithValue("@quantity", CDbl(r0w("quantity")))
                         command.Parameters.AddWithValue("@invnum", invnum)

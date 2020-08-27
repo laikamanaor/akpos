@@ -123,6 +123,11 @@ Public Class pendingsap2
                     txtsearch.Enabled = False
                     btnsearch.Enabled = False
                     dgvlists.Columns("nameee").Visible = False
+                Case "Pull Out"
+                    loadtblproductions()
+                    txtsearch.Enabled = False
+                    btnsearch.Enabled = False
+                    dgvlists.Columns("nameee").Visible = False
                 Case "Transfer Item"
                     loadtblproductions()
                     txtsearch.Enabled = False
@@ -213,6 +218,8 @@ Public Class pendingsap2
             Case "Received Item"
                 loadProduction2()
             Case "Transfer Item"
+                loadProduction2()
+            Case "Pull Out"
                 loadProduction2()
             Case "Adjustment Item"
                 loadProduction2()
@@ -390,11 +397,10 @@ Public Class pendingsap2
                 dt.Columns.Add("CardName")
                 dt.Columns.Add("#")
 
-                Dim gr As String = "", sales As String = "", br_out As String = login.braout
+                Dim gr As String = "", sales As String = ""
 
                 con.Open()
-                cmd = New SqlCommand("Select gr,sales,branchcode FROM tblbranch WHERE branch=@branch;", con)
-                cmd.Parameters.AddWithValue("@branch", login.braout)
+                cmd = New SqlCommand("Select gr,sales,branchcode FROM tblbranch WHERE main=1;", con)
                 rdr = cmd.ExecuteReader
                 If rdr.Read Then
                     gr = CStr(rdr("gr"))
@@ -608,6 +614,8 @@ Public Class pendingsap2
                     Case "Received Item"
                         updateProductions()
                     Case "Transfer Item"
+                        updateProductions()
+                    Case "Pull Out"
                         updateProductions()
                     Case "Conversion In"
                         updateConversions()

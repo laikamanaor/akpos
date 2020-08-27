@@ -179,29 +179,19 @@
         Next
     End Sub
 
-    Private Sub checkfollowup_CheckedChanged(sender As Object, e As EventArgs) Handles checkfollowup.CheckedChanged
-        If checkfollowup.Checked Then
-            txtsap.Text = ""
-            txtsap.Enabled = False
-        Else
-            txtsap.Text = ""
-            txtsap.Enabled = True
-        End If
-    End Sub
-
     Public Sub clearSAPDialog(isVisible)
         panelSAP.Visible = isVisible
         txtsap.Text = ""
         txtremarks.Text = ""
-        checkfollowup.Checked = False
+        cmbStatus.SelectedIndex = 0
         cmbranches.SelectedIndex = -1
     End Sub
     Private Sub btnSubmit_Click(sender As Object, e As EventArgs) Handles btnSubmit.Click
-        If String.IsNullOrEmpty(txtsap.Text) And checkfollowup.Checked = False Then
+        If String.IsNullOrEmpty(txtsap.Text) And cmbStatus.SelectedIndex.Equals(1) Then
             MessageBox.Show("Please input SAP #", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
-        ElseIf Not IsNumeric(txtsap.Text) And checkfollowup.Checked = False Then
+        ElseIf Not IsNumeric(txtsap.Text) And cmbStatus.SelectedIndex.Equals(1) Then
             MessageBox.Show("SAP # must be a number", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
-        ElseIf Trim(txtsap.Text).Length <= 5 And checkfollowup.Checked = False Then
+        ElseIf Trim(txtsap.Text).Length <= 5 And cmbStatus.SelectedIndex.Equals(1) Then
             MessageBox.Show("SAP # must be a 6 numbers", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
         ElseIf String.IsNullOrEmpty(cmbranches.Text) Then
             MessageBox.Show("Branch field is empty", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
@@ -228,6 +218,10 @@
             rec.transactionNumber = transactionNumber
             rec.updatePullOut(dtItems)
             clearSAPDialog(False)
+            dgvSelected.Rows.Clear()
+            Control.CheckForIllegalCrossThreadCalls = False
+            Dim th As New Threading.Thread(AddressOf loadData)
+            th.Start()
         End If
     End Sub
 
@@ -273,5 +267,10 @@
 
     Private Sub lblSAPClose_Click(sender As Object, e As EventArgs) Handles lblSAPClose.Click
         clearSAPDialog(False)
+    End Sub
+
+    Private Sub cmbStatus_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbStatus.SelectedIndexChanged
+        txtsap.Text = ""
+        txtsap.Enabled = IIf(cmbStatus.SelectedIndex.Equals(1), True, False)
     End Sub
 End Class

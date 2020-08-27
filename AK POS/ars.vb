@@ -288,7 +288,7 @@ Public Class ars
             Dim status As String = "", date_from As New DateTime()
             con.Open()
             cmd = New SqlCommand("SELECT status,date FROM tblcutoff WHERE userid=(SELECT systemid FROM tblusers WHERE username=@username) ORDER BY cid DESC;", con)
-            cmd.Parameters.AddWithValue("@username", login.username)
+            cmd.Parameters.AddWithValue("@username", login2.username)
             rdr = cmd.ExecuteReader
             If rdr.Read Then
                 status = rdr("status")
@@ -330,7 +330,7 @@ Public Class ars
             ElseIf dgvARS.Rows.Count = 0 Or dgvArs2.Rows.Count = 0 Then
                 MsgBox("No A.R selected", MsgBoxStyle.Exclamation, "")
             Else
-                If login.wrkgrp <> "LC Accounting" Then
+                If login2.wrkgrp <> "LC Accounting" Then
                     proceed()
                 Else
                     paneldate.Visible = True
@@ -467,7 +467,7 @@ Public Class ars
             Dim zz As String = getSystemDate()
 
             con.Open()
-            cmd = New SqlCommand("UPDATE tblars1 SET sap_no='N/A',status='Paid',remarks=@remarks,date_cancelled='" & zz & "',cancelled_by='" & login.username & "' WHERE transnum=@transnum;", con)
+            cmd = New SqlCommand("UPDATE tblars1 SET sap_no='N/A',status='Paid',remarks=@remarks,date_cancelled='" & zz & "',cancelled_by='" & login2.username & "' WHERE transnum=@transnum;", con)
             cmd.Parameters.AddWithValue("@transnum", dgvARS.CurrentRow.Cells("transnum").Value)
             cmd.Parameters.AddWithValue("@remarks", txtremarks.Text)
             cmd.ExecuteNonQuery()
@@ -542,7 +542,7 @@ Public Class ars
                 Dim a As String = MsgBox("Are you sure you want to proceed?", MsgBoxStyle.Question + MsgBoxStyle.YesNo, "")
                 If a = vbYes Then
                     Try
-                        Using connection As New SqlConnection(login.ss)
+                        Using connection As New SqlConnection(cc.conString)
                             Dim cmdd As New SqlCommand()
                             cmdd.Connection = connection
                             connection.Open()
@@ -563,7 +563,7 @@ Public Class ars
                                     cmdd.Parameters.AddWithValue("@num", dgvARS.CurrentRow.Cells("transnum").Value)
                                     cmdd.Parameters.AddWithValue("@name", dgvARS.CurrentRow.Cells("namee").Value)
                                     cmdd.ExecuteNonQuery()
-                                    Dim zz As String = IIf(login.wrkgrp = "LC Accounting", dtdate.Text, getSystemDate.ToString("MM/dd/yyyy hh:mm:ss tt"))
+                                    Dim zz As String = IIf(login2.wrkgrp = "LC Accounting", dtdate.Text, getSystemDate.ToString("MM/dd/yyyy hh:mm:ss tt"))
 
                                     cmdd.CommandText = "INSERT INTO tblars1 (arnum,transnum,amountdue,name,status,date_created,created_by,area,invnum,type,balance,typenum,sap_no,remarks,from_transnum) VALUES (@arnum,@transnum, @amountdue, @name, @status, @date, @createdby,@area,@invnum,@taypp,@balance,@typenum,@sap_no,@remarks,@from_transnum)"
                                     cmdd.Parameters.AddWithValue("@arnum", "")
@@ -572,7 +572,7 @@ Public Class ars
                                     cmdd.Parameters.AddWithValue("@name", dgvARS.CurrentRow.Cells("namee").Value)
                                     cmdd.Parameters.AddWithValue("@status", "Paid")
                                     cmdd.Parameters.AddWithValue("@date", zz)
-                                    cmdd.Parameters.AddWithValue("@createdby", login.username)
+                                    cmdd.Parameters.AddWithValue("@createdby", login2.username)
                                     cmdd.Parameters.AddWithValue("@area", "Sales")
                                     cmdd.Parameters.AddWithValue("@invnum", inv_id)
                                     cmdd.Parameters.AddWithValue("@taypp", "AR Cash")
@@ -611,7 +611,7 @@ Public Class ars
                                     cmdd.Parameters.AddWithValue("@num", dgvARS.CurrentRow.Cells("transnum").Value)
                                     cmdd.Parameters.AddWithValue("@name", dgvARS.CurrentRow.Cells("namee").Value)
                                     cmdd.ExecuteNonQuery()
-                                    Dim zz As String = IIf(login.wrkgrp = "LC Accounting", dtdate.Text, getSystemDate.ToString("MM/dd/yyyy hh:mm:ss tt"))
+                                    Dim zz As String = IIf(login2.wrkgrp = "LC Accounting", dtdate.Text, getSystemDate.ToString("MM/dd/yyyy hh:mm:ss tt"))
                                     cmdd.Parameters.Clear()
                                     cmdd.CommandText = "INSERT INTO tblars1 (arnum,transnum,amountdue,name,status,date_created,created_by,area,invnum,type,balance,typenum,sap_no,remarks,from_transnum) VALUES (@arnum,@transnum, @amountdue, @name, @status, @date, @createdby,@area,@invnum,@taypp,@balance,@typenum,@sap_no,@remarks,@from_transnum)"
                                     cmdd.Parameters.AddWithValue("@arnum", "")
@@ -620,7 +620,7 @@ Public Class ars
                                     cmdd.Parameters.AddWithValue("@name", dgvARS.CurrentRow.Cells("namee").Value)
                                     cmdd.Parameters.AddWithValue("@status", "Paid")
                                     cmdd.Parameters.AddWithValue("@date", zz)
-                                    cmdd.Parameters.AddWithValue("@createdby", login.username)
+                                    cmdd.Parameters.AddWithValue("@createdby", login2.username)
                                     cmdd.Parameters.AddWithValue("@area", "Sales")
                                     cmdd.Parameters.AddWithValue("@invnum", inv_id)
                                     cmdd.Parameters.AddWithValue("@taypp", "AR Cash")
@@ -658,16 +658,16 @@ Public Class ars
                                     partialamt = CDbl(txttenderamt.Text)
                                 End If
                             End If
-                            Dim serverDate As DateTime = IIf(login.wrkgrp = "LC Accounting", dtdate.Text, getSystemDate())
+                            Dim serverDate As DateTime = IIf(login2.wrkgrp = "LC Accounting", dtdate.Text, getSystemDate())
                             cmdd.Parameters.Clear()
-                            cmdd.CommandText = "Insert into tbltransaction (ornum, transnum, transdate, cashier, tendertype, servicetype, delcharge, subtotal, disctype, less, vatsales, vat, amtdue, gctotal, tenderamt, change, refund, comment, remarks, customer, tinnum, tablenum, pax, datecreated, datemodified, status,area,invnum,partialamt,typez) values ('0', '" & trnum & "', '" & Format(serverDate, "MM/dd/yyyy hh:mm:ss tt") & "','" & login.username & "', 'A.R Cash', '" & "A.R Cash" & "', '" & "0" & "', '" & CDbl(lblsubtotal.Text) & "', '" & "N/A" & "', '" & "0.00" & "', '" & "0.00" & "', '" & "0.00" & "', '" & amtdue & "', '" & "0" & "', '" & "0" & "', '" & "0.00" & "', '0', '', '', '" & dgvARS.CurrentRow.Cells("namee").Value & "','', '', '1', '" & serverDate & "', '" & serverDate & "', '1','" & "Sales" & "','" & inv_id & "','" & partialamt & "',(SELECT typez FROM tbltransaction WHERE transnum='" & dgvARS.CurrentRow.Cells("transnum").Value & "'))"
+                            cmdd.CommandText = "Insert into tbltransaction (ornum, transnum, transdate, cashier, tendertype, servicetype, delcharge, subtotal, disctype, less, vatsales, vat, amtdue, gctotal, tenderamt, change, refund, comment, remarks, customer, tinnum, tablenum, pax, datecreated, datemodified, status,area,invnum,partialamt,typez) values ('0', '" & trnum & "', '" & Format(serverDate, "MM/dd/yyyy hh:mm:ss tt") & "','" & login2.username & "', 'A.R Cash', '" & "A.R Cash" & "', '" & "0" & "', '" & CDbl(lblsubtotal.Text) & "', '" & "N/A" & "', '" & "0.00" & "', '" & "0.00" & "', '" & "0.00" & "', '" & amtdue & "', '" & "0" & "', '" & "0" & "', '" & "0.00" & "', '0', '', '', '" & dgvARS.CurrentRow.Cells("namee").Value & "','', '', '1', '" & serverDate & "', '" & serverDate & "', '1','" & "Sales" & "','" & inv_id & "','" & partialamt & "',(SELECT typez FROM tbltransaction WHERE transnum='" & dgvARS.CurrentRow.Cells("transnum").Value & "'))"
                             cmdd.ExecuteNonQuery()
 
                             cmdd.Parameters.Clear()
                             cmdd.CommandText = "INSERT INTO tbltransaction2 (ornum,ordernum,transdate,cashier,tendertype,servicetype,delcharge,subtotal,disctype,less,vatsales,vat,amtdue,tenderamt,change,refund,comment,remarks,customer,tinnum,tablenum,pax,createdby,datecreated,datemodified,status,status2,area,gctotal,typez,discamt,transnum)VALUES ('000',@ordernum,@transdate,@cashier,@tendertype,@servicetype,@delcharge,@subtotal,@disctype,@less,@vatsales,@vat,@amtdue,@tenderamt,@change,@refund,@comment,@remarks,@customer,@tinum,0,0,@createdby,@date,@date,1,'Paid','Sales',@gctotal,(SELECT typez FROM tbltransaction WHERE transnum='" & dgvARS.CurrentRow.Cells("transnum").Value & "'),@discamt,@transnum)"
                             cmdd.Parameters.AddWithValue("@ordernum", 0)
                             cmdd.Parameters.AddWithValue("@transdate", serverDate)
-                            cmdd.Parameters.AddWithValue("@cashier", login.username)
+                            cmdd.Parameters.AddWithValue("@cashier", login2.username)
                             cmdd.Parameters.AddWithValue("@tendertype", "A.R Cash")
                             cmdd.Parameters.AddWithValue("@servicetype", servicetype)
                             cmdd.Parameters.AddWithValue("@delcharge", 0)
@@ -684,7 +684,7 @@ Public Class ars
                             cmdd.Parameters.AddWithValue("@remarks", "")
                             cmdd.Parameters.AddWithValue("@customer", dgvARS.CurrentRow.Cells("namee").Value)
                             cmdd.Parameters.AddWithValue("@tinum", 0)
-                            cmdd.Parameters.AddWithValue("@createdby", login.username)
+                            cmdd.Parameters.AddWithValue("@createdby", login2.username)
                             cmdd.Parameters.AddWithValue("@gctotal", 0)
                             cmdd.Parameters.AddWithValue("@discamt", 0)
                             cmdd.Parameters.AddWithValue("@transnum", trnum)

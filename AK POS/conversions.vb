@@ -1,6 +1,5 @@
 ﻿Imports System.Data.SqlClient
 Imports System.IO
-Imports AK_POS.conversio
 Public Class conversions
     Dim cc As New connection_class
     Dim strconn As String = cc.conString
@@ -394,7 +393,7 @@ Public Class conversions
             Dim status As String = "", date_from As New DateTime()
             con.Open()
             cmd = New SqlCommand("SELECT status,date FROM tblcutoff WHERE userid=(SELECT systemid FROM tblusers WHERE username=@username) ORDER BY cid DESC;", con)
-            cmd.Parameters.AddWithValue("@username", login.username)
+            cmd.Parameters.AddWithValue("@username", login2.username)
             rdr = cmd.ExecuteReader
             If rdr.Read Then
                 status = rdr("status")
@@ -427,7 +426,7 @@ Public Class conversions
 
                 getConvNum()
                 Try
-                    Using connection As New SqlConnection(login.ss)
+                    Using connection As New SqlConnection(cc.conString)
                         Dim cmdd As New SqlCommand()
                         cmdd.Connection = connection
                         connection.Open()

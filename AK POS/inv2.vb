@@ -184,22 +184,22 @@ Public Class inv2
                 dgv.Item(good, dgv.Rows.Count - 1).Style.BackColor = Color.FromArgb(255, 255, 128)
                 good += 1
             End While
-            While out <= 19
+            While out <= 20
                 dgv.Item(out, dgv.Rows.Count - 1).Style.BackColor = Color.FromArgb(192, 255, 192)
                 out += 1
             End While
 
-            While endbal <= 21
+            While endbal <= 22
                 dgv.Item(endbal, dgv.Rows.Count - 1).Style.BackColor = Color.FromArgb(247, 247, 87)
                 endbal += 1
             End While
 
             If dgv.Rows(dgv.Rows.Count - 1).Cells("variance").Value > 0 Then
-                dgv.Item(22, dgv.Rows.Count - 1).Style.ForeColor = Color.Blue
+                dgv.Item(23, dgv.Rows.Count - 1).Style.ForeColor = Color.Blue
             ElseIf dgv.Rows(dgv.Rows.Count - 1).Cells("variance").Value = 0 Then
-                dgv.Item(22, dgv.Rows.Count - 1).Style.ForeColor = Color.Black
+                dgv.Item(23, dgv.Rows.Count - 1).Style.ForeColor = Color.Black
             Else
-                dgv.Item(22, dgv.Rows.Count - 1).Style.ForeColor = Color.Firebrick
+                dgv.Item(23, dgv.Rows.Count - 1).Style.ForeColor = Color.Firebrick
             End If
         Catch ex As Exception
             MessageBox.Show(ex.ToString)

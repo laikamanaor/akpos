@@ -50,30 +50,13 @@ Public Class confirm
                 dr = cmd.ExecuteReader
                 While dr.Read
                     If (dr("workgroup") = "Manager" And txtpass.Text = Decrypt(dr("password"))) Then
-                        users.cnf = 1
                         'If users.cnf = 1 Then
                         returnstand.cnfrm = True
-                        users.firm = True
-                        items.firmitems = True
                         mainmenu.voidd = True
-                        category.catg = True
                         discount.disc = True
-                        inv.actual = True
-                        transactions.trans = True
-                        invremarks.rems = True
-                        backup.bckup = True
-                        refundform.ref = True
-                        senior.sn = True
-                        reprintor.yesprint = True
-                        bundle.yez = True
                         importitems.importcnf = True
                         gcform.gccnf = True
-                        importinv.importcnf = True
-                        chargeform.chcnf = True
-                        branch.brncnf = True
-
                         cancel_tr.cnfrm = True
-                        adddrawer.cnfrm = True
                         inv2.cnfrm = True
                         transfer.cnfrm = True
                         items2.cnfrm = True
@@ -104,27 +87,12 @@ Public Class confirm
 
     Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button2.Click
         Me.Cursor = Cursors.Default
-        users.firm = False
-        items.firmitems = False
         mainmenu.voidd = False
-        category.catg = False
         discount.disc = False
-        inv.actual = False
-        transactions.trans = False
-        invremarks.rems = False
-        backup.bckup = False
-        refundform.ref = False
         returnstand.cnfrm = False
         senior.sn = False
-        reprintor.yesprint = False
-        bundle.yez = False
         importitems.importcnf = False
         gcform.gccnf = False
-        importinv.importcnf = False
-        chargeform.chcnf = False
-        branch.brncnf = False
-
-        adddrawer.cnfrm = False
         cancel_tr.cnfrm = False
         inv2.cnfrm = True
         transfer.cnfrm = False

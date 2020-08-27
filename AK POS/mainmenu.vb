@@ -47,7 +47,7 @@ Public Class mainmenu
     Dim mousex As Integer
     Dim mousey As Integer
     Dim toggle_max As Boolean = True
-    Dim posc As New pos_class(), userc As New user_class()
+    Dim posc As New pos_class(), userc As New user_class(), loginc As New login_class
     Public Function decryptConString() As String
         Dim base64encoded As String = File.ReadAllText("connectionstring.txt")
         Dim data As Byte() = System.Convert.FromBase64String(base64encoded)
@@ -1677,7 +1677,7 @@ Public Class mainmenu
     Private Sub btnok_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnok.Click
         Dim posType As String = userc.returnPOSType()
         getID()
-        If userc.checkCutOff() Then
+        If loginc.checkCutOff() Then
             MessageBox.Show("POS already cut off", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
         ElseIf posc.checkQuantity(grd) <> "" Then
             MessageBox.Show("The item(s) below are 0 quantity. Please enter valid input" & Environment.NewLine & posc.checkQuantity(grd), "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
@@ -2386,17 +2386,6 @@ Public Class mainmenu
         servicetype = "Dine in"
     End Sub
 
-    Private Sub btnrefund_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnrefund.Click
-        Dim a As String = MsgBox("Please confirm to cancel transaction.", MsgBoxStyle.Question + MsgBoxStyle.YesNo, "")
-        If a = vbYes Then
-            confirm.ShowDialog()
-            If voidd = True Then
-                refundform.ShowDialog()
-            End If
-            voidd = False
-        End If
-    End Sub
-
     Public Sub viewdiscount()
         Try
             cmbdis.Items.Clear()
@@ -2473,18 +2462,6 @@ Public Class mainmenu
         btnvoid.Enabled = True
         btnok.Enabled = True
         'End If
-    End Sub
-
-    Private Sub btnreprint_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnreprint.Click
-        reprintor.ShowDialog()
-    End Sub
-
-    Public Sub btntrans1()
-        counters = True
-        transactions.Dispose()
-        dailysalesprev.Close()
-        transactions.ShowDialog()
-        counters = False
     End Sub
 
     Private Sub txttendered_Leave(ByVal sender As Object, ByVal e As System.EventArgs) Handles txttendered.Leave
@@ -2842,25 +2819,6 @@ Public Class mainmenu
         Else
             MsgBox("Enter order first.", MsgBoxStyle.Exclamation, "")
         End If
-    End Sub
-
-    Private Sub btndelch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btndelch.Click
-        Try
-            If grd.Rows.Count <> 0 Then
-                If rbdeliver.Checked = True Then
-                    delcharge.ShowDialog()
-                    txtdeliver.Text = delcharge.del_charge.ToString("n2")
-                    computetotal()
-                Else
-                    MsgBox("Choose Deliver service type first.", MsgBoxStyle.Exclamation, "")
-                End If
-            Else
-                MsgBox("No orders entered. Please check entries.", MsgBoxStyle.Exclamation, "")
-            End If
-        Catch ex As Exception
-            Me.Cursor = Cursors.Default
-            MsgBox(ex.ToString, MsgBoxStyle.Information)
-        End Try
     End Sub
 
     Private Sub rbAR_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbAR.CheckedChanged

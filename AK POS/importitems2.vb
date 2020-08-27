@@ -110,7 +110,7 @@ Public Class importitems2
                     cmdd.Parameters.AddWithValue("@itemname", dgv.Rows(index).Cells("itemname").Value)
                     cmdd.Parameters.AddWithValue("@description", dgv.Rows(index).Cells("description").Value)
                     cmdd.Parameters.AddWithValue("@price", dgv.Rows(index).Cells("price").Value)
-                    cmdd.Parameters.AddWithValue("@createdby", login.username)
+                    cmdd.Parameters.AddWithValue("@createdby", login2.username)
                     cmdd.Parameters.AddWithValue("@deposit", dgv.Rows(index).Cells("havedeposit").Value)
                     cmdd.ExecuteNonQuery()
                     conn.Close()

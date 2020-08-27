@@ -18,7 +18,7 @@ Public Class cancel_tr
     Private Sub cancel_tr_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'Label3.Visible = IIf(login.wrkgrp = "Cashier", False, True)
         'dtdate.Visible = IIf(login.wrkgrp = "Cashier", False, True)
-        dgvtrans.Columns("btncancel").Visible = IIf(login.wrkgrp = "Cashier", False, True)
+        dgvtrans.Columns("btncancel").Visible = IIf(login2.wrkgrp = "Cashier", False, True)
         dtdate.MaxDate = getSystemDate()
         Me.KeyPreview = True
         loadSales()

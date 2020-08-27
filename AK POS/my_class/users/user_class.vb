@@ -67,18 +67,6 @@ Public Class user_class
     Public Sub setID(ByVal value As Integer)
         systemid = value
     End Sub
-    Public Function checkCutOff() As Boolean
-    Dim result_num As Integer = 0, result As Boolean = False
-        cc.con.Open()
-        cc.cmd = New SqlCommand("SELECT dbo.checkCutOff(@username,@workgroup)", cc.con)
-        cc.cmd.Parameters.AddWithValue("@username", login.username)
-        cc.cmd.Parameters.AddWithValue("@workgroup", login.wrkgrp)
-        result_num = cc.cmd.ExecuteScalar()
-        cc.con.Close()
-        result = IIf(result_num = 1, True, False)
-        Return result
-    End Function
-
     Public Function loadData(ByVal offset As Integer, ByVal rowFetch As Integer) As DataTable
         Dim dt As New DataTable(), adptr As New SqlClient.SqlDataAdapter
         cc.con.Open()
@@ -160,7 +148,7 @@ Public Class user_class
                 cmdd.Parameters.AddWithValue("@username", username)
                 cmdd.Parameters.AddWithValue("@password", cc.Encrypt(password))
                 cmdd.Parameters.AddWithValue("@workgroup", workgroup)
-                cmdd.Parameters.AddWithValue("@createdby", login.username)
+                cmdd.Parameters.AddWithValue("@createdby", login2.username)
                 cmdd.Parameters.AddWithValue("@status", status)
                 cmdd.Parameters.AddWithValue("@brout", brout)
                 cmdd.Parameters.AddWithValue("@postype", postype)
@@ -191,7 +179,7 @@ Public Class user_class
                 cmdd.Parameters.AddWithValue("@username", username)
                 cmdd.Parameters.AddWithValue("@password", cc.Encrypt(password))
                 cmdd.Parameters.AddWithValue("@workgroup", workgroup)
-                cmdd.Parameters.AddWithValue("@modifiedby", login.username)
+                cmdd.Parameters.AddWithValue("@modifiedby", login2.username)
                 cmdd.Parameters.AddWithValue("@status", status)
                 cmdd.Parameters.AddWithValue("@brout", brout)
                 cmdd.Parameters.AddWithValue("@postype", postype)
@@ -209,4 +197,17 @@ Public Class user_class
             End Try
         End Try
     End Sub
+
+    Public Function loadNameUser() As String
+        Dim result As String = ""
+        cc.con.Open()
+        cc.cmd = New SqlCommand("SELECT fullname FROM tblusers WHERE username=@username;", cc.con)
+        cc.cmd.Parameters.AddWithValue("@username", login2.username)
+        cc.rdr = cc.cmd.ExecuteReader
+        If cc.rdr.Read Then
+            result = CStr(cc.rdr("fullname"))
+        End If
+        cc.con.Close()
+        Return result
+    End Function
 End Class

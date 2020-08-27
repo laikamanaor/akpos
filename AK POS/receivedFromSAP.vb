@@ -11,6 +11,7 @@ Public Class receivedFromSAP
     End Sub
 
     Public Sub tt()
+        Control.CheckForIllegalCrossThreadCalls = False
         Dim th As New Threading.Thread(AddressOf loadData)
         th.Start()
     End Sub

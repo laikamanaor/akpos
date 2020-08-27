@@ -89,7 +89,7 @@ Public Class addcustomer3
                 cmd.Parameters.AddWithValue("@code", txtcode.Text)
                 cmd.Parameters.AddWithValue("@contact_number", txtcontactnum.Text)
                 cmd.Parameters.AddWithValue("@address", txtaddress.Text)
-                cmd.Parameters.AddWithValue("@createdby", login.username)
+                cmd.Parameters.AddWithValue("@createdby", login2.username)
                 cmd.Parameters.AddWithValue("@type", cmbtype.Text)
                 cmd.ExecuteNonQuery()
                 con.Close()

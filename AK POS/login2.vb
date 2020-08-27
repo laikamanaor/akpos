@@ -25,31 +25,19 @@ Public Class login2
     End Sub
 
     Private Sub txtusername_Enter(sender As Object, e As EventArgs) Handles txtusername.Enter
-        txt_enter(txtusername, "Username")
+        uic.txt_enter(txtusername, "Username")
     End Sub
 
     Private Sub txtusername_Leave(sender As Object, e As EventArgs) Handles txtusername.Leave
-        txt_leave(txtusername, "Username")
+        uic.txt_leave(txtusername, "Username")
     End Sub
 
     Private Sub txtpass_Enter(sender As Object, e As EventArgs) Handles txtpass.Enter
-        txt_enter(txtpass, "Password")
+        uic.txt_enter(txtpass, "Password")
     End Sub
 
     Private Sub txtpass_Leave(sender As Object, e As EventArgs) Handles txtpass.Leave
-        txt_leave(txtpass, "Password")
-    End Sub
-    Public Sub txt_enter(ByVal txtbox As Control, txt As String)
-        If txtbox.Text = txt Then
-            txtbox.Text = ""
-            txtbox.ForeColor = Color.Black
-        End If
-    End Sub
-    Public Sub txt_leave(ByVal txtbox As Control, txt As String)
-        If txtbox.Text = "" Then
-            txtbox.Text = txt
-            txtbox.ForeColor = Color.LightGray
-        End If
+        uic.txt_leave(txtpass, "Password")
     End Sub
 
     Private Sub txtusername_KeyDown(sender As Object, e As KeyEventArgs) Handles txtusername.KeyDown, txtpass.KeyDown
@@ -62,27 +50,26 @@ Public Class login2
         txtusername.Focus()
     End Sub
 
-    Private Sub lblupdateversion_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles lblupdateversion.LinkClicked
-        Dim frm As New version
-        frm.ShowDialog()
-    End Sub
-
     Private Sub checkseepass_CheckedChanged(sender As Object, e As EventArgs) Handles checkseepass.CheckedChanged
         txtpass.PasswordChar = IIf(checkseepass.Checked, "", "*")
         txtpass.Font = IIf(checkseepass.Checked, New Font("Arial", 12, FontStyle.Bold), New Font("Arial", 18, FontStyle.Bold))
     End Sub
 
     Private Sub btnlogin_Click(sender As Object, e As EventArgs) Handles btnlogin.Click
+        'set username and password
         loginc.setUsername(txtusername.Text)
         loginc.setPassword(txtpass.Text)
+        'check username and password field text
         If Trim(txtusername.Text).ToLower = "username".ToLower Or String.IsNullOrEmpty(Trim(txtusername.Text)) Then
             MessageBox.Show("Username is required", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
             txtpass.Text = ""
             txtusername.Focus()
+            'check username status
         ElseIf loginc.checkUserStatus() = False Then
             MessageBox.Show("Your Account is Deactivate", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
             txtpass.Text = ""
             txtpass.Focus()
+            'check username and password credential
         ElseIf loginc.checkLogin() = False Then
             MessageBox.Show("Wrong Credentials", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
             txtpass.Text = ""
@@ -90,12 +77,17 @@ Public Class login2
         Else
             Dim sa As New pos_dialog()
             sa.ShowDialog()
+            'set username
             loginc.setUsername(txtusername.Text)
+            'call insert cut off
             loginc.insertCutOff()
+            'call insert login logs
             loginc.insertLogs()
+            'assign global variable
             username = txtusername.Text
             wrkgrp = loginc.getWorkgroup()
             Me.Hide()
+            'show main menu form
             Dim frm As New main()
             frm.ShowDialog()
         End If

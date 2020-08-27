@@ -39,7 +39,7 @@ Public Class overwrite_sap
             dgv.Rows.Clear()
             Dim serverDate As String = getSystemDate.ToString("MM/dd/yyyy")
             con.Open()
-            cmd = New SqlCommand("SELECT transaction_number,sap_number,remarks,processed_by" & IIf(columnName = "tblsaplogs", "", ",status") & " FROM " & columnName & " WHERE CAST(date AS date)=@date AND type='" & cmbtype.Text & "' GROUP BY transaction_number,sap_number,remarks,processed_by " & IIf(columnName = "tblsaplogs", "", ",status") & " ORDER BY transaction_number;", con)
+            cmd = New SqlCommand("SELECT transaction_number,sap_number,remarks,processed_by" & IIf(columnName = "tblsaplogs", "", ",status") & " FROM " & columnName & " WHERE CAST(date AS date)=@date AND type='" & cmbtype.Text & "' AND sap_number !='To Follow' GROUP BY transaction_number,sap_number,remarks,processed_by " & IIf(columnName = "tblsaplogs", "", ",status") & " ORDER BY transaction_number;", con)
             cmd.Parameters.AddWithValue("@date", dtdate.Text)
             rdr = cmd.ExecuteReader
             While rdr.Read
@@ -147,7 +147,7 @@ Public Class overwrite_sap
                 cmd.Parameters.AddWithValue("@transnum", lbltransnum.Text)
                 cmd.Parameters.AddWithValue("@sapno", txtsap.Text)
                 cmd.Parameters.AddWithValue("@remarks", txtremarks.Text)
-                cmd.Parameters.AddWithValue("@username", login.username)
+                cmd.Parameters.AddWithValue("@username", login2.username)
                 cmd.Parameters.AddWithValue("@type", cmbtype.Text)
                 cmd.ExecuteNonQuery()
                 con.Close()

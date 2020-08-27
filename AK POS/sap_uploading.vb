@@ -56,7 +56,7 @@ Public Class sap_uploading
             dt.Columns.Add("#")
             dt.Rows.Add("DocNum", "DocType", "DocDate", "DocDueDate", "CardCode", "CardName", "SAP #")
 
-            Dim gr As String = "", sales As String = "", br_out As String = login.braout
+            Dim gr As String = "", sales As String = ""
             connect()
             cmd = New SqlCommand("Select gr,branchcode FROM tblbranch WHERE main=1;", con)
             rdr = cmd.ExecuteReader

@@ -20,13 +20,13 @@ Public Class reportss
     End Sub
     Private Sub dgv_CellClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgv.CellClick
 
-        Dim user As String = "admin"
-        Dim pass As String = "abC@43212020"
-        Dim servername As String = "192.168.30.6"
-
         'Dim user As String = "admin"
-        'Dim pass As String = "admin"
-        'Dim servername As String = "DELL,1433"
+        'Dim pass As String = "abC@43212020"
+        'Dim servername As String = "192.168.30.6"
+
+        Dim user As String = "admin"
+        Dim pass As String = "admin"
+        Dim servername As String = "DELL,1433"
         Dim dbName As String = "AKPOS"
 
         Dim databaseIndex As Integer = 0

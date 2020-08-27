@@ -50,7 +50,6 @@ Partial Class login2
         Me.Panel4 = New System.Windows.Forms.Panel()
         Me.Panel5 = New System.Windows.Forms.Panel()
         Me.Panel8 = New System.Windows.Forms.Panel()
-        Me.lblupdateversion = New System.Windows.Forms.LinkLabel()
         Me.Panel7.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel1.SuspendLayout()
@@ -365,26 +364,12 @@ Partial Class login2
         Me.Panel8.Size = New System.Drawing.Size(1, 388)
         Me.Panel8.TabIndex = 66
         '
-        'lblupdateversion
-        '
-        Me.lblupdateversion.AutoSize = True
-        Me.lblupdateversion.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.lblupdateversion.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblupdateversion.Location = New System.Drawing.Point(492, 370)
-        Me.lblupdateversion.Name = "lblupdateversion"
-        Me.lblupdateversion.Size = New System.Drawing.Size(137, 15)
-        Me.lblupdateversion.TabIndex = 67
-        Me.lblupdateversion.TabStop = True
-        Me.lblupdateversion.Text = "Update POS Version"
-        Me.lblupdateversion.Visible = False
-        '
         'login2
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.White
         Me.ClientSize = New System.Drawing.Size(632, 389)
-        Me.Controls.Add(Me.lblupdateversion)
         Me.Controls.Add(Me.Panel4)
         Me.Controls.Add(Me.Panel8)
         Me.Controls.Add(Me.Panel5)
@@ -441,5 +426,4 @@ Partial Class login2
     Friend WithEvents Panel11 As Panel
     Friend WithEvents Panel10 As Panel
     Friend WithEvents Panel6 As Panel
-    Friend WithEvents lblupdateversion As LinkLabel
 End Class

@@ -199,7 +199,7 @@ Public Class cashier
             Dim status As String = "", date_from As New DateTime()
             con.Open()
             cmd = New SqlCommand("SELECT status,date FROM tblcutoff WHERE userid=(SELECT systemid FROM tblusers WHERE username=@username) ORDER BY cid DESC;", con)
-            cmd.Parameters.AddWithValue("@username", login.username)
+            cmd.Parameters.AddWithValue("@username", login2.username)
             rdr = cmd.ExecuteReader
             If rdr.Read Then
                 status = rdr("status")
@@ -497,10 +497,10 @@ Public Class cashier
         loadAdvanceNames()
     End Sub
     Private Sub cashier_Activated(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Activated
-        If login.wrkgrp = "Cashier" Or login.wrkgrp = "Manager" Then
+        If login2.wrkgrp = "Cashier" Or login2.wrkgrp = "Manager" Then
             area = "Sales"
         Else
-            area = login.wrkgrp
+            area = login2.wrkgrp
         End If
         getID()
         loadAdvanceNames()
@@ -730,10 +730,10 @@ Public Class cashier
 
     Private Sub cashier_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Me.KeyPreview = True
-        If login.wrkgrp = "Cashier" Or login.wrkgrp = "Manager" Then
+        If login2.wrkgrp = "Cashier" Or login2.wrkgrp = "Manager" Then
             area = "Sales"
         Else
-            area = login.wrkgrp
+            area = login2.wrkgrp
         End If
         getID()
         loadSalesAgent()

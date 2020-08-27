@@ -43,10 +43,10 @@ Public Class pendingrequests
 
             Dim serverDate As String = datee.Text
 
-            If login.wrkgrp = "LC Accounting" Then
+            If login2.wrkgrp = "LC Accounting" Then
                 query = "SELECT requestid,(SELECT fullname FROM tblusers WHERE systemid=tblrequests.fromid) AS fullname ,description,datecreated,dateapdis FROM tblrequests WHERE status=@status AND CAST(tblrequests.datecreated AS date)=@date"
             Else
-                query = "SELECT requestid,(SELECT fullname FROM tblusers WHERE systemid=tblrequests.fromid) AS fullname ,description,datecreated,dateapdis FROM tblrequests WHERE status=@status AND fromid=(SELECT systemid FROM tblusers WHERE username='" & login.username & "') AND CAST(tblrequests.datecreated AS date)=@date"
+                query = "SELECT requestid,(SELECT fullname FROM tblusers WHERE systemid=tblrequests.fromid) AS fullname ,description,datecreated,dateapdis FROM tblrequests WHERE status=@status AND fromid=(SELECT systemid FROM tblusers WHERE username='" & login2.username & "') AND CAST(tblrequests.datecreated AS date)=@date"
             End If
             con.Open()
             cmd = New SqlCommand(query, con)
@@ -165,7 +165,7 @@ Public Class pendingrequests
                     pan.Controls.Add(lbltimeapdis)
                 End If
 
-                If login.wrkgrp = "LC Accounting" Then
+                If login2.wrkgrp = "LC Accounting" Then
                     If cmbstatus.Text = "Pending" Then
                         pan.Controls.Add(btndis)
                         pan.Controls.Add(btnapp)

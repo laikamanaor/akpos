@@ -375,8 +375,6 @@ Public Class received_class
                     cmdd.Parameters.AddWithValue("@invnum", vinventorynum)
                     cmdd.ExecuteNonQuery()
 
-                    MessageBox.Show(vtype)
-
                     cmdd.Parameters.Clear()
                     cmdd.CommandText = "INSERT INTO tblproduction (transaction_number,inv_id,item_code,item_name,category,quantity,reject,charge,sap_number,remarks,date,processed_by,type,area,status,transfer_from,transfer_to,typenum,type2) VALUES (@trans_id,@id,(SELECT itemcode FROM tblitems WHERE itemname=@name),@name,(SELECT category FROM tblitems WHERE itemname=@name),@quantity,0,0,@sap,@remarks,(SELECT GETDATE()),@processed_by,@type,'Sales','Completed',@from,@to,@typenum,@type2);"
                     cmdd.Parameters.AddWithValue("@trans_id", vtransactionNumber)

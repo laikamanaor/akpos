@@ -13,8 +13,8 @@ Public Class importitems
     Dim ds As New DataSet
     Dim dv As DataView
 
-
-    Dim strconn As String = login.ss
+    Dim cc As New connection_class
+    Dim strconn As String = cc.conString
     Dim conn As SqlConnection
     Dim cmd As SqlCommand
     Dim dr As SqlDataReader
@@ -452,7 +452,7 @@ Public Class importitems
                         Dim ides As String = dgvdata.Rows(row.Index).Cells(3).Value.ToString
                         Dim iprice As Double = Val(dgvdata.Rows(row.Index).Cells(4).Value.ToString)
 
-                        sql = "Insert into tblitems (category, itemcode, itemname, description, price, datecreated, createdby, datemodified, modifiedby, status, discontinued,deposit) values ('" & icat & "', '" & icode & "', '" & iname & "', '" & ides & "', '" & iprice & "',(SELECT GETDATE()), '" & login.cashier & "',(SELECT GETDATE()), '" & login.cashier & "', '0', '0','0')"
+                        sql = "Insert into tblitems (category, itemcode, itemname, description, price, datecreated, createdby, datemodified, modifiedby, status, discontinued,deposit) values ('" & icat & "', '" & icode & "', '" & iname & "', '" & ides & "', '" & iprice & "',(SELECT GETDATE()), '" & login2.username & "',(SELECT GETDATE()), '" & login2.username & "', '0', '0','0')"
                         cmd = New SqlCommand(sql, conn) 'New OleDbCommand(sql, conn)
                         cmd.ExecuteNonQuery()
                         cmd.Dispose()

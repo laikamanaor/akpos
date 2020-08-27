@@ -56,7 +56,7 @@ Public Class fake_transaction
     Public Sub loadCashiers()
         Try
             cmbcash.Items.Clear()
-            If login.wrkgrp <> "Cashier" Then
+            If login2.wrkgrp <> "Cashier" Then
                 cmbcash.Items.Add("All")
                 'cmbcash.Items.Add(login.username)
                 con.Open()
@@ -66,8 +66,8 @@ Public Class fake_transaction
                     cmbcash.Items.Add(rdr("username"))
                 End While
                 con.Close()
-            ElseIf login.wrkgrp = "Cashier" Then
-                cmbcash.Items.Add(login.username)
+            ElseIf login2.wrkgrp = "Cashier" Then
+                cmbcash.Items.Add(login2.username)
             End If
             cmbcash.SelectedIndex = 0
         Catch ex As Exception

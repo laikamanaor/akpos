@@ -5,8 +5,8 @@ Imports Excel = Microsoft.Office.Interop.Excel
 Public Class importbranch
 
     Dim path As String = ""
-
-    Dim strconn As String = login.ss
+    Dim cc As New connection_class
+    Dim strconn As String = cc.conString
     Dim con As New SqlConnection(strconn)
     Dim cmd As SqlCommand
     Dim rdr As SqlDataReader
@@ -48,8 +48,8 @@ Public Class importbranch
             cmd.Parameters.AddWithValue("@sales", dgvitems.Rows(index).Cells("sales").Value)
             cmd.Parameters.AddWithValue("@address", dgvitems.Rows(index).Cells("address").Value)
             cmd.Parameters.AddWithValue("@remarks", dgvitems.Rows(index).Cells("remarks").Value)
-            cmd.Parameters.AddWithValue("@createdby", login.username)
-            cmd.Parameters.AddWithValue("@modifiedby", login.username)
+            cmd.Parameters.AddWithValue("@createdby", login2.username)
+            cmd.Parameters.AddWithValue("@modifiedby", login2.username)
             cmd.ExecuteNonQuery()
             con.Close()
             MessageBox.Show("Transaction Completed", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Information)

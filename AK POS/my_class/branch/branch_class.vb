@@ -107,7 +107,7 @@ Public Class branch_class
     End Function
     Public Sub insertBranch()
         Try
-            Using connection As New SqlConnection(login.ss)
+            Using connection As New SqlConnection(cc.conString)
                 Dim cmdd As New SqlCommand()
                 cmdd.Connection = connection
                 connection.Open()
@@ -122,7 +122,7 @@ Public Class branch_class
                 cmdd.Parameters.AddWithValue("@sales", sales)
                 cmdd.Parameters.AddWithValue("@address", address)
                 cmdd.Parameters.AddWithValue("@remarks", remarks)
-                cmdd.Parameters.AddWithValue("@createdby", login.username)
+                cmdd.Parameters.AddWithValue("@createdby", login2.username)
                 cmdd.Parameters.AddWithValue("@status", status)
                 cmdd.Parameters.AddWithValue("@main", 0)
                 cmdd.ExecuteNonQuery()
@@ -139,7 +139,7 @@ Public Class branch_class
     End Sub
     Public Sub updateBranch()
         Try
-            Using connection As New SqlConnection(login.ss)
+            Using connection As New SqlConnection(cc.conString)
                 Dim cmdd As New SqlCommand()
                 cmdd.Connection = connection
                 connection.Open()
@@ -154,7 +154,7 @@ Public Class branch_class
                 cmdd.Parameters.AddWithValue("@sales", sales)
                 cmdd.Parameters.AddWithValue("@address", address)
                 cmdd.Parameters.AddWithValue("@remarks", remarks)
-                cmdd.Parameters.AddWithValue("@modifiedby", login.username)
+                cmdd.Parameters.AddWithValue("@modifiedby", login2.username)
                 cmdd.Parameters.AddWithValue("@status", status)
                 cmdd.Parameters.AddWithValue("@brid", brid)
                 cmdd.ExecuteNonQuery()

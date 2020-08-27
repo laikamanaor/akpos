@@ -18,4 +18,26 @@
     Public Sub mouse_up()
         drag = False 'Sets drag to false, so the form does not move according to the code in MouseMove
     End Sub
+    ''' <summary>
+    ''' textbox event enter placeholder
+    ''' </summary>
+    ''' <param name="txtbox"></param>
+    ''' <param name="txt"></param>
+    Public Sub txt_enter(ByVal txtbox As Control, txt As String)
+        If txtbox.Text = txt Then
+            txtbox.Text = ""
+            txtbox.ForeColor = Color.Black
+        End If
+    End Sub
+    ''' <summary>
+    ''' textbox event leave placeholder
+    ''' </summary>
+    ''' <param name="txtbox"></param>
+    ''' <param name="txt"></param>
+    Public Sub txt_leave(ByVal txtbox As Control, txt As String)
+        If txtbox.Text = "" Then
+            txtbox.Text = txt
+            txtbox.ForeColor = Color.LightGray
+        End If
+    End Sub
 End Class

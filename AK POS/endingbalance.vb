@@ -526,11 +526,11 @@ Public Class endingbalance
                                     cmdd.ExecuteNonQuery()
                                 Next
                                 cmdd.Parameters.Clear()
-                                cmdd.CommandText = "Insert into tbltransaction (ornum, transnum, transdate, cashier, tendertype, servicetype, delcharge, subtotal, disctype, less, vatsales, vat, amtdue, gctotal, tenderamt, change, refund, comment, remarks, customer, tinnum, tablenum, pax, datecreated, datemodified, status, area, invnum, partialamt,typenum,sap_number,sap_remarks,typez,discamt,salesname) values ('0', '" & ar_number & "', '" & Format(Date.Now, "MM/dd/yyyy") & "','" & login.cashier & "','A.R Charge','N/A','0', '" & amount & "', 'N/A', '0', '0', '0', '" & amount & "', '0', '0', '0', '0', '', '','" & itemz & "' , 'N/A', '0','1', '" & Date.Now & "', '" & Date.Now & "', '1','Sales','" & lblID.Text & "','0','AR','To Follow','','Retail',0,'" & login2.username & "')"
+                                cmdd.CommandText = "Insert into tbltransaction (ornum, transnum, transdate, cashier, tendertype, servicetype, delcharge, subtotal, disctype, less, vatsales, vat, amtdue, gctotal, tenderamt, change, refund, comment, remarks, customer, tinnum, tablenum, pax, datecreated, datemodified, status, area, invnum, partialamt,typenum,sap_number,sap_remarks,typez,discamt,salesname) values ('0', '" & ar_number & "', '" & Format(Date.Now, "MM/dd/yyyy") & "','" & login2.username & "','A.R Charge','N/A','0', '" & amount & "', 'N/A', '0', '0', '0', '" & amount & "', '0', '0', '0', '0', '', '','" & itemz & "' , 'N/A', '0','1', '" & Date.Now & "', '" & Date.Now & "', '1','Sales','" & lblID.Text & "','0','AR','To Follow','','Retail',0,'" & login2.username & "')"
                                 cmdd.ExecuteNonQuery()
 
                                 cmdd.Parameters.Clear()
-                                cmdd.CommandText = "Insert into tbltransaction2 (ornum, ordernum, transdate, cashier, tendertype, servicetype, delcharge, subtotal, disctype, less, vatsales, vat, amtdue, gctotal, tenderamt, change, refund, comment, remarks, customer, tinnum, tablenum, pax, datecreated, datemodified, status, area,transnum) values ('0', '" & ordernum & "', '" & Format(Date.Now, "MM/dd/yyyy") & "','" & login.cashier & "','A.R Charge','N/A','0', '" & amount & "', 'N/A', '0', '0', '0', '" & amount & "', '0', '0', '0', '0', '', '','" & itemz & "' , 'N/A', '0','1', '" & Date.Now & "', '" & Date.Now & "', '1','Sales','" & ar_number & "')"
+                                cmdd.CommandText = "Insert into tbltransaction2 (ornum, ordernum, transdate, cashier, tendertype, servicetype, delcharge, subtotal, disctype, less, vatsales, vat, amtdue, gctotal, tenderamt, change, refund, comment, remarks, customer, tinnum, tablenum, pax, datecreated, datemodified, status, area,transnum) values ('0', '" & ordernum & "', '" & Format(Date.Now, "MM/dd/yyyy") & "','" & login2.username & "','A.R Charge','N/A','0', '" & amount & "', 'N/A', '0', '0', '0', '" & amount & "', '0', '0', '0', '0', '', '','" & itemz & "' , 'N/A', '0','1', '" & Date.Now & "', '" & Date.Now & "', '1','Sales','" & ar_number & "')"
                                 cmdd.ExecuteNonQuery()
 
                                 cmdd.Parameters.Clear()
@@ -730,11 +730,6 @@ Public Class endingbalance
     Private Sub rb2_CheckedChanged(sender As Object, e As EventArgs) Handles rb2.CheckedChanged
 
         load_items()
-    End Sub
-
-    Private Sub btnimport_Click(sender As Object, e As EventArgs) Handles btnimport.Click
-        Dim frm As New import_actualend()
-        frm.ShowDialog()
     End Sub
     Public Sub ok()
         query()

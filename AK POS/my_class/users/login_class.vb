@@ -101,4 +101,36 @@ Public Class login_class
         cc.con.Close()
         Return result
     End Function
+
+    Public Sub logOut()
+        cc.con.Open()
+        cc.cmd = New SqlClient.SqlCommand("UPDATE tbllogin SET logout=(select format(getdate(), 'hh:mm tt')) WHERE systemid=(SELECT TOP 1 systemid FROM tbllogin WHERE username=@username ORDER BY systemid DESC);", cc.con)
+        cc.cmd.Parameters.AddWithValue("@username", username)
+        cc.cmd.ExecuteNonQuery()
+        cc.con.Close()
+    End Sub
+
+    Public Function checkCutOff() As Boolean
+        Dim result As Boolean = False, date_from As New DateTime(), status As String = "", serverDate As New DateTime()
+        serverDate = cc.getSystemDate
+        Try
+            cc.con.Open()
+            cc.cmd = New SqlClient.SqlCommand("SELECT TOP 1 a.date,a.status FROM tblcutoff a INNER JOIN tblusers b ON a.userid = b.systemid WHERE CAST(a.date AS date)=(SELECT TOP 1 CAST(datecreated AS date) FROM tblinvsum WHERE verify=0 AND b.workgroup NOT IN ('Administrator','LC Accounting') ORDER BY invsumid ASC)", cc.con)
+            cc.rdr = cc.cmd.ExecuteReader
+            If cc.rdr.Read Then
+                date_from = CDate(cc.rdr("date"))
+                status = cc.rdr("status")
+            End If
+            cc.con.Close()
+
+            If status = "In Active" And date_from.ToString("MM/dd/yyyy") = serverDate.ToString("MM/dd/yyyy") Then
+                result = True
+            End If
+        Catch ex As Exception
+            MessageBox.Show(ex.ToString)
+        Finally
+            cc.con.Close()
+        End Try
+        Return result
+    End Function
 End Class

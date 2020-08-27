@@ -11,7 +11,7 @@ Public Class lastorders
             Me.KeyPreview = True
             con.Open()
             cmd = New SqlCommand("SELECT TOP 10 ordernum,tendertype,status2 FROM tbltransaction2 WHERE cashier=@cashier AND CAST(datecreated AS date)=(SELECT CAST(GETDATE() AS date)) ORDER BY ordernum DESC", con)
-            cmd.Parameters.AddWithValue("@cashier", login.username)
+            cmd.Parameters.AddWithValue("@cashier", login2.username)
             rdr = cmd.ExecuteReader
             While rdr.Read
                 dgvorders.Rows.Add(rdr("ordernum"), rdr("tendertype"), rdr("status2"))

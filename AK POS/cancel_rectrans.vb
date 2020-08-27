@@ -98,6 +98,8 @@ Public Class cancel_rectrans
                 columnName = "productionin"
             Case "Transfer".ToLower
                 columnName = "transfer"
+            Case "Pull Out".ToLower
+                columnName = "pullout2"
         End Select
         Dim result As New DataTable()
         adjc.transnum = dgvtrans.CurrentRow.Cells("transnum").Value
@@ -159,7 +161,7 @@ Public Class cancel_rectrans
     End Sub
 
     Private Sub cmbtype_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbtype.SelectedIndexChanged
-        typee = IIf(cmbtype.SelectedIndex = 0, "Received Item", "Transfer Item")
+        typee = cmbtype.Text
         refreshh()
     End Sub
 

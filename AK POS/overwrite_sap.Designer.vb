@@ -26,6 +26,12 @@ Partial Class overwrite_sap
         Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.dgv = New System.Windows.Forms.DataGridView()
+        Me.transnum = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.sapnum = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.remarks = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.processed_by = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.status = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.btnedit = New System.Windows.Forms.DataGridViewButtonColumn()
         Me.cmbtype = New System.Windows.Forms.ComboBox()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.dtdate = New System.Windows.Forms.DateTimePicker()
@@ -42,12 +48,6 @@ Partial Class overwrite_sap
         Me.txtsap = New System.Windows.Forms.TextBox()
         Me.btnlogs = New System.Windows.Forms.Button()
         Me.btneditsap = New System.Windows.Forms.Button()
-        Me.transnum = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.sapnum = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.remarks = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.processed_by = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.status = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.btnedit = New System.Windows.Forms.DataGridViewButtonColumn()
         Me.Panel2 = New System.Windows.Forms.Panel()
         Me.Panel3 = New System.Windows.Forms.Panel()
         Me.Label5 = New System.Windows.Forms.Label()
@@ -95,6 +95,51 @@ Partial Class overwrite_sap
         Me.dgv.Size = New System.Drawing.Size(837, 177)
         Me.dgv.TabIndex = 0
         '
+        'transnum
+        '
+        Me.transnum.HeaderText = "Reference #"
+        Me.transnum.Name = "transnum"
+        Me.transnum.ReadOnly = True
+        '
+        'sapnum
+        '
+        Me.sapnum.HeaderText = "SAP #"
+        Me.sapnum.Name = "sapnum"
+        Me.sapnum.ReadOnly = True
+        '
+        'remarks
+        '
+        Me.remarks.HeaderText = "Remarks"
+        Me.remarks.Name = "remarks"
+        Me.remarks.ReadOnly = True
+        '
+        'processed_by
+        '
+        Me.processed_by.HeaderText = "Processed By"
+        Me.processed_by.Name = "processed_by"
+        Me.processed_by.ReadOnly = True
+        '
+        'status
+        '
+        Me.status.HeaderText = "Status"
+        Me.status.Name = "status"
+        Me.status.ReadOnly = True
+        '
+        'btnedit
+        '
+        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(192, Byte), Integer))
+        DataGridViewCellStyle2.ForeColor = System.Drawing.Color.White
+        Me.btnedit.DefaultCellStyle = DataGridViewCellStyle2
+        Me.btnedit.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnedit.HeaderText = "Action"
+        Me.btnedit.Name = "btnedit"
+        Me.btnedit.ReadOnly = True
+        Me.btnedit.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.btnedit.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic
+        Me.btnedit.Text = "Edit"
+        Me.btnedit.UseColumnTextForButtonValue = True
+        '
         'cmbtype
         '
         Me.cmbtype.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
@@ -104,7 +149,7 @@ Partial Class overwrite_sap
         Me.cmbtype.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmbtype.ForeColor = System.Drawing.Color.White
         Me.cmbtype.FormattingEnabled = True
-        Me.cmbtype.Items.AddRange(New Object() {"Received Item", "Transfer Item"})
+        Me.cmbtype.Items.AddRange(New Object() {"Received Item", "Transfer Item", "Pull Out"})
         Me.cmbtype.Location = New System.Drawing.Point(738, 105)
         Me.cmbtype.Name = "cmbtype"
         Me.cmbtype.Size = New System.Drawing.Size(121, 22)
@@ -288,51 +333,6 @@ Partial Class overwrite_sap
         Me.btneditsap.TabIndex = 9
         Me.btneditsap.Text = "EDIT SAP #"
         Me.btneditsap.UseVisualStyleBackColor = False
-        '
-        'transnum
-        '
-        Me.transnum.HeaderText = "Reference #"
-        Me.transnum.Name = "transnum"
-        Me.transnum.ReadOnly = True
-        '
-        'sapnum
-        '
-        Me.sapnum.HeaderText = "SAP #"
-        Me.sapnum.Name = "sapnum"
-        Me.sapnum.ReadOnly = True
-        '
-        'remarks
-        '
-        Me.remarks.HeaderText = "Remarks"
-        Me.remarks.Name = "remarks"
-        Me.remarks.ReadOnly = True
-        '
-        'processed_by
-        '
-        Me.processed_by.HeaderText = "Processed By"
-        Me.processed_by.Name = "processed_by"
-        Me.processed_by.ReadOnly = True
-        '
-        'status
-        '
-        Me.status.HeaderText = "Status"
-        Me.status.Name = "status"
-        Me.status.ReadOnly = True
-        '
-        'btnedit
-        '
-        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(192, Byte), Integer))
-        DataGridViewCellStyle2.ForeColor = System.Drawing.Color.White
-        Me.btnedit.DefaultCellStyle = DataGridViewCellStyle2
-        Me.btnedit.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnedit.HeaderText = "Action"
-        Me.btnedit.Name = "btnedit"
-        Me.btnedit.ReadOnly = True
-        Me.btnedit.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.btnedit.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic
-        Me.btnedit.Text = "Edit"
-        Me.btnedit.UseColumnTextForButtonValue = True
         '
         'Panel2
         '

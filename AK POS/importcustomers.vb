@@ -4,8 +4,8 @@ Imports System.Data.SqlClient
 Imports Excel = Microsoft.Office.Interop.Excel
 Public Class importcustomers
     Dim path As String = ""
-
-    Dim strconn As String = login.ss
+    Dim cc As New connection_class
+    Dim strconn As String = cc.conString
     Dim con As New SqlConnection(strconn)
     Dim cmd As SqlCommand
     Dim rdr As SqlDataReader
@@ -45,7 +45,7 @@ Public Class importcustomers
                 cmd.Parameters.AddWithValue("@name", dgvitems.Rows(index).Cells("namee").Value)
                 cmd.Parameters.AddWithValue("@contactnumber", CStr(dgvitems.Rows(index).Cells("contactnumber").Value))
                 cmd.Parameters.AddWithValue("@address", dgvitems.Rows(index).Cells("address").Value)
-                cmd.Parameters.AddWithValue("@created", login.username)
+                cmd.Parameters.AddWithValue("@created", login2.username)
                 cmd.Parameters.AddWithValue("@type", dgvitems.Rows(index).Cells("type").Value)
                 cmd.Parameters.AddWithValue("@code", dgvitems.Rows(index).Cells("code").Value)
                 cmd.ExecuteNonQuery()

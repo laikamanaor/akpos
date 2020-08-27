@@ -119,7 +119,7 @@ Public Class pullout_class
             For Each r0w As DataRow In dtBranch.Rows
                 mainBranch = r0w("branchcode")
             Next
-            Using connection As New SqlConnection(login.ss)
+            Using connection As New SqlConnection(cc.conString)
                 Dim cmdd As New SqlCommand()
                 cmdd.Connection = connection
                 connection.Open()
@@ -134,7 +134,7 @@ Public Class pullout_class
                 cmdd.Parameters.AddWithValue("@qty", CDbl(qty))
                 cmdd.Parameters.AddWithValue("@sap", "To Follow")
                 cmdd.Parameters.AddWithValue("@remarks", "pull out")
-                cmdd.Parameters.AddWithValue("@processed_by", login.username)
+                cmdd.Parameters.AddWithValue("@processed_by", login2.username)
                 cmdd.Parameters.AddWithValue("@type", "Transfer Item")
                 cmdd.Parameters.AddWithValue("@transfer_to", toBranch)
                 cmdd.Parameters.AddWithValue("@transfer_from", mainBranch)

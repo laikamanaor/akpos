@@ -6,8 +6,8 @@ Public Class import_itemcode
 
 
     Dim path As String = ""
-
-    Dim strconn As String = login.ss
+    Dim cc As New connection_class
+    Dim strconn As String = cc.conString
     Dim con As New SqlConnection(strconn)
     Dim cmd As SqlCommand
     Dim rdr As SqlDataReader

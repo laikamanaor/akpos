@@ -49,22 +49,25 @@ Partial Class pullOut
         Me.btnProceed = New System.Windows.Forms.Button()
         Me.spinner = New System.Windows.Forms.PictureBox()
         Me.panelSAP = New System.Windows.Forms.Panel()
+        Me.cmbStatus = New System.Windows.Forms.ComboBox()
         Me.Label3 = New System.Windows.Forms.Label()
         Me.cmbranches = New System.Windows.Forms.ComboBox()
         Me.lblsapdoc = New System.Windows.Forms.Label()
-        Me.checkfollowup = New System.Windows.Forms.CheckBox()
         Me.lblSAPClose = New System.Windows.Forms.Label()
         Me.txtsap = New System.Windows.Forms.TextBox()
         Me.Label4 = New System.Windows.Forms.Label()
         Me.txtremarks = New System.Windows.Forms.TextBox()
         Me.Label11 = New System.Windows.Forms.Label()
         Me.btnSubmit = New System.Windows.Forms.Button()
+        Me.Panel3 = New System.Windows.Forms.Panel()
+        Me.lblheader = New System.Windows.Forms.Label()
         CType(Me.dgvList, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel1.SuspendLayout()
         Me.Panel2.SuspendLayout()
         CType(Me.dgvSelected, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.spinner, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.panelSAP.SuspendLayout()
+        Me.Panel3.SuspendLayout()
         Me.SuspendLayout()
         '
         'dgvList
@@ -330,10 +333,10 @@ Partial Class pullOut
         '
         Me.panelSAP.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.panelSAP.BackColor = System.Drawing.SystemColors.HotTrack
+        Me.panelSAP.Controls.Add(Me.cmbStatus)
         Me.panelSAP.Controls.Add(Me.Label3)
         Me.panelSAP.Controls.Add(Me.cmbranches)
         Me.panelSAP.Controls.Add(Me.lblsapdoc)
-        Me.panelSAP.Controls.Add(Me.checkfollowup)
         Me.panelSAP.Controls.Add(Me.lblSAPClose)
         Me.panelSAP.Controls.Add(Me.txtsap)
         Me.panelSAP.Controls.Add(Me.Label4)
@@ -345,6 +348,20 @@ Partial Class pullOut
         Me.panelSAP.Size = New System.Drawing.Size(371, 306)
         Me.panelSAP.TabIndex = 57
         Me.panelSAP.Visible = False
+        '
+        'cmbStatus
+        '
+        Me.cmbStatus.BackColor = System.Drawing.Color.DodgerBlue
+        Me.cmbStatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cmbStatus.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.cmbStatus.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.cmbStatus.ForeColor = System.Drawing.Color.White
+        Me.cmbStatus.FormattingEnabled = True
+        Me.cmbStatus.Items.AddRange(New Object() {"Pending", "Approved", "Disapproved"})
+        Me.cmbStatus.Location = New System.Drawing.Point(39, 114)
+        Me.cmbStatus.Name = "cmbStatus"
+        Me.cmbStatus.Size = New System.Drawing.Size(95, 23)
+        Me.cmbStatus.TabIndex = 21
         '
         'Label3
         '
@@ -381,18 +398,6 @@ Partial Class pullOut
         Me.lblsapdoc.TabIndex = 17
         Me.lblsapdoc.Text = "ITR"
         '
-        'checkfollowup
-        '
-        Me.checkfollowup.AutoSize = True
-        Me.checkfollowup.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.checkfollowup.ForeColor = System.Drawing.Color.White
-        Me.checkfollowup.Location = New System.Drawing.Point(246, 116)
-        Me.checkfollowup.Name = "checkfollowup"
-        Me.checkfollowup.Size = New System.Drawing.Size(86, 20)
-        Me.checkfollowup.TabIndex = 16
-        Me.checkfollowup.Text = "To Follow"
-        Me.checkfollowup.UseVisualStyleBackColor = True
-        '
         'lblSAPClose
         '
         Me.lblSAPClose.AutoSize = True
@@ -408,11 +413,11 @@ Partial Class pullOut
         'txtsap
         '
         Me.txtsap.Font = New System.Drawing.Font("Arial Rounded MT Bold", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtsap.Location = New System.Drawing.Point(39, 112)
+        Me.txtsap.Location = New System.Drawing.Point(140, 112)
         Me.txtsap.MaxLength = 6
         Me.txtsap.Name = "txtsap"
         Me.txtsap.ShortcutsEnabled = False
-        Me.txtsap.Size = New System.Drawing.Size(201, 29)
+        Me.txtsap.Size = New System.Drawing.Size(188, 29)
         Me.txtsap.TabIndex = 5
         '
         'Label4
@@ -464,12 +469,34 @@ Partial Class pullOut
         Me.btnSubmit.Text = "SUBMIT"
         Me.btnSubmit.UseVisualStyleBackColor = False
         '
+        'Panel3
+        '
+        Me.Panel3.BackColor = System.Drawing.Color.FromArgb(CType(CType(218, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(28, Byte), Integer))
+        Me.Panel3.Controls.Add(Me.lblheader)
+        Me.Panel3.Dock = System.Windows.Forms.DockStyle.Top
+        Me.Panel3.Location = New System.Drawing.Point(0, 0)
+        Me.Panel3.Name = "Panel3"
+        Me.Panel3.Size = New System.Drawing.Size(958, 31)
+        Me.Panel3.TabIndex = 58
+        '
+        'lblheader
+        '
+        Me.lblheader.AutoSize = True
+        Me.lblheader.Font = New System.Drawing.Font("Arial Rounded MT Bold", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblheader.ForeColor = System.Drawing.Color.White
+        Me.lblheader.Location = New System.Drawing.Point(2, 5)
+        Me.lblheader.Name = "lblheader"
+        Me.lblheader.Size = New System.Drawing.Size(105, 22)
+        Me.lblheader.TabIndex = 33
+        Me.lblheader.Text = "PULL OUT"
+        '
         'pullOut
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.White
         Me.ClientSize = New System.Drawing.Size(958, 599)
+        Me.Controls.Add(Me.Panel3)
         Me.Controls.Add(Me.panelSAP)
         Me.Controls.Add(Me.spinner)
         Me.Controls.Add(Me.btnProceed)
@@ -494,6 +521,8 @@ Partial Class pullOut
         CType(Me.spinner, System.ComponentModel.ISupportInitialize).EndInit()
         Me.panelSAP.ResumeLayout(False)
         Me.panelSAP.PerformLayout()
+        Me.Panel3.ResumeLayout(False)
+        Me.Panel3.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -518,7 +547,6 @@ Partial Class pullOut
     Friend WithEvents btnRemoveQuantity As DataGridViewButtonColumn
     Friend WithEvents panelSAP As Panel
     Friend WithEvents lblsapdoc As Label
-    Friend WithEvents checkfollowup As CheckBox
     Friend WithEvents lblSAPClose As Label
     Friend WithEvents txtsap As TextBox
     Friend WithEvents Label4 As Label
@@ -527,4 +555,7 @@ Partial Class pullOut
     Friend WithEvents btnSubmit As Button
     Friend WithEvents Label3 As Label
     Friend WithEvents cmbranches As ComboBox
+    Friend WithEvents Panel3 As Panel
+    Public WithEvents lblheader As Label
+    Friend WithEvents cmbStatus As ComboBox
 End Class

@@ -258,7 +258,7 @@ Partial Class cancel_rectrans
         Me.cmbtype.Font = New System.Drawing.Font("Arial Rounded MT Bold", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmbtype.ForeColor = System.Drawing.Color.White
         Me.cmbtype.FormattingEnabled = True
-        Me.cmbtype.Items.AddRange(New Object() {"Received Item", "Transfer Item"})
+        Me.cmbtype.Items.AddRange(New Object() {"Received Item", "Transfer Item", "Pull Out"})
         Me.cmbtype.Location = New System.Drawing.Point(631, 139)
         Me.cmbtype.Name = "cmbtype"
         Me.cmbtype.Size = New System.Drawing.Size(193, 25)

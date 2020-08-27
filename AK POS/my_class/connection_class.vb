@@ -7,6 +7,7 @@ Public Class connection_class
     Public con As New SqlConnection(conString)
     Public rdr As SqlDataReader
     Public cmd As SqlCommand
+    Public adptr As New SqlDataAdapter
 
     Public Function Decrypt(ByVal cipherText As String) As String
         Dim passPhrase As String = "minePassPhrase"
