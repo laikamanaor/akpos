@@ -187,9 +187,7 @@ Partial Class mainmenu
         Me.lblcount = New System.Windows.Forms.Label()
         Me.Panel15 = New System.Windows.Forms.Panel()
         Me.cmbtype = New System.Windows.Forms.ComboBox()
-        Me.Label22 = New System.Windows.Forms.Label()
         Me.txtname = New System.Windows.Forms.TextBox()
-        Me.lbltrnum = New System.Windows.Forms.Label()
         Me.grd = New System.Windows.Forms.DataGridView()
         Me.description = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.quantity = New System.Windows.Forms.DataGridViewTextBoxColumn()
@@ -2237,9 +2235,7 @@ Partial Class mainmenu
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Panel15.BackColor = System.Drawing.Color.White
         Me.Panel15.Controls.Add(Me.cmbtype)
-        Me.Panel15.Controls.Add(Me.Label22)
         Me.Panel15.Controls.Add(Me.txtname)
-        Me.Panel15.Controls.Add(Me.lbltrnum)
         Me.Panel15.Location = New System.Drawing.Point(0, 4)
         Me.Panel15.Name = "Panel15"
         Me.Panel15.Size = New System.Drawing.Size(725, 35)
@@ -2258,17 +2254,6 @@ Partial Class mainmenu
         Me.cmbtype.Size = New System.Drawing.Size(127, 21)
         Me.cmbtype.TabIndex = 36
         '
-        'Label22
-        '
-        Me.Label22.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Label22.AutoSize = True
-        Me.Label22.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label22.Location = New System.Drawing.Point(498, 13)
-        Me.Label22.Name = "Label22"
-        Me.Label22.Size = New System.Drawing.Size(53, 16)
-        Me.Label22.TabIndex = 35
-        Me.Label22.Text = "Trans #"
-        '
         'txtname
         '
         Me.txtname.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend
@@ -2281,17 +2266,6 @@ Partial Class mainmenu
         Me.txtname.Size = New System.Drawing.Size(341, 18)
         Me.txtname.TabIndex = 9
         Me.txtname.Text = "CASH"
-        '
-        'lbltrnum
-        '
-        Me.lbltrnum.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.lbltrnum.AutoSize = True
-        Me.lbltrnum.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lbltrnum.Location = New System.Drawing.Point(552, 12)
-        Me.lbltrnum.Name = "lbltrnum"
-        Me.lbltrnum.Size = New System.Drawing.Size(30, 16)
-        Me.lbltrnum.TabIndex = 34
-        Me.lbltrnum.Text = "N/A"
         '
         'grd
         '
@@ -2649,10 +2623,8 @@ Partial Class mainmenu
     Friend WithEvents rbtake As System.Windows.Forms.RadioButton
     Friend WithEvents rbdeliver As System.Windows.Forms.RadioButton
     Friend WithEvents Panel15 As System.Windows.Forms.Panel
-    Friend WithEvents Label22 As System.Windows.Forms.Label
     Friend WithEvents txttin As System.Windows.Forms.TextBox
     Friend WithEvents txtname As System.Windows.Forms.TextBox
-    Friend WithEvents lbltrnum As System.Windows.Forms.Label
     Friend WithEvents Label14 As System.Windows.Forms.Label
     Friend WithEvents Panel2 As System.Windows.Forms.Panel
     Friend WithEvents Panel4 As System.Windows.Forms.Panel

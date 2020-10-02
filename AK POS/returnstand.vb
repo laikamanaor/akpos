@@ -19,7 +19,7 @@ Public Class returnstand
     Private Sub returnstand_Activated(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Activated
         btnreturns.PerformClick()
         loadd()
-        If login.wrkgrp = "Manager" Then
+        If login2.wrkgrp = "Manager" Then
             dgvlists.Columns("btnreturn").Visible = False
         End If
         Me.WindowState = FormWindowState.Maximized
@@ -30,7 +30,7 @@ Public Class returnstand
 
         getID()
         loadtransnum()
-        If login.wrkgrp = "Manager" Then
+        If login2.wrkgrp = "Manager" Then
             'ap
             Label3.Visible = False
             Label4.Visible = False
@@ -126,7 +126,7 @@ Public Class returnstand
                 End If
 
                 con.Open()
-                cmd = New SqlCommand("UPDATE tblreturns SET status='Used',date=(SELECT GETDATE()),byy='" & login.username & "' WHERE returnum='" & dgvlists.CurrentRow.Cells("id2").Value & "';", con)
+                cmd = New SqlCommand("UPDATE tblreturns SET status='Used',date=(SELECT GETDATE()),byy='" & login2.username & "' WHERE returnum='" & dgvlists.CurrentRow.Cells("id2").Value & "';", con)
                 cmd.ExecuteNonQuery()
                 con.Close()
 
@@ -138,7 +138,7 @@ Public Class returnstand
                 Dim zz As String = getSystemDate.ToString("MM/dd/yyy")
 
                 con.Open()
-                cmd = New SqlCommand("Insert into tbltransaction (ornum, transnum, transdate, cashier, tendertype, servicetype, delcharge, subtotal, disctype, less, vatsales, vat, amtdue, gctotal, tenderamt, change, refund, comment, remarks, customer, tinnum, tablenum, pax, datecreated, datemodified, status,area,invnum,partialamt) values ('" & "0" & "', '" & dgvlists.CurrentRow.Cells("transnum").Value & "', '" & zz & "','" & login.cashier & "', '" & "Cash Out" & "', '" & "Cash Out" & "', '" & "0" & "', '" & "0" & "', '" & "N/A" & "', '" & "0" & "', '" & "0" & "', '" & "0" & "', '" & dgvlists.CurrentRow.Cells("amount").Value & "', '" & "0" & "', '" & "0" & "', '" & "0" & "', '0', '', '', '" & dgvlists.CurrentRow.Cells("custname").Value & "', '" & "0" & "', '" & "0" & "', '" & "0" & "',(SELECT GETDATE()),(SELECT GETDATE()), '1','" & "Sales" & "','" & inv_id & "','0')", con)
+                cmd = New SqlCommand("Insert into tbltransaction (ornum, transnum, transdate, cashier, tendertype, servicetype, delcharge, subtotal, disctype, less, vatsales, vat, amtdue, gctotal, tenderamt, change, refund, comment, remarks, customer, tinnum, tablenum, pax, datecreated, datemodified, status,area,invnum,partialamt) values ('" & "0" & "', '" & dgvlists.CurrentRow.Cells("transnum").Value & "', '" & zz & "','" & login2.username & "', '" & "Cash Out" & "', '" & "Cash Out" & "', '" & "0" & "', '" & "0" & "', '" & "N/A" & "', '" & "0" & "', '" & "0" & "', '" & "0" & "', '" & dgvlists.CurrentRow.Cells("amount").Value & "', '" & "0" & "', '" & "0" & "', '" & "0" & "', '0', '', '', '" & dgvlists.CurrentRow.Cells("custname").Value & "', '" & "0" & "', '" & "0" & "', '" & "0" & "',(SELECT GETDATE()),(SELECT GETDATE()), '1','" & "Sales" & "','" & inv_id & "','0')", con)
                 cmd.ExecuteNonQuery()
                 con.Close()
 
@@ -154,7 +154,7 @@ Public Class returnstand
         btnreturns.ForeColor = Color.Black
         btnhistory.ForeColor = Color.White
         dgvlists.Columns("btnreturn").Visible = True
-        If login.wrkgrp = "Manager" Then
+        If login2.wrkgrp = "Manager" Then
             dgvlists.Columns("btnreturn").Visible = False
         End If
         dgvlists.Columns("datereturned").Visible = False
@@ -247,10 +247,10 @@ Public Class returnstand
     End Sub
     Public Sub loadtransnum()
         Dim area As String = ""
-        If login.wrkgrp = "Cashier" Or login.wrkgrp = "Sales" Then
+        If login2.wrkgrp = "Cashier" Or login2.wrkgrp = "Sales" Then
             area = "Sales"
         Else
-            area = login.wrkgrp
+            area = login2.wrkgrp
         End If
         Dim temp As String = "0", selectcount_result As Integer = 0, area_format As String = ""
         con.Open()
@@ -283,7 +283,7 @@ Public Class returnstand
             Dim status As String = "", date_from As New DateTime()
             connect()
             cmd = New SqlCommand("SELECT status,date FROM tblcutoff WHERE userid=(SELECT systemid FROM tblusers WHERE username=@username) ORDER BY cid DESC;", con)
-            cmd.Parameters.AddWithValue("@username", login.username)
+            cmd.Parameters.AddWithValue("@username", login2.username)
             rdr = cmd.ExecuteReader
             If rdr.Read Then
                 status = rdr("status")
@@ -336,7 +336,7 @@ Public Class returnstand
                 Dim zz As String = getSystemDate.ToString("MM/dd/yyyy")
 
                 con.Open()
-                cmd = New SqlCommand("Insert into tbltransaction (ornum, transnum, transdate, cashier, tendertype, servicetype, delcharge, subtotal, disctype, less, vatsales, vat, amtdue, gctotal, tenderamt, change, refund, comment, remarks, customer, tinnum, tablenum, pax, datecreated, datemodified, status,area,invnum) values (0,'" & apnum & "','" & zz & "','" & login.cashier & "','" & tayp & "','" & tayp & "','0','0','N/A','0','0','0','" & CDbl(tamount.Text) & "','0','0','0','0','','','','N/A','','1',(SELECT GETDATE()),(SELECT GETDATE()),'1','Sales','" & inv_id & "')", con)
+                cmd = New SqlCommand("Insert into tbltransaction (ornum, transnum, transdate, cashier, tendertype, servicetype, delcharge, subtotal, disctype, less, vatsales, vat, amtdue, gctotal, tenderamt, change, refund, comment, remarks, customer, tinnum, tablenum, pax, datecreated, datemodified, status,area,invnum) values (0,'" & apnum & "','" & zz & "','" & login2.username & "','" & tayp & "','" & tayp & "','0','0','N/A','0','0','0','" & CDbl(tamount.Text) & "','0','0','0','0','','','','N/A','','1',(SELECT GETDATE()),(SELECT GETDATE()),'1','Sales','" & inv_id & "')", con)
                 cmd.ExecuteNonQuery()
                 con.Close()
 
@@ -379,65 +379,6 @@ Public Class returnstand
     Private Sub txtboxname_Leave(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtboxname.Leave
         txtname_leave(txtboxname)
     End Sub
-    Public Sub dgv_contentclick(ByVal e As System.Windows.Forms.DataGridViewCellEventArgs, ByVal grd As DataGridView, ByVal cellID As String, ByVal cellName As String, ByVal cellAmount As String, ByVal cellDate As String, ByVal cellType As String, ByVal cmstatus As ComboBox, ByVal lbltype As Label, ByVal err As Label, ByVal tname As TextBox)
-        If e.ColumnIndex = 6 Then
-            Dim cform As New cform_advancepayment()
-            cform.Show()
-            Dim c As New c_advancepayment2()
-            c.SetParameterValue("id", grd.CurrentRow.Cells(cellID).Value)
-            c.SetParameterValue("name", grd.CurrentRow.Cells(cellName).Value)
-            c.SetParameterValue("amount", grd.CurrentRow.Cells(cellAmount).Value)
-            c.SetParameterValue("date", grd.CurrentRow.Cells(cellDate).Value)
-            Dim name As String = ""
-            con.Open()
-            cmd = New SqlCommand("SELECT fullname FROM tblusers WHERE username=@username;", con)
-            cmd.Parameters.AddWithValue("@username", login.username)
-            rdr = cmd.ExecuteReader
-            If rdr.Read Then
-                name = rdr("fullname")
-            Else
-                name = login.username
-            End If
-            con.Close()
-
-            c.SetParameterValue("processed_by", name)
-            Dim txtType As String = ""
-            If grd.CurrentRow.Cells(cellType).Value = "Advance Payment" Then
-                txtType = "ADVANCE PAYMENT SLIP"
-            Else
-                txtType = "DEPOSIT SLIP"
-            End If
-            c.SetParameterValue("header", "ATLANTIC BAKERY" & Environment.NewLine & txtType)
-            cform.CrystalReportViewer1.ReportSource = c
-            cform.CrystalReportViewer1.Refresh()
-        ElseIf e.ColumnIndex = 7 Then
-            Dim a As String = MsgBox("Are you sure you want to cancel?", MsgBoxStyle.Question + MsgBoxStyle.YesNo, "")
-            If a = vbYes Then
-
-                'If checkCutOff() Then
-                '    MessageBox.Show("Your account is already cut off", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                '    Exit Sub
-                'End If
-
-                If grd.Name = "dgv2" Then
-                    txtdepreason.Text = ""
-                    txtdepreason.Focus()
-                    paneldepreason.Visible = True
-                Else
-                    txtapreason.Text = ""
-                    txtapreason.Focus()
-                    panelapreason.Visible = True
-                End If
-            End If
-        End If
-    End Sub
-    Private Sub dgv_CellContentClick(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgv.CellContentClick
-        dgv_contentclick(e, dgv, "apid", "apname", "apamount", "apdate", "aptype", cmbstatus, lblap, lblerror, txtboxname)
-    End Sub
-    'Public Sub cmbserarchtype_indexchanged(ByVal cmstatus As ComboBox, ByVal cmtype As ComboBox, ByVal err As Label, ByVal tname As TextBox, ByVal grd As DataGridView)
-    '    loadData("SELECT * FROM tbladvancepayment WHERE status='" & cmstatus.SelectedItem & "' AND type='" & cmtype.SelectedItem & "'", grd, err, tname)
-    'End Sub
-
     Private Sub cmbtype_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         getApNum(lbldeposit)
     End Sub
@@ -461,11 +402,6 @@ Public Class returnstand
     Private Sub cmbstatus2_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmbstatus2.SelectedIndexChanged
         loadd()
     End Sub
-
-    Private Sub dgv2_CellContentClick(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgv2.CellContentClick
-        dgv_contentclick(e, dgv2, "depid", "depname", "depamount", "depdate", "deptype", cmbstatus2, lbldeposit, lblerror2, txtname)
-    End Sub
-
     Private Sub lblcloseremarks_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lblcloseremarks.Click
         paneldepreason.Visible = False
     End Sub
@@ -482,19 +418,19 @@ Public Class returnstand
                     Exit Sub
                 End If
                 con.Open()
-                cmd = New SqlCommand("UPDATE tbladvancepayment SET status='Cancelled',date_cancelled=(SELECT GETDATE()),cancelled_by='" & login.username & "',remarks='" & txtdepreason.Text & "' WHERE apnum='" & dgv2.CurrentRow.Cells("depid").Value & "';", con)
+                cmd = New SqlCommand("UPDATE tbladvancepayment SET status='Cancelled',date_cancelled=(SELECT GETDATE()),cancelled_by='" & login2.username & "',remarks='" & txtdepreason.Text & "' WHERE apnum='" & dgv2.CurrentRow.Cells("depid").Value & "';", con)
                 cmd.ExecuteNonQuery()
                 con.Close()
 
                 Dim zz As String = getSystemDate.ToString("MM/dd/yyyy")
 
                 con.Open()
-                cmd = New SqlCommand("Insert into tbltransaction (ornum, transnum, transdate, cashier, tendertype, servicetype, delcharge, subtotal, disctype, less, vatsales, vat, amtdue, gctotal, tenderamt, change, refund, comment, remarks, customer, tinnum, tablenum, pax, datecreated, datemodified, status,area,invnum,partialamt) values ('" & "0" & "', '" & dgv2.CurrentRow.Cells("depid").Value & "', '" & zz & "','" & login.cashier & "', '" & "Cash Out" & "', '" & "Cash Out" & "', '" & "0" & "', '" & "0" & "', '" & "N/A" & "', '" & "0" & "', '" & "0" & "', '" & "0" & "', '" & dgv2.CurrentRow.Cells("depamount").Value & "', '" & "0" & "', '" & "0" & "', '" & "0" & "', '0', '', '', '" & dgv2.CurrentRow.Cells("depname").Value & "', '" & "0" & "', '" & "0" & "', '" & "0" & "',(SELECT GETDATE()),(SELECT GETDATE()), '1','" & "Sales" & "','" & inv_id & "','0')", con)
+                cmd = New SqlCommand("Insert into tbltransaction (ornum, transnum, transdate, cashier, tendertype, servicetype, delcharge, subtotal, disctype, less, vatsales, vat, amtdue, gctotal, tenderamt, change, refund, comment, remarks, customer, tinnum, tablenum, pax, datecreated, datemodified, status,area,invnum,partialamt) values ('" & "0" & "', '" & dgv2.CurrentRow.Cells("depid").Value & "', '" & zz & "','" & login2.username & "', '" & "Cash Out" & "', '" & "Cash Out" & "', '" & "0" & "', '" & "0" & "', '" & "N/A" & "', '" & "0" & "', '" & "0" & "', '" & "0" & "', '" & dgv2.CurrentRow.Cells("depamount").Value & "', '" & "0" & "', '" & "0" & "', '" & "0" & "', '0', '', '', '" & dgv2.CurrentRow.Cells("depname").Value & "', '" & "0" & "', '" & "0" & "', '" & "0" & "',(SELECT GETDATE()),(SELECT GETDATE()), '1','" & "Sales" & "','" & inv_id & "','0')", con)
                 cmd.ExecuteNonQuery()
                 con.Close()
 
                 con.Open()
-                cmd = New SqlCommand("Insert into tbltransaction2 (ornum, transnum, transdate, cashier, tendertype, servicetype, delcharge, subtotal, disctype, less, vatsales, vat, amtdue, gctotal, tenderamt, change, refund, comment, remarks, customer, tinnum, tablenum, pax, datecreated, datemodified, status,area,status2) values ('" & "0" & "', '" & dgv2.CurrentRow.Cells("depid").Value & "', '" & zz & "','" & login.cashier & "', '" & "Cash Out" & "', '" & "Cash Out" & "', '" & "0" & "', '" & "0" & "', '" & "N/A" & "', '" & "0" & "', '" & "0" & "', '" & "0" & "', '" & dgv2.CurrentRow.Cells("depamount").Value & "', '" & "0" & "', '" & "0" & "', '" & "0" & "', '0', '', '', '" & dgv2.CurrentRow.Cells("depname").Value & "', '" & "0" & "', '" & "0" & "', '" & "0" & "',(SELECT GETDATE()),(SELECT GETDATE()), '1','" & "Sales" & "','Paid')", con)
+                cmd = New SqlCommand("Insert into tbltransaction2 (ornum, transnum, transdate, cashier, tendertype, servicetype, delcharge, subtotal, disctype, less, vatsales, vat, amtdue, gctotal, tenderamt, change, refund, comment, remarks, customer, tinnum, tablenum, pax, datecreated, datemodified, status,area,status2) values ('" & "0" & "', '" & dgv2.CurrentRow.Cells("depid").Value & "', '" & zz & "','" & login2.username & "', '" & "Cash Out" & "', '" & "Cash Out" & "', '" & "0" & "', '" & "0" & "', '" & "N/A" & "', '" & "0" & "', '" & "0" & "', '" & "0" & "', '" & dgv2.CurrentRow.Cells("depamount").Value & "', '" & "0" & "', '" & "0" & "', '" & "0" & "', '0', '', '', '" & dgv2.CurrentRow.Cells("depname").Value & "', '" & "0" & "', '" & "0" & "', '" & "0" & "',(SELECT GETDATE()),(SELECT GETDATE()), '1','" & "Sales" & "','Paid')", con)
                 cmd.ExecuteNonQuery()
                 con.Close()
 
@@ -521,14 +457,14 @@ Public Class returnstand
                 MessageBox.Show("Enter Reason", "", MessageBoxButtons.OK, MessageBoxIcon.Information)
             Else
                 con.Open()
-                cmd = New SqlCommand("UPDATE tbladvancepayment SET status='Cancelled',date_cancelled=(SELECT GETDATE()),cancelled_by='" & login.username & "',remarks='" & txtapreason.Text & "' WHERE apnum='" & dgv.CurrentRow.Cells("apid").Value & "';", con)
+                cmd = New SqlCommand("UPDATE tbladvancepayment SET status='Cancelled',date_cancelled=(SELECT GETDATE()),cancelled_by='" & login2.username & "',remarks='" & txtapreason.Text & "' WHERE apnum='" & dgv.CurrentRow.Cells("apid").Value & "';", con)
                 cmd.ExecuteNonQuery()
                 con.Close()
 
                 Dim zz As String = getSystemDate.ToString("MM/dd/yyyy")
 
                 con.Open()
-                cmd = New SqlCommand("Insert into tbltransaction (ornum, transnum, transdate, cashier, tendertype, servicetype, delcharge, subtotal, disctype, less, vatsales, vat, amtdue, gctotal, tenderamt, change, refund, comment, remarks, customer, tinnum, tablenum, pax, datecreated, datemodified, status,area,invnum,partialamt) values ('" & "0" & "', '" & dgv.CurrentRow.Cells("apid").Value & "', '" & zz & "','" & login.cashier & "', '" & "Cash Out" & "', '" & "Cash Out" & "', '" & "0" & "', '" & "0" & "', '" & "N/A" & "', '" & "0" & "', '" & "0" & "', '" & "0" & "', '" & dgv.CurrentRow.Cells("apamount").Value & "', '" & "0" & "', '" & "0" & "', '" & "0" & "', '0', '', '', '" & dgv.CurrentRow.Cells("apname").Value & "', '" & "0" & "', '" & "0" & "', '" & "0" & "','" & zz & "','" & zz & "', '1','" & "Sales" & "','" & inv_id & "','0')", con)
+                cmd = New SqlCommand("Insert into tbltransaction (ornum, transnum, transdate, cashier, tendertype, servicetype, delcharge, subtotal, disctype, less, vatsales, vat, amtdue, gctotal, tenderamt, change, refund, comment, remarks, customer, tinnum, tablenum, pax, datecreated, datemodified, status,area,invnum,partialamt) values ('" & "0" & "', '" & dgv.CurrentRow.Cells("apid").Value & "', '" & zz & "','" & login2.username & "', '" & "Cash Out" & "', '" & "Cash Out" & "', '" & "0" & "', '" & "0" & "', '" & "N/A" & "', '" & "0" & "', '" & "0" & "', '" & "0" & "', '" & dgv.CurrentRow.Cells("apamount").Value & "', '" & "0" & "', '" & "0" & "', '" & "0" & "', '0', '', '', '" & dgv.CurrentRow.Cells("apname").Value & "', '" & "0" & "', '" & "0" & "', '" & "0" & "','" & zz & "','" & zz & "', '1','" & "Sales" & "','" & inv_id & "','0')", con)
                 cmd.ExecuteNonQuery()
                 con.Close()
                 MessageBox.Show("Transaction Completed", "", MessageBoxButtons.OK, MessageBoxIcon.Information)
@@ -544,7 +480,7 @@ Public Class returnstand
     Private Sub returnstand_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         btnreturns.PerformClick()
         loadd()
-        If login.wrkgrp = "Manager" Then
+        If login2.wrkgrp = "Manager" Then
             dgvlists.Columns("btnreturn").Visible = False
         End If
         Me.WindowState = FormWindowState.Maximized
@@ -555,7 +491,7 @@ Public Class returnstand
 
         getID()
         loadtransnum()
-        If login.wrkgrp = "Manager" Then
+        If login2.wrkgrp = "Manager" Then
             'ap
             Label3.Visible = False
             Label4.Visible = False

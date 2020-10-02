@@ -123,6 +123,20 @@ Public Class user_class
         Return result
     End Function
 
+    Public Function loadUsernames() As DataTable
+        Dim result As New DataTable
+        Try
+            cc.con.Open()
+            cc.cmd = New SqlClient.SqlCommand("SELECT  username [result] FROM tblusers WHERE status=1 ORDER BY username ASC", cc.con)
+            cc.adptr.SelectCommand = cc.cmd
+            cc.adptr.Fill(result)
+            cc.con.Close()
+        Catch ex As Exception
+            MessageBox.Show("loadUsernames() " & ex.Message)
+        End Try
+        Return result
+    End Function
+
     Public Function returnPOSType() As String
         Dim result As String = ""
         cc.con.Open()

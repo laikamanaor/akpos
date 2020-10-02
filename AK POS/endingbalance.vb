@@ -11,6 +11,8 @@ Public Class endingbalance
     Dim transaction As SqlTransaction
     Dim selectedQuantity As String = ""
     Dim trans_num As String = "", ar_number As String = 0
+
+    Dim rec As New received_class
     Public Sub GetTransID()
         Try
             Dim selectcount_result As Integer = 0
@@ -227,33 +229,14 @@ Public Class endingbalance
         Next
     End Function
     Public Sub load_items()
-        Try
-            dgvListItem.Rows.Clear()
-            con.Open()
-            cmd = New SqlCommand("SELECT a.itemcode,a.itemname,b.category FROM tblinvitems a INNER JOIN tblitems b ON a.itemname = b.itemname WHERE a.totalav !=0 AND a.invnum=@invnum", con)
-            cmd.Parameters.AddWithValue("@invnum", lblID.Text)
-            Dim adptr As New SqlDataAdapter()
-            Dim dt As New DataTable()
-            adptr.SelectCommand = cmd
-            adptr.Fill(dt)
-            con.Close()
-            For Each r0w As DataRow In dt.Rows
-                con.Open()
-                cmd = New SqlCommand("SELECT inv_id FROM tblproduction a WHERE a.inv_id=@invnum AND a.type='Actual Ending Balance' AND a.item_name=@itemname;", con)
-                cmd.Parameters.AddWithValue("@invnum", lblID.Text)
-                cmd.Parameters.AddWithValue("@itemname", r0w("itemname"))
-                rdr = cmd.ExecuteReader
-                If Not rdr.Read Then
-                    dgvListItem.Rows.Add(r0w("itemcode"), r0w("itemname"), r0w("category"))
-                End If
-                con.Close()
+        dgvListItem.Rows.Clear()
+        Dim result As New DataTable()
+        result = rec.loadActualEndbal()
+        If result.Rows.Count > 0 Then
+            For Each r0w As DataRow In result.Rows
+                dgvListItem.Rows.Add(r0w("itemcode"), r0w("itemname"), r0w("category"))
             Next
-
-        Catch ex As Exception
-            MessageBox.Show(ex.ToString)
-        Finally
-            con.Close()
-        End Try
+        End If
     End Sub
     Public Sub dgvCount()
         lblListItemCount.Text = CStr(dgvListItem.Rows.Count)

@@ -183,17 +183,11 @@ Public Class mainmenu
                 identify_area = login2.wrkgrp
             End If
             If cas = "Sales" Or cas = "Wholesale" Then
-                lbltrnum.Visible = False
-                Label22.Visible = False
                 btnback.Enabled = False
                 loadordernum()
-                loadtransnum()
                 load_customers()
                 'MessageBox.Show("cAs sales wholesale")
             ElseIf cas = "Cashier" Then
-                loadtransnum()
-                lbltrnum.Visible = True
-                Label22.Visible = True
                 btnback.Enabled = True
                 amount()
                 computetotal()
@@ -210,9 +204,9 @@ Public Class mainmenu
             'grd.Columns(0).ReadOnly = True
 
             grd.Columns(4).ReadOnly = False
-            grd.Columns(3).ReadOnly = True
+            'grd.Columns(3).ReadOnly = True
             grd.Columns(2).ReadOnly = True
-            grd.Columns("discountpercent").ReadOnly = False
+            'grd.Columns("discountpercent").ReadOnly = False
             grd.Columns(1).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight
             grd.Columns(2).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight
             grd.Columns(3).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight
@@ -229,11 +223,11 @@ Public Class mainmenu
 
             Dim posType As String = userc.returnPOSType()
 
-            If posType = "Coffee Shop" Or posType = "Wholesale" Then
-                grd.Columns("discountpercent").ReadOnly = False
-            Else
-                grd.Columns("discountpercent").ReadOnly = True
-            End If
+            'If posType = "Coffee Shop" Or posType = "Wholesale" Then
+            '    grd.Columns("discountpercent").ReadOnly = False
+            'Else
+            '    grd.Columns("discountpercent").ReadOnly = True
+            'End If
 
             If login2.wrkgrp = "Cashier" Then
                 Label12.Visible = True
@@ -655,6 +649,7 @@ Public Class mainmenu
                 If Not IsNumeric(grd.Rows(grd.CurrentRow.Index).Cells(3).Value) Then
                     MessageBox.Show("Invalid Input", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
                     grd.Rows(grd.CurrentRow.Index).Cells(3).Value = 0.00
+                    grd.Rows(grd.CurrentRow.Index).Cells("amtdue").Value = CDbl(grd.CurrentRow.Cells("quantity").Value) * CDbl(grd.CurrentRow.Cells("price").Value)
                     computetotal()
                     Exit Sub
                 End If
@@ -806,7 +801,7 @@ Public Class mainmenu
                         'check if stocks are enough to purchase the quantity of orders
                         Try
                             sql = "Select Top 1 endbal from tblinvitems  where itemcode='" & grd.Rows(grd.CurrentRow.Index).Cells(7).Value & "' AND area='" & "Sales" & "' AND invnum='" & inv_id & "' order by invid DESC"
-                            conn.Open()
+                    conn.Open()
                             cmd = New SqlCommand(sql, conn)
                             dr = cmd.ExecuteReader
 
@@ -847,6 +842,7 @@ Public Class mainmenu
                     ElseIf grd.Rows(grd.CurrentRow.Index).Cells(3).Value.ToString IsNot Nothing And (grd.Rows(grd.CurrentRow.Index).Cells(3).Value) < 1 Then
                         MsgBox("Invalid input", MsgBoxStyle.Exclamation, "")
                         grd.Rows(grd.CurrentRow.Index).Cells(3).Value = lastdgv
+                        grd.CurrentRow.Cells("totalprice").Value = CDbl(grd.CurrentRow.Cells("price").Value) * CDbl(grd.CurrentRow.Cells("quantity").Value)
                     End If
                 Else
                     If Panel12.Visible = False And grd.Rows(grd.CurrentRow.Index).Cells(3).Value.ToString IsNot Nothing Then
@@ -942,208 +938,22 @@ Public Class mainmenu
         grd.Focus()
     End Sub
     Public Sub computetotal()
-        Try
-            Dim total As Double, temptotal As Double
-            Dim totalitem As Double, temptotalitem As Double
-
-            If grd.RowCount <> 0 Then
-                culture = CultureInfo.CreateSpecificCulture("en-US")
-                Dim result As Double = 0
-                For Each row As DataGridViewRow In grd.Rows
-                    result += CDbl(grd.Rows(row.Index).Cells(4).Value)
-                    temptotal = Val(grd.Rows(row.Index).Cells(4).Value)
-                    total = total + temptotal
-                    If grd.Rows(row.Index).Cells(5).Value Is Nothing Then
-                        'MsgBox("true")
-                        grd.Rows(row.Index).Cells(5).Value = ""
-                    End If
-                    'hi
-                    temptotalitem = Val(grd.Rows(row.Index).Cells(1).Value)
-                    totalitem = totalitem + temptotalitem
-                Next
-                Dim subtot As String = result.ToString("n2")
-                txtsub.Text = subtot
-                txtsubtotal2.Text = CDbl(subtot - (subtot * (CDbl(txtless.Text) / 100))).ToString("n2")
-                txtdiscamt.Text = CDbl(CDbl(txtsub.Text) * (CDbl(txtless.Text) / 100)).ToString("n2")
-                If txttendered.Text <> "" Then
-                    Dim er As Double = 0.0
-                    Dim less As Double = 0.0
-                    Dim fLess As Double = 0.0
-                    fLess = 100 - CDbl(txtless.Text)
-                    less = fLess / 100
-                    If grd.Rows.Count <> 0 Then
-                        If cmbdis.Text <> "" Then
-                            For index As Integer = 0 To grd.Rows.Count - 1
-                                If cmbdis.Text = "Senior Citizen" Or cmbdis.Text = "Pwd" Then
-                                    conn.Open()
-                                    cmd = New SqlCommand("SELECT basedprice FROM tblgroupdisc WHERE itemname='" & grd.Rows(index).Cells("description").Value & "' AND status='1';", conn)
-                                    dr = cmd.ExecuteReader
-                                    If dr.Read Then
-                                        Dim totalPrice As Double = 0.0, totalPrice2 As Double = 0.0
-                                        totalPrice = CDbl(grd.Rows(index).Cells("price").Value) * CDbl(grd.Rows(index).Cells("quantity").Value)
-                                        totalPrice = totalPrice - CDbl(dr("basedprice"))
-                                        totalPrice2 = CDbl(dr("basedprice")) / 1.12 * less
-                                        er += totalPrice + totalPrice2
-                                    Else
-                                        er += CDbl(grd.Rows(index).Cells("price").Value) * CDbl(grd.Rows(index).Cells("quantity").Value) / 1.12 * less
-                                    End If
-                                    conn.Open()
-                                Else
-                                    conn.Open()
-                                    cmd = New SqlCommand("SELECT basedprice FROM tblgroupdisc WHERE itemname='" & grd.Rows(index).Cells("description").Value & "' AND status='1';", conn)
-                                    dr = cmd.ExecuteReader
-                                    If dr.Read Then
-                                        Dim totalPrice As Double = 0.0, totalPrice2 As Double = 0.0
-                                        totalPrice = CDbl(grd.Rows(index).Cells("price").Value) * CDbl(grd.Rows(index).Cells("quantity").Value)
-                                        totalPrice = totalPrice - CDbl(dr("basedprice"))
-                                        totalPrice2 = CDbl(dr("basedprice")) * less
-                                        er += totalPrice + totalPrice2
-                                    Else
-                                        'er += CDbl(grd.Rows(index).Cells("price").Value) * CDbl(grd.Rows(index).Cells("quantity").Value) * less
-                                        er = CDbl(txtsubtotal2.Text) - CDbl(txtgc.Text)
-                                    End If
-                                    conn.Close()
-                                End If
-                            Next
-                        Else
-                            er = CDbl(txtsubtotal2.Text) - CDbl(txtgc.Text)
-                        End If
-                    Else
-                        er = 0
-                    End If
-                    Dim amtpayable As Double = 0.00, change As Double = 0.00, advancePayment As Double = posc.advancePaymentTotal(txtadvancepayment.Text)
-                    If advancePayment <> 0 Then
-                        If advancePayment > er Then
-                            amtpayable = 0
-                        Else
-                            amtpayable = er - advancePayment
-                        End If
-                    Else
-                        amtpayable = er
-                    End If
-                    Dim amttendered As Double = CDbl(txttendered.Text)
-                    txtboxamountpayable.Text = amtpayable.ToString("n2")
-                    change = amttendered + advancePayment - er
-                    If change > 0 Then
-                        txtchange.Text = change.ToString("n2")
-                    Else
-                        txtchange.Text = "0.00"
-                    End If
-                End If
-                txttotal.Text = txtboxamountpayable.Text
-                Dim totalitemm As Integer = 0
-                For index As Integer = 0 To grd.Rows.Count - 1
-                    totalitemm += CInt(grd.Rows(index).Cells("quantity").Value)
-                Next
-                txtitem.Text = totalitemm.ToString("n2")
-                If Val(txtless.Text) = "100" Then
-                    txtvatsales.Text = "0.00"
-                    txtvatex.Text = "0.00"
-                    txtvatamt.Text = "0.00"
-                End If
-                btnok.Focus()
-            End If
-        Catch ex As Exception
-            Me.Cursor = Cursors.Default
-            MsgBox(ex.ToString, MsgBoxStyle.Information)
-        End Try
-    End Sub
-
-    Public Sub computetotalbackup()
-        Try
-            Dim total As Double, temptotal As Double
-            Dim totalitem As Double, temptotalitem As Double
-
-            If grd.RowCount <> 0 Then
-                culture = CultureInfo.CreateSpecificCulture("en-US")
-
-                For Each row As DataGridViewRow In grd.Rows
-                    temptotal = Val(grd.Rows(row.Index).Cells(4).Value)
-                    total = total + temptotal
-                    If grd.Rows(row.Index).Cells(5).Value Is Nothing Then
-                        'MsgBox("true")
-                        grd.Rows(row.Index).Cells(5).Value = ""
-                    End If
-
-                    temptotalitem = Val(grd.Rows(row.Index).Cells(1).Value)
-                    totalitem = totalitem + temptotalitem
-                Next
-
-                Dim subtot As String = total.ToString("n2")
-                txtsub.Text = subtot
-                txtsubtotal2.Text = CDbl(subtot - (subtot * (CDbl(txtless.Text) / 100))).ToString("n2")
-                txtdiscamt.Text = CDbl(CDbl(txtsub.Text) * (CDbl(txtless.Text) / 100)).ToString("n2")
-                Dim txttotalitem As String = totalitem.ToString("n2")
-                txtitem.Text = txttotalitem
-
-                Dim lessdisc As String = ""
-
-                Dim numsubtot As Double = Double.Parse(txtsub.Text, culture)
-                lessdisc = numsubtot * Val(txtless.Text) / 100
-                'if senior citizen WITH VAT EXEMT SALES
-                Dim cmbd As String = cmbdis.SelectedItem
-                If cmbdis.SelectedItem <> "" Then
-                    If cmbd.Contains("Senior") Or cmbd.Contains("Pwd") Then
-                        lessdisc = (numsubtot / 1.12) * (Val(txtless.Text) / 100)
-                        total = total / 1.12
-                        based = 0
-
-                        'MsgBox("bundle")
-                        For Each row As DataGridViewRow In grd.Rows
-                            If grd.Rows(row.Index).Cells(1).Value IsNot Nothing And grd.Rows(row.Index).Cells(1).Value >= 1 Then
-                                sql = "Select * from tblgroupdisc where itemname='" & grd.Rows(row.Index).Cells(0).Value.ToString & "' and status='1'"
-                                conn.Open()
-                                cmd = New SqlCommand(sql, conn)
-                                dr = cmd.ExecuteReader
-                                If dr.Read Then
-                                    based = dr("basedprice")
-                                    Exit For
-                                End If
-                                conn.Close()
-                            End If
-                        Next
-
-                        If based <> 0 Then
-                            total = Double.Parse(txtsub.Text, culture)
-                            Dim vinclude As Double = Val(total) - based
-                            Dim notdisc As Double = (based / 1.12) * 0.8
-                            lessdisc = Val(total) - (vinclude + notdisc)
-                        End If
-
-                    End If
-                End If
-
-                Dim num3 As Double = Double.Parse(txtdeliver.Text, culture)
-                Dim num4 As Double = Double.Parse(lessdisc, culture)
-
-                Dim ttl As Double = (total + num3 - num4)
-                Dim numtotal As String = ttl.ToString("n2")
-
-                txttotal.Text = numtotal
-
-                If txttendered.Text <> "" Then
-
-                    Dim num1 As Double = Double.Parse(txttendered.Text, culture)
-                    Dim num2 As Double = Double.Parse(txtsubtotal2.Text, culture)
-                    Dim num5 As Double = Double.Parse(txtgc.Text, culture)
-                    Dim num6 As Double = Double.Parse(apdepamt, culture)
-                    Dim change As Double = (num1 + num5 + num6) - num2
-                    Dim amtpayable As Double = num2 - (num5 + num6)
-                    txtboxamountpayable.Text = amtpayable.ToString("n2")
-                    If change > 0 Then
-                        txtchange.Text = change.ToString("n2")
-                    Else
-                        txtchange.Text = "0.00"
-                    End If
-                End If
-
-                btnok.Focus()
-
-            End If
-        Catch ex As Exception
-            Me.Cursor = Cursors.Default
-            MsgBox(ex.ToString, MsgBoxStyle.Information)
-        End Try
+        Dim subBefore As Double = 0.00, totalQtyItems As Integer = 0, discountTypeAmount As Double = 0.00, discountTypePercent As Double = 0.00, subAfter As Double = 0.00, change As Double = 0.00
+        For index As Integer = 0 To grd.Rows.Count - 1
+            subBefore += CDbl(grd.Rows(index).Cells("quantity").Value) * CDbl(grd.Rows(index).Cells("price").Value)
+            totalQtyItems += CInt(grd.Rows(index).Cells("quantity").Value)
+            subAfter += CDbl(grd.Rows(index).Cells("amtdue").Value)
+        Next
+        txtsub.Text = subBefore.ToString("n2")
+        txtitem.Text = totalQtyItems.ToString("N0")
+        discountTypePercent = IIf(cmbdis.Text.Equals(""), 0, posc.getDiscountPercent(cmbdis.Text))
+        txtless.Text = discountTypePercent.ToString("n2")
+        discountTypeAmount = subAfter * (discountTypePercent / 100)
+        txtdiscamt.Text = discountTypeAmount.ToString("n2")
+        txtsubtotal2.Text = (subAfter - discountTypeAmount).ToString("n2")
+        txtboxamountpayable.Text = CDbl(txtsubtotal2.Text) - (CDbl(txtgc.Text) + apdepamt)
+        change = CDbl(txttendered.Text) - CDbl(txtboxamountpayable.Text)
+        txtchange.Text = CDbl(IIf(change <= 0, 0, change)).ToString("n2")
     End Sub
 
     Private Sub txttendered_GotFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles txttendered.GotFocus
@@ -1677,6 +1487,7 @@ Public Class mainmenu
     Private Sub btnok_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnok.Click
         Dim posType As String = userc.returnPOSType()
         getID()
+
         If loginc.checkCutOff() Then
             MessageBox.Show("POS already cut off", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
         ElseIf posc.checkQuantity(grd) <> "" Then
@@ -1837,8 +1648,15 @@ Public Class mainmenu
     Public Sub savetransaction()
         Try
             Dim posType As String = userc.returnPOSType()
+            Dim salesname As String = getSalesName()
             getID()
-            loadtransnum()
+            Dim transnum As String = posc.returnTransnum()
+            Dim inventoryType As String = ""
+
+            If login2.wrkgrp = "Cashier" Then
+                inventoryType = posc.getInventoryType(order_id)
+            End If
+
             loadordernum()
             Using connection As New SqlConnection(cc.conString)
                 Dim cmdd As New SqlCommand(),
@@ -1848,7 +1666,6 @@ Public Class mainmenu
 
                 connection.Open()
                 transaction = connection.BeginTransaction()
-
                 cmdd.Transaction = transaction
 
                 If sales_ans = "Coffee Shop" And login2.wrkgrp = "Cashier" Then
@@ -1895,7 +1712,7 @@ Public Class mainmenu
                     cmdd.CommandType = CommandType.StoredProcedure
                     cmdd.Parameters.Add(New SqlParameter("@ordernum", order_id))
                     cmdd.Parameters.Add(New SqlParameter("@or", txtor.Text))
-                    cmdd.Parameters.Add(New SqlParameter("@transnum", lbltrnum.Text))
+                    cmdd.Parameters.Add(New SqlParameter("@transnum", transnum))
                     cmdd.Parameters.Add(New SqlParameter("@invnum", inv_id))
                     cmdd.Parameters.Add(New SqlParameter("@cashier", login2.username))
                     cmdd.Parameters.Add(New SqlParameter("@tendertype", tendertype))
@@ -1925,9 +1742,10 @@ Public Class mainmenu
                     cmdd.Parameters.Add(New SqlParameter("@sap_remarks", ""))
                     cmdd.Parameters.Add(New SqlParameter("@typez", sales_ans))
                     cmdd.Parameters.Add(New SqlParameter("@discamt", txtdiscamt.Text))
-                    cmdd.Parameters.Add(New SqlParameter("@salesname", getSalesName()))
+                    cmdd.Parameters.Add(New SqlParameter("@salesname", salesname))
                     cmdd.Parameters.Add(New SqlParameter("@username", login2.username))
                     cmdd.Parameters.Add(New SqlParameter("@ar_remarks", arRemarks))
+                    cmdd.Parameters.Add(New SqlParameter("@inventory_type", IIf(inventoryType.Equals(""), "Main Inventory", inventoryType)))
                     Dim ar_type As String = ""
                     Select Case tendertype
                         Case "Cash"
@@ -1954,7 +1772,7 @@ Public Class mainmenu
                     If seniorResult Then
                         cmdd.Parameters.Clear()
                         cmdd.CommandText = "UPDATE tblsenior SET status=1,transnum=@transnum WHERE transnum=@ordernum AND CAST(datedisc AS date)=(select cast(getdate() as date)) AND status=3"
-                        cmdd.Parameters.Add(New SqlParameter("@transnum", lbltrnum.Text))
+                        cmdd.Parameters.Add(New SqlParameter("@transnum", transnum))
                         cmdd.Parameters.Add(New SqlParameter("@ordernum", ornum))
                         cmdd.ExecuteNonQuery()
                     End If
@@ -1962,62 +1780,13 @@ Public Class mainmenu
                     For index As Integer = 0 To grd.Rows.Count - 1
                         Dim dscntprice As Double = CDbl(grd.Rows(index).Cells("price").Value - ((grd.Rows(index).Cells("discountpercent").Value / 100) * grd.Rows(index).Cells("price").Value))
                         Dim ifree As Double = If(CBool(grd.Rows(index).Cells("free").Value) = True, 1, 0)
-                        Dim _gc As Double = 0.0
-                        If CDbl(txtgc.Text) <> 0 Then
-                            _gc = CDbl(txtgc.Text) / grd.Rows.Count
-                        Else
-                            _gc = 0
-                        End If
-                        Dim _less As Double = 0.0, less As Double = 0.0
-                        If CDbl(txtless.Text) <> 0 Then
-                            Dim fLess As Double = 100 - CDbl(txtless.Text)
-                            less = CDbl(fLess) / 100
-                            If cmbdis.Text = "Senior Citizen" Or cmbdis.Text = "Pwd" Then
-                                cmdd.CommandText = "SELECT basedprice FROM tblgroupdisc WHERE itemname='" & grd.Rows(index).Cells("description").Value & "' AND status='1';"
-                                dr = cmdd.ExecuteReader
-                                If dr.Read Then
-                                    Dim totalPrice As Double = 0.0, tprice As Double = 0.0, ttprice As Double = 0.0
-                                    totalPrice = CDbl(grd.Rows(index).Cells("price").Value) * CDbl(grd.Rows(index).Cells("quantity").Value)
-                                    tprice = totalPrice - CDbl(dr("basedprice"))
-                                    _less = CDbl(dr("basedprice")) / 1.12 * less
-                                    ttprice = tprice + _less
-                                    _less = totalPrice - ttprice
-                                Else
-                                    Dim totalPrice As Double = 0.0
-                                    totalPrice = CDbl(grd.Rows(index).Cells("price").Value) * CDbl(grd.Rows(index).Cells("quantity").Value)
-                                    _less = CDbl(grd.Rows(index).Cells("price").Value) * CDbl(grd.Rows(index).Cells("quantity").Value) / 1.12 * less
-                                    _less = totalPrice - _less
-                                End If
-                                dr.Close()
-                            Else
-                                cmdd.CommandText = "SELECT basedprice FROM tblgroupdisc WHERE itemname='" & grd.Rows(index).Cells("description").Value & "' AND status='1';"
-                                dr = cmdd.ExecuteReader
-                                If dr.Read Then
-                                    Dim totalPrice As Double = 0.0, tprice As Double = 0.0, ttprice As Double = 0.0
-                                    totalPrice = CDbl(grd.Rows(index).Cells("price").Value) * CDbl(grd.Rows(index).Cells("quantity").Value)
-                                    tprice = totalPrice - CDbl(dr("basedprice"))
-                                    _less = CDbl(dr("basedprice")) * less
-                                    ttprice = tprice + _less
-                                    _less = totalPrice - ttprice
-                                Else
-                                    Dim totalPrice As Double = 0.0
-                                    totalPrice = CDbl(grd.Rows(index).Cells("price").Value) * CDbl(grd.Rows(index).Cells("quantity").Value)
-                                    _less = CDbl(grd.Rows(index).Cells("price").Value) * CDbl(grd.Rows(index).Cells("quantity").Value) * less
-                                    _less = totalPrice - _less
-                                End If
-                                dr.Close()
-                            End If
-                        Else
-                            _less = 0
-                        End If
-
                         Dim ff As String = ""
                         If cmbtype.Text = "Customer" Then
                             ff = "A.R Sales"
                         ElseIf cmbtype.Text = "Employee" Then
                             ff = "A.R Charge"
                         End If
-                        cmdd.CommandText = "Insert into tblorder (transnum, category, itemname, qty, price, totalprice, dscnt, free, request, status, discprice, disctrans,area,invnum,type,gc,less,deliver,pricebefore,discamt,endbal_variance)values('" & lbltrnum.Text & "','" & grd.Rows(index).Cells("cat").Value & "','" & grd.Rows(index).Cells("description").Value & "','" & CDbl(grd.Rows(index).Cells("quantity").Value) & "','" & CDbl(grd.Rows(index).Cells("price").Value) & "','" & CDbl(grd.Rows(index).Cells("amtdue").Value) & "','" & CDbl(grd.Rows(index).Cells("discountpercent").Value) & "','" & ifree & "','" & grd.Rows(index).Cells("request").Value & "','1','" & dscntprice & "','" & "0" & "','" & "Sales" & "','" & inv_id & "','" & ff & "','" & _gc & "','" & _less & "','" & "0" & "','" & CDbl(grd.Rows(index).Cells("pricebefore").Value) & "','" & CDbl(grd.Rows(index).Cells("discamt").Value) & "',(SELECT SUM(endbal-" & CDbl(grd.Rows(index).Cells("quantity").Value) & ") FROM tblinvitems WHERE invnum='" & inv_id & "' AND itemname='" & grd.Rows(index).Cells("description").Value & "'))"
+                        cmdd.CommandText = "Insert into tblorder (transnum, category, itemname, qty, price, totalprice, dscnt, free, request, status, discprice, disctrans,area,invnum,type,gc,less,deliver,pricebefore,discamt,endbal_variance)values('" & transnum & "','" & grd.Rows(index).Cells("cat").Value & "','" & grd.Rows(index).Cells("description").Value & "','" & CDbl(grd.Rows(index).Cells("quantity").Value) & "','" & CDbl(grd.Rows(index).Cells("price").Value) & "','" & CDbl(grd.Rows(index).Cells("amtdue").Value) & "','" & CDbl(grd.Rows(index).Cells("discountpercent").Value) & "','" & ifree & "','" & grd.Rows(index).Cells("request").Value & "','1','" & dscntprice & "','" & "0" & "','" & "Sales" & "','" & inv_id & "','" & ff & "',0,0,'" & "0" & "','" & CDbl(grd.Rows(index).Cells("pricebefore").Value) & "','" & CDbl(grd.Rows(index).Cells("discamt").Value) & "',(SELECT SUM(endbal-" & CDbl(grd.Rows(index).Cells("quantity").Value) & ") FROM tblinvitems WHERE invnum='" & inv_id & "' AND itemname='" & grd.Rows(index).Cells("description").Value & "'))"
                         cmdd.CommandType = CommandType.Text
                         cmdd.ExecuteNonQuery()
 
@@ -2035,20 +1804,36 @@ Public Class mainmenu
                         cmdd.Parameters.Add(New SqlParameter("date", sdate))
                         cmdd.ExecuteNonQuery()
 
-                        cmdd.CommandText = "INSERT INTO tblars2 (transnum,description,quantity,price,amount,area,name) VALUES ('" & lbltrnum.Text & "', '" & grd.Rows(index).Cells("description").Value & "' ,'" & CDbl(grd.Rows(index).Cells("quantity").Value) & "','" & CDbl(grd.Rows(index).Cells("price").Value) & "','" & CDbl(grd.Rows(index).Cells("amtdue").Value) & "','" & login2.wrkgrp & "','" & txtname.Text & "')"
+                        cmdd.CommandText = "INSERT INTO tblars2 (transnum,description,quantity,price,amount,area,name) VALUES ('" & transnum & "', '" & grd.Rows(index).Cells("description").Value & "' ,'" & CDbl(grd.Rows(index).Cells("quantity").Value) & "','" & CDbl(grd.Rows(index).Cells("price").Value) & "','" & CDbl(grd.Rows(index).Cells("amtdue").Value) & "','" & login2.wrkgrp & "','" & txtname.Text & "')"
                         cmdd.ExecuteNonQuery()
-                        Dim arVal As String = ""
-                        Select Case tendertype
-                            Case "A.R Charge"
-                                arVal = "archarge"
-                            Case "Cash"
-                                arVal = "ctrout"
-                            Case "A.R Sales"
-                                arVal = "arsales"
-                        End Select
 
-                        cmdd.CommandText = "Update tblinvitems set " & arVal & "+=" & CDbl(grd.Rows(index).Cells("quantity").Value) & ", endbal-=" & CDbl(grd.Rows(index).Cells("quantity").Value) & ", variance+=" & CDbl(grd.Rows(index).Cells("quantity").Value) & " where itemname='" & grd.Rows(index).Cells("description").Value & "' AND invnum='" & inv_id & "';"
-                        cmdd.ExecuteNonQuery()
+                        If inventoryType = "Main Inventory" Then
+                            Dim arVal As String = ""
+                            Select Case tendertype
+                                Case "A.R Charge"
+                                    arVal = "archarge"
+                                Case "Cash"
+                                    arVal = "ctrout"
+                                Case "A.R Sales"
+                                    arVal = "arsales"
+                            End Select
+
+                            cmdd.CommandText = "Update tblinvitems set " & arVal & "+=" & CDbl(grd.Rows(index).Cells("quantity").Value) & ", endbal-=" & CDbl(grd.Rows(index).Cells("quantity").Value) & ", variance+=" & CDbl(grd.Rows(index).Cells("quantity").Value) & " where itemname='" & grd.Rows(index).Cells("description").Value & "' AND invnum='" & inv_id & "';"
+                            cmdd.ExecuteNonQuery()
+                        End If
+
+                        'Dim transtype As String = ""
+                        'Select Case tendertype
+                        '    Case "A.R Charge"
+                        '        transtype = "AR Charge"
+                        '    Case "Cash"
+                        '        transtype = "Counter Out"
+                        '    Case "A.R Sales"
+                        '        transtype = "AR Sales"
+                        'End Select
+
+                        'cmdd.CommandText = "INSERT INTO tblsalesinventory (itemname,quantity,transtype,salesname,createdby,datecreated,status) VALUES ((SELECT TOP 1 invnum FROM tblinvsum ORDER BY invsumid DESC),'" & grd.Rows(index).Cells("description").Value & "'," & CDbl(grd.Rows(index).Cells("quantity").Value) & ",'" & transtype & "','" & salesname & "','" & login2.username & "',(SELECT GETDATE()),1);"
+                        'cmdd.ExecuteNonQuery()
                     Next
 
                     'deposits
@@ -2062,21 +1847,21 @@ Public Class mainmenu
                                 cmdd.Parameters.Clear()
                                 cmdd.CommandText = "UPDATE tbladvancepayment Set status='Used',from_trans=@trans WHERE apnum=@id;"
                                 cmdd.Parameters.AddWithValue("@id", word)
-                                cmdd.Parameters.AddWithValue("@trans", lbltrnum.Text)
+                                cmdd.Parameters.AddWithValue("@trans", transnum)
                                 cmdd.ExecuteNonQuery()
 
                                 cmdd.CommandText = "INSERT INTO tblreturns (ap_id,returnum,transnum,status,byy) VALUES ((Select TOP 1 ap_id FROM tbladvancepayment WHERE apnum=@apnum),@returnum,@transnum,@status,@byy);"
                                 cmdd.Parameters.Clear()
                                 cmdd.Parameters.AddWithValue("@apnum", word)
                                 cmdd.Parameters.AddWithValue("@returnum", returnnum)
-                                cmdd.Parameters.AddWithValue("@transnum", lbltrnum.Text)
+                                cmdd.Parameters.AddWithValue("@transnum", transnum)
                                 cmdd.Parameters.AddWithValue("@status", "Active")
                                 cmdd.Parameters.AddWithValue("@byy", login2.username)
                                 cmdd.ExecuteNonQuery()
 
                                 If typee = "Advance Payment" Then
                                     cmdd.Parameters.Clear()
-                                    cmdd.CommandText = "Insert into tbltransaction (ornum, transnum, transdate, cashier, tendertype, servicetype, delcharge, subtotal, disctype, less, vatsales, vat, amtdue, gctotal, tenderamt, change, refund, comment, remarks, customer, tinnum, tablenum, pax, datecreated, datemodified, status,area,invnum,partialamt,typez,salesname) values ('" & "0" & "', '" & lbltrnum.Text & "',(select cast(getdate() as date)),'" & login2.username & "', '" & "Advance Payment" & "', '" & "Advance Payment" & "', '" & "0" & "', '" & "0" & "', '" & "N/A" & "', '" & "0" & "', '" & "0" & "', '" & "0" & "', " & amount & ", '" & "0" & "', '" & "0" & "', '" & "0" & "', '0', '', '', '" & txtname.Text & "', '" & "0" & "', '" & "0" & "', '" & "0" & "',(SELECT GETDATE()),(SELECT GETDATE()), '1','" & "Sales" & "','" & inv_id & "','0','" & sales_ans & "',(SELECT cashier FROM tbltransaction2 WHERE CAST(datecreated AS date)=(select cast(getdate() as date)) AND ordernum='" & ornum & "'))"
+                                    cmdd.CommandText = "Insert into tbltransaction (ornum, transnum, transdate, cashier, tendertype, servicetype, delcharge, subtotal, disctype, less, vatsales, vat, amtdue, gctotal, tenderamt, change, refund, comment, remarks, customer, tinnum, tablenum, pax, datecreated, datemodified, status,area,invnum,partialamt,typez,salesname) values ('" & "0" & "', '" & transnum & "',(select cast(getdate() as date)),'" & login2.username & "', '" & "Advance Payment" & "', '" & "Advance Payment" & "', '" & "0" & "', '" & "0" & "', '" & "N/A" & "', '" & "0" & "', '" & "0" & "', '" & "0" & "', " & amount & ", '" & "0" & "', '" & "0" & "', '" & "0" & "', '0', '', '', '" & txtname.Text & "', '" & "0" & "', '" & "0" & "', '" & "0" & "',(SELECT GETDATE()),(SELECT GETDATE()), '1','" & "Sales" & "','" & inv_id & "','0','" & sales_ans & "',(SELECT cashier FROM tbltransaction2 WHERE CAST(datecreated AS date)=(select cast(getdate() as date)) AND ordernum='" & ornum & "'))"
                                     cmdd.ExecuteNonQuery()
                                 End If
                             End If
@@ -2087,7 +1872,7 @@ Public Class mainmenu
                     Dim zz As String = getSystemDate.ToString("yyyy-MM-dd")
                     Dim zzz As String = getSystemDate()
                     cmdd.Parameters.Clear()
-                    cmdd.CommandText = "INSERT INTO tbltransaction2 (ornum, ordernum, transdate, cashier, tendertype, servicetype, delcharge, subtotal, disctype, less, vatsales, vat, amtdue, tenderamt, change, refund, comment, remarks, customer, tinnum, tablenum, pax, createdby, datecreated, datemodified, status, status2, area, gctotal, typez, discamt) VALUES ('000',@ordernum,@transdate,@cashier,@tendertype,@servicetype,@delcharge,@subtotal,@disctype,@less,@vatsales,@vat,@amtdue,@tenderamt,@change,@refund,@comment,@remarks,@customer,@tinum,0,0,@createdby,@zz,@zz,1,'Unpaid','Sales',@gctotal,@type,@discamt);"
+                    cmdd.CommandText = "INSERT INTO tbltransaction2 (ornum, ordernum, transdate, cashier, tendertype, servicetype, delcharge, subtotal, disctype, less, vatsales, vat, amtdue, tenderamt, change, refund, comment, remarks, customer, tinnum, tablenum, pax, createdby, datecreated, datemodified, status, status2, area, gctotal, typez, discamt,inventory_type) VALUES ('000',@ordernum,@transdate,@cashier,@tendertype,@servicetype,@delcharge,@subtotal,@disctype,@less,@vatsales,@vat,@amtdue,@tenderamt,@change,@refund,@comment,@remarks,@customer,@tinum,0,0,@createdby,@zz,@zz,1,'Unpaid','Sales',@gctotal,@type,@discamt,'Main Inventory');"
                     cmdd.Parameters.AddWithValue("@ordernum", lblordernumber.Text)
                     cmdd.Parameters.AddWithValue("@transdate", zz)
                     cmdd.Parameters.AddWithValue("@zz", zzz)
@@ -2145,7 +1930,6 @@ Public Class mainmenu
                 rbcash.Checked = True
                 txtname.Text = "CASH"
                 grd.Rows.Clear()
-                loadtransnum()
                 loadordernum()
             End If
 
@@ -2158,7 +1942,6 @@ Public Class mainmenu
                 rbcash.Checked = True
                 txtname.Text = "CASH"
                 grd.Rows.Clear()
-                loadtransnum()
                 loadordernum()
                 lblcount.Text = "ITEMS (" & grd.RowCount & ")"
                 Me.Dispose()
@@ -2272,46 +2055,6 @@ Public Class mainmenu
         End Try
     End Sub
 
-
-
-    Public Sub loadtransnum()
-        Try
-            Dim area As String = "Sales"
-            Dim selectcount_result As Integer = 0
-            Dim branchcode As String = "", temp As String = "0", area_format As String = ""
-            conn.Open()
-            cmd = New SqlCommand("SELECT ISNULL(MAX(transid),0) FROM tbltransaction WHERE area='" & area & "' AND tendertype !='Advance Payment' AND tendertype !='Cash Out' AND tendertype!='Deposit' AND tendertype !='Advance Payment Cash';", conn)
-            selectcount_result = cmd.ExecuteScalar() + 1
-            conn.Close()
-
-            conn.Open()
-            cmd = New SqlCommand("Select branchcode FROM tblbranch WHERE main='1';", conn)
-            dr = cmd.ExecuteReader
-            If dr.Read Then
-                branchcode = dr("branchcode")
-            End If
-            conn.Close()
-            area_format = "TR - " & branchcode & " - "
-            If selectcount_result < 1000000 Then
-                Dim cselectcount_result As String = CStr(selectcount_result)
-                For vv As Integer = 1 To 6 - cselectcount_result.Length
-                    temp += "0"
-                Next
-                lbltrnum.Text = area_format & temp & selectcount_result
-            Else
-                lbltrnum.Text = area_format & temp & selectcount_result
-            End If
-
-            lbltrnum.Text = area_format & temp & selectcount_result
-
-        Catch ex As System.InvalidOperationException
-            Me.Cursor = Cursors.Default
-            MsgBox(ex.Message, MsgBoxStyle.Critical, "")
-        Catch ex As Exception
-            Me.Cursor = Cursors.Default
-            MsgBox(ex.ToString, MsgBoxStyle.Information, "")
-        End Try
-    End Sub
     Public Sub loadordernum()
         Try
             Dim selectcount_result As Integer = 0
@@ -2422,8 +2165,8 @@ Public Class mainmenu
             txtless.Text = "0.00"
             lblidno.Text = ""
             lblname.Text = ""
-            computetotal()
         End If
+        computetotal()
     End Sub
 
 
@@ -2878,8 +2621,7 @@ Public Class mainmenu
         cashier.lbldiscountype.Text = "None"
         cashier.lblless.Text = "0.00"
         cashier.lblgc.Text = "0.00"
-        cashier.lblvatsales.Text = "0.00"
-        cashier.lblvatamount.Text = "0.00"
+        cashier.lbldiscamt.Text = "0.00"
         cashier.lbltotal.Text = "0.00"
         cashier.lbltenderamt.Text = "0.00"
         cashier.lblchange.Text = "0.00"
@@ -2907,38 +2649,14 @@ Public Class mainmenu
     End Sub
 
     Private Sub cmbdis_SelectedValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmbdis.SelectedValueChanged
-        Try
-            If cmbdis.SelectedIndex <> 0 Then
-                sql = "Select * from tbldiscount where disname='" & cmbdis.SelectedItem & "'"
-                conn.Open()
-                cmd = New SqlCommand(sql, conn)
-                dr = cmd.ExecuteReader
-                If dr.Read Then
-                    txtless.Text = dr("amount")
-                End If
-                conn.Close()
-
-                'insert info there
-                If login2.wrkgrp <> "Cashier" And cmbdis.SelectedItem <> "Ar Discount Pullout" Then
-                    senior.ShowDialog()
-                End If
-
-                computetotal()
-
-                voidd = False
-                Exit Sub
-            Else
-                cmbdis.SelectedIndex = 0
+        If Not cmbdis.Text.Equals("") Then
+            'insert info there
+            If login2.wrkgrp <> "Cashier" And cmbdis.SelectedItem <> "Ar Discount Pullout" Then
+                senior.ShowDialog()
             End If
-            computetotal()
 
-        Catch ex As System.InvalidOperationException
-            Me.Cursor = Cursors.Default
-            MsgBox(ex.ToString, MsgBoxStyle.Critical, "")
-        Catch ex As Exception
-            Me.Cursor = Cursors.Default
-            MsgBox(ex.ToString, MsgBoxStyle.Information)
-        End Try
+            computetotal()
+        End If
     End Sub
 
     Private Sub rbARCharge_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbARCharge.CheckedChanged

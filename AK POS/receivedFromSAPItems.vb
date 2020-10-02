@@ -5,11 +5,6 @@ Public Class receivedFromSAPItems
     Dim uic As New ui_class
     Dim cc As New connection_class
 
-    Dim conString As String = "Data Source=192.168.30.6;Network Library=DBMSSOCN;Initial Catalog=AKPOS;User ID=admin;Password=abC@43212020;MultipleActiveResultSets=true;"
-    Public con As New SqlConnection(conString)
-    Public rdr As SqlDataReader
-    Public cmd As SqlCommand
-
     Public sapNumber As Integer = 0
     Private Sub receivedFromSAPItems_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         lblheader.Text = "SAP #: " & sapNumber
@@ -30,11 +25,11 @@ Public Class receivedFromSAPItems
         Try
             spinner.Visible = True
             Dim query As String = "SELECT Dscription [item_name],Quantity [quantity],FromWhsCod [fromWhat] FROM vSAP_IT WHERE CAST(DocDate AS date)=(select cast(getdate() as date)) AND DocNum=" & sapNumber & " ORDER BY docNum"
-            con.Open()
-            cmd = New SqlClient.SqlCommand(query, con)
-            cmd.CommandType = CommandType.Text
-            adptr.SelectCommand = cmd
-            con.Close()
+            cc.con.Open()
+            cc.cmd = New SqlClient.SqlCommand(query, cc.con)
+            cc.cmd.CommandType = CommandType.Text
+            adptr.SelectCommand = cc.cmd
+            cc.con.Close()
             adptr.Fill(result)
             For Each r0w As DataRow In result.Rows
                 dgv.Rows.Add(r0w("item_name"), CInt(r0w("quantity")).ToString("N0"), 0)
@@ -61,28 +56,28 @@ Public Class receivedFromSAPItems
 
     Public Function returnTableName() As String
         Dim result As String = ""
-        con.Open()
-        cmd = New SqlCommand("SELECT FromWhsCod FROM vSAP_IT WHERE DocNum=@sapNumber", con)
-        cmd.Parameters.AddWithValue("@sapNumber", sapNumber)
-        rdr = cmd.ExecuteReader
-        If rdr.Read Then
-            result = rdr("FromWhsCod")
+        cc.con.Open()
+        cc.cmd = New SqlCommand("SELECT FromWhsCod FROM vSAP_IT WHERE DocNum=@sapNumber", cc.con)
+        cc.cmd.Parameters.AddWithValue("@sapNumber", sapNumber)
+        cc.rdr = cc.cmd.ExecuteReader
+        If cc.rdr.Read Then
+            result = cc.rdr("FromWhsCod")
         End If
-        con.Close()
+        cc.con.Close()
         result = IIf(result.Equals("A1 P-FG"), "productionin", "itemin")
         Return result
     End Function
 
     Public Function returnFromBranch() As String
         Dim result As String = ""
-        con.Open()
-        cmd = New SqlCommand("SELECT FromWhsCod FROM vSAP_IT WHERE DocNum=@sapNumber", con)
-        cmd.Parameters.AddWithValue("@sapNumber", sapNumber)
-        rdr = cmd.ExecuteReader
-        If rdr.Read Then
-            result = rdr("FromWhsCod")
+        cc.con.Open()
+        cc.cmd = New SqlCommand("SELECT FromWhsCod FROM vSAP_IT WHERE DocNum=@sapNumber", cc.con)
+        cc.cmd.Parameters.AddWithValue("@sapNumber", sapNumber)
+        cc.rdr = cc.cmd.ExecuteReader
+        If cc.rdr.Read Then
+            result = cc.rdr("FromWhsCod")
         End If
-        con.Close()
+        cc.con.Close()
         Return result
     End Function
 

@@ -169,4 +169,56 @@ Public Class inventory_class
         Return result
     End Function
 
+    Public Function getSalesInventory(ByVal transferFrom As String) As DataTable
+        Dim result As New DataTable(), adptr As New SqlClient.SqlDataAdapter
+        Try
+            Dim query As String = "SELECT a.item_name [item], SUM(a.quantity) [transferToSales] ,ISNULL(x.qty,0) [counter],
+ISNULL(xx.qty,0) [archarge],ISNULL(xxx.qty,0) [arsales],xxxx.transferFromSales
+,SUM(a.quantity) - (ISNULL(x.qty,0) + ISNULL(xx.qty,0) + ISNULL(xxx.qty,0) + ISNULL(xxxx.transferFromSales,0))[endbal]
+,ISNULL(x.qty,0) * (SELECT price FROM tblitems WHERE itemname=a.item_name) [counter_amt]
+,ISNULL(xx.qty,0) * (SELECT price FROM tblitems WHERE itemname=a.item_name) [archarge_amt]
+,ISNULL(xxx.qty,0) * (SELECT price FROM tblitems WHERE itemname=a.item_name) [arsales_amt]
+FROM tblproduction a 
+OUTER APPLY(
+SELECT c.itemname,SUM(c.qty) [qty] 
+FROM tbltransaction2 b INNER JOIN tblorder2 c ON c.ordernum = b.ordernum 
+AND CAST(b.datecreated As date)=CAST(c.datecreated AS date) 
+WHERE CAST(b.datecreated AS date)=(SELECT TOP 1 CAST(datecreated AS date) 
+FROM tblinvsum ORDER BY invsumid DESC) AND b.inventory_type='Own Inventory' AND a.item_name = c.itemname AND
+b.status2 IN ('Unpaid','Paid') AND b.createdby='" & transferFrom & "' AND b.tendertype='Cash' GROUP BY c.itemname
+)x 
+OUTER APPLY(
+SELECT c.itemname,ISNULL(SUM(c.qty),0) [qty] 
+FROM tbltransaction2 b INNER JOIN tblorder2 c ON c.ordernum = b.ordernum 
+AND CAST(b.datecreated As date)=CAST(c.datecreated AS date) 
+WHERE CAST(b.datecreated AS date)=(SELECT TOP 1 CAST(datecreated AS date)
+FROM tblinvsum ORDER BY invsumid DESC) AND b.inventory_type='Own Inventory' AND a.item_name = c.itemname AND
+b.status2 IN ('Unpaid','Paid') AND b.createdby='" & transferFrom & "' AND b.tendertype='A.R Charge'  GROUP BY c.itemname
+)xx
+OUTER APPLY(
+SELECT c.itemname,ISNULL(SUM(c.qty),0) [qty] 
+FROM tbltransaction2 b INNER JOIN tblorder2 c ON c.ordernum = b.ordernum 
+AND CAST(b.datecreated As date)=CAST(c.datecreated AS date) 
+WHERE CAST(b.datecreated AS date)=(SELECT TOP 1 CAST(datecreated AS date)
+FROM tblinvsum ORDER BY invsumid DESC) AND b.inventory_type='Own Inventory' AND a.item_name = c.itemname AND
+b.status2 IN ('Unpaid','Paid') AND b.tendertype='A.R Sales' AND b.createdby='" & transferFrom & "'  GROUP BY c.itemname
+)xxx
+OUTER APPLY(
+SELECT ISNULL(SUM(b.quantity),0) [transferFromSales] FROM tblproduction b WHERE b.type2='Transfer from Sales' AND b.inv_id = a.inv_id
+AND b.transfer_from = a.transfer_from AND b.item_name = a.item_name
+)xxxx
+WHERE a.inv_id=(SELECT TOP 1 invnum FROM tblinvsum ORDER BY invsumid DESC) 
+AND a.type2='Transfer to Sales' AND a.transfer_from='" & transferFrom & "' AND a.item_name LIKE '%%' 
+GROUP BY a.item_name,x.qty,xx.qty,xxx.qty,xxxx.transferFromSales ORDER BY 2 DESC,1 ASC"
+            cc.con.Open()
+            cc.cmd = New SqlClient.SqlCommand(query, cc.con)
+            adptr.SelectCommand = cc.cmd
+            adptr.Fill(result)
+            cc.con.Close()
+        Catch ex As Exception
+            MessageBox.Show(ex.ToString)
+        End Try
+        Return result
+    End Function
+
 End Class

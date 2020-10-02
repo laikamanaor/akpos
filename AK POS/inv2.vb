@@ -14,30 +14,84 @@ Public Class inv2
     ''' </summary>
     Public Sub loadInvItems()
         Try
-            Dim result As New DataTable
-            invc.invnum = lblinvnum.Text
-            result = invc.loadInventory(rb1.Checked)
-            dgv.Rows.Clear()
-            For Each r0w As DataRow In result.Rows
-                Dim over_amt As Double = 0.00, ctr_amt As Double = 0.00
-                If Not IsDBNull(r0w("over_amt")) Then
-                    over_amt = CDbl(r0w("over_amt"))
+            If cmbinventory.SelectedIndex = 0 Then
 
-                End If
-                If Not IsDBNull(r0w("ctrout_amt")) Then
-                    ctr_amt = CDbl(r0w("ctrout_amt"))
-                End If
-                dgv.Rows.Add(r0w("invid"), r0w("itemcode"), r0w("itemname"), r0w("category"), CInt(r0w("begbal")).ToString("N0"), CInt(r0w("produce")).ToString("N0"), r0w("good"), r0w("charge"), CInt(r0w("productionin")).ToString("N0"), CInt(r0w("itemin")).ToString("N0"), CInt(r0w("supin")).ToString("N0"), CInt(r0w("adjustmentin")).ToString("N0"), CInt(r0w("convin")).ToString("N0"), CInt(r0w("totalav")).ToString("N0"), CInt(r0w("transfer")).ToString("N0"), CInt(r0w("pullout2")).ToString("N0"), CInt(r0w("ctrout")).ToString("N0"), CInt(r0w("archarge")).ToString("N0"), CInt(r0w("arsales")).ToString("N0"), CInt(r0w("convout")).ToString("N0"), CInt(r0w("pullout")).ToString("N0"), CInt(r0w("endbal")).ToString("N0"), CInt(r0w("actualendbal")).ToString("N0"), CInt(r0w("variance")).ToString("N0"), r0w("shortover"), over_amt, ctr_amt, CDbl(r0w("archarge_amt")).ToString("n2"), CDbl(r0w("arsales_amt")).ToString("n2"))
-                colors()
-            Next
+                dgv.Columns("salesin").HeaderText = "Transfer from Sales"
+                dgv.Columns("salesout").HeaderText = "Transfer to Sales"
+
+                dgv.Columns("itemcode").Visible = True
+                dgv.Columns("begbal").Visible = True
+                dgv.Columns("produce").Visible = True
+                dgv.Columns("good").Visible = True
+                dgv.Columns("charge").Visible = True
+                dgv.Columns("productionin").Visible = True
+                dgv.Columns("branchin").Visible = True
+                dgv.Columns("adjustmentin").Visible = True
+                dgv.Columns("supin").Visible = True
+                dgv.Columns("convin").Visible = True
+                dgv.Columns("transfer").Visible = True
+                dgv.Columns("pullout2").Visible = True
+
+                dgv.Columns("convout").Visible = True
+                dgv.Columns("adjustmentout").Visible = True
+                dgv.Columns("actualendbal").Visible = True
+                dgv.Columns("variance").Visible = True
+                dgv.Columns("shortover").Visible = True
+                dgv.Columns("overamt").Visible = True
+                Dim result As New DataTable
+                invc.invnum = lblinvnum.Text
+                result = invc.loadInventory(rb1.Checked)
+                dgv.Rows.Clear()
+                For Each r0w As DataRow In result.Rows
+                    Dim over_amt As Double = 0.00, ctr_amt As Double = 0.00
+                    If Not IsDBNull(r0w("over_amt")) Then
+                        over_amt = CDbl(r0w("over_amt"))
+
+                    End If
+                    If Not IsDBNull(r0w("ctrout_amt")) Then
+                        ctr_amt = CDbl(r0w("ctrout_amt"))
+                    End If
+                    dgv.Rows.Add(r0w("invid"), r0w("itemcode"), r0w("itemname"), r0w("category"), CInt(r0w("begbal")).ToString("N0"), CInt(r0w("produce")).ToString("N0"), r0w("good"), r0w("charge"), CInt(r0w("productionin")).ToString("N0"), CInt(r0w("itemin")).ToString("N0"), CInt(r0w("supin")).ToString("N0"), CInt(r0w("adjustmentin")).ToString("N0"), CInt(r0w("convin")).ToString("N0"), CInt(r0w("salesin")).ToString("N0"), CInt(r0w("totalav")).ToString("N0"), CInt(r0w("transfer")).ToString("N0"), CInt(r0w("pullout2")).ToString("N0"), CInt(r0w("ctrout")).ToString("N0"), CInt(r0w("archarge")).ToString("N0"), CInt(r0w("arsales")).ToString("N0"), CInt(r0w("convout")).ToString("N0"), CInt(r0w("pullout")).ToString("N0"), CInt(r0w("salesout")).ToString("N0"), CInt(r0w("endbal")).ToString("N0"), CInt(r0w("actualendbal")).ToString("N0"), CInt(r0w("variance")).ToString("N0"), r0w("shortover"), over_amt, ctr_amt, CDbl(r0w("archarge_amt")).ToString("n2"), CDbl(r0w("arsales_amt")).ToString("n2"))
+                    colors()
+                Next
+            Else
+                dgv.Columns("salesin").HeaderText = "Transfer to Sales"
+                dgv.Columns("salesout").HeaderText = "Transfer to Main"
+
+                dgv.Columns("itemcode").Visible = False
+                dgv.Columns("begbal").Visible = False
+                dgv.Columns("produce").Visible = False
+                dgv.Columns("good").Visible = False
+                dgv.Columns("charge").Visible = False
+                dgv.Columns("productionin").Visible = False
+                dgv.Columns("branchin").Visible = False
+                dgv.Columns("supin").Visible = False
+                dgv.Columns("adjustmentin").Visible = False
+                dgv.Columns("convin").Visible = False
+                dgv.Columns("transfer").Visible = False
+                dgv.Columns("pullout2").Visible = False
+
+                dgv.Columns("convout").Visible = False
+                dgv.Columns("adjustmentout").Visible = False
+                dgv.Columns("actualendbal").Visible = False
+                dgv.Columns("variance").Visible = False
+                dgv.Columns("shortover").Visible = False
+                dgv.Columns("overamt").Visible = False
+                Dim dt As New DataTable()
+                dt = invc.getSalesInventory(cmbinventory.Text)
+                dgv.Rows.Clear()
+                For Each r0w As DataRow In dt.Rows
+                    dgv.Rows.Add("N/A", "N/A", r0w("item"), "N/a", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", CInt(r0w("transferToSales")).ToString("N0"), CInt(r0w("transferToSales")).ToString("N0"), "N/A", "N/A", CInt(r0w("counter")).ToString("N0"), CInt(r0w("archarge")).ToString("N0"), CInt(r0w("arsales")).ToString("N0"), "N/A", "N/A", CInt(r0w("transferFromSales")).ToString("N0"), CInt(r0w("endbal")).ToString("N0"), "N/A", "0", "N/A", "0", CDbl(r0w("counter_amt")).ToString("N0"), CDbl(r0w("archarge_amt")).ToString("n2"), CDbl(r0w("arsales_amt")).ToString("n2"))
+                    colors()
+                Next
+            End If
+            amounts()
             lblcount.Text = "ITEMS (" & dgv.RowCount & ")"
             lblnodata.Visible = IIf(dgv.RowCount <> 0, False, True)
             invc.invnum = lblinvnum.Text
             btnverify.Enabled = invc.checkVerify(btnverify)
-
-            amounts()
         Catch ex As Exception
-            MessageBox.Show(ex.ToString)
+
         Finally
             con.Close()
         End Try
@@ -52,7 +106,7 @@ Public Class inv2
 
                 ctramt_total += CDbl(dgv.Rows(index).Cells("ctrout_amt").Value)
                 archarge_amt += CDbl(dgv.Rows(index).Cells("archarge_amt").Value)
-                archarge_amt += CDbl(dgv.Rows(index).Cells("arsales_amt").Value)
+                arsales_amt += CDbl(dgv.Rows(index).Cells("arsales_amt").Value)
                 over_amt += IIf(IsDBNull(CDbl(dgv.Rows(index).Cells("overamt").Value)), 0, CDbl(dgv.Rows(index).Cells("overamt").Value))
                 dgv.Rows(index).Cells("ctrout_amt").Style.ForeColor = IIf(CDbl(dgv.Rows(index).Cells("ctrout_amt").Value) > 0, Color.Green, Color.Black)
                 dgv.Rows(index).Cells("archarge_amt").Style.ForeColor = IIf(CDbl(dgv.Rows(index).Cells("archarge_amt").Value) > 0, Color.Green, Color.Black)
@@ -79,8 +133,8 @@ Public Class inv2
             Dim result As Double = 0.00
             con.Open()
             cmd = New SqlCommand("SELECT ISNULL(SUM(a.price *" & types & "),0) FROM tblitems a WHERE itemname='" & itemname & "';", con)
-            result = cmd.ExecuteScalar()
-            con.Close()
+            Result = cmd.ExecuteScalar()
+                con.Close()
             Return result
         Catch ex As Exception
             MessageBox.Show(ex.ToString)
@@ -179,27 +233,27 @@ Public Class inv2
     End Sub
     Public Sub colors()
         Try
-            Dim good As Integer = 4, out As Integer = 14, endbal As Integer = 20
-            While good <= 13
+            Dim good As Integer = 4, out As Integer = 15, endbal As Integer = 23
+            While good <= 14
                 dgv.Item(good, dgv.Rows.Count - 1).Style.BackColor = Color.FromArgb(255, 255, 128)
                 good += 1
             End While
-            While out <= 20
+            While out <= 22
                 dgv.Item(out, dgv.Rows.Count - 1).Style.BackColor = Color.FromArgb(192, 255, 192)
                 out += 1
             End While
 
-            While endbal <= 22
+            While endbal <= 24
                 dgv.Item(endbal, dgv.Rows.Count - 1).Style.BackColor = Color.FromArgb(247, 247, 87)
                 endbal += 1
             End While
 
             If dgv.Rows(dgv.Rows.Count - 1).Cells("variance").Value > 0 Then
-                dgv.Item(23, dgv.Rows.Count - 1).Style.ForeColor = Color.Blue
+                dgv.Item(25, dgv.Rows.Count - 1).Style.ForeColor = Color.Blue
             ElseIf dgv.Rows(dgv.Rows.Count - 1).Cells("variance").Value = 0 Then
-                dgv.Item(23, dgv.Rows.Count - 1).Style.ForeColor = Color.Black
+                dgv.Item(25, dgv.Rows.Count - 1).Style.ForeColor = Color.Black
             Else
-                dgv.Item(23, dgv.Rows.Count - 1).Style.ForeColor = Color.Firebrick
+                dgv.Item(25, dgv.Rows.Count - 1).Style.ForeColor = Color.Firebrick
             End If
         Catch ex As Exception
             MessageBox.Show(ex.ToString)
@@ -220,8 +274,45 @@ Public Class inv2
         cmbcategory.SelectedIndex = 0
     End Sub
 
+    Public Sub loadInventorySales()
+        Dim result As New DataTable()
+        result = recc.loadHaveOwnStockSalesAgent()
+        cmbinventory.Items.Clear()
+        cmbinventory.Items.Add("A1 S-FG")
+        For Each r0w As DataRow In result.Rows
+            cmbinventory.Items.Add(r0w("result"))
+        Next
+        cmbinventory.SelectedIndex = 0
+    End Sub
+
     Private Sub inv2_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
+    End Sub
+
+    Private Sub cmbinventory_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbinventory.SelectedIndexChanged
+        loadInvItems()
+    End Sub
+
+    Private Sub btnPrint_Click(sender As Object, e As EventArgs) Handles btnPrint.Click
+        Dim user As String = "admin"
+        Dim pass As String = "admin"
+        Dim servername As String = "DELL,1433"
+        Dim dbName As String = "AKPOS"
+        Dim fileName As String = "salesInventory"
+
+        Dim rptDoc As New CrystalDecisions.CrystalReports.Engine.ReportDocument
+        'rptDoc = New AB_Coffee_Shop
+        'Dim strReportPath As String = "\\192.168.30.6\Atlantic Inv\Reports\" & fileName & ".rpt"
+        Dim strReportPath As String = My.Application.Info.DirectoryPath & "\" & fileName & ".rpt"
+        rptDoc.Load(strReportPath)
+        rptDoc.SetDatabaseLogon(user, pass, servername, dbName)
+        rptDoc.SetParameterValue("transfer_from", cmbinventory.Text)
+        rptDoc.SetParameterValue("inv_date", dtinvsearch.Value)
+        'cform_coffeeshop.CrystalReportViewer1.ReportSource = Nothing
+        'cform_coffeeshop.CrystalReportViewer1.Refresh()
+        cform_coffeeshop.CrystalReportViewer1.ReportSource = rptDoc
+        cform_coffeeshop.CrystalReportViewer1.RefreshReport()
+        cform_coffeeshop.ShowDialog()
     End Sub
 
     Private Sub inv2_Shown(sender As Object, e As EventArgs) Handles MyBase.Shown
@@ -229,7 +320,7 @@ Public Class inv2
             dgv.Columns("itemcode").HeaderCell.Style.BackColor = Color.ForestGreen
             dgv.Columns("itemname").HeaderCell.Style.BackColor = Color.ForestGreen
 
-
+            loadInventorySales()
             loadCategories()
             cmbcategory.SelectedIndex = 0
 

@@ -170,4 +170,16 @@ Public Class branch_class
         End Try
     End Sub
 
+    Public Function loadBranches() As DataTable
+        Dim result As New DataTable(),
+            query As String = "SELECT branchcode AS result FROM vLoadBranches WHERE status=1 AND main !=1"
+        cc.con.Open()
+        cc.cmd = New SqlCommand(query, cc.con)
+        Dim adptr As New SqlDataAdapter()
+        adptr.SelectCommand = cc.cmd
+        adptr.Fill(result)
+        cc.con.Close()
+        Return result
+    End Function
+
 End Class

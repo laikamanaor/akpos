@@ -212,6 +212,7 @@ Public Class main
         End While
         cc.con.Close()
         Try
+            Dim yesterdayInvDate As String = getInventoryDate().ToString("MM/dd/yyyy")
             Me.Cursor = Cursors.WaitCursor
             Using connection As New SqlConnection(cc.conString)
                 Dim cmdd As New SqlCommand(), rdrr As SqlDataReader
@@ -224,9 +225,16 @@ Public Class main
                 cmdd.ExecuteNonQuery()
                 For Each itemid As Integer In items
                     Dim begbal As Double = 0.00, variance As Double = 0.00, itemname As String = "", itemcode As String = ""
+
                     cmdd.CommandText = "SELECT ISNULL(SUM(b.actualendbal),0)  FROM tblitems a INNER JOIN tblinvitems b ON a.itemname = b.itemname WHERE a.discontinued=0 AND b.invnum=(select invnum FROM tblinvsum WHERE CAST(datecreated AS date)=(select cast(getdate()-1 as date))) AND actualendbal !=0 AND a.itemid=" & itemid & ""
                     begbal = cmdd.ExecuteScalar
+
+                    cmdd.CommandText = "SELECT ISNULL(SUM(quantity),0) [po] FROM tblproduction WHERE type='Pull Out' AND status='Completed' AND sap_number='To Follow' AND CAST(date as date)='" + yesterdayInvDate + "' AND item_name=(SELECT Itemname FROM tblitems WHERE itemid=" & itemid & " AND quantity > 0);"
+                    Dim po As Double = cmdd.ExecuteScalar
+                    begbal = begbal + po
+
                     variance = 0 - begbal
+
                     cmdd.CommandText = "SELECT itemcode,itemname FROM tblitems WHERE itemid=" & itemid & ""
                     rdrr = cmdd.ExecuteReader
                     If rdrr.Read Then
@@ -235,7 +243,7 @@ Public Class main
                     End If
                     rdrr.Close()
 
-                    cmdd.CommandText = "Insert into tblinvitems (invnum, itemcode, itemname, begbal,produce,good,reject,charge,productionin, itemin, totalav, ctrout, pullout, endbal, actualendbal, variance, shortover, status,convin,archarge,arsales,convout,transfer,area,arreject,supin,adjustmentin,reject_convin,reject_convout,reject_archarge,reject_transfer,reject_totalav,cancelin,pullout2) values('" + invNum + "','" & itemcode & "','" & itemname & "'," & begbal & ",0,0,0,0,0,0," & begbal & ",0,0," & begbal & ",0," & variance & ",'',1,0,0,0,0,0,'Sales',0,0,0,0,0,0,0,0,0,0)"
+                    cmdd.CommandText = "Insert into tblinvitems (invnum, itemcode, itemname, begbal,produce,good,reject,charge,productionin, itemin, totalav, ctrout, pullout, endbal, actualendbal, variance, shortover, status,convin,archarge,arsales,convout,transfer,area,arreject,supin,adjustmentin,reject_convin,reject_convout,reject_archarge,reject_transfer,reject_totalav,cancelin,pullout2,salesout,salesin) values('" + invNum + "','" & itemcode & "','" & itemname & "'," & begbal & ",0,0,0,0,0,0," & begbal & ",0,0," & begbal & ",0," & variance & ",'',1,0,0,0,0,0,'Sales',0,0,0,0,0,0,0,0,0,0,0,0)"
                     cmdd.ExecuteNonQuery()
                 Next
                 transaction.Commit()
@@ -252,6 +260,20 @@ Public Class main
             End Try
         End Try
     End Sub
+
+    Public Function getInventoryDate() As Date
+        Dim result As Date
+        Try
+            cc.con.Open()
+            cc.cmd = New SqlCommand("SELECT TOP 1 CAST(datecreated AS date)[date] FROM tblinvsum ORDER BY invsumid DESC", cc.con)
+            result = cc.cmd.ExecuteScalar
+            cc.con.Close()
+        Catch ex As Exception
+            MessageBox.Show(ex.ToString)
+        End Try
+        Return result
+    End Function
+
     Private Sub btncreatenew_Click(sender As Object, e As EventArgs) Handles btncreatenew.Click
         If loginc.checkCutOff() Then
             MessageBox.Show("Your account is already cut off", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
@@ -520,15 +542,18 @@ Public Class main
     End Sub
 
     Private Sub btnendingbalance_Click(sender As Object, e As EventArgs) Handles btnendingbalance.Click
-        If (login2.wrkgrp.Equals("Administrator") Or login2.wrkgrp.Equals("LC Accounting")) Then
-            MessageBox.Show("Access Denied", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
-        ElseIf Not loginc.checkCutOff() Then
-            MessageBox.Show("Cut off first", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
-        Else
-            hideShow(panelsubinventorytransaction)
-            Dim f As New endingbalance
-            showForm(f)
-        End If
+        'If (login2.wrkgrp.Equals("Administrator") Or login2.wrkgrp.Equals("LC Accounting")) Then
+        '    MessageBox.Show("Access Denied", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        'ElseIf Not loginc.checkCutOff() Then
+        '    MessageBox.Show("Cut off first", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        'Else
+        '    hideShow(panelsubinventorytransaction)
+        '    Dim f As New endingbalance2
+        '    showForm(f)
+        'End If
+        hideShow(panelsubinventorytransaction)
+        Dim f As New endingbalance
+        showForm(f)
     End Sub
     Private Sub btnlogs_Click(sender As Object, e As EventArgs) Handles btnlogs.Click
         If login2.wrkgrp = "Administrator" Then
@@ -711,6 +736,16 @@ Public Class main
         If login2.wrkgrp <> "Cashier" Then
             hideShow(panelsubitems)
             Dim f As New pullOut()
+            showForm(f)
+        Else
+            MessageBox.Show("Access Denied", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End If
+    End Sub
+
+    Private Sub btnAccess_Click(sender As Object, e As EventArgs) Handles btnAccess.Click
+        If login2.wrkgrp = "Manager" Then
+            hideShow(panelsubitems)
+            Dim f As New access()
             showForm(f)
         Else
             MessageBox.Show("Access Denied", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)

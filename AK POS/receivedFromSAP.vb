@@ -1,10 +1,6 @@
 ﻿Imports System.Data.SqlClient
 Public Class receivedFromSAP
     Dim cc As New connection_class()
-    Dim conString As String = "Data Source=192.168.30.6;Network Library=DBMSSOCN;Initial Catalog=AKPOS;User ID=admin;Password=abC@43212020;MultipleActiveResultSets=true;"
-    Public con As New SqlConnection(conString)
-    Public rdr As SqlDataReader
-    Public cmd As SqlCommand
     Private Sub receivedFromSAP_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Control.CheckForIllegalCrossThreadCalls = False
         cmbtype.SelectedIndex = 0
@@ -42,20 +38,20 @@ Public Class receivedFromSAP
         spinner.Visible = True
         Try
 
-            If con.State = ConnectionState.Open Then
-                con.Close()
+            If cc.con.State = ConnectionState.Open Then
+                cc.con.Close()
             End If
 
-            con.Open()
-            cmd = New SqlClient.SqlCommand(query, con)
-            adptr.SelectCommand = cmd
+            cc.con.Open()
+            cc.cmd = New SqlClient.SqlCommand(query, cc.con)
+            adptr.SelectCommand = cc.cmd
             adptr.Fill(result)
-            con.Close()
+            cc.con.Close()
         Catch ex As Exception
             Me.Cursor = Cursors.Default
             MessageBox.Show("No Internet Connection", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
         Finally
-            con.Close()
+            cc.con.Close()
         End Try
 
         Try

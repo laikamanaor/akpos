@@ -22,10 +22,9 @@ Partial Class inv_logs2
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Dim DataGridViewCellStyle9 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle10 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle11 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle12 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(inv_logs2))
         Me.Panel2 = New System.Windows.Forms.Panel()
         Me.Panel3 = New System.Windows.Forms.Panel()
         Me.Label1 = New System.Windows.Forms.Label()
@@ -40,30 +39,22 @@ Partial Class inv_logs2
         Me.transnum = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.fromreceived = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.toreceived = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.sapnum = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.remarks = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.processedby = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.time = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.btnsearch2 = New System.Windows.Forms.Button()
-        Me.txtitems = New System.Windows.Forms.TextBox()
-        Me.Label2 = New System.Windows.Forms.Label()
-        Me.cmbcategory = New System.Windows.Forms.ComboBox()
-        Me.dgvitems = New System.Windows.Forms.DataGridView()
-        Me.itemname = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.category = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.quantity = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.dtdate = New System.Windows.Forms.DateTimePicker()
         Me.Label3 = New System.Windows.Forms.Label()
         Me.btnprev = New System.Windows.Forms.Button()
         Me.btnnext = New System.Windows.Forms.Button()
         Me.lblcount = New System.Windows.Forms.Label()
         Me.Panel1 = New System.Windows.Forms.Panel()
-        Me.Panel4 = New System.Windows.Forms.Panel()
-        Me.lblitemscount = New System.Windows.Forms.Label()
         Me.btnPullOut = New System.Windows.Forms.Button()
+        Me.spinner = New System.Windows.Forms.PictureBox()
         Me.Panel2.SuspendLayout()
         CType(Me.dgvtrans, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.dgvitems, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel1.SuspendLayout()
-        Me.Panel4.SuspendLayout()
+        CType(Me.spinner, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'Panel2
@@ -209,35 +200,38 @@ Partial Class inv_logs2
         Me.dgvtrans.AllowUserToAddRows = False
         Me.dgvtrans.AllowUserToDeleteRows = False
         Me.dgvtrans.AllowUserToOrderColumns = True
-        Me.dgvtrans.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.dgvtrans.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.dgvtrans.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill
+        Me.dgvtrans.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCells
         Me.dgvtrans.BackgroundColor = System.Drawing.Color.White
         Me.dgvtrans.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgvtrans.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.[Single]
-        DataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle9.BackColor = System.Drawing.Color.FromArgb(CType(CType(218, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(28, Byte), Integer))
-        DataGridViewCellStyle9.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle9.ForeColor = System.Drawing.Color.White
-        DataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.dgvtrans.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle9
+        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(CType(CType(218, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(28, Byte), Integer))
+        DataGridViewCellStyle1.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle1.ForeColor = System.Drawing.Color.White
+        DataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.dgvtrans.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle1
         Me.dgvtrans.ColumnHeadersHeight = 40
-        Me.dgvtrans.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.transnum, Me.fromreceived, Me.toreceived, Me.processedby, Me.time})
-        DataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle10.BackColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle10.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle10.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle10.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.dgvtrans.DefaultCellStyle = DataGridViewCellStyle10
+        Me.dgvtrans.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.transnum, Me.fromreceived, Me.toreceived, Me.sapnum, Me.remarks, Me.processedby, Me.time})
+        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle2.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle2.ForeColor = System.Drawing.Color.White
+        DataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.dgvtrans.DefaultCellStyle = DataGridViewCellStyle2
         Me.dgvtrans.EnableHeadersVisualStyles = False
         Me.dgvtrans.GridColor = System.Drawing.Color.Black
         Me.dgvtrans.Location = New System.Drawing.Point(22, 191)
         Me.dgvtrans.Name = "dgvtrans"
         Me.dgvtrans.RowHeadersVisible = False
-        Me.dgvtrans.Size = New System.Drawing.Size(537, 292)
+        Me.dgvtrans.Size = New System.Drawing.Size(888, 253)
         Me.dgvtrans.TabIndex = 33
         '
         'transnum
@@ -245,21 +239,30 @@ Partial Class inv_logs2
         Me.transnum.HeaderText = "Reference #"
         Me.transnum.Name = "transnum"
         Me.transnum.ReadOnly = True
-        Me.transnum.Width = 150
         '
         'fromreceived
         '
         Me.fromreceived.HeaderText = "Received From"
         Me.fromreceived.Name = "fromreceived"
         Me.fromreceived.ReadOnly = True
-        Me.fromreceived.Width = 120
         '
         'toreceived
         '
         Me.toreceived.HeaderText = "Received To"
         Me.toreceived.Name = "toreceived"
         Me.toreceived.ReadOnly = True
-        Me.toreceived.Width = 120
+        '
+        'sapnum
+        '
+        Me.sapnum.HeaderText = "SAP #"
+        Me.sapnum.Name = "sapnum"
+        Me.sapnum.ReadOnly = True
+        '
+        'remarks
+        '
+        Me.remarks.HeaderText = "Remarks"
+        Me.remarks.Name = "remarks"
+        Me.remarks.ReadOnly = True
         '
         'processedby
         '
@@ -272,135 +275,26 @@ Partial Class inv_logs2
         Me.time.HeaderText = "Time"
         Me.time.Name = "time"
         Me.time.ReadOnly = True
-        Me.time.Width = 75
-        '
-        'btnsearch2
-        '
-        Me.btnsearch2.BackColor = System.Drawing.Color.DodgerBlue
-        Me.btnsearch2.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.btnsearch2.FlatAppearance.BorderColor = System.Drawing.SystemColors.HotTrack
-        Me.btnsearch2.FlatAppearance.BorderSize = 0
-        Me.btnsearch2.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnsearch2.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnsearch2.ForeColor = System.Drawing.Color.White
-        Me.btnsearch2.Location = New System.Drawing.Point(698, 135)
-        Me.btnsearch2.Name = "btnsearch2"
-        Me.btnsearch2.Size = New System.Drawing.Size(81, 27)
-        Me.btnsearch2.TabIndex = 36
-        Me.btnsearch2.Text = "Search"
-        Me.btnsearch2.UseVisualStyleBackColor = False
-        '
-        'txtitems
-        '
-        Me.txtitems.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend
-        Me.txtitems.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource
-        Me.txtitems.Font = New System.Drawing.Font("Arial Rounded MT Bold", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtitems.Location = New System.Drawing.Point(564, 135)
-        Me.txtitems.Name = "txtitems"
-        Me.txtitems.ShortcutsEnabled = False
-        Me.txtitems.Size = New System.Drawing.Size(134, 26)
-        Me.txtitems.TabIndex = 35
-        '
-        'Label2
-        '
-        Me.Label2.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Label2.AutoSize = True
-        Me.Label2.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label2.ForeColor = System.Drawing.Color.DimGray
-        Me.Label2.Location = New System.Drawing.Point(696, 142)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(71, 15)
-        Me.Label2.TabIndex = 38
-        Me.Label2.Text = "Category:"
-        '
-        'cmbcategory
-        '
-        Me.cmbcategory.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.cmbcategory.BackColor = System.Drawing.Color.DodgerBlue
-        Me.cmbcategory.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.cmbcategory.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cmbcategory.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.cmbcategory.Font = New System.Drawing.Font("Arial Rounded MT Bold", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cmbcategory.ForeColor = System.Drawing.Color.White
-        Me.cmbcategory.FormattingEnabled = True
-        Me.cmbcategory.Location = New System.Drawing.Point(773, 136)
-        Me.cmbcategory.Name = "cmbcategory"
-        Me.cmbcategory.Size = New System.Drawing.Size(137, 26)
-        Me.cmbcategory.TabIndex = 37
-        '
-        'dgvitems
-        '
-        Me.dgvitems.AllowUserToAddRows = False
-        Me.dgvitems.AllowUserToDeleteRows = False
-        Me.dgvitems.AllowUserToOrderColumns = True
-        Me.dgvitems.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.dgvitems.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill
-        Me.dgvitems.BackgroundColor = System.Drawing.Color.White
-        Me.dgvitems.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-        Me.dgvitems.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.[Single]
-        DataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle11.BackColor = System.Drawing.Color.FromArgb(CType(CType(218, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(28, Byte), Integer))
-        DataGridViewCellStyle11.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle11.ForeColor = System.Drawing.Color.White
-        DataGridViewCellStyle11.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle11.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.dgvitems.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle11
-        Me.dgvitems.ColumnHeadersHeight = 40
-        Me.dgvitems.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.itemname, Me.category, Me.quantity})
-        DataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle12.BackColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle12.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle12.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle12.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle12.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle12.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.dgvitems.DefaultCellStyle = DataGridViewCellStyle12
-        Me.dgvitems.EnableHeadersVisualStyles = False
-        Me.dgvitems.GridColor = System.Drawing.Color.Black
-        Me.dgvitems.Location = New System.Drawing.Point(564, 191)
-        Me.dgvitems.Name = "dgvitems"
-        Me.dgvitems.RowHeadersVisible = False
-        Me.dgvitems.Size = New System.Drawing.Size(346, 321)
-        Me.dgvitems.TabIndex = 39
-        '
-        'itemname
-        '
-        Me.itemname.HeaderText = "Item"
-        Me.itemname.Name = "itemname"
-        Me.itemname.ReadOnly = True
-        '
-        'category
-        '
-        Me.category.HeaderText = "Category"
-        Me.category.Name = "category"
-        Me.category.ReadOnly = True
-        '
-        'quantity
-        '
-        Me.quantity.HeaderText = "Quantity"
-        Me.quantity.Name = "quantity"
-        Me.quantity.ReadOnly = True
         '
         'dtdate
         '
+        Me.dtdate.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.dtdate.Cursor = System.Windows.Forms.Cursors.Hand
         Me.dtdate.CustomFormat = "MM/dd/yyyy"
         Me.dtdate.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.dtdate.Format = System.Windows.Forms.DateTimePickerFormat.Custom
-        Me.dtdate.Location = New System.Drawing.Point(449, 137)
+        Me.dtdate.Location = New System.Drawing.Point(798, 140)
         Me.dtdate.Name = "dtdate"
         Me.dtdate.Size = New System.Drawing.Size(109, 22)
         Me.dtdate.TabIndex = 40
         '
         'Label3
         '
+        Me.Label3.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label3.AutoSize = True
         Me.Label3.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label3.ForeColor = System.Drawing.Color.DimGray
-        Me.Label3.Location = New System.Drawing.Point(401, 141)
+        Me.Label3.Location = New System.Drawing.Point(750, 144)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(42, 15)
         Me.Label3.TabIndex = 41
@@ -451,34 +345,14 @@ Partial Class inv_logs2
         '
         'Panel1
         '
+        Me.Panel1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Panel1.BackColor = System.Drawing.Color.FromArgb(CType(CType(218, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(28, Byte), Integer))
         Me.Panel1.Controls.Add(Me.lblcount)
         Me.Panel1.Location = New System.Drawing.Point(22, 164)
         Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(537, 28)
+        Me.Panel1.Size = New System.Drawing.Size(888, 28)
         Me.Panel1.TabIndex = 45
-        '
-        'Panel4
-        '
-        Me.Panel4.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Panel4.BackColor = System.Drawing.Color.FromArgb(CType(CType(218, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(28, Byte), Integer))
-        Me.Panel4.Controls.Add(Me.lblitemscount)
-        Me.Panel4.Location = New System.Drawing.Point(565, 164)
-        Me.Panel4.Name = "Panel4"
-        Me.Panel4.Size = New System.Drawing.Size(345, 28)
-        Me.Panel4.TabIndex = 46
-        '
-        'lblitemscount
-        '
-        Me.lblitemscount.AutoSize = True
-        Me.lblitemscount.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblitemscount.ForeColor = System.Drawing.Color.White
-        Me.lblitemscount.Location = New System.Drawing.Point(3, 5)
-        Me.lblitemscount.Name = "lblitemscount"
-        Me.lblitemscount.Size = New System.Drawing.Size(69, 19)
-        Me.lblitemscount.TabIndex = 45
-        Me.lblitemscount.Text = "Items(0)"
         '
         'btnPullOut
         '
@@ -496,24 +370,31 @@ Partial Class inv_logs2
         Me.btnPullOut.Text = "Pull Out"
         Me.btnPullOut.UseVisualStyleBackColor = False
         '
+        'spinner
+        '
+        Me.spinner.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.spinner.Image = CType(resources.GetObject("spinner.Image"), System.Drawing.Image)
+        Me.spinner.Location = New System.Drawing.Point(395, 450)
+        Me.spinner.Name = "spinner"
+        Me.spinner.Size = New System.Drawing.Size(118, 34)
+        Me.spinner.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.spinner.TabIndex = 58
+        Me.spinner.TabStop = False
+        '
         'inv_logs2
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.White
         Me.ClientSize = New System.Drawing.Size(934, 524)
+        Me.Controls.Add(Me.spinner)
         Me.Controls.Add(Me.btnPullOut)
-        Me.Controls.Add(Me.Panel4)
         Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.btnprev)
         Me.Controls.Add(Me.btnnext)
         Me.Controls.Add(Me.Label3)
         Me.Controls.Add(Me.dtdate)
-        Me.Controls.Add(Me.dgvitems)
-        Me.Controls.Add(Me.Label2)
-        Me.Controls.Add(Me.cmbcategory)
-        Me.Controls.Add(Me.btnsearch2)
-        Me.Controls.Add(Me.txtitems)
         Me.Controls.Add(Me.dgvtrans)
         Me.Controls.Add(Me.btnSearch)
         Me.Controls.Add(Me.txttrans)
@@ -530,11 +411,9 @@ Partial Class inv_logs2
         Me.Panel2.ResumeLayout(False)
         Me.Panel2.PerformLayout()
         CType(Me.dgvtrans, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.dgvitems, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Panel1.ResumeLayout(False)
         Me.Panel1.PerformLayout()
-        Me.Panel4.ResumeLayout(False)
-        Me.Panel4.PerformLayout()
+        CType(Me.spinner, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -551,26 +430,19 @@ Partial Class inv_logs2
     Friend WithEvents btnSearch As Button
     Friend WithEvents txttrans As TextBox
     Friend WithEvents dgvtrans As DataGridView
-    Friend WithEvents btnsearch2 As Button
-    Friend WithEvents txtitems As TextBox
-    Friend WithEvents Label2 As Label
-    Friend WithEvents cmbcategory As ComboBox
-    Friend WithEvents dgvitems As DataGridView
-    Friend WithEvents itemname As DataGridViewTextBoxColumn
-    Friend WithEvents category As DataGridViewTextBoxColumn
-    Friend WithEvents quantity As DataGridViewTextBoxColumn
     Friend WithEvents dtdate As DateTimePicker
     Friend WithEvents Label3 As Label
     Friend WithEvents btnprev As Button
     Friend WithEvents btnnext As Button
     Friend WithEvents lblcount As Label
+    Friend WithEvents Panel1 As Panel
+    Friend WithEvents btnPullOut As Button
     Friend WithEvents transnum As DataGridViewTextBoxColumn
     Friend WithEvents fromreceived As DataGridViewTextBoxColumn
     Friend WithEvents toreceived As DataGridViewTextBoxColumn
+    Friend WithEvents sapnum As DataGridViewTextBoxColumn
+    Friend WithEvents remarks As DataGridViewTextBoxColumn
     Friend WithEvents processedby As DataGridViewTextBoxColumn
     Friend WithEvents time As DataGridViewTextBoxColumn
-    Friend WithEvents Panel1 As Panel
-    Friend WithEvents Panel4 As Panel
-    Friend WithEvents lblitemscount As Label
-    Friend WithEvents btnPullOut As Button
+    Friend WithEvents spinner As PictureBox
 End Class

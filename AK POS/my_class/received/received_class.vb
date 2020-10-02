@@ -489,4 +489,123 @@ Public Class received_class
         cc.con.Close()
         Return result
     End Function
+
+    Public Function loadActualEndbal() As DataTable
+        Dim result As New DataTable
+        result.Columns.Add("itemcode")
+        result.Columns.Add("itemname")
+        result.Columns.Add("category")
+        result.Columns.Add("quantity")
+        result.Columns.Add("price")
+        Try
+            cc.con.Open()
+            cc.cmd = New SqlCommand("SELECT a.itemcode,a.itemname,b.category,a.endbal [quantity],b.price  FROM tblinvitems a INNER JOIN tblitems b ON a.itemname = b.itemname WHERE a.totalav !=0 AND a.invnum=(Select TOP 1 invnum from tblinvsum WHERE area='Sales' order by invsumid DESC)", cc.con)
+            Dim adptr As New SqlDataAdapter()
+            Dim dt As New DataTable()
+            adptr.SelectCommand = cc.cmd
+            adptr.Fill(dt)
+            cc.con.Close()
+            For Each r0w As DataRow In dt.Rows
+                cc.con.Open()
+                cc.cmd = New SqlCommand("SELECT inv_id FROM tblproduction a WHERE a.inv_id=(Select TOP 1 invnum from tblinvsum WHERE area='Sales' order by invsumid DESC) AND a.type='Actual Ending Balance' AND a.item_name=@itemname;", cc.con)
+                cc.cmd.Parameters.AddWithValue("@itemname", r0w("itemname"))
+                cc.rdr = cc.cmd.ExecuteReader
+                If Not cc.rdr.Read Then
+                    'dgvListItem.Rows.Add(r0w("itemcode"), r0w("itemname"), r0w("category"))
+                    result.Rows.Add(r0w("itemcode"), r0w("itemname"), r0w("category"), r0w("quantity"), r0w("price"))
+                End If
+                cc.con.Close()
+            Next
+        Catch ex As Exception
+            MessageBox.Show(ex.ToString)
+        Finally
+            cc.con.Close()
+        End Try
+        Return result
+    End Function
+
+    Public Function loadHaveOwnStockSalesAgent() As DataTable
+        Dim result As New DataTable, adptr As New SqlDataAdapter
+        Try
+            cc.con.Open()
+            cc.cmd = New SqlCommand("SELECT DISTINCT transfer_from [result] FROM tblproduction WHERE inv_id=(SELECT TOP 1 invnum FROM tblinvsum ORDER BY invsumid DESC) AND type2='Transfer to Sales' ORDER BY transfer_from", cc.con)
+            adptr.SelectCommand = cc.cmd
+            adptr.Fill(result)
+            cc.con.Close()
+        Catch ex As Exception
+            MessageBox.Show("loadHaveOwnStockSalesAgent()" & ex.ToString)
+        End Try
+        Return result
+    End Function
+
+    Public Function toFollowSAPNumber(ByVal transnum As String) As Boolean
+        Dim result As Boolean
+        Try
+            cc.con.Open()
+            cc.cmd = New SqlCommand("SELECT transaction_id FROM tblproduction WHERE transaction_number=@transnum AND sap_number='To Follow';", cc.con)
+            cc.cmd.Parameters.AddWithValue("@transnum", transnum)
+            cc.rdr = cc.cmd.ExecuteReader
+            If cc.rdr.Read Then
+                result = True
+            End If
+            cc.con.Close()
+        Catch ex As Exception
+            MessageBox.Show(ex.ToString)
+        End Try
+        Return result
+    End Function
+
+    Public Function checkItems(ByVal transnum As String, ByVal type As String) As Boolean
+        Dim result As Boolean
+        Dim result_int As Integer
+        Dim dt As New DataTable()
+        cc.con.Open()
+        cc.cmd = New SqlClient.SqlCommand("SELECT item_name,quantity,transfer_to,transaction_number,sap_number FROM tblproduction WHERE transaction_number=@transnum", cc.con)
+        cc.cmd.Parameters.AddWithValue("@transnum", transnum)
+        cc.adptr.SelectCommand = cc.cmd
+        cc.adptr.Fill(dt)
+        cc.con.Close()
+        For Each r0w As DataRow In dt.Rows
+            Dim itemName As String = r0w("item_name")
+            Dim quantity As Double = CDbl(r0w("quantity"))
+            Dim actualQuantity As Double = 0.00
+            Dim variance As Double = 0.00
+            Dim sapNumber As String = IIf(IsDBNull(r0w("sap_number")), "N/A", r0w("sap_number"))
+
+            If Not sapNumber.Equals("To Follow") Then
+                cc.con.Open()
+                cc.cmd = New SqlCommand("SELECT Quantity [qty] FROM [192.168.30.6].[AKPOS].[dbo].[vSAP_IT] WHERE Dscription=@itemName AND DocNum=@sapNumber", cc.con)
+                cc.cmd.Parameters.AddWithValue("@itemName", itemName)
+                cc.cmd.Parameters.AddWithValue("@sapNumber", sapNumber)
+                cc.rdr = cc.cmd.ExecuteReader
+                If cc.rdr.Read Then
+                    actualQuantity = CDbl(cc.rdr("qty"))
+                Else
+                    actualQuantity = quantity
+                End If
+                cc.con.Close()
+            Else
+                actualQuantity = quantity
+            End If
+            variance = quantity - actualQuantity
+
+            If type = "EQUAL" Then
+                If variance = 0 Then
+                    result_int = result_int + 1
+                End If
+            ElseIf type = "LESS THAN" Then
+                If variance < 0 Then
+                    result_int = result_int + 1
+                End If
+            ElseIf type = "GREATER THAN" Then
+                If variance > 0 Then
+                    result_int = result_int + 1
+                End If
+            Else
+                result_int = result_int + 1
+            End If
+        Next
+        result = IIf(result_int > 0, True, False)
+        Return result
+    End Function
 End Class

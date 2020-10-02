@@ -3,6 +3,7 @@ Imports System.IO
 Imports AK_POS.connection_class
 Public Class cashier
     Dim cc As New connection_class
+    Dim posc As New pos_class
     Dim con As New SqlConnection(cc.conString)
     Dim cmd As SqlCommand
     Dim rdr As SqlDataReader
@@ -30,11 +31,7 @@ Public Class cashier
         End If
     End Sub
     Public Sub submit(ByVal a As String)
-        If lblordernum.Text = "N/A" Then
-            MessageBox.Show("Select order first", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
-        Else
-            yowCheck()
-        End If
+        yowCheck()
     End Sub
 
     Public Function checkTrans() As Boolean
@@ -91,12 +88,21 @@ Public Class cashier
             End While
             con.Close()
         Next
-        main.ornum = lblordernum.Text
+
+        Dim ordernum As Integer = 0, order_idd As Integer = 0
+        For index As Integer = 0 To dgvorders.Rows.Count - 1
+            If Convert.ToBoolean(dgvorders.Rows(index).Cells("select1").Value) = True Then
+                ordernum = dgvorders.Rows(index).Cells("ordernum").Value
+                order_idd = dgvorders.Rows(index).Cells("orderid").Value
+            End If
+        Next
+
+        main.ornum = ordernum
         main.cas = "Cashier"
-        main.lblordernumber.Text = lblordernum.Text
-        main.order_id = dgvorders.CurrentRow.Cells("orderid").Value
+        main.lblordernumber.Text = ordernum
+        main.order_id = order_idd
         con.Open()
-        cmd = New SqlCommand("SELECT servicetype,tendertype,delcharge,customer,tenderamt,subtotal,disctype,less,delcharge,gctotal FROM tbltransaction2 WHERE orderid='" & dgvorders.CurrentRow.Cells("orderid").Value & "';", con)
+        cmd = New SqlCommand("SELECT servicetype,tendertype,delcharge,customer,tenderamt,subtotal,disctype,less,delcharge,gctotal FROM tbltransaction2 WHERE orderid=" & order_idd & ";", con)
         rdr = cmd.ExecuteReader()
         If rdr.Read Then
             'MessageBox.Show(rdr("servicetype") & Environment.NewLine & rdr("tendertype"))
@@ -219,30 +225,80 @@ Public Class cashier
         If checkCutOff() Then
             MessageBox.Show("Your account is already cut off", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
         Else
+            Dim statusPaid As String = "", statusVoid As String = "", orderids As String = ""
+            For index As Integer = 0 To dgvorders.Rows.Count - 1
+                If Convert.ToBoolean(dgvorders.Rows(index).Cells("select1").Value) Then
+                    orderids &= dgvorders.Rows(index).Cells("orderid").Value & ","
+                End If
+            Next
 
-            If lblordernum.Text = "N/A" Then
-                MessageBox.Show("Select order number first", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                Exit Sub
+            If orderids <> "" Then
+                orderids = orderids.Substring(0, orderids.Length - 1)
             End If
 
-            Dim status As String = ""
-            con.Open()
-            cmd = New SqlCommand("SELECT status2 FROM tbltransaction2 WHERE ordernum=@ordernum AND CAST(datecreated AS date)='" & DateTime.Now.ToString("MM/dd/yyyy") & "';", con)
-            cmd.Parameters.AddWithValue("@ordernum", lblordernum.Text)
-            rdr = cmd.ExecuteReader
-            If rdr.Read Then
-                status = rdr("status2")
+            If orderids <> "" Then
+                con.Open()
+                cmd = New SqlCommand("SELECT status2,ordernum FROM tbltransaction2 WHERE orderid IN (" & orderids & ") AND CAST(datecreated AS date)=(SELECT CAST(GETDATE() AS DATE));", con)
+                rdr = cmd.ExecuteReader
+                If rdr.Read Then
+                    If rdr("status2") = "Paid" Then
+                        statusPaid &= rdr("ordernum") & ","
+                    ElseIf rdr("status2") = "Void" Then
+                        statusVoid &= rdr("ordernum") & ","
+                    End If
+                End If
+                con.Close()
             End If
-            con.Close()
 
-            If status = "Paid" Then
-                MessageBox.Show("This transaction is already paid", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                Exit Sub
-            ElseIf status = "Void" Then
-                MessageBox.Show("This transaction is already void", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                Exit Sub
+            Dim counter As Integer = 0
+            Dim orders As String = ""
+            For index As Integer = 0 To dgvorders.Rows.Count - 1
+                If dgvorders.Rows(index).Cells("select1").Value = True Then
+                    counter = counter + 1
+                    orders &= dgvorders.Rows(index).Cells("orderid").Value & ","
+                End If
+            Next
+
+            If statusPaid <> "" Then
+                statusPaid.Substring(0, statusPaid.Length - 1)
             End If
-            submit("Confirm")
+            If statusVoid <> "" Then
+                statusVoid.Substring(0, statusVoid.Length - 1)
+            End If
+
+            Dim selectedOdernum As String = ""
+            Dim orderNumCount As Integer = 0
+            Dim totalamt As Double = 0.00
+            For index As Integer = 0 To dgvorders.Rows.Count - 1
+                If dgvorders.Rows(index).Cells("select1").Value = True Then
+                    selectedOdernum &= dgvorders.Rows(index).Cells("ordernum").Value & ","
+                    If dgvorders.Rows(index).Cells("tendertype").Value = "Cash" Then
+                        totalamt += CDbl(dgvorders.Rows(index).Cells("amountdue").Value)
+                    End If
+                    orderNumCount = orderNumCount + 1
+                End If
+            Next
+
+            If selectedOdernum <> "" Then
+                selectedOdernum = selectedOdernum.Substring(0, selectedOdernum.Length - 1)
+            End If
+
+
+            If statusPaid <> "" Then
+                MessageBox.Show("Order # below is already paid" & Environment.NewLine & statusPaid, "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            ElseIf statusVoid <> "" Then
+                MessageBox.Show("Order # below is already void" & Environment.NewLine & statusVoid, "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            ElseIf counter = 1 Then
+                submit("Confirm")
+            ElseIf counter > 1 Then
+                Dim a As String = MsgBox("You select (" & orderNumCount.ToString("N0") & ") orders" & Environment.NewLine & "Total Amount Due Is " & totalamt.ToString("n2") & Environment.NewLine & "Are you sure you want To Confirm?", MsgBoxStyle.Question + MsgBoxStyle.YesNo, "Atlantic Bakery")
+                If a = vbYes Then
+                    posc.insertMultiplePOS(orders)
+                    load_orders()
+                End If
+            ElseIf counter = 0 Then
+                MessageBox.Show("No selected order number", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            End If
         End If
     End Sub
     Public Sub load_orders()
@@ -251,7 +307,7 @@ Public Class cashier
             dgvorders.Columns("amountdue").DefaultCellStyle.Format = "n2"
             cmd.Parameters.Clear()
             con.Open()
-            cmd = New SqlCommand("SELECT ordernum,amtdue,servicetype,tendertype,createdby,typez,datecreated,orderid FROM funcLoadOrders(@isales,@itypee,@iservicetype,@area,@sales,@typee,@tendertype)", con)
+            cmd = New SqlCommand("Select ordernum, amtdue, servicetype, tendertype, createdby, typez, datecreated, orderid FROM funcLoadOrders(@isales,@itypee,@iservicetype,@area,@sales,@typee,@tendertype)", con)
             cmd.Parameters.AddWithValue("@isales", cmbsales.SelectedIndex)
             cmd.Parameters.AddWithValue("@itypee", cmbtypee.SelectedIndex)
             cmd.Parameters.AddWithValue("@iservicetype", cmbservicetype.SelectedIndex)
@@ -266,7 +322,11 @@ Public Class cashier
             con.Close()
             Dim amt As Double = 0.00
             For index As Integer = 0 To dgvorders.RowCount - 1
-                amt += CDbl(dgvorders.Rows(index).Cells("amountdue").Value)
+                If Convert.ToBoolean(dgvorders.Rows(index).Cells("select1").Value) Then
+                    If dgvorders.Rows(index).Cells("tendertype").Value = "Cash" Then
+                        amt += CDbl(dgvorders.Rows(index).Cells("amountdue").Value)
+                    End If
+                End If
             Next
             lbltotalamt.Text = "Pending Total Amt. Due:   " & amt.ToString("n2")
             dgvitems.Rows.Clear()
@@ -277,8 +337,7 @@ Public Class cashier
             lbldiscountype.Text = "None"
             lblless.Text = "0.00"
             lblgc.Text = "0.00"
-            lblvatsales.Text = "0.00"
-            lblvatamount.Text = "0.00"
+            lbldiscamt.Text = "0.00"
             lbltenderamt.Text = "0.00"
             lblchange.Text = "0.00"
         Catch ex As Exception
@@ -332,7 +391,7 @@ Public Class cashier
             cmbsales.Items.Clear()
             cmbsales.Items.Add("All")
             con.Open()
-            cmd = New SqlCommand("SELECT username FROM tblusers WHERE  workgroup IN ('Sales','Manager');", con)
+            cmd = New SqlCommand("SELECT username FROM tblusers ORDER BY username;", con)
             rdr = cmd.ExecuteReader
             While rdr.Read
                 cmbsales.Items.Add(rdr("username"))
@@ -347,57 +406,8 @@ Public Class cashier
     Private Sub dgvorders_DataError(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewDataErrorEventArgs) Handles dgvorders.DataError
         'e.Cancel = True
     End Sub
-    Public Sub loadItems()
-        dgvitems.Rows.Clear()
-        lblordernum.Text = dgvorders.CurrentRow.Cells("ordernum").Value
-        lblservicetype.Text = dgvorders.CurrentRow.Cells("servicetype").Value
-        type_holder = dgvorders.CurrentRow.Cells("typee").Value
-        con.Open()
-        cmd = New SqlCommand("SELECT itemname,qty,price,dscnt,totalprice,request,free,pricebefore,discamt FROM funcLoadOrderItems(@ordernum,@datee)", con)
-        cmd.Parameters.AddWithValue("@ordernum", lblordernum.Text)
-        cmd.Parameters.AddWithValue("@datee", dgvorders.CurrentRow.Cells("datecreated").Value)
-        rdr = cmd.ExecuteReader()
-        While rdr.Read
-            Dim f As Boolean = False
-            dgvitems.Columns("quantity").DefaultCellStyle.Format = "n2"
-            dgvitems.Columns("price").DefaultCellStyle.Format = "n2"
-            dgvitems.Columns("discountpercent").DefaultCellStyle.Format = "n2"
-            dgvitems.Columns("amount").DefaultCellStyle.Format = "n2"
-            If CDbl(rdr("free")) <> 0 Then
-                f = True
-            End If
-            dgvitems.Rows.Add(rdr("itemname"), rdr("qty"), rdr("price"), rdr("dscnt"), rdr("totalprice"), rdr("request"), f, rdr("pricebefore"), rdr("discamt"))
-        End While
-        con.Close()
 
-        con.Open()
-        cmd = New SqlCommand("SELECT remarks,subtotal,disctype,less,delcharge,vatsales,vat,amtdue,tenderamt,change,gctotal FROM tbltransaction2 WHERE ordernum=@num AND CAST(tbltransaction2.datecreated AS date)='" & dgvorders.CurrentRow.Cells("datecreated").Value & "';", con)
-        cmd.Parameters.AddWithValue("@num", lblordernum.Text)
-        rdr = cmd.ExecuteReader()
-        While rdr.Read
-            txtboxremarks.Text = rdr("remarks")
-            lblsubtotal.Text = CDbl(rdr("subtotal")).ToString("n2")
-            'lbldiscountype.Text = rdr("disctype")
-            'If lbldiscountype.Text = "" Then
-            '    lbldiscountype.Text = "N/A"
-            'End If
-            lbldiscountype.Text = IIf(rdr("disctype") = "", "N/A", rdr("disctype"))
-            lblless.Text = CInt(rdr("less")).ToString("n2")
-            lbldelcharge.Text = CDbl(rdr("delcharge")).ToString("n2")
-            lblvatsales.Text = CDbl(rdr("vatsales")).ToString("n2")
-            lblvatamount.Text = CDbl(rdr("vat")).ToString("n2")
-            lblgc.Text = CDbl(rdr("gctotal")).ToString("n2")
-            lbltotal.Text = CDbl(rdr("amtdue")).ToString("n2")
-            lbltenderamt.Text = CDbl(rdr("tenderamt")).ToString("n2")
-            lblchange.Text = CDbl(rdr("change")).ToString("n2")
-        End While
-        con.Close()
-    End Sub
-    Private Sub dgvorders_CellContentClick(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvorders.CellContentClick, dgvorders.CellClick
-        If dgvorders.RowCount <> 0 Then
-            loadItems()
-        End If
-    End Sub
+
 
     Private Sub btnvoidsubmit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnvoidsubmit.Click
         txtremarks.Focus()
@@ -411,8 +421,7 @@ Public Class cashier
         lblsubtotal.Text = "0.00"
         lbldiscountype.Text = "N/A"
         lbldelcharge.Text = "0.00"
-        lblvatamount.Text = "0.00"
-        lblvatsales.Text = "0.00"
+        lbldiscamt.Text = "0.00"
         lbltotal.Text = "0.00"
         lbltenderamt.Text = "0.00"
         lblchange.Text = "0.00"
@@ -650,76 +659,6 @@ Public Class cashier
         load_orders()
     End Sub
 
-    Private Sub btnsearch_Click(sender As Object, e As EventArgs) Handles btnsearch.Click
-        Try
-            Dim result As Boolean = False
-            con.Open()
-            cmd = New SqlCommand("SELECT ordernum FROM tbltransaction2 WHERE ordernum=@ordernum AND status2='Unpaid' AND CAST(datecreated AS date)='" & DateTime.Now.ToString("MM/dd/yyyy") & "';", con)
-            cmd.Parameters.AddWithValue("@ordernum", txtboxsearch.Text)
-            rdr = cmd.ExecuteReader
-            If rdr.Read Then
-                result = True
-            End If
-            con.Close()
-
-            If result Then
-                For index As Integer = 0 To dgvorders.RowCount - 1
-                    If txtboxsearch.Text = dgvorders.Rows(index).Cells("ordernum").Value Then
-                        dgvorders.Rows(index).Selected = True
-                        lblordernum.Text = dgvorders.Rows(index).Cells("ordernum").Value
-                        lblservicetype.Text = dgvorders.Rows(index).Cells("servicetype").Value
-
-                        dgvitems.Rows.Clear()
-                        type_holder = dgvorders.Rows(index).Cells("typee").Value
-                        con.Open()
-                        cmd = New SqlCommand("SELECT tblorder2.itemname,tblorder2.qty,tblorder2.price,tblorder2.dscnt,tblorder2.totalprice,tblorder2.request,tblorder2.free FROM tblorder2 WHERE tblorder2.ordernum=@ordernum AND CAST(tblorder2.datecreated AS date)='" & DateTime.Now.ToString("MM/dd/yyyy") & "';", con)
-                        cmd.Parameters.AddWithValue("@ordernum", lblordernum.Text)
-                        rdr = cmd.ExecuteReader()
-                        While rdr.Read
-                            Dim f As Boolean = False
-                            dgvitems.Columns("quantity").DefaultCellStyle.Format = "n2"
-                            dgvitems.Columns("price").DefaultCellStyle.Format = "n2"
-                            dgvitems.Columns("discountpercent").DefaultCellStyle.Format = "n2"
-                            dgvitems.Columns("amount").DefaultCellStyle.Format = "n2"
-                            If CDbl(rdr("free")) <> 0 Then
-                                f = True
-                            End If
-                            dgvitems.Rows.Add(rdr("itemname"), rdr("qty"), rdr("price"), rdr("dscnt"), rdr("totalprice"), rdr("request"), f)
-                        End While
-                        con.Close()
-
-                        con.Open()
-                        cmd = New SqlCommand("SELECT remarks,subtotal,disctype,less,delcharge,vatsales,vat,amtdue,tenderamt,change,gctotal FROM tbltransaction2 WHERE ordernum=@num AND CAST(tbltransaction2.datecreated AS date)='" & DateTime.Now.ToString("MM/dd/yyyy") & "';", con)
-                        cmd.Parameters.AddWithValue("@num", lblordernum.Text)
-                        rdr = cmd.ExecuteReader()
-                        While rdr.Read
-                            txtboxremarks.Text = rdr("remarks")
-                            lblsubtotal.Text = CDbl(rdr("subtotal")).ToString("n2")
-                            lbldiscountype.Text = rdr("disctype")
-                            If lbldiscountype.Text = "" Then
-                                lbldiscountype.Text = "N/A"
-                            End If
-                            lblless.Text = CInt(rdr("less")).ToString("n2")
-                            lbldelcharge.Text = CDbl(rdr("delcharge")).ToString("n2")
-                            lblvatsales.Text = CDbl(rdr("vatsales")).ToString("n2")
-                            lblvatamount.Text = CDbl(rdr("vat")).ToString("n2")
-                            lblgc.Text = CDbl(rdr("gctotal")).ToString("n2")
-                            lbltotal.Text = CDbl(rdr("amtdue")).ToString("n2")
-                            lbltenderamt.Text = CDbl(rdr("tenderamt")).ToString("n2")
-                            lblchange.Text = CDbl(rdr("change")).ToString("n2")
-                        End While
-                        con.Close()
-                    Else
-                        dgvorders.Rows(index).Selected = False
-                    End If
-                Next
-            End If
-
-        Catch ex As Exception
-            MessageBox.Show(ex.ToString)
-        End Try
-    End Sub
-
     Private Sub Panel1_Paint(sender As Object, e As PaintEventArgs) Handles Panel1.Paint
 
     End Sub
@@ -752,6 +691,135 @@ Public Class cashier
                 checkboxvoidorders.Checked = True
             End If
         End If
+    End Sub
+
+
+    Private Sub dgvorders_CellEnter(sender As Object, e As DataGridViewCellEventArgs) Handles dgvorders.CellEnter
+        dgvorders.Focus()
+    End Sub
+
+    Public Sub loadItems()
+        dgvorders.CommitEdit(DataGridViewDataErrorContexts.Commit)
+        dgvitems.Rows.Clear()
+        Dim ordernums As String = ""
+        Dim amt As Double = 0.00
+        For index As Integer = 0 To dgvorders.Rows.Count - 1
+            If Convert.ToBoolean(dgvorders.Rows(index).Cells("select1").Value) Then
+                'lblordernum.Text = dgvorders.CurrentRow.Cells("ordernum").Value
+                'lblservicetype.Text = dgvorders.CurrentRow.Cells("servicetype").Value
+                'type_holder = dgvorders.CurrentRow.Cells("typee").Value
+
+                ordernums &= dgvorders.Rows(index).Cells("ordernum").Value & ","
+                If dgvorders.Rows(index).Cells("tendertype").Value = "Cash" Then
+                    amt += CDbl(dgvorders.Rows(index).Cells("amountdue").Value)
+                End If
+                dgvorders.Rows(index).DefaultCellStyle.BackColor = Color.Orange
+            Else
+                dgvorders.Rows(index).DefaultCellStyle.BackColor = Color.White
+            End If
+        Next
+        lbltotalamt.Text = "Pending Total Amt. Due:   " & amt.ToString("n2")
+        If Not ordernums.Equals("") Then
+            ordernums = ordernums.Substring(0, ordernums.Length - 1)
+        End If
+        If Not ordernums.Equals("") Then
+            con.Open()
+            cmd = New SqlCommand("SELECT itemname,SUM(qty) [qty],price,SUM(dscnt) [dscnt],SUM(totalprice)[totalprice],request, SUM(free) [free],SUM(pricebefore) [pricebefore] ,SUM(discamt)  [discamt] FROM tblorder2 WHERE ordernum IN (" & ordernums & ") AND CAST(datecreated AS date)=(SELECT CAST(GETDATE() AS DATE))  GROUP BY itemname,price,request", con)
+            rdr = cmd.ExecuteReader()
+            While rdr.Read
+                Dim f As Boolean = IIf(CInt(rdr("free")) > 0, True, False)
+                dgvitems.Rows.Add(rdr("itemname"), rdr("qty"), rdr("price"), rdr("pricebefore"), rdr("dscnt"), rdr("discamt"), rdr("totalprice"), rdr("request"), f)
+            End While
+            con.Close()
+
+            Dim remarks As String = "", discountType As String = "", less As Double = 0.00, delCharge As Double = 0.00, discAmount As Double = 0.00, gc As Double = 0.00, total As Double = 0.00, tenderamt As Double = 0.00, change As Double = 0.00, subTotal As Double = 0.00, subTotalAfter As Double = 0.00
+            con.Open()
+            cmd = New SqlCommand("SELECT remarks,SUM(subtotal) [subtotal], disctype,SUM(less)[less], SUM(delcharge)[delcharge],SUM(vatsales)[vatsales],SUM(vat)[vat],SUM(amtdue)[amtdue],SUM(tenderamt)[tenderamt], SUM(change)[change],SUM(gctotal)[gctotal],SUM(discamt)[discamt]  FROM tbltransaction2 WHERE ordernum IN (" & ordernums & ") AND CAST(tbltransaction2.datecreated AS date)=(SELECT CAST(GETDATE() AS DATE)) and tendertype IN ('Cash') GROUP BY remarks,disctype;", con)
+            rdr = cmd.ExecuteReader()
+            While rdr.Read
+                remarks &= rdr("remarks") & ","
+                If (IsDBNull(rdr("disctype"))) Or rdr("disctype") = "" Then
+                Else
+                    discountType &= rdr("disctype") & ","
+                End If
+                less += CDbl(rdr("less"))
+                delCharge += CDbl(rdr("delcharge"))
+                gc += CDbl(rdr("gctotal"))
+                discAmount += CDbl(rdr("discamt"))
+                total += CDbl(rdr("amtdue"))
+                tenderamt += CDbl(rdr("tenderamt"))
+                change += CDbl(rdr("change"))
+                subTotal += CDbl(rdr("subtotal"))
+                subTotalAfter += CDbl(rdr("subtotal")) - (CDbl(rdr("discamt")) + CDbl(rdr("gctotal")))
+            End While
+            txtremarks.Text = remarks
+            lbldiscountype.Text = discountType
+            lblless.Text = less.ToString("n2")
+            lbldelcharge.Text = delCharge.ToString("n2")
+            lbldiscamt.Text = discAmount.ToString("n2")
+            lblgc.Text = gc.ToString("n2")
+            lbltotal.Text = total.ToString("n2")
+            lbltenderamt.Text = tenderamt.ToString("n2")
+            lblchange.Text = change.ToString("n2")
+            lblsubtotal.Text = subTotal.ToString("n2")
+            lblsubtotalafter.Text = subTotalAfter.ToString("n2")
+            'If rdr.Read Then
+            '    txtremarks.Text = rdr("remarks")
+            '    lbldiscountype.Text = rdr("disctype")
+            '    lblless.Text = CDbl(rdr("less")).ToString("n2")
+            '    lbldelcharge.Text = CDbl(rdr("delcharge")).ToString("n2")
+            '    lblvatsales.Text = CDbl(rdr("vatsales")).ToString("n2")
+            '    lblvatamount.Text = CDbl(rdr("vat")).ToString("n2")
+            '    lblgc.Text = CDbl(rdr("gctotal")).ToString("n2")
+            '    lbltotal.Text = CDbl(rdr("amtdue")).ToString("n2")
+            '    lbltenderamt.Text = CDbl(rdr("tenderamt")).ToString("n2")
+            '    lblchange.Text = CDbl(rdr("change")).ToString("n2")
+            '    lblsubtotal.Text = CDbl(rdr("subtotal")).ToString("n2")
+            'End If
+            con.Close()
+        Else
+            txtremarks.Text = ""
+            lbldiscountype.Text = ""
+            lblless.Text = "0.00"
+            lbldelcharge.Text = "0.00"
+            lbldiscamt.Text = "0.00"
+            lblgc.Text = "0.00"
+            lbltotal.Text = "0.00"
+            lbltenderamt.Text = "0.00"
+            lblchange.Text = "0.00"
+            lblsubtotal.Text = "0.00"
+        End If
+    End Sub
+
+    Private Sub dgvorders_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvorders.CellContentClick
+        If dgvorders.Rows.Count <> 0 Then
+            If e.ColumnIndex = 9 And e.RowIndex >= 0 Then
+                loadItems()
+            End If
+        End If
+    End Sub
+
+    Private Sub checkSelectAll_CheckedChanged(sender As Object, e As EventArgs) Handles checkSelectAll.CheckedChanged
+
+        Dim amt As Double = 0.00
+
+        If checkSelectAll.Checked Then
+            For index As Integer = 0 To dgvorders.Rows.Count - 1
+                dgvorders.Rows(index).Cells("select1").Value = True
+                If dgvorders.Rows(index).Cells("tendertype").Value = "Cash" Then
+                    amt += CDbl(dgvorders.Rows(index).Cells("amountdue").Value)
+                End If
+            Next
+        Else
+            For index As Integer = 0 To dgvorders.Rows.Count - 1
+                dgvorders.Rows(index).Cells("select1").Value = False
+                If dgvorders.Rows(index).Cells("tendertype").Value = "Cash" Then
+                    amt += CDbl(dgvorders.Rows(index).Cells("amountdue").Value)
+                End If
+            Next
+        End If
+        lbltotalamt.Text = "Pending Total Amt. Due:   " & amt.ToString("n2")
+        loadItems()
     End Sub
 
     Private Sub btnadd_Click(sender As Object, e As EventArgs) Handles btnadd.Click
