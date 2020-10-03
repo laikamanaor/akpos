@@ -50,11 +50,11 @@ Public Class access_class
         Return result
     End Function
 
-    Public Function loadAccess() As DataTable
+    Public Function loadAccess(ByVal status as Integer) As DataTable
         Dim result As New DataTable
         Try
             cc.con.Open()
-            cc.cmd = New SqlCommand("SELECT a.id,(SELECT name FROM tblmodules WHERE id=a.moduleid) [module],(SELECT username FROM tblusers WHERE systemid=a.userid) [username],a.status FROM tblaccess a", cc.con)
+            cc.cmd = New SqlCommand("SELECT a.id,(SELECT name FROM tblmodules WHERE id=a.moduleid) [module],(SELECT username FROM tblusers WHERE systemid=a.userid) [username],a.status FROM tblaccess a WHERE a.status=" & status & ";", cc.con)
             cc.adptr.SelectCommand = cc.cmd
             cc.adptr.Fill(result)
             cc.con.Close()
