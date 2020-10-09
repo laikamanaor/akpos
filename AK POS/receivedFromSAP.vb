@@ -25,15 +25,19 @@ Public Class receivedFromSAP
         Dim receievedType As String = IIf(cmbtype.SelectedIndex.Equals(1), "A1 P-FG", "")
 
         If cmbtype.SelectedIndex.Equals(0) Then
-            receievedType = "FromWhsCod LIKE '%%'"
+            receievedType = "a.FromWhsCod LIKE '%%'"
         ElseIf cmbtype.SelectedIndex.Equals(1) Then
-            receievedType = "FromWhsCod LIKE '%A1 P-FG%'"
+            receievedType = "a.FromWhsCod LIKE '%A1 P-FG%'"
         ElseIf cmbtype.SelectedIndex.Equals(2) Then
-            receievedType = "NOT FromWhsCod LIKE '%A1 P-FG%'"
+            receievedType = "NOT a.FromWhsCod LIKE '%A1 P-FG%'"
         End If
 
         Dim adptr As New SqlClient.SqlDataAdapter, result As New DataTable, auto As New AutoCompleteStringCollection
-        Dim query As String = "SELECT DISTINCT docNum [sap_number], FromWhsCod [fromWhat] FROM vSAP_IT WHERE CAST(DocDate AS date)=(select cast(getdate() as date)) AND " & receievedType & " AND docNum LIKE '%" & IIf(txtSearch.Text.Equals("Search SAP #"), "", txtSearch.Text) & "%' ORDER BY docNum"
+        ' Dim query As String = "SELECT DISTINCT docNum [sap_number], FromWhsCod [fromWhat] FROM vSAP_IT WHERE CAST(DocDate AS date)='10/09/2020' AND " & receievedType & " AND docNum LIKE '%" & IIf(txtSearch.Text.Equals("Search SAP #"), "", txtSearch.Text) & "%' ORDER BY docNum"
+        Dim query As String = "SELECT docNum [result],FromWhsCod [fromWhat], Dscription,Quantity FROM vSAP_IT WHERE CAST(DocDate AS date)>='10/09/2020' AND docNum LIKE '%" & IIf(txtSearch.Text.Equals("Search SAP #"), "", txtSearch.Text) & "%' ORDER BY docNum"
+        ' "SELECT DISTINCT ISNULL(a.Dscription,0) [item],SUM(a.Quantity) [quantity] FROM vSAP_IT a OUTER APPLY(SELECT DISTINCT ISNULL(b.sap_number,0) [sap_number] FROM tblproduction b WHERE b.sap_number != a.DocNum AND b.sap_number !='To Follow' AND b.status='Completed') x WHERE CAST(DocDate AS date)='10/09/2020' AND " & receievedType & " AND  x.sap_number IS NOT NULL AND a.DocNum=" + Integer.parseInt(value) + " GROUP BY a.Dscription"
+
+
         'Dim query As String = "SELECT docNum [sap_number], ItemCode [item_code],Dscription [item_name],Quantity [quantity], FromWhsCod [fromWhat] FROM vSAP_IT WHERE CAST(DocDate AS date)=(select cast(getdate() as date)) ORDER BY FromWhsCod"
         spinner.Visible = True
         Try
@@ -45,31 +49,47 @@ Public Class receivedFromSAP
             cc.con.Open()
             cc.cmd = New SqlClient.SqlCommand(query, cc.con)
             adptr.SelectCommand = cc.cmd
+            cc.cmd.CommandTimeout = 420
             adptr.Fill(result)
             cc.con.Close()
         Catch ex As Exception
             Me.Cursor = Cursors.Default
-            MessageBox.Show("No Internet Connection", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            MessageBox.Show(ex.Message, "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
         Finally
             cc.con.Close()
         End Try
 
         Try
+
             If result.Rows.Count <> 0 Then
+                Dim dtFinal As New DataTable()
+                dtFinal.Columns.Add("result")
+                dtFinal.Columns.Add("fromReceived")
+                dtFinal.Columns.Add("fromWhat")
                 For Each r0w As DataRow In result.Rows
                     cc.con.Open()
-                    cc.cmd = New SqlClient.SqlCommand("SELECT transaction_id FROM tblproduction WHERE CAST(date AS date)=(select cast(getdate() as date)) AND sap_number=@sapNumber AND sap_number !='To Follow' AND status='Completed';", cc.con)
-                    cc.cmd.Parameters.AddWithValue("@sapNumber", r0w("sap_number").ToString)
+                    cc.cmd = New SqlClient.SqlCommand("SELECT transaction_id FROM tblproduction WHERE CAST(date AS date)=(select cast(getdate() as date)) AND sap_number='" & r0w("result") & "' AND item_name='" & r0w("Dscription") & "' AND sap_number !='To Follow' AND status='Completed'", cc.con)
                     cc.rdr = cc.cmd.ExecuteReader
                     If Not cc.rdr.Read Then
-                        Dim sap_number As String = r0w("sap_number")
+                        Dim sap_number As String = r0w("result")
                         Dim fromWhat As String = r0w("fromWhat")
                         Dim fromReceived As String = IIf(fromWhat.Equals("A1 P-FG"), "Received from Production", "Received from Other Branch")
-                        dgv.Rows.Add(sap_number, fromReceived, fromWhat)
-                        Me.Refresh()
+                        dtFinal.Rows.Add(sap_number, fromReceived, fromWhat)
                     End If
                     cc.con.Close()
                 Next
+
+                Dim view As New DataView(dtFinal)
+                Dim distinctValues As New DataTable()
+                distinctValues = view.ToTable(True, "result", "fromReceived", "fromWhat")
+
+                If distinctValues.Rows.Count > 0 Then
+                    For Each r0w As DataRow In distinctValues.Rows
+                        dgv.Rows.Add(r0w("result"), r0w("fromReceived"), r0w("fromWhat"))
+                        Me.Refresh()
+                    Next
+                End If
+
             End If
             spinner.Visible = False
             Me.Cursor = Cursors.Default
@@ -78,7 +98,7 @@ Public Class receivedFromSAP
             lblNoDataFound.Text = IIf(dgv.Rows.Count <> 0, "NO DATA FOUND", "")
             enableDisable(True)
         Catch ex As Exception
-            MessageBox.Show("No Internet Connection", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            MessageBox.Show(ex.ToString, "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
         Finally
             cc.con.Close()
         End Try
@@ -126,6 +146,12 @@ Public Class receivedFromSAP
     Private Sub txtSearch_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txtSearch.KeyPress
         If Not Char.IsControl(e.KeyChar) And Not Char.IsDigit(e.KeyChar) Then
             e.Handled = True
+        End If
+    End Sub
+
+    Private Sub dgv_DataError(sender As Object, e As DataGridViewDataErrorEventArgs) Handles dgv.DataError
+        If (e.Context = DataGridViewDataErrorContexts.LeaveControl) Then
+            MessageBox.Show("leave control error")
         End If
     End Sub
 End Class

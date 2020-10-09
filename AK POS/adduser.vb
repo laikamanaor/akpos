@@ -151,7 +151,7 @@ Public Class adduser
             txtname.Text = r0w("fullname")
             txtusername.Text = r0w("username")
             current_username = r0w("username")
-            txtpassword.Text = conc.Decrypt(r0w("password"))
+            txtpassword.Text = System.Text.Encoding.UTF8.GetString(Convert.FromBase64String(r0w("password")))
             cmbworkgroup.Text = r0w("workgroup")
             cmbstatus.Text = IIf(r0w("status") = 1, "Active", "In Active")
             cmbranches.Text = r0w("branchcode")

@@ -41,7 +41,7 @@ Public Class access
                         If Convert.ToBoolean(dgv.Rows(index).Cells("selectt").Value) = True Then
                             Dim status As Integer = IIf(dgv.Rows(index).Cells("status").Value = "Active", 0, 1)
                             Dim id As Integer = CInt(dgv.Rows(index).Cells("id").Value)
-                            cmdd.CommandText = "UPDATE tblaccess SET status=" & status & " WHERE id=" & id & ";"
+                            cmdd.CommandText = "UPDATE tblaccesss SET status=" & status & ",datemodified=(SELECT GETDATE()),modifiedbyid=(SELECT systemid FROM tblusers WHERE username='" & login2.username & "') WHERE id=" & id & ";"
                             cmdd.ExecuteNonQuery()
 
                         End If

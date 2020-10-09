@@ -24,7 +24,7 @@ Public Class receivedFromSAPItems
         Dim adptr As New SqlClient.SqlDataAdapter, result As New DataTable, auto As New AutoCompleteStringCollection
         Try
             spinner.Visible = True
-            Dim query As String = "SELECT Dscription [item_name],Quantity [quantity],FromWhsCod [fromWhat] FROM vSAP_IT WHERE CAST(DocDate AS date)=(select cast(getdate() as date)) AND DocNum=" & sapNumber & " ORDER BY docNum"
+            Dim query As String = "SELECT DISTINCT DocNum [sap_number],FromWhsCod [fromWhat],Dscription [item_name], Quantity [quantity]  FROM VSAP_IT WHERE CAST(DocDate AS date)>='10/09/2020' AND docNum LIKE '%" & sapNumber & "%';"
             cc.con.Open()
             cc.cmd = New SqlClient.SqlCommand(query, cc.con)
             cc.cmd.CommandType = CommandType.Text
@@ -32,8 +32,15 @@ Public Class receivedFromSAPItems
             cc.con.Close()
             adptr.Fill(result)
             For Each r0w As DataRow In result.Rows
-                dgv.Rows.Add(r0w("item_name"), CInt(r0w("quantity")).ToString("N0"), 0)
-                lblBranch.Text = "FROM: " & r0w("fromWhat")
+                cc.con.Open()
+                cc.cmd = New SqlClient.SqlCommand("SELECT transaction_id FROM tblproduction WHERE CAST(date AS date)>='10/09/2020' AND sap_number='" & r0w("sap_number") & "' AND item_name='" & r0w("item_name") & "' AND sap_number !='To Follow' AND status='Completed'", cc.con)
+                cc.rdr = cc.cmd.ExecuteReader
+                If Not cc.rdr.Read Then
+                    dgv.Rows.Add(r0w("item_name"), CInt(r0w("quantity")).ToString("N0"), "")
+                    lblBranch.Text = "FROM: " & r0w("fromWhat")
+                End If
+                cc.con.Close()
+
             Next
             lblCount.Text = "ITEMS (" & dgv.Rows.Count.ToString("N0") & ")"
             lblNoDataFound.Visible = IIf(dgv.Rows.Count <> 0, False, True)
@@ -83,17 +90,7 @@ Public Class receivedFromSAPItems
 
 
     Private Sub btnSubmit_Click(sender As Object, e As EventArgs) Handles btnProceed.Click
-        Dim hasZeroQuantity As String = "Zero Quantity in Item Below:" & Environment.NewLine
-        For i As Integer = 0 To dgv.RowCount - 1
-            If CInt(dgv.Rows(i).Cells("actual_quantity").Value) <= 0 Then
-                hasZeroQuantity &= dgv.Rows(i).Cells("item_name").Value & Environment.NewLine
-            End If
-        Next
-        If hasZeroQuantity <> "Zero Quantity in Item Below:" & Environment.NewLine Then
-            MessageBox.Show(hasZeroQuantity, "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
-        Else
-            clearPanelRemarks(True)
-        End If
+        clearPanelRemarks(True)
     End Sub
 
     Private Sub dgv_CellEnter(sender As Object, e As DataGridViewCellEventArgs) Handles dgv.CellEnter
@@ -102,14 +99,11 @@ Public Class receivedFromSAPItems
 
     Private Sub dgv_CellEndEdit(sender As Object, e As DataGridViewCellEventArgs) Handles dgv.CellEndEdit
         If dgv.CurrentRow.Cells("actual_quantity").Value = Nothing Then
-            MessageBox.Show("Please Input atleast 1", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
-            dgv.CurrentRow.Cells("actual_quantity").Value = 0
+            MessageBox.Show("Please Input quantity", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            dgv.CurrentRow.Cells("actual_quantity").Value = ""
         ElseIf Not IsNumeric(dgv.CurrentRow.Cells("actual_quantity").Value.ToString) Then
             MessageBox.Show("Invalid Input", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
-            dgv.CurrentRow.Cells("actual_quantity").Value = 0
-        ElseIf CInt(dgv.CurrentRow.Cells("actual_quantity").Value.ToString) <= 0 Then
-            MessageBox.Show("Please Input atleast 1", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
-            dgv.CurrentRow.Cells("actual_quantity").Value = 0
+            dgv.CurrentRow.Cells("actual_quantity").Value = ""
         End If
     End Sub
 
@@ -117,25 +111,29 @@ Public Class receivedFromSAPItems
         If String.IsNullOrEmpty(txtremarks.Text) Then
             MessageBox.Show("Remarks field is required", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
         Else
-            recc.inventoryNumber = itemc.getInvID()
-            Dim tableName As String = returnTableName()
-            recc.fromBranchSupplier = returnFromBranch()
-            recc.headerText = IIf(tableName.Equals("productionin"), "Received from Production", "Received from Other Branch")
-            recc.tableName = tableName
-            recc.sapDocument = "IT"
-            recc.remarks = txtremarks.Text
-            recc.sapNumber = sapNumber
-            Dim transactionNumber As String = recc.returnTransactionNumber(True)
-            recc.transactionNumber = transactionNumber
-            Dim dtItems As New DataTable
-            dtItems.Columns.Add("item")
-            dtItems.Columns.Add("quantity")
-            For i As Integer = 0 To dgv.RowCount - 1
-                dtItems.Rows.Add(dgv.Rows(i).Cells("item_name").Value, dgv.Rows(i).Cells("actual_quantity").Value)
-            Next
-            recc.updateInventory(dtItems)
-            clearPanelRemarks(False)
-            Me.Hide()
+            Dim a As String = MsgBox("Are you sure you want to submit?", MsgBoxStyle.Question + MsgBoxStyle.YesNo, "")
+            If a = vbYes Then
+                recc.inventoryNumber = itemc.getInvID()
+                Dim tableName As String = returnTableName()
+                recc.fromBranchSupplier = returnFromBranch()
+                recc.headerText = IIf(tableName.Equals("productionin"), "Received from Production", "Received from Other Branch")
+                recc.tableName = tableName
+                recc.sapDocument = "IT"
+                recc.remarks = txtremarks.Text
+                recc.sapNumber = sapNumber
+                Dim transactionNumber As String = recc.returnTransactionNumber(True)
+                recc.transactionNumber = transactionNumber
+                Dim dtItems As New DataTable
+                dtItems.Columns.Add("item")
+                dtItems.Columns.Add("quantity")
+                For i As Integer = 0 To dgv.RowCount - 1
+                    If IsNumeric(dgv.Rows(i).Cells("actual_quantity").Value) Then
+                        dtItems.Rows.Add(dgv.Rows(i).Cells("item_name").Value, dgv.Rows(i).Cells("actual_quantity").Value)
+                    End If
+                Next
+                recc.updateInventory(dtItems)
+                Me.Close()
+            End If
         End If
     End Sub
 
@@ -170,5 +168,27 @@ Public Class receivedFromSAPItems
 
     Private Sub Panel3_MouseUp(sender As Object, e As MouseEventArgs) Handles Panel3.MouseUp, MyBase.MouseUp, lblheader.MouseUp
         uic.mouse_up()
+    End Sub
+
+    Private Sub dgv_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgv.CellContentClick
+        dgv.CommitEdit(DataGridViewDataErrorContexts.Commit)
+    End Sub
+
+    Private Sub dgv_CellValueChanged(sender As Object, e As DataGridViewCellEventArgs) Handles dgv.CellValueChanged
+        If dgv.Rows.Count > 0 Then
+            If e.ColumnIndex = 2 Then
+                If IsNumeric(dgv.CurrentRow.Cells("actual_quantity").Value) Then
+                    Dim deliveredQuantity As Integer = dgv.CurrentRow.Cells("quantity").Value
+                    Dim actualQuantity As Integer = dgv.CurrentRow.Cells("actual_quantity").Value
+                    Dim variance As Double = actualQuantity - deliveredQuantity
+                    dgv.CurrentRow.Cells("variance").Value = variance.ToString("N0")
+                Else
+                    Dim deliveredQuantity As Integer = dgv.CurrentRow.Cells("quantity").Value
+                    Dim actualQuantity As Integer = 0
+                    Dim variance As Double = actualQuantity - deliveredQuantity
+                    dgv.CurrentRow.Cells("variance").Value = variance.ToString("N0")
+                End If
+            End If
+        End If
     End Sub
 End Class

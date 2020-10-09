@@ -14,7 +14,7 @@ Public Class access_class
                 cmdd.Transaction = transaction
 
                 cmdd.Parameters.Clear()
-                cmdd.CommandText = "INSERT INTO tblaccess (userid,moduleid,status,createdbyid,datecreated) VALUES ((SELECT systemid FROM tblusers WHERE username=@username),(SELECT id FROM tblmodules WHERE name=@module),@status,(SELECT systemid FROM tblusers WHERE username=@createdby),(SELECT GETDATE()))"
+                cmdd.CommandText = "INSERT INTO tblaccesss (userid,moduleid,status,createdbyid,datecreated) VALUES ((SELECT systemid FROM tblusers WHERE username=@username),(SELECT id FROM tblmodules WHERE name=@module),@status,(SELECT systemid FROM tblusers WHERE username=@createdby),(SELECT GETDATE()))"
                 cmdd.Parameters.Add(New SqlParameter("@username", username))
                 cmdd.Parameters.Add(New SqlParameter("@module", modulee))
                 cmdd.Parameters.Add(New SqlParameter("@status", status))
@@ -38,28 +38,47 @@ Public Class access_class
         Dim result As Boolean = False, result_int As Integer = 0
         Try
             cc.con.Open()
-            cc.cmd = New SqlClient.SqlCommand("SELECT id FROM tblaccess WHERE userid=(SELECT systemid FROM tblusers WHERE username=@username) AND moduleid=(SELECT id FROM tblmodules WHERE name=@module)", cc.con)
+            cc.cmd = New SqlClient.SqlCommand("SELECT id FROM tblaccesss WHERE userid=(SELECT systemid FROM tblusers WHERE username=@username) AND moduleid=(SELECT id FROM tblmodules WHERE name=@module)", cc.con)
             cc.cmd.Parameters.AddWithValue("@username", username)
             cc.cmd.Parameters.AddWithValue("@module", modulee)
             result_int = cc.cmd.ExecuteScalar
             cc.con.Close()
         Catch ex As Exception
-            MessageBox.Show("loadModules() " & ex.Message)
+            MessageBox.Show("checkAccess() " & ex.Message)
         End Try
         result = IIf(result_int <= 0, False, True)
         Return result
     End Function
 
-    Public Function loadAccess(ByVal status as Integer) As DataTable
+    Public Function loadAccess(ByVal status As Integer) As DataTable
         Dim result As New DataTable
         Try
             cc.con.Open()
-            cc.cmd = New SqlCommand("SELECT a.id,(SELECT name FROM tblmodules WHERE id=a.moduleid) [module],(SELECT username FROM tblusers WHERE systemid=a.userid) [username],a.status FROM tblaccess a WHERE a.status=" & status & ";", cc.con)
+            cc.cmd = New SqlCommand("SELECT a.id,(SELECT name FROM tblmodules WHERE id=a.moduleid) [module],(SELECT username FROM tblusers WHERE systemid=a.userid) [username],a.status FROM tblaccesss a WHERE a.status=" & status & ";", cc.con)
             cc.adptr.SelectCommand = cc.cmd
             cc.adptr.Fill(result)
             cc.con.Close()
         Catch ex As Exception
             MessageBox.Show("loadAccess() " & ex.Message)
+        End Try
+        Return result
+    End Function
+
+    Public Function isUserAllowed(ByVal typee As String) As Boolean
+        Dim result As Boolean = False
+        Try
+            cc.con.Open()
+            cc.cmd = New SqlCommand("SELECT COUNT(id) [count] FROM tblaccesss WHERE userid=" & login2.userID & " AND moduleid=(SELECT id FROM tblmodules WHERE name='" & typee & "') AND status=1;", cc.con)
+            cc.rdr = cc.cmd.ExecuteReader
+            If cc.rdr.Read Then
+                Dim count As Integer = cc.rdr("count")
+                If count > 0 Then
+                    result = True
+                End If
+            End If
+            cc.con.Close()
+        Catch ex As Exception
+            MessageBox.Show("isUserAllowed() " & ex.ToString)
         End Try
         Return result
     End Function

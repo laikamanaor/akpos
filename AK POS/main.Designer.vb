@@ -75,6 +75,7 @@ Partial Class main
         Me.btnmanageitem = New System.Windows.Forms.Button()
         Me.btnitems = New System.Windows.Forms.Button()
         Me.panelsubsettings = New System.Windows.Forms.Panel()
+        Me.btnAccess = New System.Windows.Forms.Button()
         Me.btncutoff = New System.Windows.Forms.Button()
         Me.btnlogout = New System.Windows.Forms.Button()
         Me.btnsettings = New System.Windows.Forms.Button()
@@ -88,7 +89,6 @@ Partial Class main
         Me.Timer2 = New System.Windows.Forms.Timer(Me.components)
         Me.panelchildform = New System.Windows.Forms.Panel()
         Me.SaveFileDialog1 = New System.Windows.Forms.SaveFileDialog()
-        Me.btnAccess = New System.Windows.Forms.Button()
         Me.Panel1.SuspendLayout()
         Me.panelsuborders.SuspendLayout()
         Me.panelsubusers.SuspendLayout()
@@ -1017,6 +1017,23 @@ Partial Class main
         Me.panelsubsettings.TabIndex = 1
         Me.panelsubsettings.Visible = False
         '
+        'btnAccess
+        '
+        Me.btnAccess.BackColor = System.Drawing.Color.White
+        Me.btnAccess.Dock = System.Windows.Forms.DockStyle.Top
+        Me.btnAccess.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(CType(CType(23, Byte), Integer), CType(CType(23, Byte), Integer), CType(CType(32, Byte), Integer))
+        Me.btnAccess.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnAccess.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnAccess.ForeColor = System.Drawing.Color.FromArgb(CType(CType(218, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(28, Byte), Integer))
+        Me.btnAccess.Location = New System.Drawing.Point(0, 62)
+        Me.btnAccess.Name = "btnAccess"
+        Me.btnAccess.Padding = New System.Windows.Forms.Padding(20, 0, 0, 0)
+        Me.btnAccess.Size = New System.Drawing.Size(218, 31)
+        Me.btnAccess.TabIndex = 3
+        Me.btnAccess.Text = "Access"
+        Me.btnAccess.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnAccess.UseVisualStyleBackColor = False
+        '
         'btncutoff
         '
         Me.btncutoff.BackColor = System.Drawing.Color.White
@@ -1170,23 +1187,6 @@ Partial Class main
         Me.panelchildform.Name = "panelchildform"
         Me.panelchildform.Size = New System.Drawing.Size(564, 305)
         Me.panelchildform.TabIndex = 2
-        '
-        'btnAccess
-        '
-        Me.btnAccess.BackColor = System.Drawing.Color.White
-        Me.btnAccess.Dock = System.Windows.Forms.DockStyle.Top
-        Me.btnAccess.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(CType(CType(23, Byte), Integer), CType(CType(23, Byte), Integer), CType(CType(32, Byte), Integer))
-        Me.btnAccess.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnAccess.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnAccess.ForeColor = System.Drawing.Color.FromArgb(CType(CType(218, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(28, Byte), Integer))
-        Me.btnAccess.Location = New System.Drawing.Point(0, 62)
-        Me.btnAccess.Name = "btnAccess"
-        Me.btnAccess.Padding = New System.Windows.Forms.Padding(20, 0, 0, 0)
-        Me.btnAccess.Size = New System.Drawing.Size(218, 31)
-        Me.btnAccess.TabIndex = 3
-        Me.btnAccess.Text = "Access"
-        Me.btnAccess.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnAccess.UseVisualStyleBackColor = False
         '
         'main
         '

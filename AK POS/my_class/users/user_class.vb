@@ -160,7 +160,7 @@ Public Class user_class
                 cmdd.CommandType = CommandType.StoredProcedure
                 cmdd.Parameters.AddWithValue("@fullname", name)
                 cmdd.Parameters.AddWithValue("@username", username)
-                cmdd.Parameters.AddWithValue("@password", cc.Encrypt(password))
+                cmdd.Parameters.AddWithValue("@password", System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(password)).Trim)
                 cmdd.Parameters.AddWithValue("@workgroup", workgroup)
                 cmdd.Parameters.AddWithValue("@createdby", login2.username)
                 cmdd.Parameters.AddWithValue("@status", status)
@@ -191,7 +191,7 @@ Public Class user_class
                 cmdd.CommandType = CommandType.StoredProcedure
                 cmdd.Parameters.AddWithValue("@fullname", name)
                 cmdd.Parameters.AddWithValue("@username", username)
-                cmdd.Parameters.AddWithValue("@password", cc.Encrypt(password))
+                cmdd.Parameters.AddWithValue("@password", System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(password)).Trim)
                 cmdd.Parameters.AddWithValue("@workgroup", workgroup)
                 cmdd.Parameters.AddWithValue("@modifiedby", login2.username)
                 cmdd.Parameters.AddWithValue("@status", status)

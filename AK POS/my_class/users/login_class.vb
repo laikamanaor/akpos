@@ -23,7 +23,8 @@ Public Class login_class
         cc.con.Open()
         cc.cmd = New SqlClient.SqlCommand("SELECT dbo.checkLogin(@username,@password)", cc.con)
         cc.cmd.Parameters.AddWithValue("@username", username)
-        cc.cmd.Parameters.AddWithValue("@password", cc.Encrypt(password))
+        'cc.cmd.Parameters.AddWithValue("@password", cc.Encrypt(password))
+        cc.cmd.Parameters.AddWithValue("@password", System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(password)).Trim)
         result_num = cc.cmd.ExecuteScalar()
         cc.con.Close()
         result = IIf(result_num = 1, True, False)
@@ -92,10 +93,10 @@ Public Class login_class
             cc.con.Close()
         End Try
     End Sub
-    Public Function getWorkgroup() As String
+    Public Function getWorkgroup(ByVal columnName As String) As String
         Dim result As String = ""
         cc.con.Open()
-        cc.cmd = New SqlClient.SqlCommand("SELECT workgroup FROM tblusers WHERE username=@username", cc.con)
+        cc.cmd = New SqlClient.SqlCommand("SELECT " & columnName & " [" & columnName & "] FROM tblusers WHERE username=@username", cc.con)
         cc.cmd.Parameters.AddWithValue("@username", username)
         result = cc.cmd.ExecuteScalar
         cc.con.Close()

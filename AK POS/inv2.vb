@@ -16,6 +16,7 @@ Public Class inv2
         Try
             If cmbinventory.SelectedIndex = 0 Then
 
+                btnPrint.Visible = False
                 dgv.Columns("salesin").HeaderText = "Transfer from Sales"
                 dgv.Columns("salesout").HeaderText = "Transfer to Sales"
 
@@ -46,15 +47,16 @@ Public Class inv2
                     Dim over_amt As Double = 0.00, ctr_amt As Double = 0.00
                     If Not IsDBNull(r0w("over_amt")) Then
                         over_amt = CDbl(r0w("over_amt"))
-
                     End If
                     If Not IsDBNull(r0w("ctrout_amt")) Then
                         ctr_amt = CDbl(r0w("ctrout_amt"))
                     End If
-                    dgv.Rows.Add(r0w("invid"), r0w("itemcode"), r0w("itemname"), r0w("category"), CInt(r0w("begbal")).ToString("N0"), CInt(r0w("produce")).ToString("N0"), r0w("good"), r0w("charge"), CInt(r0w("productionin")).ToString("N0"), CInt(r0w("itemin")).ToString("N0"), CInt(r0w("supin")).ToString("N0"), CInt(r0w("adjustmentin")).ToString("N0"), CInt(r0w("convin")).ToString("N0"), CInt(r0w("salesin")).ToString("N0"), CInt(r0w("totalav")).ToString("N0"), CInt(r0w("transfer")).ToString("N0"), CInt(r0w("pullout2")).ToString("N0"), CInt(r0w("ctrout")).ToString("N0"), CInt(r0w("archarge")).ToString("N0"), CInt(r0w("arsales")).ToString("N0"), CInt(r0w("convout")).ToString("N0"), CInt(r0w("pullout")).ToString("N0"), CInt(r0w("salesout")).ToString("N0"), CInt(r0w("endbal")).ToString("N0"), CInt(r0w("actualendbal")).ToString("N0"), CInt(r0w("variance")).ToString("N0"), r0w("shortover"), over_amt, ctr_amt, CDbl(r0w("archarge_amt")).ToString("n2"), CDbl(r0w("arsales_amt")).ToString("n2"))
+                    Dim variance As Integer = CInt(r0w("actualendbal")) - CInt(r0w("endbal"))
+                    dgv.Rows.Add(r0w("invid"), r0w("itemcode"), r0w("itemname"), r0w("category"), CInt(r0w("begbal")).ToString("N0"), CInt(r0w("produce")).ToString("N0"), r0w("good"), r0w("charge"), CInt(r0w("productionin")).ToString("N0"), CInt(r0w("itemin")).ToString("N0"), CInt(r0w("supin")).ToString("N0"), CInt(r0w("adjustmentin")).ToString("N0"), CInt(r0w("convin")).ToString("N0"), CInt(r0w("salesin")).ToString("N0"), CInt(r0w("totalav")).ToString("N0"), CInt(r0w("transfer")).ToString("N0"), CInt(r0w("pullout2")).ToString("N0"), CInt(r0w("ctrout")).ToString("N0"), CInt(r0w("archarge")).ToString("N0"), CInt(r0w("arsales")).ToString("N0"), CInt(r0w("convout")).ToString("N0"), CInt(r0w("pullout")).ToString("N0"), CInt(r0w("salesout")).ToString("N0"), CInt(r0w("endbal")).ToString("N0"), CInt(r0w("actualendbal")).ToString("N0"), variance.ToString("N0"), r0w("shortover"), over_amt, ctr_amt, CDbl(r0w("archarge_amt")).ToString("n2"), CDbl(r0w("arsales_amt")).ToString("n2"))
                     colors()
                 Next
             Else
+                btnPrint.Visible = True
                 dgv.Columns("salesin").HeaderText = "Transfer to Sales"
                 dgv.Columns("salesout").HeaderText = "Transfer to Main"
 
@@ -78,7 +80,7 @@ Public Class inv2
                 dgv.Columns("shortover").Visible = False
                 dgv.Columns("overamt").Visible = False
                 Dim dt As New DataTable()
-                dt = invc.getSalesInventory(cmbinventory.Text)
+                dt = invc.getSalesInventory(cmbinventory.Text, dtinvsearch.Value.ToString("MM/dd/yyyy"))
                 dgv.Rows.Clear()
                 For Each r0w As DataRow In dt.Rows
                     dgv.Rows.Add("N/A", "N/A", r0w("item"), "N/a", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", CInt(r0w("transferToSales")).ToString("N0"), CInt(r0w("transferToSales")).ToString("N0"), "N/A", "N/A", CInt(r0w("counter")).ToString("N0"), CInt(r0w("archarge")).ToString("N0"), CInt(r0w("arsales")).ToString("N0"), "N/A", "N/A", CInt(r0w("transferFromSales")).ToString("N0"), CInt(r0w("endbal")).ToString("N0"), "N/A", "0", "N/A", "0", CDbl(r0w("counter_amt")).ToString("N0"), CDbl(r0w("archarge_amt")).ToString("n2"), CDbl(r0w("arsales_amt")).ToString("n2"))
@@ -294,25 +296,29 @@ Public Class inv2
     End Sub
 
     Private Sub btnPrint_Click(sender As Object, e As EventArgs) Handles btnPrint.Click
-        Dim user As String = "admin"
-        Dim pass As String = "admin"
-        Dim servername As String = "DELL,1433"
-        Dim dbName As String = "AKPOS"
-        Dim fileName As String = "salesInventory"
+        If cmbinventory.Text = login2.username Or login2.wrkgrp = "Manager" Then
+            Dim user As String = "admin"
+            Dim pass As String = "admin"
+            Dim servername As String = "DELL,1433"
+            Dim dbName As String = "AKPOS"
+            Dim fileName As String = "salesInventory"
 
-        Dim rptDoc As New CrystalDecisions.CrystalReports.Engine.ReportDocument
-        'rptDoc = New AB_Coffee_Shop
-        'Dim strReportPath As String = "\\192.168.30.6\Atlantic Inv\Reports\" & fileName & ".rpt"
-        Dim strReportPath As String = My.Application.Info.DirectoryPath & "\" & fileName & ".rpt"
-        rptDoc.Load(strReportPath)
-        rptDoc.SetDatabaseLogon(user, pass, servername, dbName)
-        rptDoc.SetParameterValue("transfer_from", cmbinventory.Text)
-        rptDoc.SetParameterValue("inv_date", dtinvsearch.Value)
-        'cform_coffeeshop.CrystalReportViewer1.ReportSource = Nothing
-        'cform_coffeeshop.CrystalReportViewer1.Refresh()
-        cform_coffeeshop.CrystalReportViewer1.ReportSource = rptDoc
-        cform_coffeeshop.CrystalReportViewer1.RefreshReport()
-        cform_coffeeshop.ShowDialog()
+            Dim rptDoc As New CrystalDecisions.CrystalReports.Engine.ReportDocument
+            'rptDoc = New AB_Coffee_Shop
+            'Dim strReportPath As String = "\\192.168.30.6\Atlantic Inv\Reports\" & fileName & ".rpt"
+            Dim strReportPath As String = My.Application.Info.DirectoryPath & "\" & fileName & ".rpt"
+            rptDoc.Load(strReportPath)
+            rptDoc.SetDatabaseLogon(user, pass, servername, dbName)
+            rptDoc.SetParameterValue("transfer_from", cmbinventory.Text)
+            rptDoc.SetParameterValue("inv_date", dtinvsearch.Value)
+            'cform_coffeeshop.CrystalReportViewer1.ReportSource = Nothing
+            'cform_coffeeshop.CrystalReportViewer1.Refresh()
+            cform_coffeeshop.CrystalReportViewer1.ReportSource = rptDoc
+            cform_coffeeshop.CrystalReportViewer1.RefreshReport()
+            cform_coffeeshop.ShowDialog()
+        Else
+            MessageBox.Show("Acess Denied", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End If
     End Sub
 
     Private Sub inv2_Shown(sender As Object, e As EventArgs) Handles MyBase.Shown

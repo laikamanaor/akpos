@@ -6,6 +6,7 @@ Public Class main
     Dim loginc As New login_class
     Dim invc As New inventory_class
     Dim userc As New user_class
+    Dim accessc As New access_class
 
     'local variable
     Dim drag As Boolean
@@ -197,11 +198,6 @@ Public Class main
         f.Show()
     End Sub
     Public Sub createNewInventory()
-        Dim a As String = MsgBox("Are you sure you want to create new inventory?", MsgBoxStyle.Question + MsgBoxStyle.YesNo + MsgBoxStyle.DefaultButton2, "")
-        If a <> vbYes Then
-            Me.Cursor = Cursors.Default
-            Exit Sub
-        End If
         Dim invNum As String = invc.getInvNum()
         Dim items As New List(Of Integer)
         cc.con.Open()
@@ -288,20 +284,26 @@ Public Class main
             cc.adptr.Fill(dt)
             cc.con.Close()
             If dt.Rows.Count = 0 Then
-                Control.CheckForIllegalCrossThreadCalls = False
-                Dim th As New Threading.Thread(AddressOf createNewInventory)
-                th.Start()
+                Dim a As String = MsgBox("Are you sure you want to create new inventory?", MsgBoxStyle.Question + MsgBoxStyle.YesNo + MsgBoxStyle.DefaultButton2, "")
+                If a = vbYes Then
+                    Control.CheckForIllegalCrossThreadCalls = False
+                    Dim th As New Threading.Thread(AddressOf createNewInventory)
+                    th.Start()
+                End If
             Else
-                For Each row As DataRow In dt.Rows
+                    For Each row As DataRow In dt.Rows
                     If row("verify") = 1 Then
                         If row("invdate") = cc.getSystemDate.ToString("MM/dd/yyyy") Then
                             MsgBox("Creating new inventory failed! Inventory end for this day.", MsgBoxStyle.Critical, "")
                         Else
-                            Control.CheckForIllegalCrossThreadCalls = False
-                            Dim th As New Threading.Thread(AddressOf createNewInventory)
-                            th.Start()
+                            Dim a As String = MsgBox("Are you sure you want to create new inventory?", MsgBoxStyle.Question + MsgBoxStyle.YesNo + MsgBoxStyle.DefaultButton2, "")
+                            If a = vbYes Then
+                                Control.CheckForIllegalCrossThreadCalls = False
+                                Dim th As New Threading.Thread(AddressOf createNewInventory)
+                                th.Start()
+                            End If
                         End If
-                    Else
+                            Else
                         MessageBox.Show("Verify first", "", MessageBoxButtons.OK, MessageBoxIcon.Error)
                     End If
                 Next
@@ -397,6 +399,8 @@ Public Class main
             MessageBox.Show("Access Denied", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
         ElseIf loginc.checkCutOff() Then
             MessageBox.Show("Your account is already cut off", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        ElseIf Not accessc.isUserAllowed("Received from Production") Then
+            MessageBox.Show("Access Denied", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
         Else
             hideShow(panelsubinventorytransaction)
             Dim frm As New received_item2()
@@ -410,6 +414,8 @@ Public Class main
             MessageBox.Show("Access Denied", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
         ElseIf loginc.checkCutOff() Then
             MessageBox.Show("Your account is already cut off", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        ElseIf Not accessc.isUserAllowed("Received from Other Branch") Then
+            MessageBox.Show("Access Denied", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
         Else
             hideShow(panelsubinventorytransaction)
             Dim frm As New received_item2()
@@ -423,6 +429,8 @@ Public Class main
             MessageBox.Show("Access Denied", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
         ElseIf loginc.checkCutOff() Then
             MessageBox.Show("Your account is already cut off", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        ElseIf Not accessc.isUserAllowed("Received from Direct Supplier") Then
+            MessageBox.Show("Access Denied", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
         Else
             hideShow(panelsubinventorytransaction)
             Dim frm As New received_item2()
@@ -750,5 +758,9 @@ Public Class main
         Else
             MessageBox.Show("Access Denied", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End If
+    End Sub
+
+    Private Sub main_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+
     End Sub
 End Class

@@ -169,7 +169,7 @@ Public Class inventory_class
         Return result
     End Function
 
-    Public Function getSalesInventory(ByVal transferFrom As String) As DataTable
+    Public Function getSalesInventory(ByVal transferFrom As String, ByVal datee As String) As DataTable
         Dim result As New DataTable(), adptr As New SqlClient.SqlDataAdapter
         Try
             Dim query As String = "SELECT a.item_name [item], SUM(a.quantity) [transferToSales] ,ISNULL(x.qty,0) [counter],
@@ -205,10 +205,10 @@ b.status2 IN ('Unpaid','Paid') AND b.tendertype='A.R Sales' AND b.createdby='" &
 )xxx
 OUTER APPLY(
 SELECT ISNULL(SUM(b.quantity),0) [transferFromSales] FROM tblproduction b WHERE b.type2='Transfer from Sales' AND b.inv_id = a.inv_id
-AND b.transfer_from = a.transfer_from AND b.item_name = a.item_name
+AND b.transfer_from = a.transfer_from AND b.item_name = a.item_name AND a.status='Completed'
 )xxxx
-WHERE a.inv_id=(SELECT TOP 1 invnum FROM tblinvsum ORDER BY invsumid DESC) 
-AND a.type2='Transfer to Sales' AND a.transfer_from='" & transferFrom & "' AND a.item_name LIKE '%%' 
+WHERE a.inv_id=(SELECT TOP 1 invnum FROM tblinvsum WHERE CAST(datecreated AS date)='" & datee & "')
+AND a.type2='Transfer to Sales' AND a.transfer_from='" & transferFrom & "'  AND a.status='Completed' AND a.item_name LIKE '%%' 
 GROUP BY a.item_name,x.qty,xx.qty,xxx.qty,xxxx.transferFromSales ORDER BY 2 DESC,1 ASC"
             cc.con.Open()
             cc.cmd = New SqlClient.SqlCommand(query, cc.con)

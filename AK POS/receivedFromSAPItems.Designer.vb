@@ -37,6 +37,7 @@ Partial Class receivedFromSAPItems
         Me.item_name = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.quantity = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.actual_quantity = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.variance = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.btnProceed = New System.Windows.Forms.Button()
         Me.Panel2 = New System.Windows.Forms.Panel()
         Me.Panel4 = New System.Windows.Forms.Panel()
@@ -167,7 +168,7 @@ Partial Class receivedFromSAPItems
         DataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
         Me.dgv.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle1
         Me.dgv.ColumnHeadersHeight = 40
-        Me.dgv.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.item_name, Me.quantity, Me.actual_quantity})
+        Me.dgv.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.item_name, Me.quantity, Me.actual_quantity, Me.variance})
         DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
         DataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window
         DataGridViewCellStyle2.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -192,7 +193,7 @@ Partial Class receivedFromSAPItems
         '
         'quantity
         '
-        Me.quantity.HeaderText = "Quantity"
+        Me.quantity.HeaderText = "Delivered Quantity"
         Me.quantity.Name = "quantity"
         Me.quantity.ReadOnly = True
         '
@@ -200,6 +201,12 @@ Partial Class receivedFromSAPItems
         '
         Me.actual_quantity.HeaderText = "Actual Quantity"
         Me.actual_quantity.Name = "actual_quantity"
+        '
+        'variance
+        '
+        Me.variance.HeaderText = "Variance"
+        Me.variance.Name = "variance"
+        Me.variance.ReadOnly = True
         '
         'btnProceed
         '
@@ -413,4 +420,5 @@ Partial Class receivedFromSAPItems
     Friend WithEvents item_name As DataGridViewTextBoxColumn
     Friend WithEvents quantity As DataGridViewTextBoxColumn
     Friend WithEvents actual_quantity As DataGridViewTextBoxColumn
+    Friend WithEvents variance As DataGridViewTextBoxColumn
 End Class

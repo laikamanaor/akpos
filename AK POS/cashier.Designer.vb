@@ -150,7 +150,7 @@ Partial Class cashier
         Me.Panel1.Controls.Add(Me.txtboxsearch)
         Me.Panel1.Location = New System.Drawing.Point(40, 80)
         Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(960, 333)
+        Me.Panel1.Size = New System.Drawing.Size(943, 333)
         Me.Panel1.TabIndex = 0
         '
         'checkSelectAll
@@ -158,7 +158,7 @@ Partial Class cashier
         Me.checkSelectAll.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.checkSelectAll.AutoSize = True
         Me.checkSelectAll.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.checkSelectAll.Location = New System.Drawing.Point(858, 34)
+        Me.checkSelectAll.Location = New System.Drawing.Point(841, 34)
         Me.checkSelectAll.Name = "checkSelectAll"
         Me.checkSelectAll.Size = New System.Drawing.Size(83, 20)
         Me.checkSelectAll.TabIndex = 31
@@ -173,7 +173,7 @@ Partial Class cashier
         Me.panelreasons.Controls.Add(Me.btnok)
         Me.panelreasons.Controls.Add(Me.Label17)
         Me.panelreasons.Controls.Add(Me.txtremarks)
-        Me.panelreasons.Location = New System.Drawing.Point(352, 57)
+        Me.panelreasons.Location = New System.Drawing.Point(343, 57)
         Me.panelreasons.Name = "panelreasons"
         Me.panelreasons.Size = New System.Drawing.Size(293, 204)
         Me.panelreasons.TabIndex = 18
@@ -238,7 +238,7 @@ Partial Class cashier
         Me.btncheckout.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btncheckout.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btncheckout.ForeColor = System.Drawing.Color.White
-        Me.btncheckout.Location = New System.Drawing.Point(786, 275)
+        Me.btncheckout.Location = New System.Drawing.Point(769, 275)
         Me.btncheckout.Name = "btncheckout"
         Me.btncheckout.Size = New System.Drawing.Size(76, 26)
         Me.btncheckout.TabIndex = 25
@@ -254,7 +254,7 @@ Partial Class cashier
         Me.btnref.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnref.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnref.ForeColor = System.Drawing.Color.White
-        Me.btnref.Location = New System.Drawing.Point(862, 275)
+        Me.btnref.Location = New System.Drawing.Point(845, 275)
         Me.btnref.Name = "btnref"
         Me.btnref.Size = New System.Drawing.Size(79, 26)
         Me.btnref.TabIndex = 21
@@ -267,7 +267,7 @@ Partial Class cashier
         Me.Label23.AutoSize = True
         Me.Label23.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label23.ForeColor = System.Drawing.Color.DimGray
-        Me.Label23.Location = New System.Drawing.Point(142, 31)
+        Me.Label23.Location = New System.Drawing.Point(125, 31)
         Me.Label23.Name = "Label23"
         Me.Label23.Size = New System.Drawing.Size(101, 20)
         Me.Label23.TabIndex = 29
@@ -284,7 +284,7 @@ Partial Class cashier
         Me.cmbservicetype.ForeColor = System.Drawing.Color.White
         Me.cmbservicetype.FormattingEnabled = True
         Me.cmbservicetype.Items.AddRange(New Object() {"All", "CASH", "A.R Charge", "A.R Sales"})
-        Me.cmbservicetype.Location = New System.Drawing.Point(261, 28)
+        Me.cmbservicetype.Location = New System.Drawing.Point(244, 28)
         Me.cmbservicetype.Name = "cmbservicetype"
         Me.cmbservicetype.Size = New System.Drawing.Size(140, 28)
         Me.cmbservicetype.TabIndex = 28
@@ -306,7 +306,7 @@ Partial Class cashier
         Me.Label21.AutoSize = True
         Me.Label21.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label21.ForeColor = System.Drawing.Color.DimGray
-        Me.Label21.Location = New System.Drawing.Point(676, 31)
+        Me.Label21.Location = New System.Drawing.Point(659, 31)
         Me.Label21.Name = "Label21"
         Me.Label21.Size = New System.Drawing.Size(47, 20)
         Me.Label21.TabIndex = 22
@@ -323,7 +323,7 @@ Partial Class cashier
         Me.cmbtypee.ForeColor = System.Drawing.Color.White
         Me.cmbtypee.FormattingEnabled = True
         Me.cmbtypee.Items.AddRange(New Object() {"All", "Retail", "Wholesale", "Coffee Shop"})
-        Me.cmbtypee.Location = New System.Drawing.Point(736, 28)
+        Me.cmbtypee.Location = New System.Drawing.Point(719, 28)
         Me.cmbtypee.Name = "cmbtypee"
         Me.cmbtypee.Size = New System.Drawing.Size(106, 28)
         Me.cmbtypee.TabIndex = 21
@@ -334,7 +334,7 @@ Partial Class cashier
         Me.Label20.AutoSize = True
         Me.Label20.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label20.ForeColor = System.Drawing.Color.DimGray
-        Me.Label20.Location = New System.Drawing.Point(410, 31)
+        Me.Label20.Location = New System.Drawing.Point(393, 31)
         Me.Label20.Name = "Label20"
         Me.Label20.Size = New System.Drawing.Size(100, 20)
         Me.Label20.TabIndex = 20
@@ -350,7 +350,7 @@ Partial Class cashier
         Me.cmbsales.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmbsales.ForeColor = System.Drawing.Color.White
         Me.cmbsales.FormattingEnabled = True
-        Me.cmbsales.Location = New System.Drawing.Point(525, 30)
+        Me.cmbsales.Location = New System.Drawing.Point(508, 30)
         Me.cmbsales.Name = "cmbsales"
         Me.cmbsales.Size = New System.Drawing.Size(140, 28)
         Me.cmbsales.TabIndex = 19
@@ -403,7 +403,7 @@ Partial Class cashier
         Me.dgvorders.Location = New System.Drawing.Point(24, 60)
         Me.dgvorders.Name = "dgvorders"
         Me.dgvorders.RowHeadersWidth = 10
-        Me.dgvorders.Size = New System.Drawing.Size(917, 208)
+        Me.dgvorders.Size = New System.Drawing.Size(900, 208)
         Me.dgvorders.TabIndex = 15
         '
         'selectt
@@ -544,7 +544,7 @@ Partial Class cashier
         Me.Panel2.Controls.Add(Me.Panel4)
         Me.Panel2.Location = New System.Drawing.Point(40, 419)
         Me.Panel2.Name = "Panel2"
-        Me.Panel2.Size = New System.Drawing.Size(960, 605)
+        Me.Panel2.Size = New System.Drawing.Size(943, 605)
         Me.Panel2.TabIndex = 12
         '
         'dgvitems
@@ -583,7 +583,7 @@ Partial Class cashier
         Me.dgvitems.Name = "dgvitems"
         Me.dgvitems.ReadOnly = True
         Me.dgvitems.RowHeadersVisible = False
-        Me.dgvitems.Size = New System.Drawing.Size(620, 250)
+        Me.dgvitems.Size = New System.Drawing.Size(603, 250)
         Me.dgvitems.TabIndex = 12
         '
         'description
@@ -649,7 +649,7 @@ Partial Class cashier
         Me.Panel3.Controls.Add(Me.txtresult)
         Me.Panel3.Controls.Add(Me.btnadd)
         Me.Panel3.Controls.Add(Me.Label18)
-        Me.Panel3.Location = New System.Drawing.Point(645, 290)
+        Me.Panel3.Location = New System.Drawing.Point(628, 290)
         Me.Panel3.Name = "Panel3"
         Me.Panel3.Size = New System.Drawing.Size(303, 113)
         Me.Panel3.TabIndex = 49
@@ -958,7 +958,7 @@ Partial Class cashier
         Me.Panel4.Controls.Add(Me.lbltenderamt)
         Me.Panel4.Controls.Add(Me.Label16)
         Me.Panel4.Controls.Add(Me.lbltotal)
-        Me.Panel4.Location = New System.Drawing.Point(645, 31)
+        Me.Panel4.Location = New System.Drawing.Point(628, 31)
         Me.Panel4.Name = "Panel4"
         Me.Panel4.Size = New System.Drawing.Size(303, 256)
         Me.Panel4.TabIndex = 50

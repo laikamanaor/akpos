@@ -2,7 +2,7 @@
 Imports AK_POS.login_class
 Public Class login2
     Dim uic As New ui_class, loginc As New login_class
-    Public Shared wrkgrp As String = "", username As String = ""
+    Public Shared wrkgrp As String = "", username As String = "", userID As Integer = 0
     Public Shared posVersionID As Integer = 0
     Private Sub btnminimize_Click(sender As Object, e As EventArgs) Handles btnminimize.Click
         Me.WindowState = FormWindowState.Minimized
@@ -85,7 +85,8 @@ Public Class login2
             loginc.insertLogs()
             'assign global variable
             username = txtusername.Text
-            wrkgrp = loginc.getWorkgroup()
+            wrkgrp = loginc.getWorkgroup("workgroup")
+            userID = loginc.getWorkgroup("systemid")
             Me.Hide()
             'show main menu form
             Dim frm As New main()
