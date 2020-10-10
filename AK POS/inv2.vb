@@ -39,7 +39,7 @@ Public Class inv2
                 dgv.Columns("variance").Visible = True
                 dgv.Columns("shortover").Visible = True
                 dgv.Columns("overamt").Visible = True
-                Dim result As New DataTable
+                Dim result As New DataTable()
                 invc.invnum = lblinvnum.Text
                 result = invc.loadInventory(rb1.Checked)
                 dgv.Rows.Clear()
@@ -93,7 +93,7 @@ Public Class inv2
             invc.invnum = lblinvnum.Text
             btnverify.Enabled = invc.checkVerify(btnverify)
         Catch ex As Exception
-
+            MessageBox.Show(ex.ToString)
         Finally
             con.Close()
         End Try

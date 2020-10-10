@@ -721,13 +721,16 @@ Public Class main
     End Sub
 
     Private Sub btnReceivedSAP_Click(sender As Object, e As EventArgs) Handles btnReceivedSAP.Click
-        If login2.wrkgrp <> "Cashier" Or login2.wrkgrp <> "LC Accounting" Then
+        If login2.wrkgrp = "LC Accounting" Or login2.wrkgrp = "Cashier" Then
+            MessageBox.Show("Access Denied", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        ElseIf loginc.checkCutOff() Then
+            MessageBox.Show("Your account is already cut off", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        Else
             hideShow(panelsubreports)
             Dim f As New receivedFromSAP
             showForm(f)
-        Else
-            MessageBox.Show("Access Denied", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End If
+
     End Sub
 
     Private Sub btnCategory_Click_1(sender As Object, e As EventArgs) Handles btnCategory.Click

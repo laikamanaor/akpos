@@ -19,7 +19,7 @@ Public Class inv_logs_items
         dgv.Rows.Clear()
         Dim dt As New DataTable()
         cc.con.Open()
-        cc.cmd = New SqlClient.SqlCommand("SELECT item_name,quantity,transfer_to,transaction_number,sap_number,type FROM tblproduction WHERE transaction_number=@transnum", cc.con)
+        cc.cmd = New SqlClient.SqlCommand("SELECT item_name,SUM(ISNULL(quantity,0))[quantity],transfer_to,transaction_number,sap_number,type FROM tblproduction WHERE transaction_number=@transnum GROUP BY item_name,transfer_to,transaction_number,sap_number,type ORDER BY item_name", cc.con)
         cc.cmd.Parameters.AddWithValue("@transnum", transnum)
         cc.adptr.SelectCommand = cc.cmd
         cc.adptr.Fill(dt)
@@ -34,13 +34,12 @@ Public Class inv_logs_items
             lblfromBranch.Text = IIf(IsDBNull(r0w("transfer_to")), "N/A", r0w("transfer_to"))
             lbltransnum.Text = r0w("transaction_number")
             Dim sapNumber As String = IIf(IsDBNull(r0w("sap_number")), "N/A", r0w("sap_number"))
-
             If Not sapNumber.Equals("To Follow") And type = "Received Item" Then
                 Try
                     con.Open()
-                    cmd = New SqlCommand("SELECT Quantity [qty] FROM vSAP_IT WHERE Dscription=@itemName AND DocNum=@sapNumber", con)
-                    cmd.Parameters.AddWithValue("@itemName", itemName)
-                    cmd.Parameters.AddWithValue("@sapNumber", sapNumber)
+                    cmd = New SqlCommand("SELECT Quantity [qty] FROM vSAP_IT WHERE Dscription='" & itemName & "' AND DocNum=" & sapNumber & " ORDER BY Dscription", con)
+                    'cmd.Parameters.AddWithValue("@itemName", itemName)
+                    'cmd.Parameters.AddWithValue("@sapNumber", sapNumber)
                     rdr = cmd.ExecuteReader
                     If rdr.Read Then
                         actualQuantity = CDbl(rdr("qty"))

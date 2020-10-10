@@ -126,13 +126,15 @@ Public Class receivedFromSAPItems
                 Dim dtItems As New DataTable
                 dtItems.Columns.Add("item")
                 dtItems.Columns.Add("quantity")
-                For i As Integer = 0 To dgv.RowCount - 1
-                    If IsNumeric(dgv.Rows(i).Cells("actual_quantity").Value) Then
-                        dtItems.Rows.Add(dgv.Rows(i).Cells("item_name").Value, dgv.Rows(i).Cells("actual_quantity").Value)
-                    End If
-                Next
+                If dgv.Rows.Count > 0 Then
+                    For i As Integer = 0 To dgv.RowCount - 1
+                        If IsNumeric(dgv.Rows(i).Cells("actual_quantity").Value) Then
+                            dtItems.Rows.Add(dgv.Rows(i).Cells("item_name").Value, dgv.Rows(i).Cells("actual_quantity").Value)
+                        End If
+                    Next
+                End If
                 recc.updateInventory(dtItems)
-                Me.Close()
+                Me.Hide()
             End If
         End If
     End Sub

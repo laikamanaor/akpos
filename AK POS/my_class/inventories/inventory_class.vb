@@ -88,14 +88,13 @@ Public Class inventory_class
 
     Public Function loadInventory(ByVal hasStock As Boolean) As DataTable
         Dim result As New DataTable, adptr As New SqlClient.SqlDataAdapter
-        Dim inStock_query As String = "SELECT * FROM funcgetInventory(@invnum)",
-                outStock_query As String = "SELECT * FROM funcgetInventory2(@invnum)",
+        Dim inStock_query As String = "SELECT * FROM funcgetInventory('" & vinvnum & "')",
+                outStock_query As String = "SELECT * FROM funcgetInventory('" & vinvnum & "')",
                 result_query As String = ""
         result_query = IIf(hasStock, inStock_query, outStock_query)
         cc.con.Open()
         cc.cmd = New SqlClient.SqlCommand(result_query, cc.con)
         cc.cmd.CommandType = CommandType.Text
-        cc.cmd.Parameters.AddWithValue("@invnum", vinvnum)
         adptr.SelectCommand = cc.cmd
         cc.con.Close()
         adptr.Fill(result)
@@ -169,6 +168,20 @@ Public Class inventory_class
         Return result
     End Function
 
+    Public Function getLatestInventoryDate() As String
+        Dim result As String = ""
+        Try
+            cc.con.Open()
+            cc.cmd = New SqlClient.SqlCommand("SELECT TOP 1 CAST(datecreated AS date) [date] FROM tblinvsum ORDER BY invsumid DESC", cc.con)
+            result = cc.cmd.ExecuteScalar
+            cc.con.Close()
+        Catch ex As Exception
+            MessageBox.Show(ex.ToString)
+        End Try
+        result = IIf(String.IsNullOrEmpty(result), "N/A", result)
+        Return result
+    End Function
+
     Public Function getSalesInventory(ByVal transferFrom As String, ByVal datee As String) As DataTable
         Dim result As New DataTable(), adptr As New SqlClient.SqlDataAdapter
         Try
@@ -185,7 +198,7 @@ FROM tbltransaction2 b INNER JOIN tblorder2 c ON c.ordernum = b.ordernum
 AND CAST(b.datecreated As date)=CAST(c.datecreated AS date) 
 WHERE CAST(b.datecreated AS date)=(SELECT TOP 1 CAST(datecreated AS date) 
 FROM tblinvsum ORDER BY invsumid DESC) AND b.inventory_type='Own Inventory' AND a.item_name = c.itemname AND
-b.status2 IN ('Unpaid','Paid') AND b.createdby='" & transferFrom & "' AND b.tendertype='Cash' GROUP BY c.itemname
+b.status2 IN ('Unpaid','Paid') AND b.createdby LIKE '%" & transferFrom & "%' AND b.tendertype='Cash' GROUP BY c.itemname
 )x 
 OUTER APPLY(
 SELECT c.itemname,ISNULL(SUM(c.qty),0) [qty] 
@@ -193,7 +206,7 @@ FROM tbltransaction2 b INNER JOIN tblorder2 c ON c.ordernum = b.ordernum
 AND CAST(b.datecreated As date)=CAST(c.datecreated AS date) 
 WHERE CAST(b.datecreated AS date)=(SELECT TOP 1 CAST(datecreated AS date)
 FROM tblinvsum ORDER BY invsumid DESC) AND b.inventory_type='Own Inventory' AND a.item_name = c.itemname AND
-b.status2 IN ('Unpaid','Paid') AND b.createdby='" & transferFrom & "' AND b.tendertype='A.R Charge'  GROUP BY c.itemname
+b.status2 IN ('Unpaid','Paid') AND b.createdby LIKE '%" & transferFrom & "%' AND b.tendertype='A.R Charge'  GROUP BY c.itemname
 )xx
 OUTER APPLY(
 SELECT c.itemname,ISNULL(SUM(c.qty),0) [qty] 
@@ -201,14 +214,14 @@ FROM tbltransaction2 b INNER JOIN tblorder2 c ON c.ordernum = b.ordernum
 AND CAST(b.datecreated As date)=CAST(c.datecreated AS date) 
 WHERE CAST(b.datecreated AS date)=(SELECT TOP 1 CAST(datecreated AS date)
 FROM tblinvsum ORDER BY invsumid DESC) AND b.inventory_type='Own Inventory' AND a.item_name = c.itemname AND
-b.status2 IN ('Unpaid','Paid') AND b.tendertype='A.R Sales' AND b.createdby='" & transferFrom & "'  GROUP BY c.itemname
+b.status2 IN ('Unpaid','Paid') AND b.tendertype='A.R Sales' AND b.createdby LIKE '%" & transferFrom & "%'  GROUP BY c.itemname
 )xxx
 OUTER APPLY(
 SELECT ISNULL(SUM(b.quantity),0) [transferFromSales] FROM tblproduction b WHERE b.type2='Transfer from Sales' AND b.inv_id = a.inv_id
 AND b.transfer_from = a.transfer_from AND b.item_name = a.item_name AND a.status='Completed'
 )xxxx
 WHERE a.inv_id=(SELECT TOP 1 invnum FROM tblinvsum WHERE CAST(datecreated AS date)='" & datee & "')
-AND a.type2='Transfer to Sales' AND a.transfer_from='" & transferFrom & "'  AND a.status='Completed' AND a.item_name LIKE '%%' 
+AND a.type2='Transfer to Sales' AND a.transfer_from LIKE '%" & transferFrom & "%'  AND a.status='Completed' AND a.item_name LIKE '%%' 
 GROUP BY a.item_name,x.qty,xx.qty,xxx.qty,xxxx.transferFromSales ORDER BY 2 DESC,1 ASC"
             cc.con.Open()
             cc.cmd = New SqlClient.SqlCommand(query, cc.con)

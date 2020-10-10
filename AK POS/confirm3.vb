@@ -45,7 +45,7 @@ Public Class confirm3
                 cmd = New SqlCommand(sql, conn)
                 dr = cmd.ExecuteReader
                 While dr.Read
-                    If (dr("username") = txtusername.Text And dr("workgroup") = "Manager" And txtpass.Text = Decrypt(dr("password"))) Then
+                    If dr("username") = txtusername.Text And dr("workgroup") = "Manager" And txtpass.Text = System.Text.Encoding.UTF8.GetString(Convert.FromBase64String(dr("password"))) Then
                         mainmenu.cnfrm3 = True
                         Me.Close()
                         Exit Sub

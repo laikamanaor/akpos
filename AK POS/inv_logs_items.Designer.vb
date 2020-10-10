@@ -29,6 +29,7 @@ Partial Class inv_logs_items
         Me.Panel3 = New System.Windows.Forms.Panel()
         Me.Panel4 = New System.Windows.Forms.Panel()
         Me.Panel5 = New System.Windows.Forms.Panel()
+        Me.lblclose = New System.Windows.Forms.Label()
         Me.Panel6 = New System.Windows.Forms.Panel()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.dgv = New System.Windows.Forms.DataGridView()
@@ -41,7 +42,6 @@ Partial Class inv_logs_items
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Label3 = New System.Windows.Forms.Label()
         Me.spinner = New System.Windows.Forms.PictureBox()
-        Me.lblclose = New System.Windows.Forms.Label()
         Me.Panel5.SuspendLayout()
         CType(Me.dgv, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.spinner, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -94,6 +94,19 @@ Partial Class inv_logs_items
         Me.Panel5.Name = "Panel5"
         Me.Panel5.Size = New System.Drawing.Size(753, 37)
         Me.Panel5.TabIndex = 29
+        '
+        'lblclose
+        '
+        Me.lblclose.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.lblclose.AutoSize = True
+        Me.lblclose.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.lblclose.Font = New System.Drawing.Font("Arial Rounded MT Bold", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblclose.ForeColor = System.Drawing.Color.White
+        Me.lblclose.Location = New System.Drawing.Point(729, 7)
+        Me.lblclose.Name = "lblclose"
+        Me.lblclose.Size = New System.Drawing.Size(21, 22)
+        Me.lblclose.TabIndex = 2
+        Me.lblclose.Text = "X"
         '
         'Panel6
         '
@@ -225,19 +238,6 @@ Partial Class inv_logs_items
         Me.spinner.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.spinner.TabIndex = 58
         Me.spinner.TabStop = False
-        '
-        'lblclose
-        '
-        Me.lblclose.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.lblclose.AutoSize = True
-        Me.lblclose.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.lblclose.Font = New System.Drawing.Font("Arial Rounded MT Bold", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblclose.ForeColor = System.Drawing.Color.White
-        Me.lblclose.Location = New System.Drawing.Point(729, 7)
-        Me.lblclose.Name = "lblclose"
-        Me.lblclose.Size = New System.Drawing.Size(21, 22)
-        Me.lblclose.TabIndex = 2
-        Me.lblclose.Text = "X"
         '
         'inv_logs_items
         '

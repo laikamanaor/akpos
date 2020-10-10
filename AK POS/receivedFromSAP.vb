@@ -6,11 +6,6 @@ Public Class receivedFromSAP
         cmbtype.SelectedIndex = 0
     End Sub
 
-    Public Sub tt()
-        Control.CheckForIllegalCrossThreadCalls = False
-        Dim th As New Threading.Thread(AddressOf loadData)
-        th.Start()
-    End Sub
 
     Public Sub enableDisable(ByVal value As Boolean)
         txtSearch.Enabled = value
@@ -107,26 +102,26 @@ Public Class receivedFromSAP
 
 
     Private Sub cmbtype_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbtype.SelectedIndexChanged
-        tt()
+        loadData()
     End Sub
 
     Private Sub txtSearch_KeyDown(sender As Object, e As KeyEventArgs) Handles txtSearch.KeyDown
         If e.KeyCode = Keys.Enter Then
-            tt()
+            loadData()
         End If
     End Sub
 
     Private Sub dgv_CellDoubleClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgv.CellDoubleClick
-        If dgv.Rows.Count <> 0 Then
+        If dgv.Rows.Count > 0 Then
             Dim frm As New receivedFromSAPItems()
             frm.sapNumber = dgv.CurrentRow.Cells("sapNumber").Value.ToString
             frm.ShowDialog()
-            tt()
+            loadData()
         End If
     End Sub
 
     Private Sub btnsearch_Click(sender As Object, e As EventArgs) Handles btnsearch.Click
-        tt()
+        loadData()
     End Sub
 
     Private Sub txtSearch_Enter(sender As Object, e As EventArgs) Handles txtSearch.Enter

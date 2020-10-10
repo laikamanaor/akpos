@@ -49,7 +49,7 @@ Public Class confirm
                 cmd = New SqlCommand(sql, conn)
                 dr = cmd.ExecuteReader
                 While dr.Read
-                    If (dr("workgroup") = "Manager" And txtpass.Text = Decrypt(dr("password"))) Then
+                    If dr("workgroup") = "Manager" And txtpass.Text = System.Text.Encoding.UTF8.GetString(Convert.FromBase64String(dr("password"))) Then
                         'If users.cnf = 1 Then
                         returnstand.cnfrm = True
                         mainmenu.voidd = True

@@ -193,7 +193,7 @@ Partial Class adduser
         Me.cmbworkgroup.Font = New System.Drawing.Font("Arial Rounded MT Bold", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmbworkgroup.ForeColor = System.Drawing.Color.White
         Me.cmbworkgroup.FormattingEnabled = True
-        Me.cmbworkgroup.Items.AddRange(New Object() {"Cashier", "Sales", "Manager", "Administrator", "Production", "LC Accounting"})
+        Me.cmbworkgroup.Items.AddRange(New Object() {"Cashier", "Sales", "Manager", "Administrator", "Production", "LC Accounting", "Auditor"})
         Me.cmbworkgroup.Location = New System.Drawing.Point(28, 214)
         Me.cmbworkgroup.Name = "cmbworkgroup"
         Me.cmbworkgroup.Size = New System.Drawing.Size(282, 22)

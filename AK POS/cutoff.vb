@@ -7,6 +7,8 @@ Public Class cutoff
     Dim cmd As SqlCommand
     Dim rdr As SqlDataReader
 
+    Dim invc As New inventory_class()
+
     Public Function decryptConString() As String
         Dim base64encoded As String = File.ReadAllText("connectionstring.txt")
         Dim data As Byte() = System.Convert.FromBase64String(base64encoded)
@@ -83,22 +85,31 @@ Public Class cutoff
     Private Sub dgvusers_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvusers.CellContentClick
         Try
             If e.ColumnIndex = 2 And dgvusers.RowCount <> 0 Then
-
-                If checkPendingOrders() <> 0 Then
-                    MessageBox.Show("Confirm all pending orders before cutt off", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                    Exit Sub
-                End If
-                Dim a As String = MsgBox("Are you sure you want to cutoff?", MsgBoxStyle.Question + MsgBoxStyle.YesNo + MsgBoxStyle.DefaultButton2, "")
-                If a = vbYes Then
-                    For i As Integer = 0 To dgvusers.Rows.Count - 1
-                        con.Open()
-                        cmd = New SqlCommand("UPDATE tblcutoff SET date_cutoff=(SELECT GETDATE()), status='In Active' WHERE CAST(date AS date)=@date", con)
-                        cmd.Parameters.AddWithValue("@date", dgvusers.Rows(i).Cells("datee").Value)
-                        cmd.ExecuteNonQuery()
-                        con.Close()
+                Dim dtSalesInventory As New DataTable()
+                dtSalesInventory = invc.getSalesInventory("", invc.getLatestInventoryDate())
+                Dim endBal As Double = 0.00
+                If dtSalesInventory.Rows.Count > 0 Then
+                    For Each r0w As DataRow In dtSalesInventory.Rows
+                        endBal = endBal + r0w("endbal")
                     Next
-                    MessageBox.Show("Your request has been granted", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Information)
-                    loadData()
+                End If
+                If checkPendingOrders() <> 0 Then
+                    MessageBox.Show("Confirm all pending orders before Cut Off", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                ElseIf endBal > 0 Then
+                    MessageBox.Show("Transfer all Sales Inventory to Main before Cut Off", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                Else
+                    Dim a As String = MsgBox("Are you sure you want to cutoff?", MsgBoxStyle.Question + MsgBoxStyle.YesNo + MsgBoxStyle.DefaultButton2, "")
+                    If a = vbYes Then
+                        For i As Integer = 0 To dgvusers.Rows.Count - 1
+                            con.Open()
+                            cmd = New SqlCommand("UPDATE tblcutoff SET date_cutoff=(SELECT GETDATE()), status='In Active' WHERE CAST(date AS date)=@date", con)
+                            cmd.Parameters.AddWithValue("@date", dgvusers.Rows(i).Cells("datee").Value)
+                        cmd.ExecuteNonQuery()
+                            con.Close()
+                        Next
+                        MessageBox.Show("Your request has been granted", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                        loadData()
+                    End If
                 End If
             End If
         Catch ex As Exception

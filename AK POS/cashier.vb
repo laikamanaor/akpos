@@ -158,14 +158,27 @@ Public Class cashier
                 con.Close()
             End If
         Next
-        For index As Integer = 0 To dgvitems.RowCount - 1
+
+        Dim dtOrderNumbers As New DataTable
+        For index As Integer = 0 To dgvorders.Rows.Count - 1
+            If CBool(dgvorders.Rows(index).Cells("select1").Value) = True Then
+                con.Open()
+                cmd = New SqlCommand("SELECT itemname,qty FROM tblorder2 WHERE CAST(datecreated AS date)=(SELECT TOP 1 CAST(datecreated AS date) FROM tblinvsum ORDER BY invsumid DESC) AND ordernum=" & dgvorders.Rows(index).Cells("ordernum").Value & ";", con)
+                Dim adptr As New SqlDataAdapter
+                adptr.SelectCommand = cmd
+                adptr.Fill(dtOrderNumbers)
+                con.Close()
+            End If
+        Next
+
+        For Each r0w As DataRow In dtOrderNumbers.Rows
             con.Open()
             cmd = New SqlCommand("SELECT price FROM tbldepositprice WHERE itemid=(SELECT itemid FROM tblitems WHERE itemname=@itemname) AND status=1;", con)
-            cmd.Parameters.AddWithValue("@itemname", CStr(dgvitems.Rows(index).Cells("description").Value))
+            cmd.Parameters.AddWithValue("@itemname", r0w("itemname"))
             rdr = cmd.ExecuteReader
             While rdr.Read
                 z += 1
-                current_amt += CDbl(dgvitems.Rows(index).Cells("quantity").Value) * CDbl(rdr("price"))
+                current_amt += CDbl(r0w("qty")) * CDbl(rdr("price"))
             End While
             con.Close()
         Next
@@ -185,7 +198,6 @@ Public Class cashier
                         totalamt += CDbl(rdr("amount"))
                     End While
                     con.Close()
-
                 End If
             Next
             If countDeposits = 0 Then
@@ -284,14 +296,28 @@ Public Class cashier
             End If
 
 
+            'If Not String.IsNullOrEmpty(isDeposit()) Then
+            '    Dim zxc As String = isDeposit()
+            '    If "d" = zxc.Substring(zxc.Length - 1) Then
+            '        MessageBox.Show(isDeposit(), "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            '    Else
+            '        ap_result = isDeposit()
+            '        owshitt()
+            '    End If
+            'Else
+            '    MessageBox.Show("qwe")
+            'End If
+            Dim zxc As String = isDeposit()
             If statusPaid <> "" Then
                 MessageBox.Show("Order # below is already paid" & Environment.NewLine & statusPaid, "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
             ElseIf statusVoid <> "" Then
                 MessageBox.Show("Order # below is already void" & Environment.NewLine & statusVoid, "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
             ElseIf counter = 1 Then
                 submit("Confirm")
+            ElseIf "d" = zxc.Substring(zxc.Length - 1) Then
+                MessageBox.Show("You can't select Order Number(s) that have Deposit Item", "Atlantic Bakery", MessageBoxButtons.OK, MessageBoxIcon.Error)
             ElseIf counter > 1 Then
-                Dim a As String = MsgBox("You select (" & orderNumCount.ToString("N0") & ") orders" & Environment.NewLine & "Total Amount Due Is " & totalamt.ToString("n2") & Environment.NewLine & "Are you sure you want To Confirm?", MsgBoxStyle.Question + MsgBoxStyle.YesNo, "Atlantic Bakery")
+                Dim a As String = MsgBox("You Select (" & orderNumCount.ToString("N0") & ") orders" & Environment.NewLine & "Total Amount Due Is " & totalamt.ToString("n2") & Environment.NewLine & "Are you sure you want To Confirm?", MsgBoxStyle.Question + MsgBoxStyle.YesNo, "Atlantic Bakery")
                 If a = vbYes Then
                     posc.insertMultiplePOS(orders)
                     load_orders()
